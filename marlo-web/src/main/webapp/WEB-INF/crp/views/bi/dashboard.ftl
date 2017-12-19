@@ -18,13 +18,9 @@
   <article id="" class="col-md-12" > 
     <div class="borderBox">
        
-       [#assign biURL = "http://172.22.33.21:8090/pentaho/api/repos/%3Apublic%3AmarloBI%3AbudgetDashboards%3AbudgetDashboard.wcdf/generatedContent?userid=admin&password=password"]
+       [#assign biURL = "http://marlotest.ciat.cgiar.org:8090/pentaho/api/repos/%3Apublic%3AmarloBI%3AbudgetDashboards%3AbudgetDashboard.wcdf/generatedContent?userid=admin&password=password"]
        
-       [#-- 
-       <iframe id="dashboard" type="text/html" width="100%" height="1000px" src="${biURL}"></iframe>
-        --]
-       
-       <iframe width="1064px" height="800px" src="https://datastudio.google.com/embed/reporting/1EfeOigBJKHQ0LRcaK6mCK3GsYI1DweiW/page/1kVL" frameborder="0" style="border:0"></iframe>
+       <iframe width="1064px" height="800px" src="${biURL}" frameborder="0" style="border:0"></iframe>
        
     </div> 
   </article>

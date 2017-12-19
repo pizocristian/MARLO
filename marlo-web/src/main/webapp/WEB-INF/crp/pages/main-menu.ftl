@@ -19,8 +19,8 @@
       { 'slug': 'projectsEvaluation', 'name': 'menu.synthesis.projectsEvaluation', 'namespace': '/synthesis',  'action': '${(crpSession)!}/projectsEvaluation',  'visible': logged, 'active': false }
     ]
   },
-  { 'slug': 'summaries', 'name': 'menu.summaries',      'namespace': '/summaries',       'action': '${(crpSession)!}/summaries',    'visible': logged, 'active': true },
-  { 'slug': 'moduleBI', 'name': 'menu.moduleBI',      'namespace': '/bi',       'action': '${(crpSession)!}/dashboard',    'visible': logged, 'active': true }
+  { 'slug': 'summaries', 'name': 'menu.summaries',      'namespace': '/summaries',       'action': '${(crpSession)!}/summaries',    'visible': logged, 'active': true }
+  [#--  { 'slug': 'moduleBI', 'name': 'menu.moduleBI',      'namespace': '/bi',       'action': '${(crpSession)!}/dashboard',    'visible': logged, 'active': true }--]
 
 ]/]
 

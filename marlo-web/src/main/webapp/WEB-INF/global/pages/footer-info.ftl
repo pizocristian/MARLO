@@ -16,6 +16,10 @@
       <li><a target="_blank" href="[@s.url namespace="/" action='legalInformation'][/@s.url]#copyRight">Copyright</a></li>
     </ul>
     --]
+    <strong>Business Intelligence</strong><br />
+    <ul>
+      <li><a target="_blank" href="[@s.url namespace="/bi" action='${(crpSession)!}/dashboard'][/@s.url]">BI Dashboard </a></li>
+    </ul>
   </div>
   [#-- Glossary --]
   <div class="col-md-4 glossary text-right">

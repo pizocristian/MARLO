@@ -18,7 +18,7 @@
   <article id="" class="col-md-12" > 
     <div class="borderBox">
        
-       [#assign biURL = "http://marlotest.ciat.cgiar.org:8090/pentaho/api/repos/%3Apublic%3AmarloBI%3AbudgetDashboards%3AbudgetDashboard.wcdf/generatedContent?userid=admin&password=password"]
+       [#assign biURL = "http://localhost:8090/pentaho/Urbano?token=831a98d355bc6647231fe867b4657092&dst=destination_1"]
        
        <iframe width="1064px" height="800px" src="${biURL}" frameborder="0" style="border:0"></iframe>
        

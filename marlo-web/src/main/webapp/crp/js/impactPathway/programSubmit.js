@@ -75,6 +75,7 @@ function submitButtonEvent(e) {
               text: 'Ok',
               onClick: function($noty) {
                 $noty.close();
+                $('.projectSubmitButton').hide();
                 window.location.href = $(e.target).attr('href');
               }
           }, {
@@ -106,7 +107,8 @@ function unSubmitButtonEvent(e) {
               var programId = $(".impactUnSubmitButton").attr("id").split("-")[1];
               var data = {
                   crpProgramID: programId,
-                  justification: $justification.val()
+                  justification: $justification.val(),
+                  phaseID: phaseID
               }
               console.log(data);
               $justification.removeClass('fieldError');
@@ -115,9 +117,11 @@ function unSubmitButtonEvent(e) {
                   type: 'GET',
                   dataType: "json",
                   data: data
-              }).done(function(m) {
-                window.location.href = baseURL + "/impactPathway/" + currentCrpSession + "/outcomes.do?edit=true";
-              });
+              }).done(
+                  function(m) {
+                    window.location.href =
+                        baseURL + "/impactPathway/" + currentCrpSession + "/outcomes.do?edit=true?phaseID=" + phaseID;
+                  });
             } else {
               $justification.addClass('fieldError');
             }
@@ -136,6 +140,7 @@ function validateButtonEvent(e) {
 
 function processTasks(tasks,id,button) {
   $(button).unbind('click');
+
   var completed = 0;
   var index = 0;
   $(button).fadeOut(function() {
@@ -151,6 +156,7 @@ function processTasks(tasks,id,button) {
               data: {
                   crpProgramID: id,
                   sectionName: sectionName,
+                  phaseID: phaseID
               },
               beforeSend: function() {
                 $sectionMenu.removeClass('animated flipInX').addClass('loadingSection');
@@ -184,6 +190,7 @@ function processTasks(tasks,id,button) {
                     notyOptions.layout = 'center';
                     noty(notyOptions);
                     $(button).next().fadeOut(function() {
+                      console.log($(this).next().attr('class'));
                       $(this).next().fadeIn("slow");
                     });
                   } else {

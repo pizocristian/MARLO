@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Project Outcome Case Studies" /]
-[#assign currentSectionString = "project-${actionName?replace('/','-')}-${projectID}" /]
+[#assign currentSectionString = "project-${actionName?replace('/','-')}-${projectID}-phase-${(actualPhase.id)!}" /]
 [#assign pageLibs = [ "datatables.net", "datatables.net-bs" ] /]
 [#assign customJS = [
   "${baseUrlMedia}/js/projects/projectCaseStudiesList.js",
@@ -13,6 +13,7 @@
 
 [#assign breadCrumb = [
   {"label":"projectsList", "nameSpace":"/projects", "action":"${(crpSession)!}/projectsList"},
+  {"text":"P${project.id}", "nameSpace":"/projects", "action":"${crpSession}/description", "param": "projectID=${project.id?c}&edit=true&phaseID=${(actualPhase.id)!}"},
   {"label":"caseStudies", "nameSpace":"/projects", "action":""}
 ] /]
 
@@ -32,7 +33,10 @@
   </div> 
   <div style="display:none" class="viewMore closed"></div>
 </div>
-    
+
+[#if (!availabePhase)!false]
+  [#include "/WEB-INF/crp/views/projects/availability-projects.ftl" /]
+[#else]
 <section class="container">
     <div class="row">
       [#-- Project Menu --]
@@ -68,7 +72,7 @@
       
     </div>  
 </section>
-
+[/#if]
 [#-- Internal parameters --]
 [#list params?keys as prop]<input id="${params[prop].id}" type="hidden" value="${params[prop].name}" />[/#list]
 
@@ -94,7 +98,7 @@
     <tbody>
     [#if list?has_content]
         [#list list as item]
-          [#assign dlurl][@s.url namespace=namespace action='${crpSession}/caseStudy' ][@s.param name='caseStudyID']${item.id}[/@s.param][@s.param name='projectID']${projectID}[/@s.param][@s.param name='edit']true[/@s.param][/@s.url][/#assign]
+          [#assign dlurl][@s.url namespace=namespace action='${crpSession}/caseStudy' ][@s.param name='caseStudyID']${item.id}[/@s.param][@s.param name='projectID']${projectID}[/@s.param][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url][/#assign]
           <tr>
             <td class="id" ><a href="${dlurl}">${item.id}</a></td> 
             <td class="name"><a href="${dlurl}">[#if item.title?trim?has_content]${item.title}[#else]Untitled[/#if]</a></td>

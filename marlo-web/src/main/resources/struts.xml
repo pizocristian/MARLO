@@ -16,15 +16,14 @@
 	<constant name="struts.action.extension" value="do,,json" />
 	<constant name="struts.mapper.class"
 		value="org.apache.struts2.dispatcher.mapper.PrefixBasedActionMapper" />
-	<constant name="struts.mapper.prefixMapping" value="/api:rest,:struts" />
-	<constant name="struts.convention.action.suffix" value="Action, Controller" />
+	<constant name="struts.mapper.prefixMapping" value=":struts" />
+	<constant name="struts.convention.action.suffix" value="Action" />
 	<constant name="struts.convention.action.mapAllMatches" value="true" />
-	<constant name="struts.convention.default.parent.package"
-		value="rest-default" />
-	<constant name="struts.convention.package.locators" value="rest" />
-
-	<constant name="struts.rest.namespace" value="/api" />
-	<constant name="struts.rest.defaultExtension" value="json" />
+	  
+  <constant name="struts.localizedTextProvider" value="marloLocalizedTextProvider" />
+  
+  <!-- Spring MVC will power the REST services exposed by MARLO not Struts2 -->
+  <constant name="struts.action.excludePattern" value="/api/*"/>
 
 	<!-- Add addition packages and configuration here. -->
 	<package name="marlo-default" namespace="/" extends="struts-default">
@@ -112,6 +111,10 @@
 			<!-- Security (Json) interceptors -->
 			<interceptor name="SecurityControl"
 				class="org.cgiar.ccafs.marlo.interceptor.json.SecurityJsonInterceptor" />
+				
+			<!-- POWB interceptors -->
+			<interceptor name="canEditPowbSynthesis"
+        class="org.cgiar.ccafs.marlo.interceptor.powb.CanEditPowbSynthesisInterceptor" />
 
 			<!-- *********************************** CENTER INTERCEPTORS *********************************** -->
 			<!-- validating if the center is valid in the open session -->
@@ -138,6 +141,11 @@
 				section -->
 			<interceptor name="centerAccessibleStage"
 				class="org.cgiar.ccafs.marlo.interceptor.center.AccessibleCenterStageInterceptor" />
+				
+				
+				<!-- validation if the user can edit the capdev intervention -->
+				<interceptor name="editCapdev"
+				class="org.cgiar.ccafs.marlo.interceptor.center.capdev.EditCapacityDevInterceptor" />
 
 			<!-- ******************************************************************************************* -->
 
@@ -275,30 +283,42 @@
 				<interceptor-ref name="trimInputs" />
 				<interceptor-ref name="defaultStack" />
 			</interceptor-stack>
+			
+			<interceptor-stack name="editPowbStack">
+        <interceptor-ref name="i18nFile" />
+        <interceptor-ref name="validCrp" />
+        <interceptor-ref name="requireUser" />
+        <interceptor-ref name="validSessionCrp" />
+        <interceptor-ref name="canEditPowbSynthesis" />
+        <interceptor-ref name="keepRedirectMessages" />
+        <interceptor-ref name="accessibleStage" />
+        <interceptor-ref name="trimInputs" />
+        <interceptor-ref name="defaultStack" />
+      </interceptor-stack>
 
 			<!-- *********************************** CENTER INTERCEPTORS STACKS *********************************** -->
 			<interceptor-stack name="centerHomeStack">
 				<interceptor-ref name="i18nFile" />
-				<interceptor-ref name="validCenter" />
+				<interceptor-ref name="validCrp" />
 				<interceptor-ref name="requireUser" />
-				<interceptor-ref name="validCenterSession" />
+				<interceptor-ref name="validSessionCrp" />
 				<interceptor-ref name="defaultStack" />
 			</interceptor-stack>
 
 			<interceptor-stack name="centerSectionStack">
 				<interceptor-ref name="i18nFile" />
-				<interceptor-ref name="validCenter" />
+				<interceptor-ref name="validCrp" />
 				<interceptor-ref name="requireUser" />
-				<interceptor-ref name="validCenterSession" />
+				<interceptor-ref name="validSessionCrp" />
 				<interceptor-ref name="keepRedirectMessages" />
 				<interceptor-ref name="defaultStack" />
 			</interceptor-stack>
 
 			<interceptor-stack name="centerImpactPathwayStack">
 				<interceptor-ref name="i18nFile" />
-				<interceptor-ref name="validCenter" />
+				<interceptor-ref name="validCrp" />
 				<interceptor-ref name="requireUser" />
-				<interceptor-ref name="validCenterSession" />
+				<interceptor-ref name="validSessionCrp" />
 				<interceptor-ref name="editCenterImpactPathway" />
 				<interceptor-ref name="centerAccessibleStage" />				
 				<interceptor-ref name="keepRedirectMessages" />
@@ -307,9 +327,9 @@
 
 			<interceptor-stack name="centerProjectStack">
 				<interceptor-ref name="i18nFile" />
-				<interceptor-ref name="validCenter" />
+				<interceptor-ref name="validCrp" />
 				<interceptor-ref name="requireUser" />
-				<interceptor-ref name="validCenterSession" />
+				<interceptor-ref name="validSessionCrp" />
 				<interceptor-ref name="editCenterProject" />
 				<interceptor-ref name="centerAccessibleStage" />  
 				<interceptor-ref name="keepRedirectMessages" />
@@ -318,9 +338,9 @@
 
 			<interceptor-stack name="centerDeliverableStack">
 				<interceptor-ref name="i18nFile" />
-				<interceptor-ref name="validCenter" />
+				<interceptor-ref name="validCrp" />
 				<interceptor-ref name="requireUser" />
-				<interceptor-ref name="validCenterSession" />
+				<interceptor-ref name="validSessionCrp" />
 				<interceptor-ref name="editCenterDeliverable" />
 				<interceptor-ref name="centerAccessibleStage" />  
 				<interceptor-ref name="keepRedirectMessages" />
@@ -329,26 +349,35 @@
 
 			<interceptor-stack name="centerOutcomeStack">
 				<interceptor-ref name="i18nFile" />
-				<interceptor-ref name="validCenter" />
+				<interceptor-ref name="validCrp" />
 				<interceptor-ref name="requireUser" />
-				<interceptor-ref name="validCenterSession" />
+				<interceptor-ref name="validSessionCrp" />
 				<interceptor-ref name="editCenterOutcome" />
 				<interceptor-ref name="centerAccessibleStage" />  
 				<interceptor-ref name="keepRedirectMessages" />
 				<interceptor-ref name="defaultStack" />
 			</interceptor-stack>
 
-			<interceptor-stack name="centerOutputStack">
+      <interceptor-stack name="centerOutputStack">
 				<interceptor-ref name="i18nFile" />
-				<interceptor-ref name="validCenter" />
+				<interceptor-ref name="validCrp" />
 				<interceptor-ref name="requireUser" />
-				<interceptor-ref name="validCenterSession" />
+				<interceptor-ref name="validSessionCrp" />
 				<interceptor-ref name="centerAccessibleStage" />  
 				<interceptor-ref name="editCenterOutput" />
 				<interceptor-ref name="keepRedirectMessages" />
 				<interceptor-ref name="defaultStack" />
 			</interceptor-stack>
-			<!-- ******************************************************************************************* -->
+      
+      <interceptor-stack name="centerCapdevStack">
+        <interceptor-ref name="i18nFile" />
+        <interceptor-ref name="requireUser" />
+        <interceptor-ref name="editCapdev" />
+        <interceptor-ref name="keepRedirectMessages" />
+        <interceptor-ref name="defaultStack" />
+      </interceptor-stack>
+       <!-- 
+       ******************************************************************************************* -->  
 
 		</interceptors>
 
@@ -376,6 +405,8 @@
 		<global-exception-mappings>
 			<exception-mapping exception="java.lang.Exception"
 				result="unhandledException" />
+      <exception-mapping exception="org.apache.shiro.authz.AuthorizationException"
+        result="403"/>
 		</global-exception-mappings>
 
 		<action name="unhandledExceptionAction"
@@ -402,15 +433,14 @@
 	<include file="struts-fundingSources.xml" />
 	<include file="struts-summaries.xml" />
 	<include file="struts-synthesis.xml" />
+	<include file="struts-powb.xml" />
 	<include file="struts-publications.xml" />
-	<include file="struts-rest.xml" />
-	<include file="struts-bi.xml" />
 
 	<include file="struts-center-home.xml" />
 	<include file="struts-center-impactPathway.xml" />
 	<include file="struts-center-monitoring.xml" />
 	<include file="struts-center-admin.xml" />
 	<include file="struts-center-summaries.xml" />
-
+	<include file="struts-center-capDev.xml" />
 
 </struts>

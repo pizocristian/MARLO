@@ -1,16 +1,17 @@
 [#ftl]
-[#if !((project.projectEditLeader)!false)]
+[#if !((project.projectInfo.isProjectEditLeader())!false)]
   [#assign menus= [
     { 'title': 'General Information', 'show': true,
       'items': [
       { 'slug': 'description',  'name': 'projects.menu.description',  'action': 'description',  'active': true  },
       { 'slug': 'partners',  'name': 'projects.menu.partners',  'action': 'partners',  'active': true  },
-      { 'slug': 'budgetByPartners',  'name': 'Budget',  'action': 'budgetByPartners',  'active': true  }
+      { 'slug': 'budgetByPartners',  'name': 'Budget',  'action': 'budgetByPartners',  'active': true  },
+      { 'slug': 'budgetByFlagships',  'name': 'projects.menu.budgetByFlagships',  'action': 'budgetByFlagship',  'active': true , 'show': action.getCountProjectFlagships(project.id) && !reportingActive}
       ]
     }
     
   ]/]
-[#else] 
+[#else]
   [#assign menus= [
     { 'title': 'General Information', 'show': true,
       'items': [
@@ -19,20 +20,21 @@
       { 'slug': 'locations',  'name': 'projects.menu.locations',  'action': 'locations',  'active': true  }
       ]
     },
-    { 'title': 'Outcomes', 'show': !project.administrative,
+    { 'title': 'Outcomes', 'show': true,
       'items': [
-      { 'slug': 'contributionsCrpList',  'name': 'projects.menu.contributionsCrpList',  'action': 'contributionsCrpList',  'active': true, 'show':!phaseOne },
-      { 'slug': 'projectOutcomes',  'name': 'projects.menu.projectOutcomes',  'action': 'outcomesPandR',  'active': true, 'show':  phaseOne  },
-      { 'slug': 'ccafsOutcomes',  'name': 'projects.menu.ccafsOutcomes',  'action': 'ccafsOutcomes',  'active': true, 'show': phaseOne },
-      { 'slug': 'otherContributions',  'name': 'projects.menu.otherContributions',  'action': 'otherContributions',  'active': phaseOne, 'show': reportingActive  },
-      { 'slug': 'caseStudies',  'name': 'Outcome Case Studies',  'action': 'caseStudies',  'active': true, 'show': reportingActive }
+      { 'slug': 'contributionsCrpList',  'name': 'projects.menu.contributionsCrpList',  'action': 'contributionsCrpList',  'active': true, 'show':!phaseOne && !project.projectInfo.administrative },
+      { 'slug': 'projectOutcomes',  'name': 'projects.menu.projectOutcomes',  'action': 'outcomesPandR',  'active': true, 'show':  phaseOne && !project.projectInfo.administrative },
+      { 'slug': 'ccafsOutcomes',  'name': 'projects.menu.ccafsOutcomes',  'action': 'ccafsOutcomes',  'active': true, 'show': phaseOne && !project.projectInfo.administrative },
+      { 'slug': 'otherContributions',  'name': 'projects.menu.otherContributions',  'action': 'otherContributions',  'active': phaseOne, 'show': reportingActive && !project.projectInfo.administrative },
+      { 'slug': 'caseStudies',  'name': 'Outcome Case Studies',  'action': 'caseStudies',  'active': false, 'show': reportingActive && !project.projectInfo.administrative },
+      { 'slug': 'expectedStudies',  'name': 'projects.menu.expectedStudies',  'action': 'expectedStudies',  'active': true, 'show': !reportingActive }
       ]
     },
     { 'title': 'Outputs', 'show': true,
       'items': [
       { 'slug': 'overviewByMogs',  'name': 'projects.menu.overviewByMogs',  'action': 'outputs',  'active': true, 'show' : phaseOne },
       { 'slug': 'deliverableList',  'name': 'projects.menu.deliverables',  'action': 'deliverableList',  'active': true  },
-      { 'slug': 'highlights',  'name': 'Project Highlights',  'action': 'highlights',  'active': true ,'show': reportingActive }
+      { 'slug': 'highlights',  'name': 'Project Highlights',  'action': 'highlights',  'active': false ,'show': reportingActive }
       ]
     },
     { 'title': 'Activities', 'show': action.hasSpecificities(action.crpActivitesModule()),
@@ -43,8 +45,11 @@
     { 'title': 'Budget', 'show': true,
       'items': [
       { 'slug': 'budgetByPartners',  'name': 'projects.menu.budgetByPartners',  'action': 'budgetByPartners',  'active': true, 'show':true },
-      { 'slug': 'budgetByCoAs',  'name': 'projects.menu.budgetByCoAs',  'action': 'budgetByCoAs', 'show': action.canEditBudgetByCoAs(project.id) && !project.administrative && !reportingActive && !phaseOne, 'active': true  },
-      { 'slug': 'leverages',  'name': 'Leverages',  'action': 'leverages',  'active': true, 'show': reportingActive && action.hasSpecificities("crp_leverages_module") }
+
+      { 'slug': 'budgetByCoAs',  'name': 'projects.menu.budgetByCoAs',  'action': 'budgetByCoAs', 'show': action.canEditBudgetByCoAs(project.id) && !project.projectInfo.administrative && !reportingActive && !phaseOne, 'active': true  },
+      { 'slug': 'budgetByFlagships',  'name': 'projects.menu.budgetByFlagships',  'action': 'budgetByFlagship',  'active': true, 'show': action.getCountProjectFlagships(project.id) && !reportingActive},
+      { 'slug': 'leverages',  'name': 'Leverages',  'action': 'leverages',  'active': false, 'show': reportingActive && action.hasSpecificities("crp_leverages_module")}
+
       ]
     }
     
@@ -59,9 +64,15 @@
 
 [#assign sectionsForChecking = [] /]
 
+[#-- Phase Select 
+<div class="form-group">
+  [@customForm.select name="actualPhase" className="phaseSelect" value="actualPhase.id"   i18nkey="actual.cycle"   listName="phases" keyFieldName="id"  displayFieldName="composedName" /]
+</div>
+--]
+
 [#-- Menu--]
 <nav id="secondaryMenu" class="">
-  <p>Project Menu <br /><small> [#if project.administrative]Program Management [#else] Research Project [/#if]</small> </p> 
+  <p>[@s.text name="projects.menu.project" /]<br /><small> [#if (project.projectInfo.administrative)!false]Program Management [#else] Research Project [/#if]</small> </p> 
   <ul>
     [#list menus as menu]
       [#if menu.show]
@@ -72,7 +83,7 @@
             [#assign hasDraft = (action.getAutoSaveFilePath(project.class.simpleName, item.action, project.id))!false /]
             [#if (item.show)!true ]
               <li id="menu-${item.action}" class="[#if item.slug == currentStage]currentSection[/#if] ${submitStatus?string('submitted','toSubmit')} ${(item.active)?string('enabled','disabled')}">
-                <a href="[@s.url action="${crpSession}/${item.action}"][@s.param name="projectID" value=projectID /][@s.param name="edit" value="true"/][/@s.url]" onclick="return ${item.active?string}" class="action-${crpSession}/${item.action}">
+                <a href="[@s.url action="${crpSession}/${item.action}"][@s.param name="projectID" value=projectID /][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]" onclick="return ${item.active?string}" class="action-${crpSession}/${item.action}">
                   [#-- Name --]
                   [@s.text name=item.name/]
                   [#-- Draft Tag 
@@ -98,18 +109,19 @@
 <span id="sectionsForChecking" style="display:none">[#list sectionsForChecking as item]${item}[#if item_has_next],[/#if][/#list]</span>
 
 [#-- Open for Project Leaders --]
-[#if !reportingActive && canSwitchProject && (action.isCompletePreProject(project.id) || project.projectEditLeader) && !crpClosed]
+[#if !reportingActive && canSwitchProject && (action.isCompletePreProject(project.id) || (project.projectInfo.isProjectEditLeader())!false) && !crpClosed]
   [#if !submission]
   <div class="grayBox text-center">
-    [@customForm.yesNoInput name="project.projectEditLeader" label="project.isOpen" editable=true inverse=false cssClass="projectEditLeader text-center" /]  
+    [@customForm.yesNoInput name="project.projectInfo.isProjectEditLeader()" label="project.isOpen" editable=true inverse=false cssClass="projectEditLeader text-center" /]  
   </div>
   <br />
   [/#if]
 [#else]
-  [#if !((project.projectEditLeader)!false)]
+  [#if !((project.projectInfo.isProjectEditLeader())!false)]
     <p class="text-justify note"><small>All sections need to be completed (green check mark) for the Project Leader to be able to enter the project details.</small></p>
   [/#if]
 [/#if]
+
 
 
 
@@ -123,28 +135,25 @@
   
  
   
-  [#if ((project.projectEditLeader)!false)]
-  [#-- Check button --]
-  [#if canEdit && !completed && !submission]
+
+    [#-- Check button --]
+   [#if canEdit && !completed && !submission  && ((project.projectInfo.projectEditLeader)!false)]
     <p class="projectValidateButton-message text-center">Check for missing fields.<br /></p>
     <div id="validateProject-${projectID}" class="projectValidateButton ${(project.type)!''}">[@s.text name="form.buttons.check" /]</div>
     <div id="progressbar-${projectID}" class="progressbar" style="display:none"></div>
   [/#if]
-
- 
-
-[/#if]
- [#-- Submit button --]
+  
+  [#-- Submit button --]
   [#if canEdit]
     [#assign showSubmit=(canSubmit && !submission && completed)]
-    <a id="submitProject-${projectID}" class="projectSubmitButton" style="display:${showSubmit?string('block','none')}" href="[@s.url action="${crpSession}/submit"][@s.param name='projectID']${projectID}[/@s.param][/@s.url]" >
+    <a id="submitProject-${projectID}" class="projectSubmitButton" style="display:${showSubmit?string('block','none')}" href="[@s.url action="${crpSession}/submit"][@s.param name='projectID']${projectID}[/@s.param][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]" >
       [@s.text name="form.buttons.submit" /]
     </a>
   [/#if]
   
   [#-- Unsubmit button --]
-  [#if (canUnSubmit && submission) && !crpClosed && !reportingActive]
-    <a id="submitProject-${projectID}" class="projectUnSubmitButton" href="[@s.url action="${crpSession}/unsubmit"][@s.param name='projectID']${projectID}[/@s.param][/@s.url]" >
+  [#if (canUnSubmit && submission) && canEditPhase && !crpClosed && !reportingActive]
+    <a id="submitProject-${projectID}" class="projectUnSubmitButton" href="[@s.url action="${crpSession}/unsubmit"][@s.param name='projectID']${projectID}[/@s.param][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]" >
       [@s.text name="form.buttons.unsubmit" /]
     </a>
   [/#if]
@@ -160,4 +169,4 @@
 [#include "/WEB-INF/global/macros/discardChangesPopup.ftl"]
 
 [#-- Project Submit JS --]
-[#assign customJS = [ "${baseUrlMedia}/js/projects/projectSubmit.js" ] + customJS  /]
+[#assign customJS = [ "${baseUrlMedia}/js/projects/projectSubmit.js?20180316" ] + customJS  /]

@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Project Contributions to CRP" /]
-[#assign currentSectionString = "project-${actionName?replace('/','-')}-${projectID}" /]
+[#assign currentSectionString = "project-${actionName?replace('/','-')}-${projectID}-phase-${(actualPhase.id)!}" /]
 [#assign pageLibs = ["select2", "jsUri"] /]
 [#assign customJS = [
   "${baseUrlMedia}/js/projects/projectContributionsCrpList.js",
@@ -10,18 +10,20 @@
 [#assign customCSS = ["${baseUrlMedia}/css/projects/projectContributionsCrpList.css"] /]
 [#assign currentSection = "projects" /]
 [#assign currentStage = "contributionsCrpList" /]
-
+[#assign isListSection = true /]
 [#assign breadCrumb = [
   {"label":"projectsList", "nameSpace":"/projects", "action":"${(crpSession)!}/projectsList"},
+  {"text":"P${project.id}", "nameSpace":"/projects", "action":"${crpSession}/description", "param": "projectID=${project.id?c}&edit=true&phaseID=${(actualPhase.id)!}"},
   {"label":"projectContributionsCrpList", "nameSpace":"/projects", "action":""}
 ] /]
 
 
 [#include "/WEB-INF/crp/pages/header.ftl" /]
 [#include "/WEB-INF/crp/pages/main-menu.ftl" /]
+[#import "/WEB-INF/crp/macros/relationsPopupMacro.ftl" as popUps /]
 
-[#assign startYear = (project.startDate?string.yyyy)?number /]
-[#assign endYear = (project.endDate?string.yyyy)?number /]
+[#assign startYear = (project.projectInfo.startDate?string.yyyy)?number /]
+[#assign endYear = (project.projectInfo.endDate?string.yyyy)?number /]
 
 <div class="container helpText viewMore-block">
   <div class="helpMessage infoText">
@@ -30,7 +32,10 @@
   </div> 
   <div style="display:none" class="viewMore closed"></div>
 </div>
-    
+
+[#if (!availabePhase)!false]
+  [#include "/WEB-INF/crp/views/projects/availability-projects.ftl" /]
+[#else]
 <section class="container">
     <div class="row">
       [#-- Project Menu --]
@@ -40,7 +45,7 @@
       [#-- Project Section Content --]
       <div class="col-md-9">
       [#-- Section Messages --]
-        [#include "/WEB-INF/crp/views/projects/messages-projectOutcomes.ftl" /]
+        [#include "/WEB-INF/crp/views/projects/messages-projects.ftl" /]
       
         [@s.form action=actionName method="POST" enctype="multipart/form-data" cssClass=""]
           
@@ -49,7 +54,7 @@
             [#-- Your project contributes to the flagships --]
             <div class="form-group">
               <p>
-                <strong>Your Project contributes to the following Flagships:</strong><br />
+                <strong>[@s.text name="projectContributionsCrpList.flagships" /]</strong><br />
                 [#if project.flagships?has_content][#list project.flagships as element]<span class="programTag" style="border-color:${element.color}">${element.acronym}</span>[/#list][/#if]
                 <div class="clearfix"></div>
               </p>
@@ -87,7 +92,7 @@
                   [@customForm.select name="outcomeId" label="" disabled=!canEdit i18nkey="projectContributionsCrpList.selectOutcome" listName="outcomes" keyFieldName="id" displayFieldName="name" className="" /]
                 </div>
                 <div class="addOutcomeBlock">
-                  <a href="${baseUrl}/projects/${crpSession}/addNewProjectOuctome.do?projectID=${projectID}&outcomeId=-1">
+                  <a href="${baseUrl}/projects/${crpSession}/addNewProjectOuctome.do?projectID=${projectID}&outcomeId=-1&phaseID=${(actualPhase.id)!}">
                     <div class="button-blue"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> [@s.text name="form.buttons.addOutcome"/]</div>
                   </a>
                 </div>
@@ -145,6 +150,7 @@
       </div>
     </div>  
 </section>
+[/#if]
 
 [#-- Template Outcome List --]
 [#include "/WEB-INF/crp/macros/outcomesListSelectMacro.ftl"]
@@ -156,7 +162,7 @@
 
 [#macro outcomeContributionMacro projectOutcome name index isTemplate=false ]
   [#local projectOutcomeID =  projectOutcome.id /] 
-  [#local projectOutcomeUrl = "${baseUrl}/projects/${crpSession}/contributionCrp.do?projectOutcomeID=${projectOutcomeID}&edit=true" /]
+  [#local projectOutcomeUrl = "${baseUrl}/projects/${crpSession}/contributionCrp.do?projectOutcomeID=${projectOutcomeID}&edit=true&phaseID=${(actualPhase.id)!}" /]
   [#local hasDraft = (action.getAutoSaveFilePath(projectOutcome.class.simpleName, "contributionCrp", projectOutcome.id))!false /]
   <tr class="projectOutcome">
       [#-- Flagship outcome --]
@@ -171,6 +177,11 @@
             [#if (projectOutcome.crpProgramOutcome.indicator?has_content)!false]<i class="indicatorText"><br /><strong>Indicator: </strong>${(projectOutcome.crpProgramOutcome.indicator)!'No Indicator'}</i>[/#if]
           [/#if]
         </a>
+       [#if !isTemplate]
+        <div class="pull-right">
+          [@popUps.relationsMacro element=projectOutcome /]
+        </div>
+      [/#if]
       </td>
       [#-- Contribution Status --]
       <td class="text-center">
@@ -186,8 +197,8 @@
       </td>
       [#-- Remove Contribution--]
       <td class="text-center">
-        [#if ((action.hasPermission("delete"))!true) && canEdit]
-          <a id="removeOutcome-${projectOutcomeID}" class="removeOutcome" href="${baseUrl}/projects/${crpSession}/removeProjectOuctome.do?projectID=${projectID}&outcomeId=${projectOutcomeID}" title="">
+        [#if ((action.hasPermission("delete"))!true) && action.canBeDeleted((projectOutcome.id)!-1,(projectOutcome.class.name)!"" )]
+          <a id="removeOutcome-${projectOutcomeID}" class="removeOutcome" href="${baseUrl}/projects/${crpSession}/removeProjectOuctome.do?projectID=${projectID}&outcomeId=${projectOutcomeID}&phaseID=${(actualPhase.id)!}" title="">
             <img src="${baseUrl}/global/images/trash.png" />
           </a>
         [#else]

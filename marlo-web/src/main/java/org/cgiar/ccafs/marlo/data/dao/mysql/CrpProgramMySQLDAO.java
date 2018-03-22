@@ -18,6 +18,7 @@ package org.cgiar.ccafs.marlo.data.dao.mysql;
 
 import org.cgiar.ccafs.marlo.data.dao.CrpProgramDAO;
 import org.cgiar.ccafs.marlo.data.model.CrpProgram;
+import org.cgiar.ccafs.marlo.data.model.Phase;
 
 import java.util.List;
 
@@ -84,8 +85,8 @@ public class CrpProgramMySQLDAO extends AbstractMarloDAO<CrpProgram, Long> imple
 
   @Override
   public List<CrpProgram> findCrpProgramsByType(long id, int programType) {
-    String query = "from " + CrpProgram.class.getName() + " where crp_id=" + id + " and program_type=" + programType
-      + " and is_active=1";
+    String query = "from " + CrpProgram.class.getName() + " where global_unit_id=" + id + " and program_type="
+      + programType + " and is_active=1";
     List<CrpProgram> list = super.findAll(query);
     if (list.size() > 0) {
       return list;
@@ -103,12 +104,13 @@ public class CrpProgramMySQLDAO extends AbstractMarloDAO<CrpProgram, Long> imple
     return crpProgram;
   }
 
+
   @Override
-  public CrpProgram save(CrpProgram crpProgram, String actionName, List<String> relationsName) {
+  public CrpProgram save(CrpProgram crpProgram, String actionName, List<String> relationsName, Phase phase) {
     if (crpProgram.getId() == null) {
-      super.saveEntity(crpProgram, actionName, relationsName);
+      super.saveEntity(crpProgram, actionName, relationsName, phase);
     } else {
-      crpProgram = super.update(crpProgram, actionName, relationsName);
+      crpProgram = super.update(crpProgram, actionName, relationsName, phase);
     }
     return crpProgram;
   }

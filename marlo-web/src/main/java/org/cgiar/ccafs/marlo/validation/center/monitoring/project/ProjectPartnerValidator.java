@@ -16,11 +16,11 @@
 package org.cgiar.ccafs.marlo.validation.center.monitoring.project;
 
 import org.cgiar.ccafs.marlo.action.BaseAction;
-import org.cgiar.ccafs.marlo.data.manager.ICenterManager;
-import org.cgiar.ccafs.marlo.data.model.Center;
+import org.cgiar.ccafs.marlo.data.manager.GlobalUnitManager;
 import org.cgiar.ccafs.marlo.data.model.CenterProgram;
 import org.cgiar.ccafs.marlo.data.model.CenterProject;
 import org.cgiar.ccafs.marlo.data.model.CenterProjectPartner;
+import org.cgiar.ccafs.marlo.data.model.GlobalUnit;
 import org.cgiar.ccafs.marlo.data.model.ProjectSectionsEnum;
 import org.cgiar.ccafs.marlo.utils.InvalidFieldsMessages;
 import org.cgiar.ccafs.marlo.validation.BaseValidator;
@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
@@ -40,15 +39,16 @@ import javax.inject.Named;
 @Named
 public class ProjectPartnerValidator extends BaseValidator {
 
-  private final ICenterManager centerService;
+  // GlobalUnit Manager
+  private GlobalUnitManager centerService;
 
-  @Inject
-  public ProjectPartnerValidator(ICenterManager centerService) {
+
+  public ProjectPartnerValidator(GlobalUnitManager centerService) {
     this.centerService = centerService;
   }
 
   private Path getAutoSaveFilePath(CenterProject project, long centerID) {
-    Center center = centerService.getCrpById(centerID);
+    GlobalUnit center = centerService.getGlobalUnitById(centerID);
     String composedClassName = project.getClass().getSimpleName();
     String actionFile = ProjectSectionsEnum.PARTNERS.getStatus().replace("/", "_");
     String autoSaveFile =
@@ -58,14 +58,13 @@ public class ProjectPartnerValidator extends BaseValidator {
   }
 
   public void validate(BaseAction baseAction, CenterProject project, CenterProgram selectedProgram, boolean saving) {
-
     baseAction.setInvalidFields(new HashMap<>());
 
     if (!saving) {
       Path path = this.getAutoSaveFilePath(project, baseAction.getCenterID());
 
       if (path.toFile().exists()) {
-        this.addMissingField("programImpact.action.draft");
+        baseAction.addMissingField("programImpact.action.draft");
       }
     }
 
@@ -75,12 +74,12 @@ public class ProjectPartnerValidator extends BaseValidator {
 
     if (project.getPartners() != null) {
       if (project.getPartners().size() == 0) {
-        this.addMessage(baseAction.getText("output.action.partner.required"));
+        baseAction.addMessage(baseAction.getText("output.action.partner.required"));
         baseAction.getInvalidFields().put("list-output.partners",
           baseAction.getText(InvalidFieldsMessages.EMPTYLIST, new String[] {"partners"}));
       }
     } else {
-      this.addMessage(baseAction.getText("output.action.partner.required"));
+      baseAction.addMessage(baseAction.getText("output.action.partner.required"));
       baseAction.getInvalidFields().put("list-output.partners",
         baseAction.getText(InvalidFieldsMessages.EMPTYLIST, new String[] {"partners"}));
     }
@@ -92,7 +91,7 @@ public class ProjectPartnerValidator extends BaseValidator {
     }
 
 
-    this.saveMissingFields(selectedProgram, project, "projectPartners");
+    this.saveMissingFields(selectedProgram, project, "projectPartners", baseAction);
 
   }
 
@@ -103,13 +102,13 @@ public class ProjectPartnerValidator extends BaseValidator {
 
     if (partner.getUsers() != null) {
       if (partner.getUsers().size() == 0) {
-        this.addMessage(baseAction.getText("output.action.partner.user"));
+        baseAction.addMessage(baseAction.getText("output.action.partner.user"));
         baseAction.getInvalidFields().put("list-project.partners[" + i + "].users",
           baseAction.getText(InvalidFieldsMessages.EMPTYLIST, new String[] {"users"}));
 
       }
     } else {
-      this.addMessage(baseAction.getText("output.action.partner.user"));
+      baseAction.addMessage(baseAction.getText("output.action.partner.user"));
       baseAction.getInvalidFields().put("list-project.partners[" + i + "].users",
         baseAction.getText(InvalidFieldsMessages.EMPTYLIST, new String[] {"users"}));
 

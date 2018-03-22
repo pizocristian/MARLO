@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Impact Pathway - Outcomes" /]
-[#assign currentSectionString = "program-${actionName?replace('/','-')}-${crpProgramID}" /]
-[#assign pageLibs = ["select2","cytoscape","cytoscape-panzoom"] /]
+[#assign currentSectionString = "program-${actionName?replace('/','-')}-${crpProgramID}-phase-${(actualPhase.id)!}" /]
+[#assign pageLibs = ["select2", "blueimp-file-upload", "cytoscape","cytoscape-panzoom"] /]
 [#assign customJS = [ 
   "${baseUrlMedia}/js/impactPathway/programSubmit.js", 
   "${baseUrlMedia}/js/impactPathway/outcomes.js", 
@@ -28,6 +28,7 @@
 
 [#include "/WEB-INF/crp/pages/header.ftl" /]
 [#include "/WEB-INF/crp/pages/main-menu.ftl" /]
+[#import "/WEB-INF/crp/macros/relationsPopupMacro.ftl" as popUps /]
 [#import "/WEB-INF/global/macros/utils.ftl" as utils /]
 
 <div class="container helpText viewMore-block">
@@ -46,18 +47,18 @@
         [#include "/WEB-INF/crp/views/impactPathway/menu-impactPathway.ftl" /]
       </div>
       <div class="col-md-9">
-        [#-- Section Messages --]
-        [#include "/WEB-INF/crp/views/impactPathway/messages-impactPathway.ftl" /]
-        
         [#-- Program (Flagships) --]
         <ul id="liaisonInstitutions" class="horizontalSubMenu text-left">
           [#list programs as program]
             [#assign isActive = (program.id == crpProgramID)/]
             <li class="${isActive?string('active','')}">
-              <a href="[@s.url][@s.param name ="crpProgramID"]${program.id}[/@s.param][@s.param name ="edit"]true[/@s.param][/@s.url]">[@s.text name="flagShip.menu"/] ${program.acronym}</a>
+              <a href="[@s.url][@s.param name ="crpProgramID"]${program.id}[/@s.param][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">[@s.text name="flagShip.menu"/] ${program.acronym}</a>
             </li>
           [/#list]
         </ul>
+        
+        [#-- Section Messages --]
+        [#include "/WEB-INF/crp/views/impactPathway/messages-impactPathway.ftl" /]
         
         [@s.form action=actionName enctype="multipart/form-data" ]  
         [#-- Outcomes List --]
@@ -131,16 +132,19 @@
 </div>
       
 [#-- Outcome Template --]
-[@outcomeMacro outcome={} name="" index=0 isTemplate=true /]
+[@outcomeMacro outcome={} name="outcomes" index=-1 isTemplate=true /]
 
 [#-- Milestone Template --]
-[@milestoneMacro milestone={} name="" index=0 isTemplate=true /]
+[@milestoneMacro milestone={} name="outcomes[0].milestones" index=-1 isTemplate=true  /]
 
 [#-- Sub-Ido Template --]
-[@subIDOMacro subIdo={} name="" index=0 isTemplate=true /]
+[@subIDOMacro subIdo={} name="outcomes[0].subIdos" index=-1 isTemplate=true /]
 
 [#-- Assumption Template --]
-[@assumptionMacro assumption={} name="" index=0 isTemplate=true /]
+[@assumptionMacro assumption={} name="outcomes[-1].subIdos[-1].assumptions" index=-1 isTemplate=true /]
+
+[#-- Baseline Indicator Template --]
+[@baselineIndicatorMacro indicator={} name="outcomes[-1].indicators" index=-1 isTemplate=true /]
 
 [#include "/WEB-INF/crp/pages/footer.ftl" /]
 
@@ -155,10 +159,20 @@
     </div>
     [#-- Outcome ID Parameter --]
     <input type="hidden" class="outcomeId" name="${outcomeCustomName}.id" value="${(outcome.id)!}"/>
+    <input type="hidden" class="outcomeComposeId" name="${outcomeCustomName}.composeID" value="${(outcome.composeID)!}"/>
     [#-- Remove Button --]
-    [#if editable]
+    [#if editable && action.canBeDeleted((outcome.id)!-1,(outcome.class.name)!"" )]
       <div class="removeOutcome removeElement" title="Remove Outcome"></div>
+    [#elseif editable]
+      <div class="removeElement disable" title="[@s.text name="global.CrpProgramOutcome"/] can not be deleted"></div>
     [/#if]
+    
+    [#if !isTemplate]
+      <div class="pull-right">
+        [@popUps.relationsMacro element=outcome /]
+      </div>
+    [/#if]
+    
     <br />
     [#-- Outcome Statement --]
     <div class="form-group">
@@ -192,52 +206,118 @@
       
 
     </div>
-    [#if editable && targetUnitList?has_content]<div class="col-md-12 note">[@s.text name = "outcomes.addNewTargetUnit" /]</div> <br /> <br />[/#if]
-    
-    
-    [#-- Outcome Sub-IDOs List --]
-    <h5 class="sectionSubTitle">[@s.text name="outcome.subIDOs.sectionTitle"/] <p class="contributioRem pull-right">Contribution <span class="value">0%</span></p></h5>
-    <div class="subIdos-list" listname="${outcomeCustomName}.subIdos">
-    [#if outcome.subIdos?has_content]
-      [#list outcome.subIdos as subIdo]
-        [@subIDOMacro subIdo=subIdo name="${outcomeCustomName}.subIdos" index=subIdo_index /]
-      [/#list]
-    [#else]
-      [@subIDOMacro subIdo={} name="${outcomeCustomName}.subIdos" index=0 /]
-      [#-- <p class="message text-center">[@s.text name="outcome.subIDOs.section.notSubIDOs.span"/]</p> --]
-    [/#if]
+    [#if editable && targetUnitList?has_content]<div class="form-group note">[@s.text name = "outcomes.addNewTargetUnit" /]</div>[/#if]
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active"><a href="#subIdos-tab-${index}" aria-controls="home" role="tab" data-toggle="tab">Sub-IDOs <span class="badge">${(outcome.subIdos?size)!'0'}</span></a></li>
+      [#if action.hasSpecificities('crp_baseline_indicators') && (selectedProgram.baseLine)!false]
+      <li role="presentation"><a href="#baseline-tab-${index}" aria-controls="profile" role="tab" data-toggle="tab">Baseline Indicators <span class="badge">${(outcome.indicators?size)!'0'}</span></a></li>
+      [/#if]
+      <li role="presentation"><a href="#milestones-tab-${index}" aria-controls="messages" role="tab" data-toggle="tab">Milestones <span class="badge">${(outcome.milestones?size)!'0'}</span></a></li>
+    </ul>
+  
+    <!-- Tab panes -->
+    <div class="tab-content">
+      [#-- Outcome Sub-IDOs List --]
+      <div role="tabpanel" class="tab-pane fade in active" id="subIdos-tab-${index}">
+        [#-- <h5 class="sectionSubTitle">[@s.text name="outcome.subIDOs.sectionTitle"/] <p class="contributioRem pull-right">Contribution <span class="value">0%</span></p></h5>--]
+        <div class="subIdos-list" listname="${outcomeCustomName}.subIdos">
+        [#if outcome.subIdos?has_content]
+          [#list outcome.subIdos as subIdo]
+            [@subIDOMacro subIdo=subIdo name="${outcomeCustomName}.subIdos" index=subIdo_index /]
+          [/#list]
+        [#else]
+          [@subIDOMacro subIdo={} name="${outcomeCustomName}.subIdos" index=0 /]
+          [#-- <p class="message text-center">[@s.text name="outcome.subIDOs.section.notSubIDOs.span"/]</p> --]
+        [/#if]
+        </div>
+        [#-- Add Sub-IDO Button --]
+        [#if editable]
+        <div class="text-right">
+          <div class="addSubIdo button-blue text-right"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> [@s.text name="form.buttons.addSubIDO"/]</div>
+        </div>
+        [/#if]
+      </div>
+      
+      [#-- Baseline indicators --]
+      [#if action.hasSpecificities('crp_baseline_indicators') && (selectedProgram.baseLine)!false]
+      <div role="tabpanel" class="tab-pane fade" id="baseline-tab-${index}">
+        
+        [#-- Upload a PDF with baseline instructions --]
+        <div class="form-group fileUploadContainer">
+          <label>[@customForm.text name="outcome.baselineInstructions" readText=!editable /]:</label>
+          [#if !isTemplate]
+            [#local hasFile = outcome.file?? && outcome.file.id?? /]
+            <input class="fileID" type="hidden" name="${outcomeCustomName}.file.id" value="${(outcome.file.id)!}" />
+            [#-- Input File --]
+            [#if editable]
+            <div class="fileUpload" style="display:${hasFile?string('none','block')}"> <input class="upload" type="file" name="file" data-url="${baseUrl}/uploadBaseLine.do"></div>
+            
+            [/#if]
+            [#-- Uploaded File --]
+            <p class="fileUploaded textMessage checked" style="display:${hasFile?string('block','none')}">
+              <span class="contentResult">[#if outcome.file??]
+              ${action.getBaseLineFileURL((outcome.id?string)!-1)}
+                <a target="_blank" href="${action.getBaseLineFileURL((outcome.id?string)!-1)}/${(outcome.file.fileName)!}">${(outcome.file.fileName)!('No file name')} </a>
+                [/#if]</span> 
+              [#if editable]<span class="removeIcon"> </span> [/#if]
+            </p> 
+          [#else]
+            <p><i>[@customForm.text name="outcome.baselineInstructionsUnavailbale" readText=!editable /] </i></p>
+          [/#if]
+        </div>
+        <br />
+        [#-- Baseline indicators list --]
+        <h5 class="sectionSubTitle">[@s.text name="outcome.baselineIndicators" /]:</h5>
+        <div class="baselineIndicators-list"">
+        
+        [#if outcome.indicators?has_content]
+          [#list outcome.indicators as baselineIndicator]
+            [@baselineIndicatorMacro indicator=baselineIndicator name="${outcomeCustomName}.indicators" index=baselineIndicator_index /]
+          [/#list]
+        [#else]
+          [#-- @baselineIndicatorMacro indicator={} name="${outcomeCustomName}.indicators" index=0 / --]
+        [/#if]
+        </div>
+        [#-- Add Baseline Indicator Button --]
+        [#if editable]
+        <div class="text-right">
+          <div class="addBaselineIndicator button-green"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> [@s.text name="form.buttons.addBaselineIndicator"/]</div>
+        </div>
+        [/#if]
+      </div>
+      [/#if]
+      
+      [#-- Outcome Milestones List --]
+      <div role="tabpanel" class="tab-pane fade" id="milestones-tab-${index}">
+        [#--<h5 class="sectionSubTitle">[@s.text name="outcome.milestone.sectionTitle"/]</h5>--]
+        <div class="milestones-list" listname="${outcomeCustomName}.milestones">
+        [#if outcome.milestones?has_content]
+          [#list outcome.milestones as milestone]
+            [@milestoneMacro milestone=milestone name="${outcomeCustomName}.milestones" index=milestone_index editable=editable && action.canEditMileStone(milestone) /]
+          [/#list]
+        [#else]
+          <p class="message text-center">[@s.text name="outcome.milestone.section.notMilestones.span"/]</p>
+        [/#if]
+        </div>
+        [#-- Add Milestone Button --]
+        [#if editable]
+        <div class="text-right">
+          <div class="addMilestone button-blue"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> [@s.text name="form.buttons.addMilestone"/]</div>
+        </div>
+        [/#if]
+        [#if editable]<div class="form-group note"><small>[@s.text name = "outcomes.addNewTargetUnit" /]</small></div>[/#if]
+      </div>
     </div>
-    [#-- Add Sub-IDO Button --]
-    [#if editable]
-    <div class="text-right">
-      <div class="addSubIdo button-blue text-right"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> [@s.text name="form.buttons.addSubIDO"/]</div>
-    </div>
-    [/#if]
-    
-    [#-- Outcome Milestones List --]
-    <h5 class="sectionSubTitle">[@s.text name="outcome.milestone.sectionTitle"/]</h5>
-    <div class="milestones-list" listname="${outcomeCustomName}.milestones">
-    [#if outcome.milestones?has_content]
-      [#list outcome.milestones as milestone]
-        [@milestoneMacro milestone=milestone name="${outcomeCustomName}.milestones" index=milestone_index /]
-      [/#list]
-    [#else]
-      <p class="message text-center">[@s.text name="outcome.milestone.section.notMilestones.span"/]</p>
-    [/#if]
-    </div>
-    [#-- Add Milestone Button --]
-    [#if editable]
-    <div class="text-right">
-      <div class="addMilestone button-blue"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> [@s.text name="form.buttons.addMilestone"/]</div>
-    </div>
-    [/#if]
     
     <br />
+    
   </div>
 [/#macro]
 
 
-[#macro milestoneMacro milestone name index isTemplate=false]
+[#macro milestoneMacro milestone name index isTemplate=false editable=true]
   [#assign milestoneCustomName = "${name}[${index}]" /]
   <div id="milestone-${isTemplate?string('template', index)}" class="milestone simpleBox" style="display:${isTemplate?string('none','block')}">
     <div class="leftHead green sm">
@@ -245,9 +325,19 @@
       <span class="elementId">[@s.text name="outcome.milestone.index.title"/]</span>
     </div>
      <input type="hidden" class="mileStoneId" name="${milestoneCustomName}.id" value="${(milestone.id)!}"/>
+     <input type="hidden" class="mileStoneComposeId" name="${milestoneCustomName}.composeID" value="${(milestone.composeID)!}"/>
+     
     [#-- Remove Button --]
-    [#if editable]
+    [#if editable && action.canBeDeleted((milestone.id)!-1,(milestone.class.name)!"" )]
       <div class="removeMilestone removeElement sm" title="Remove Milestone"></div>
+    [#elseif editable]
+      <div class="removeElement sm disable" title="[@s.text name="global.CrpMilestone"/] can not be deleted"></div>
+    [/#if]
+    
+    [#if !isTemplate]
+      <div class="pull-right">
+        [@popUps.relationsMacro element=milestone /]
+      </div>
     [/#if]
     
     [#-- Milestone Statement --]
@@ -273,7 +363,6 @@
         [@customForm.input name="${milestoneCustomName}.value" type="text"  i18nkey="outcome.milestone.inputTargetValue" placeholder="outcome.milestone.inputTargetValue.placeholder" className="targetValue" required=true editable=editable /]
       </div>
     </div>
-    [#if editable]<div class="form-group note"><small>[@s.text name = "outcomes.addNewTargetUnit" /]</small></div>[/#if]
     
   </div>
 [/#macro]
@@ -292,8 +381,10 @@
     
     
     [#-- Remove Button --]
-    [#if editable]
-    <div class="removeSubIdo removeElement sm" title="Remove Sub IDO"></div>
+    [#if editable && action.canBeDeleted((subIdo.id)!-1,(subIdo.class.name)!"" )]
+      <div class="removeSubIdo removeElement sm" title="Remove Sub IDO"></div>
+    [#elseif editable]
+      <div class="removeElement sm disable" title="[@s.text name="global.SrfSubIdo"/] can not be deleted"></div>
     [/#if]
     <br />
     <div class="form-group">
@@ -350,6 +441,31 @@
       [/#if] 
     [#else]
       [@customForm.input name="${assumptionCustomName}.description" type="text" showTitle=false placeholder="" className="statement limitWords-100" required=true editable=editable /]
+    [/#if]
+    <div class="clearfix"></div>
+  </div>
+[/#macro]
+
+[#macro baselineIndicatorMacro indicator name index isTemplate=false]
+  [#local customName = "${name}[${index}]" /]
+  <div id="baselineIndicator-${isTemplate?string('template', index)}" class="baselineIndicator simpleBox form-group" style="position:relative; display:${isTemplate?string('none','block')}">
+    [#-- Index --]
+    <div class="leftHead gray sm">
+      <span class="index">${index+1}</span>
+    </div>
+    [#-- Remove Button --]
+    [#if editable]<div class="removeBaselineIndicator removeElement sm" title="Remove Indicators"></div>[/#if]
+    [#-- Hidden inputs --]
+    <input type="hidden" class="baselineIndicatorId" name="${customName}.id" value="${(indicator.id)!}"/>
+  
+    <input type="hidden"  name="${customName}.composeID" value="${(indicator.composeID)!}"/>
+    
+    [#if editable] 
+      [@customForm.input name="${customName}.indicator" value=indicator.title i18nkey="baselineIndicator.title" type="text" showTitle=true placeholder="" className="statement limitWords-50" required=true editable=editable /]
+    [#else]
+      [#if indicator.indicator?has_content]
+        <div class="input"><p>${(indicator.indicator)!}</p></div>
+      [/#if] 
     [/#if]
     <div class="clearfix"></div>
   </div>

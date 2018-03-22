@@ -17,6 +17,7 @@ package org.cgiar.ccafs.marlo.action.json.autosave;
 
 import org.cgiar.ccafs.marlo.action.BaseAction;
 import org.cgiar.ccafs.marlo.config.APConstants;
+import org.cgiar.ccafs.marlo.data.model.CapacityDevelopment;
 import org.cgiar.ccafs.marlo.data.model.CenterDeliverable;
 import org.cgiar.ccafs.marlo.data.model.CenterOutcome;
 import org.cgiar.ccafs.marlo.data.model.CenterOutput;
@@ -25,6 +26,8 @@ import org.cgiar.ccafs.marlo.data.model.Deliverable;
 import org.cgiar.ccafs.marlo.data.model.FundingSource;
 import org.cgiar.ccafs.marlo.data.model.IpLiaisonInstitution;
 import org.cgiar.ccafs.marlo.data.model.IpProgram;
+import org.cgiar.ccafs.marlo.data.model.Phase;
+import org.cgiar.ccafs.marlo.data.model.PowbSynthesis;
 import org.cgiar.ccafs.marlo.data.model.Project;
 import org.cgiar.ccafs.marlo.data.model.ProjectHighlight;
 import org.cgiar.ccafs.marlo.data.model.ProjectOutcome;
@@ -168,6 +171,10 @@ public class AutoSaveWriterAction extends BaseAction {
         jSon = jSon.replaceAll("fundingSource\\.", "");
       }
 
+      if (nameClass.equals(PowbSynthesis.class.getName())) {
+        jSon = jSon.replaceAll("powbSynthesis\\.", "");
+      }
+
       /****************************************************
        ******************** CENTER SECTIONS*****************
        ****************************************************/
@@ -183,10 +190,28 @@ public class AutoSaveWriterAction extends BaseAction {
       if (nameClass.equals(CenterDeliverable.class.getName())) {
         jSon = jSon.replaceAll("deliverable\\.", "");
       }
+      if (nameClass.equals(CapacityDevelopment.class.getName())) {
+        jSon = jSon.replaceAll("capdev\\.", "");
+      }
+
 
       try {
+        /*
+         * TODO
+         * Fix When Centers Contains Phases*
+         */
+        Phase phase = null;
+        if (this.getCrpID() != 23) {
+          phase = this.getActualPhase();
+        }
+        String fileName = "";
+        if (phase != null) {
+          fileName = fileId + "_" + fileClass + "_" + phase.getDescription() + "_" + phase.getYear() + "_" + fileAction
+            + ".json";
+        } else {
+          fileName = fileId + "_" + fileClass + "_" + fileAction + ".json";
+        }
 
-        String fileName = fileId + "_" + fileClass + "_" + fileAction + ".json";
         String pathFile = config.getAutoSaveFolder();
         LOG.debug("PathFile: " + pathFile);
         Path path = Paths.get(pathFile);

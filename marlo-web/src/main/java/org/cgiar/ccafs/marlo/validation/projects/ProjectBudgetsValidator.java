@@ -16,11 +16,10 @@ package org.cgiar.ccafs.marlo.validation.projects;
 
 
 import org.cgiar.ccafs.marlo.action.BaseAction;
-import org.cgiar.ccafs.marlo.config.APConstants;
-import org.cgiar.ccafs.marlo.data.manager.CrpManager;
 import org.cgiar.ccafs.marlo.data.manager.FundingSourceManager;
-import org.cgiar.ccafs.marlo.data.model.Crp;
+import org.cgiar.ccafs.marlo.data.manager.GlobalUnitManager;
 import org.cgiar.ccafs.marlo.data.model.FundingSource;
+import org.cgiar.ccafs.marlo.data.model.GlobalUnit;
 import org.cgiar.ccafs.marlo.data.model.Project;
 import org.cgiar.ccafs.marlo.data.model.ProjectBudget;
 import org.cgiar.ccafs.marlo.data.model.ProjectSectionStatusEnum;
@@ -44,22 +43,22 @@ public class ProjectBudgetsValidator extends BaseValidator {
   // This is not thread safe
   private boolean hasErros;
 
-  private final CrpManager crpManager;
+  private final GlobalUnitManager crpManager;
   private final FundingSourceManager fundingSourceManager;
 
   @Inject
-  public ProjectBudgetsValidator(CrpManager crpManager, FundingSourceManager fundingSourceManager) {
+  public ProjectBudgetsValidator(GlobalUnitManager crpManager, FundingSourceManager fundingSourceManager) {
     super();
     this.crpManager = crpManager;
     this.fundingSourceManager = fundingSourceManager;
   }
 
-  private Path getAutoSaveFilePath(Project project, long crpID) {
-    Crp crp = crpManager.getCrpById(crpID);
+  private Path getAutoSaveFilePath(Project project, long crpID, BaseAction action) {
+    GlobalUnit crp = crpManager.getGlobalUnitById(crpID);
     String composedClassName = project.getClass().getSimpleName();
     String actionFile = ProjectSectionStatusEnum.BUDGET.getStatus().replace("/", "_");
     String autoSaveFile =
-      project.getId() + "_" + composedClassName + "_" + crp.getAcronym() + "_" + actionFile + ".json";
+      project.getId() + "_" + composedClassName + "_" + action.getActualPhase().getDescription() + "_" + action.getActualPhase().getYear() +"_"+crp.getAcronym() +"_"+ actionFile + ".json";
 
     return Paths.get(config.getAutoSaveFolder() + autoSaveFile);
   }
@@ -87,10 +86,10 @@ public class ProjectBudgetsValidator extends BaseValidator {
     hasErros = false;
     if (project != null) {
       if (!saving) {
-        Path path = this.getAutoSaveFilePath(project, action.getCrpID());
+        Path path = this.getAutoSaveFilePath(project, action.getCrpID(),action);
 
         if (path.toFile().exists()) {
-          this.addMissingField("draft");
+          action.addMissingField("draft");
         }
       }
       action.getFieldErrors().clear();
@@ -107,16 +106,16 @@ public class ProjectBudgetsValidator extends BaseValidator {
                 // the year evaluated. If it is not new this budget is excluded from the calculation
                 double remaining = 0;
                 if (projectBudget.getId() == null) {
-                  remaining = fundingSource.getRemaining(projectBudget.getYear());
+                  remaining = fundingSource.getRemaining(projectBudget.getYear(), action.getActualPhase());
                 } else {
-                  remaining =
-                    fundingSource.getRemainingExcludeBudget(projectBudget.getYear(), projectBudget.getId().longValue());
+                  remaining = fundingSource.getRemainingExcludeBudget(projectBudget.getYear(),
+                    projectBudget.getId().longValue(), action.getActualPhase());
                 }
                 double currentAmount = projectBudget.getAmount().doubleValue();
                 double subBudgets = remaining - currentAmount;
                 int intValue = (int) subBudgets;
                 if (intValue < 0) {
-                  this.addMessage(action.getText("projectBudgets.fundig"));
+                  action.addMessage(action.getText("projectBudgets.fundig"));
                   action.getInvalidFields().put("input-project.budgets[" + i + "].amount",
                     InvalidFieldsMessages.EMPTYFIELD);
 
@@ -129,8 +128,8 @@ public class ProjectBudgetsValidator extends BaseValidator {
           }
           i++;
         }
-        if (total == 0) {
-          this.addMessage(action.getText("projectBudgets.amount"));
+        if (total < 0) {
+          action.addMessage(action.getText("projectBudgets.amount"));
           i = 0;
           for (ProjectBudget projectBudget : project.getBudgets()) {
             action.getInvalidFields().put("input-project.budgets[" + i + "].amount", InvalidFieldsMessages.EMPTYFIELD);
@@ -138,7 +137,7 @@ public class ProjectBudgetsValidator extends BaseValidator {
           }
         }
       } else {
-        this.addMessage(action.getText("projectBudgets"));
+        action.addMessage(action.getText("projectBudgets"));
         action.getInvalidFields().put("list-project.budgets",
           action.getText(InvalidFieldsMessages.EMPTYLIST, new String[] {"Budgets"}));
       }
@@ -148,17 +147,14 @@ public class ProjectBudgetsValidator extends BaseValidator {
         System.out.println(action.getFieldErrors());
         hasErros = true;
         action.addActionError(action.getText("saving.fields.required"));
-      } else if (validationMessage.length() > 0) {
-        action
-          .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+      } else if (action.getValidationMessage().length() > 0) {
+        action.addActionMessage(
+          " " + action.getText("saving.missingFields", new String[] {action.getValidationMessage().toString()}));
       }
-      if (action.isReportingActive()) {
-        this.saveMissingFields(project, APConstants.REPORTING, action.getReportingYear(),
-          ProjectSectionStatusEnum.BUDGET.getStatus());
-      } else {
-        this.saveMissingFields(project, APConstants.PLANNING, action.getPlanningYear(),
-          ProjectSectionStatusEnum.BUDGET.getStatus());
-      }
+
+      this.saveMissingFields(project, action.getActualPhase().getDescription(), action.getActualPhase().getYear(),
+        ProjectSectionStatusEnum.BUDGET.getStatus(), action);
+
       // Saving missing fields.
 
     }

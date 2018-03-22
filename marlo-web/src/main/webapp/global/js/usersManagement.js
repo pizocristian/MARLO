@@ -101,7 +101,7 @@ $(document)
                     var invalidFields = [];
                     var user = {};
                     user.actionName = $('#actionName').val();
-                    user.email = $dialogContent.find("#email").val().trim();
+                    user.email = ($dialogContent.find("#email").val().trim()).toLowerCase();
                     var isCGIAREmail = ((user.email).indexOf("cgiar") > -1);
                     if(!isCGIAREmail) {
                       $('#isCCAFS').prop('checked', true);
@@ -212,7 +212,8 @@ $(document)
             $.ajax({
                 'url': baseURL + '/searchUsers.do',
                 'data': {
-                  q: query
+                    q: query,
+                    phaseID: phaseID
                 },
                 'dataType': "json",
                 beforeSend: function() {

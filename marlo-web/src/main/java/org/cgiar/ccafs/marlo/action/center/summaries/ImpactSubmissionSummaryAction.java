@@ -24,6 +24,7 @@ import org.cgiar.ccafs.marlo.data.model.CenterImpact;
 import org.cgiar.ccafs.marlo.data.model.CenterImpactObjective;
 import org.cgiar.ccafs.marlo.data.model.CenterOutcome;
 import org.cgiar.ccafs.marlo.data.model.CenterOutput;
+import org.cgiar.ccafs.marlo.data.model.CenterOutputsOutcome;
 import org.cgiar.ccafs.marlo.data.model.CenterProgram;
 import org.cgiar.ccafs.marlo.data.model.CenterSubmission;
 import org.cgiar.ccafs.marlo.data.model.CenterTopic;
@@ -45,6 +46,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
+import javax.inject.Named;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.pentaho.reporting.engine.classic.core.Band;
@@ -65,6 +68,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Andrés Felipe Valencia Rivera. CCAFS
  */
+@Named
 public class ImpactSubmissionSummaryAction extends BaseAction implements Summary {
 
   private static final long serialVersionUID = -624982650510682813L;
@@ -99,10 +103,10 @@ public class ImpactSubmissionSummaryAction extends BaseAction implements Summary
       (ResourceManager) ServletActionContext.getServletContext().getAttribute(PentahoListener.KEY_NAME);
     // manager.registerDefaults();
     try {
-      String res = this.getClass().getResource("/pentaho/impactPathway.prpt").toString();
+      String res = this.getClass().getResource("/pentaho/center/ImpactPathway.prpt").toString();
 
       Resource reportResource =
-        manager.createDirectly(this.getClass().getResource("/pentaho/impactPathway.prpt"), MasterReport.class);
+        manager.createDirectly(this.getClass().getResource("/pentaho/center/ImpactPathway.prpt"), MasterReport.class);
 
       // Get main report
       MasterReport masterReport = (MasterReport) reportResource.getResource();
@@ -467,8 +471,15 @@ public class ImpactSubmissionSummaryAction extends BaseAction implements Summary
       int countOutcome = 0;
       for (CenterOutcome researchOutcome : researchTopic.getResearchOutcomes().stream().filter(ro -> ro.isActive())
         .collect(Collectors.toList())) {
-        for (CenterOutput researchOutput : researchOutcome.getResearchOutputs().stream().filter(ro -> ro.isActive())
-          .collect(Collectors.toList())) {
+
+        List<CenterOutput> outputs = new ArrayList<>();
+        List<CenterOutputsOutcome> centerOutputsOutcomes = new ArrayList<>(
+          researchOutcome.getCenterOutputsOutcomes().stream().filter(ro -> ro.isActive()).collect(Collectors.toList()));
+        for (CenterOutputsOutcome centerOutputsOutcome : centerOutputsOutcomes) {
+          outputs.add(centerOutputsOutcome.getCenterOutput());
+        }
+
+        for (CenterOutput researchOutput : outputs) {
           Long id = researchOutput.getId();
           if (countOutcome == 0) {
             if (researchTopic.getResearchTopic() != null) {

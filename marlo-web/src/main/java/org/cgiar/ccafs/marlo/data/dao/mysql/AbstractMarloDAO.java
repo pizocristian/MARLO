@@ -15,6 +15,7 @@
 
 package org.cgiar.ccafs.marlo.data.dao.mysql;
 
+import org.cgiar.ccafs.marlo.data.model.Phase;
 import org.cgiar.ccafs.marlo.utils.AuditLogContext;
 import org.cgiar.ccafs.marlo.utils.AuditLogContextProvider;
 
@@ -22,6 +23,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.FlushMode;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 // import org.hibernate.Transaction;
@@ -50,7 +52,19 @@ public abstract class AbstractMarloDAO<T, ID extends Serializable> {
     auditLogContext.setEntityCanonicalName(entity.getClass().getCanonicalName());
     auditLogContext.setActionName(actionName);
     auditLogContext.setRelationsNames(relationsNames);
+
   }
+
+  private void addAuditLogFieldsToThreadStorage(Object entity, String actionName, List<String> relationsNames,
+    Phase phase) {
+    LOG.debug("Adding auditing fields to AuditLogContext");
+    AuditLogContext auditLogContext = AuditLogContextProvider.getAuditLogContext();
+    auditLogContext.setEntityCanonicalName(entity.getClass().getCanonicalName());
+    auditLogContext.setActionName(actionName);
+    auditLogContext.setRelationsNames(relationsNames);
+    auditLogContext.setPhase(phase);
+  }
+
 
   /**
    * This method deletes a record from the database.
@@ -70,6 +84,8 @@ public abstract class AbstractMarloDAO<T, ID extends Serializable> {
     this.sessionFactory.getCurrentSession().createSQLQuery(storeProcedure).executeUpdate();
     Query query = this.sessionFactory.getCurrentSession().createSQLQuery(sqlQuery);
     query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+    query.setFlushMode(FlushMode.COMMIT);
+
     List<Map<String, Object>> result = query.list();
     return result;
 
@@ -99,6 +115,7 @@ public abstract class AbstractMarloDAO<T, ID extends Serializable> {
   public void executeUpdateQuery(String sqlQuery) {
 
     Query query = this.sessionFactory.getCurrentSession().createSQLQuery(sqlQuery);
+    query.setFlushMode(FlushMode.COMMIT);
     query.executeUpdate();
   }
 
@@ -112,11 +129,12 @@ public abstract class AbstractMarloDAO<T, ID extends Serializable> {
    */
   public T find(Class<T> clazz, ID id) {
     T obj = (T) sessionFactory.getCurrentSession().get(clazz, id);
-    this.getSessionFactory().getCurrentSession().update(obj);
+
     return obj;
   }
 
   protected List<T> findAll(Query hibernateQuery) {
+    hibernateQuery.setFlushMode(FlushMode.COMMIT);
     @SuppressWarnings("unchecked")
     List<T> list = hibernateQuery.list();
     return list;
@@ -136,6 +154,7 @@ public abstract class AbstractMarloDAO<T, ID extends Serializable> {
    */
   protected List<T> findAll(String hibernateQuery) {
     Query query = sessionFactory.getCurrentSession().createQuery(hibernateQuery);
+    query.setFlushMode(FlushMode.COMMIT);
     return this.findAll(query);
   }
 
@@ -147,6 +166,7 @@ public abstract class AbstractMarloDAO<T, ID extends Serializable> {
   public List<Map<String, Object>> findCustomQuery(String sqlQuery) {
     Query query = sessionFactory.getCurrentSession().createSQLQuery(sqlQuery);
     query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+    query.setFlushMode(FlushMode.COMMIT);
     List<Map<String, Object>> result = query.list();
 
     return result;
@@ -155,6 +175,8 @@ public abstract class AbstractMarloDAO<T, ID extends Serializable> {
 
   protected List<T> findEveryone(Class<T> clazz) {
     Query query = sessionFactory.getCurrentSession().createQuery("from " + clazz.getName());
+    query.setFlushMode(FlushMode.COMMIT);
+
     @SuppressWarnings("unchecked")
     List<T> list = query.list();
     return list;
@@ -170,6 +192,7 @@ public abstract class AbstractMarloDAO<T, ID extends Serializable> {
    * @return
    */
   protected T findSingleResult(Class<T> clazz, Query hibernateQuery) {
+    hibernateQuery.setFlushMode(FlushMode.COMMIT);
     T object = clazz.cast(hibernateQuery.uniqueResult());
     return object;
   }
@@ -199,6 +222,7 @@ public abstract class AbstractMarloDAO<T, ID extends Serializable> {
    */
   protected T findSingleResult(Class<T> clazz, String hibernateQuery) {
     Query query = sessionFactory.getCurrentSession().createQuery(hibernateQuery);
+    query.setFlushMode(FlushMode.COMMIT);
     return this.findSingleResult(clazz, query);
   }
 
@@ -212,11 +236,6 @@ public abstract class AbstractMarloDAO<T, ID extends Serializable> {
     return this.sessionFactory;
   }
 
-
-  protected T refreshEntity(T entity) {
-    sessionFactory.getCurrentSession().refresh(entity);
-    return entity;
-  }
 
   /**
    * This method saves or update a record into the database.
@@ -243,6 +262,19 @@ public abstract class AbstractMarloDAO<T, ID extends Serializable> {
   }
 
   /**
+   * This method persists record into the database.
+   * 
+   * @param obj is the Object to be saved/updated.
+   * @param actionName the action that called the save
+   * @return true if the the save/updated was successfully made, false otherwhise.
+   */
+  protected T saveEntity(T entity, String actionName, List<String> relationsName, Phase phase) {
+    this.addAuditLogFieldsToThreadStorage(entity, actionName, relationsName, phase);
+    sessionFactory.getCurrentSession().persist(entity);
+    return entity;
+  }
+
+  /**
    * This method saves or update a record into the database.
    * 
    * @param obj is the Object to be saved/updated.
@@ -262,6 +294,19 @@ public abstract class AbstractMarloDAO<T, ID extends Serializable> {
    */
   protected T update(T entity, String actionName, List<String> relationsName) {
     this.addAuditLogFieldsToThreadStorage(entity, actionName, relationsName);
+    entity = (T) sessionFactory.getCurrentSession().merge(entity);
+    return entity;
+  }
+
+  /**
+   * This method saves or update a record into the database.
+   * 
+   * @param obj is the Object to be saved/updated.
+   * @param actionName the action that called the save
+   * @return true if the the save/updated was successfully made, false otherwhise.
+   */
+  protected T update(T entity, String actionName, List<String> relationsName, Phase phase) {
+    this.addAuditLogFieldsToThreadStorage(entity, actionName, relationsName, phase);
     entity = (T) sessionFactory.getCurrentSession().merge(entity);
     return entity;
   }

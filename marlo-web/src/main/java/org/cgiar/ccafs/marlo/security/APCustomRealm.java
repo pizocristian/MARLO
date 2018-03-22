@@ -19,9 +19,7 @@ package org.cgiar.ccafs.marlo.security;
 import org.cgiar.ccafs.marlo.config.APConstants;
 import org.cgiar.ccafs.marlo.data.manager.UserManager;
 import org.cgiar.ccafs.marlo.data.model.ADLoginMessages;
-import org.cgiar.ccafs.marlo.data.model.Center;
-import org.cgiar.ccafs.marlo.data.model.CenterUserRole;
-import org.cgiar.ccafs.marlo.data.model.Crp;
+import org.cgiar.ccafs.marlo.data.model.GlobalUnit;
 import org.cgiar.ccafs.marlo.data.model.User;
 import org.cgiar.ccafs.marlo.data.model.UserRole;
 import org.cgiar.ccafs.marlo.security.authentication.Authenticator;
@@ -63,30 +61,32 @@ import org.slf4j.LoggerFactory;
  * @author Chirstian David Garcia
  * @author Hermes Jimenez
  */
+@Named("realm")
 public class APCustomRealm extends AuthorizingRealm {
 
   // Logger
   public static Logger LOG = LoggerFactory.getLogger(APCustomRealm.class);
 
   // Variables
-  final AllowAllCredentialsMatcher credentialsMatcher = new AllowAllCredentialsMatcher();
-  private APConfig config;
+  private final AllowAllCredentialsMatcher credentialsMatcher = new AllowAllCredentialsMatcher();
+  private final APConfig config;
 
+  private final UserManager userManager;
 
-  // Managers -- use setter injection here is ok.
-  @Inject
-  private UserManager userManager;
+  private final Authenticator dbAuthenticator;
 
-  @Inject
-  @Named("DB")
-  private Authenticator dbAuthenticator;
+  private final Authenticator ldapAuthenticator;
 
   @Inject
-  @Named("LDAP")
-  private Authenticator ldapAuthenticator;
-
-  public APCustomRealm() {
+  public APCustomRealm(@Named("DB") Authenticator dbAuthenticator, @Named("LDAP") Authenticator ldapAuthenticator,
+    UserManager userManager, APConfig apConfig) {
     super(new MemoryConstrainedCacheManager());
+
+    this.dbAuthenticator = dbAuthenticator;
+    this.ldapAuthenticator = ldapAuthenticator;
+    this.userManager = userManager;
+    this.config = apConfig;
+
     this.setName("APCustomRealm");
   }
 
@@ -121,18 +121,17 @@ public class APCustomRealm extends AuthorizingRealm {
       user = userManager.getUserByUsername(username);
     }
 
+    /*
+     * Refactor LDAP user login
+     */
     if (user != null) {
       if (user.isActive()) {
         if (user.isCgiarUser()) {
-          if (user.getUsername() == null) {
-            if (this.getCgiarNickname(user)) {
-              authenticated = ldapAuthenticator.authenticate(user.getUsername(), password);
-            } else {
-              authenticated.put(APConstants.LOGIN_STATUS, false);
-              authenticated.put(APConstants.LOGIN_MESSAGE, ADLoginMessages.ERROR_NO_SUCH_USER.getValue());
-            }
-          } else {
+          if (this.getCgiarNickname(user)) {
             authenticated = ldapAuthenticator.authenticate(user.getUsername(), password);
+          } else {
+            authenticated.put(APConstants.LOGIN_STATUS, false);
+            authenticated.put(APConstants.LOGIN_MESSAGE, ADLoginMessages.ERROR_NO_SUCH_USER.getValue());
           }
         } else {
           authenticated = dbAuthenticator.authenticate(user.getEmail(), password);
@@ -171,8 +170,7 @@ public class APCustomRealm extends AuthorizingRealm {
 
     User user = userManager.getUser((Long) principals.getPrimaryPrincipal());
 
-    Crp crp = (Crp) session.getAttribute(APConstants.SESSION_CRP);
-    Center center = (Center) session.getAttribute(APConstants.SESSION_CENTER);
+    GlobalUnit crp = (GlobalUnit) session.getAttribute(APConstants.SESSION_CRP);
 
     /*
      * Check
@@ -185,20 +183,19 @@ public class APCustomRealm extends AuthorizingRealm {
       return authorizationInfo;
     }
 
-    if (center != null) {
-      for (CenterUserRole userRole : user.getCenterUserRoles()) {
-        authorizationInfo.addRole(userRole.getRole().getAcronym());
-      }
-      authorizationInfo
-        .addStringPermissions(userManager.getCenterPermission(user.getId().intValue(), center.getAcronym()));
-      return authorizationInfo;
-    }
 
     return null;
 
 
   }
 
+  /**
+   * Validate if the email entered beings a CGIAR Active directory.
+   * then check if the User object contains an Username.
+   * 
+   * @param user
+   * @return true if the email exist in the CGIAR Active directory
+   */
   boolean getCgiarNickname(User user) {
     // ldap createe instace
     LDAPService service = new LDAPService();
@@ -212,9 +209,14 @@ public class APCustomRealm extends AuthorizingRealm {
     LDAPUser ldapUser = service.searchUserByEmail(user.getEmail());
     if (ldapUser != null) {
       // get the username from LDAP
-      user.setUsername(ldapUser.getLogin().toLowerCase());
-      // Save user
-      userManager.saveUser(user, user);
+
+      if (user.getUsername() == null) {
+        user.setUsername(ldapUser.getLogin().toLowerCase());
+        // Save user
+        userManager.saveUser(user, user);
+      } else {
+        user.setUsername(ldapUser.getLogin().toLowerCase());
+      }
       return true;
     } else {
       return false;

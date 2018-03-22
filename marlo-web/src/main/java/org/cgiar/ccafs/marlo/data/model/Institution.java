@@ -40,7 +40,6 @@ public class Institution implements java.io.Serializable, IAuditLog {
   @Expose
   private String name;
 
-
   @Expose
   private String acronym;
 
@@ -52,28 +51,31 @@ public class Institution implements java.io.Serializable, IAuditLog {
   @Expose
   private Long programId;
 
+
   @Expose
   private Date added;
+
+
   private Set<CrpPpaPartner> crpPpaPartners = new HashSet<CrpPpaPartner>(0);
 
-
   private Set<LiaisonInstitution> liaisonInstitutions = new HashSet<LiaisonInstitution>(0);
-
   private Set<ProjectPartner> projectPartners = new HashSet<ProjectPartner>(0);
+
 
   private Set<ProjectBudget> projectBudgets = new HashSet<ProjectBudget>(0);
 
-  private Set<FundingSource> fundingSources = new HashSet<FundingSource>(0);
+  private Set<FundingSource> fundingSourcesOriginalDonor = new HashSet<FundingSource>(0);
+
   private Set<FundingSource> fundingSourcesDirectDonor = new HashSet<FundingSource>(0);
 
   private Set<ProjectPartnerPerson> projectPartnerPersons = new HashSet<>(0);
-
-
   private Set<InstitutionLocation> institutionsLocations = new HashSet<InstitutionLocation>(0);
+
   private Set<Institution> branches = new HashSet<Institution>(0);
 
 
   private List<InstitutionLocation> locations;
+  private Set<GlobalUnit> globalUnits = new HashSet<GlobalUnit>(0);
 
 
   public Institution() {
@@ -85,9 +87,10 @@ public class Institution implements java.io.Serializable, IAuditLog {
     this.added = added;
   }
 
+
   public Institution(InstitutionType institutionType, String name, String acronym, String websiteLink, Long programId,
     Long countryId, Date added, Set<CrpPpaPartner> crpPpaPartners, Set<ProjectPartnerPerson> projectPartnerPersons,
-    Set<FundingSource> fundingSources, Set<FundingSource> fundingSourcesDirectDonor) {
+    Set<FundingSource> fundingSourcesOriginalDonor, Set<FundingSource> fundingSourcesDirectDonor) {
     this.institutionType = institutionType;
     this.name = name;
     this.acronym = acronym;
@@ -98,10 +101,9 @@ public class Institution implements java.io.Serializable, IAuditLog {
     this.crpPpaPartners = crpPpaPartners;
 
     this.projectPartnerPersons = projectPartnerPersons;
-    this.fundingSources = fundingSources;
+    this.fundingSourcesOriginalDonor = fundingSourcesOriginalDonor;
     this.fundingSourcesDirectDonor = fundingSourcesDirectDonor;
   }
-
 
   @Override
   public boolean equals(Object obj) {
@@ -122,9 +124,22 @@ public class Institution implements java.io.Serializable, IAuditLog {
     return true;
   }
 
-
   public String getAcronym() {
     return this.acronym;
+  }
+
+
+  public String getAcronymName() {
+    if (this.getAcronym() != null) {
+      if (this.getAcronym().trim().length() != 0) {
+        try {
+          return this.getAcronym();
+        } catch (Exception e) {
+          return this.getName();
+        }
+      }
+    }
+    return this.getName();
   }
 
 
@@ -136,6 +151,7 @@ public class Institution implements java.io.Serializable, IAuditLog {
   public Set<Institution> getBranches() {
     return branches;
   }
+
 
   public String getComposedName() {
     if (this.getAcronym() != null) {
@@ -153,7 +169,6 @@ public class Institution implements java.io.Serializable, IAuditLog {
 
   }
 
-
   public String getComposedNameLoc() {
     if (this.getAcronym() != null) {
       if (this.getAcronym().length() != 0) {
@@ -168,18 +183,23 @@ public class Institution implements java.io.Serializable, IAuditLog {
     return this.getName();
   }
 
-
   public Set<CrpPpaPartner> getCrpPpaPartners() {
     return crpPpaPartners;
   }
 
 
-  public Set<FundingSource> getFundingSources() {
-    return fundingSources;
-  }
-
   public Set<FundingSource> getFundingSourcesDirectDonor() {
     return fundingSourcesDirectDonor;
+  }
+
+
+  public Set<FundingSource> getFundingSourcesOriginalDonor() {
+    return fundingSourcesOriginalDonor;
+  }
+
+
+  public Set<GlobalUnit> getGlobalUnits() {
+    return globalUnits;
   }
 
   @Override
@@ -187,13 +207,17 @@ public class Institution implements java.io.Serializable, IAuditLog {
     return this.id;
   }
 
-
   public Set<InstitutionLocation> getInstitutionsLocations() {
     return institutionsLocations;
   }
 
+
   public InstitutionType getInstitutionType() {
     return institutionType;
+  }
+
+  public Set<LiaisonInstitution> getLiaisonInstitutions() {
+    return liaisonInstitutions;
   }
 
   /*
@@ -218,10 +242,6 @@ public class Institution implements java.io.Serializable, IAuditLog {
    * }
    */
 
-  public Set<LiaisonInstitution> getLiaisonInstitutions() {
-    return liaisonInstitutions;
-  }
-
   public List<InstitutionLocation> getLocations() {
     return locations;
   }
@@ -235,7 +255,6 @@ public class Institution implements java.io.Serializable, IAuditLog {
 
     return sb.toString();
   }
-
 
   @Override
   public String getModificationJustification() {
@@ -251,10 +270,10 @@ public class Institution implements java.io.Serializable, IAuditLog {
     return null;
   }
 
+
   public String getName() {
     return this.name;
   }
-
 
   public Long getProgramId() {
     return this.programId;
@@ -275,6 +294,7 @@ public class Institution implements java.io.Serializable, IAuditLog {
     return projectPartners;
   }
 
+
   public String getWebsiteLink() {
     return this.websiteLink;
   }
@@ -292,8 +312,9 @@ public class Institution implements java.io.Serializable, IAuditLog {
     return true;
   }
 
-  public boolean isPPA(long crpID) {
-    if (this.getCrpPpaPartners().stream().filter(c -> c.getCrp().getId().longValue() == crpID && c.isActive())
+  public boolean isPPA(long crpID, Phase phase) {
+    if (this.getCrpPpaPartners().stream()
+      .filter(c -> c.getCrp().getId().longValue() == crpID && c.isActive() && c.getPhase().equals(phase))
       .collect(Collectors.toList()).size() > 0) {
       return true;
     }
@@ -312,17 +333,21 @@ public class Institution implements java.io.Serializable, IAuditLog {
     this.branches = branches;
   }
 
-
   public void setCrpPpaPartners(Set<CrpPpaPartner> crpPpaPartners) {
     this.crpPpaPartners = crpPpaPartners;
   }
 
-  public void setFundingSources(Set<FundingSource> fundingSources) {
-    this.fundingSources = fundingSources;
-  }
 
   public void setFundingSourcesDirectDonor(Set<FundingSource> fundingSourcesDirectDonor) {
     this.fundingSourcesDirectDonor = fundingSourcesDirectDonor;
+  }
+
+  public void setFundingSourcesOriginalDonor(Set<FundingSource> fundingSourcesOriginalDonor) {
+    this.fundingSourcesOriginalDonor = fundingSourcesOriginalDonor;
+  }
+
+  public void setGlobalUnits(Set<GlobalUnit> globalUnits) {
+    this.globalUnits = globalUnits;
   }
 
 

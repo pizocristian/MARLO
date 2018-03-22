@@ -19,10 +19,9 @@ import org.cgiar.ccafs.marlo.action.BaseAction;
 import org.cgiar.ccafs.marlo.config.APConstants;
 import org.cgiar.ccafs.marlo.data.manager.ICenterOutputManager;
 import org.cgiar.ccafs.marlo.data.manager.ICenterProgramManager;
-import org.cgiar.ccafs.marlo.data.model.Center;
-import org.cgiar.ccafs.marlo.data.model.CenterOutcome;
 import org.cgiar.ccafs.marlo.data.model.CenterOutput;
 import org.cgiar.ccafs.marlo.data.model.CenterProgram;
+import org.cgiar.ccafs.marlo.data.model.GlobalUnit;
 import org.cgiar.ccafs.marlo.security.Permission;
 
 import java.io.Serializable;
@@ -46,7 +45,7 @@ public class EditOutputInterceptor extends AbstractInterceptor implements Serial
 
   private Map<String, Parameter> parameters;
   private Map<String, Object> session;
-  private Center researchCenter;
+  private GlobalUnit researchCenter;
 
   private long outputID = -1;
   private long areaID = -1;
@@ -60,10 +59,11 @@ public class EditOutputInterceptor extends AbstractInterceptor implements Serial
 
   @Override
   public String intercept(ActionInvocation invocation) throws Exception {
-
+    BaseAction baseAction = (BaseAction) invocation.getAction();
     parameters = invocation.getInvocationContext().getParameters();
     session = invocation.getInvocationContext().getSession();
-    researchCenter = (Center) session.get(APConstants.SESSION_CENTER);
+    baseAction.setSession(session);
+    researchCenter = (GlobalUnit) session.get(APConstants.SESSION_CRP);
 
     try {
       // outputID = Long.parseLong(((String[]) parameters.get(APConstants.OUTPUT_ID))[0]);
@@ -89,61 +89,53 @@ public class EditOutputInterceptor extends AbstractInterceptor implements Serial
     CenterOutput output = outputService.getResearchOutputById(outputID);
 
     if (output != null) {
+      programID = output.getCenterProgram().getId();
+      CenterProgram program = programService.getProgramById(programID);
+      if (program != null) {
 
-      CenterOutcome outcome = output.getResearchOutcome();
+        areaID = program.getResearchArea().getId();
 
-      if (outcome != null) {
-        programID = outcome.getResearchTopic().getResearchProgram().getId();
-
-        CenterProgram program = programService.getProgramById(programID);
-
-        if (program != null) {
-
-          areaID = program.getResearchArea().getId();
-
-          String params[] = {researchCenter.getAcronym(), areaID + "", programID + ""};
-          if (baseAction.canAccessSuperAdmin()) {
-            canEdit = true;
-          } else {
-
-            if (baseAction
-              .hasPermission(baseAction.generatePermission(Permission.RESEARCH_PROGRAM_FULL_PRIVILEGES, params))) {
-              canEdit = true;
-            }
-          }
-
-          if (parameters.get(APConstants.EDITABLE_REQUEST).isDefined()) {
-            // String stringEditable = ((String[]) parameters.get(APConstants.EDITABLE_REQUEST))[0];
-            String stringEditable = parameters.get(APConstants.EDITABLE_REQUEST).getMultipleValues()[0];
-            editParameter = stringEditable.equals("true");
-            // If the user is not asking for edition privileges we don't need to validate them.
-            if (!editParameter) {
-              baseAction.setEditableParameter(hasPermissionToEdit);
-            }
-          }
-
-          // Check the permission if user want to edit or save the form
-          if (editParameter || parameters.get("save") != null) {
-            hasPermissionToEdit = (baseAction.isAdmin()) ? true : baseAction
-              .hasPermission(baseAction.generatePermission(Permission.RESEARCH_PROGRAM_FULL_PRIVILEGES, params));
-          }
-
-          if (baseAction.isSubmitIP(programID)) {
-            canEdit = false;
-          }
-
-          // Set the variable that indicates if the user can edit the section
-          baseAction.setEditableParameter(hasPermissionToEdit && canEdit);
-          baseAction.setCanEdit(canEdit);
+        String params[] = {researchCenter.getAcronym(), areaID + "", programID + ""};
+        if (baseAction.canAccessSuperAdmin()) {
+          canEdit = true;
         } else {
-          throw new Exception();
+
+          if (baseAction.hasPermissionCenter(
+            baseAction.generatePermissionCenter(Permission.RESEARCH_PROGRAM_FULL_PRIVILEGES, params))) {
+            canEdit = true;
+          }
         }
+
+        if (parameters.get(APConstants.EDITABLE_REQUEST).isDefined()) {
+          // String stringEditable = ((String[]) parameters.get(APConstants.EDITABLE_REQUEST))[0];
+          String stringEditable = parameters.get(APConstants.EDITABLE_REQUEST).getMultipleValues()[0];
+          editParameter = stringEditable.equals("true");
+          // If the user is not asking for edition privileges we don't need to validate them.
+          if (!editParameter) {
+            baseAction.setEditableParameter(hasPermissionToEdit);
+          }
+        }
+
+        // Check the permission if user want to edit or save the form
+        if (editParameter || parameters.get("save") != null) {
+          hasPermissionToEdit = (baseAction.isAdmin()) ? true : baseAction.hasPermissionCenter(
+            baseAction.generatePermissionCenter(Permission.RESEARCH_PROGRAM_FULL_PRIVILEGES, params));
+        }
+
+        if (baseAction.isSubmitIP(programID)) {
+          canEdit = false;
+        }
+
+        // Set the variable that indicates if the user can edit the section
+        baseAction.setEditableParameter(hasPermissionToEdit && canEdit);
+        baseAction.setCanEdit(canEdit);
       } else {
         throw new Exception();
       }
     } else {
       throw new Exception();
     }
+
 
   }
 

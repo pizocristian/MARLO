@@ -20,15 +20,15 @@ package org.cgiar.ccafs.marlo.action.projects;
 import org.cgiar.ccafs.marlo.action.BaseAction;
 import org.cgiar.ccafs.marlo.config.APConstants;
 import org.cgiar.ccafs.marlo.data.manager.ActivityManager;
-import org.cgiar.ccafs.marlo.data.manager.CrpManager;
 import org.cgiar.ccafs.marlo.data.manager.FundingSourceManager;
+import org.cgiar.ccafs.marlo.data.manager.GlobalUnitManager;
 import org.cgiar.ccafs.marlo.data.manager.InstitutionManager;
 import org.cgiar.ccafs.marlo.data.manager.InstitutionTypeManager;
 import org.cgiar.ccafs.marlo.data.manager.LocElementManager;
 import org.cgiar.ccafs.marlo.data.manager.PartnerRequestManager;
 import org.cgiar.ccafs.marlo.data.manager.ProjectManager;
 import org.cgiar.ccafs.marlo.data.model.ActivityPartner;
-import org.cgiar.ccafs.marlo.data.model.Crp;
+import org.cgiar.ccafs.marlo.data.model.GlobalUnit;
 import org.cgiar.ccafs.marlo.data.model.Institution;
 import org.cgiar.ccafs.marlo.data.model.InstitutionType;
 import org.cgiar.ccafs.marlo.data.model.LocElement;
@@ -67,14 +67,15 @@ public class PartnersSaveAction extends BaseAction {
 
   private ActivityPartner activityPartner;
   // Managers
-  private final LocElementManager locationManager;
-  private final InstitutionTypeManager institutionManager;
-  private final InstitutionManager institutionsManager;
-  private final ActivityManager activityManager;
-  private final ProjectManager projectManager;
-  private final FundingSourceManager fundingSourceManager;
-  private final PartnerRequestManager partnerRequestManager;
-  private final CrpManager crpManager;
+  private LocElementManager locationManager;
+  private InstitutionTypeManager institutionManager;
+  private InstitutionManager institutionsManager;
+  private ActivityManager activityManager;
+  private ProjectManager projectManager;
+  private FundingSourceManager fundingSourceManager;
+  private PartnerRequestManager partnerRequestManager;
+  // GlobalUnit Manager
+  private GlobalUnitManager crpManager;
 
   private final SendMailS sendMail;
 
@@ -83,7 +84,7 @@ public class PartnersSaveAction extends BaseAction {
   private List<InstitutionType> institutionTypesList;
   private List<Institution> institutions;
   private long locationId;
-  private Crp loggedCrp;
+  private GlobalUnit loggedCrp;
 
   // private ActivityPartner activityPartner;
   private boolean messageSent;
@@ -98,7 +99,7 @@ public class PartnersSaveAction extends BaseAction {
   public PartnersSaveAction(APConfig config, LocElementManager locationManager,
     InstitutionTypeManager institutionManager, InstitutionManager institutionsManager, ActivityManager activityManager,
     ProjectManager projectManager, PartnerRequestManager partnerRequestManager,
-    FundingSourceManager fundingSourceManager, CrpManager crpManager, SendMailS sendMail) {
+    FundingSourceManager fundingSourceManager, GlobalUnitManager crpManager, SendMailS sendMail) {
     super(config);
     this.locationManager = locationManager;
     this.institutionManager = institutionManager;
@@ -187,8 +188,8 @@ public class PartnersSaveAction extends BaseAction {
     countriesList.sort((p1, p2) -> p1.getName().compareTo(p2.getName()));
     // Get loggerCrp
     try {
-      loggedCrp = (Crp) this.getSession().get(APConstants.SESSION_CRP);
-      loggedCrp = crpManager.getCrpById(loggedCrp.getId());
+      loggedCrp = (GlobalUnit) this.getSession().get(APConstants.SESSION_CRP);
+      loggedCrp = crpManager.getGlobalUnitById(loggedCrp.getId());
     } catch (Exception e) {
       LOG.error("Failed to get " + APConstants.SESSION_CRP + " parameter. Exception: " + e.getMessage());
     }
@@ -299,26 +300,27 @@ public class PartnersSaveAction extends BaseAction {
       message.append("Project: (");
       message.append(projectID);
       message.append(") - ");
-      message.append(projectManager.getProjectById(projectID).getTitle());
-      partnerRequest
-        .setRequestSource("Project: (" + projectID + ") - " + projectManager.getProjectById(projectID).getTitle());
-      partnerRequestModifications
-        .setRequestSource("Project: (" + projectID + ") - " + projectManager.getProjectById(projectID).getTitle());
+      message.append(projectManager.getProjectById(projectID).getProjecInfoPhase(this.getActualPhase()).getTitle());
+      partnerRequest.setRequestSource("Project: (" + projectID + ") - "
+        + projectManager.getProjectById(projectID).getProjecInfoPhase(this.getActualPhase()).getTitle());
+      partnerRequestModifications.setRequestSource("Project: (" + projectID + ") - "
+        + projectManager.getProjectById(projectID).getProjecInfoPhase(this.getActualPhase()).getTitle());
     } else if (fundingSourceID > 0) {
       message.append("Funding Source: (");
       message.append(fundingSourceID);
       message.append(") - ");
-      message.append(fundingSourceManager.getFundingSourceById(fundingSourceID).getTitle());
-      partnerRequest.setRequestSource("Funding Source: (" + fundingSourceID + ") - "
-        + fundingSourceManager.getFundingSourceById(fundingSourceID).getTitle());
-      partnerRequestModifications.setRequestSource("Funding Source: (" + fundingSourceID + ") - "
-        + fundingSourceManager.getFundingSourceById(fundingSourceID).getTitle());
+      message.append(fundingSourceManager.getFundingSourceById(fundingSourceID)
+        .getFundingSourceInfo(this.getActualPhase()).getTitle());
+      partnerRequest.setRequestSource("Funding Source: (" + fundingSourceID + ") - " + fundingSourceManager
+        .getFundingSourceById(fundingSourceID).getFundingSourceInfo(this.getActualPhase()).getTitle());
+      partnerRequestModifications.setRequestSource("Funding Source: (" + fundingSourceID + ") - " + fundingSourceManager
+        .getFundingSourceById(fundingSourceID).getFundingSourceInfo(this.getActualPhase()).getTitle());
     }
 
-    partnerRequestManager.savePartnerRequest(partnerRequest);
+    partnerRequest = partnerRequestManager.savePartnerRequest(partnerRequest);
     partnerRequestModifications.setPartnerRequest(partnerRequest);
     partnerRequestModifications.setModified(false);
-    partnerRequestManager.savePartnerRequest(partnerRequestModifications);
+    partnerRequestModifications = partnerRequestManager.savePartnerRequest(partnerRequestModifications);
 
     message.append(".</br>");
     message.append("</br>");

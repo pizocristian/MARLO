@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Project Description" /]
-[#assign currentSectionString = "project-${actionName?replace('/','-')}-${projectID}" /]
+[#assign currentSectionString = "project-${actionName?replace('/','-')}-${projectID}-phase-${(actualPhase.id)!}" /]
 [#assign pageLibs = ["select2","flat-flags"] /]
 [#assign customJS = [
   "${baseUrl}/global/js/fieldsValidation.js",
@@ -51,7 +51,7 @@
            
           [#-- Back --]
         <div class="pull-right">
-          <a href="[@s.url action='${centerSession}/projectList'][@s.param name="programID" value=programID /][@s.param name="projectID" value=projectID /][@s.param name="edit" value=true /][/@s.url]">
+          <a href="[@s.url action='${centerSession}/projectList'][@s.param name="programID" value=programID /][@s.param name="projectID" value=projectID /][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">
             <span class="glyphicon glyphicon-circle-arrow-left"></span> Back to the project list
           </a>
         </div>
@@ -61,15 +61,15 @@
             
             [#-- Project Title --]
             <div class="form-group metadataElement-description">
-              [@customForm.input name="project.name" i18nkey="projectDescription.name" required=true className="project-title metadataValue" readOnly=projectSync editable=editable && action.hasPermission("title") /]
+              [@customForm.input name="project.project.projectInfo.title" i18nkey="projectDescription.name" required=true className="project-title metadataValue" readOnly=projectSync editable=editable /]
             </div>
             [#-- Project Suggested Title --]
             <div class="form-group">
-              [@customForm.input name="project.suggestedName" i18nkey="projectDescription.suggestedName" required=false className="project-title" required=true editable=editable && action.hasPermission("title") /]
+              [@customForm.input name="project.suggestedName" i18nkey="projectDescription.suggestedName" required=false className="project-title" required=true editable=editable /]
             </div>
             [#-- Project Description --]
             <div class="form-group metadataElement-objectives">
-              [@customForm.textArea name="project.description" i18nkey="projectDescription.description" required=true className="metadataValue" readOnly=projectSync editable=editable && action.hasPermission("title") /]
+              [@customForm.textArea name="project.project.projectInfo.description" i18nkey="projectDescription.description" required=true className="metadataValue" readOnly=projectSync editable=editable /]
             </div> 
           
            
@@ -84,11 +84,11 @@
             <div class="form-group row">  
               [#-- Start Date --]
               <div class="col-md-4 metadataElement-startDate">
-                [@customForm.input name="project.startDate" i18nkey="projectDescription.startDate" className="metadataValue" type="text" disabled=!editable  required=true editable=editable /]
+                [@customForm.input name="project.project.projectInfo.startDate" i18nkey="projectDescription.startDate" className="metadataValue" type="text" disabled=!editable readOnly=projectSync required=true editable=editable /]
               </div> 
               [#-- End Date --]
               <div class="col-md-4 metadataElement-endDate">
-                [@customForm.input name="project.endDate" i18nkey="projectDescription.endDate" className="metadataValue" type="text" disabled=!editable required=false editable=editable /]
+                [@customForm.input name="project.project.projectInfo.endDate" i18nkey="projectDescription.endDate" className="metadataValue" type="text" disabled=!editable readOnly=projectSync required=false editable=editable /]
               </div>
             </div>
             
@@ -181,7 +181,7 @@
                   </div>
                 </div>
                 
-              [#-- SELECT COUNTRIES --]
+                [#-- SELECT COUNTRIES --]
               <div class="countriesBox form-group" style="display:block">
                 <div class="panel tertiary">
                   <div class="panel-head"><label for=""> [@customForm.text name="projectDescription.listCountries" readText=!editable /]:[@customForm.req required=editable/]</label></div>
@@ -206,8 +206,10 @@
                     [#if editable ]
                       [@customForm.select name="" label=""  showTitle=false  i18nkey="" listName="countryLists" keyFieldName="isoAlpha2"  displayFieldName="name"  multiple=false required=true  className="countriesSelect" editable=editable /]
                     [/#if] 
+                    </div>
                   </div>
                 </div>
+                
               </div>
             </div>
             
@@ -276,6 +278,9 @@
               [/#if]
             </div>
           </div>
+          
+          
+          
           
         </div>
       </div>
@@ -481,7 +486,7 @@
 
 [#macro outputMacro element name index=-1 isTemplate=false]  
   [#assign outputCustomName = "${name}[${index}]" /]
-  <li id="output-${isTemplate?string('template',(element.id)!)}" class="outputs  borderBox expandableBlock row "  style="display:${isTemplate?string('none','block')}">
+  <li id="output-${isTemplate?string('template',(element.id)!)}" class="outputs  borderBox row "  style="display:${isTemplate?string('none','block')}">
   <input type="hidden" name="${outputCustomName}.id" value="${(element.id)!}"/>
   <input type="hidden" class="outputId" name="${outputCustomName}.researchOutput.id" value="${(element.researchOutput.id)!}"/>
     [#if editable] [#--&& (isTemplate) --]
@@ -504,17 +509,6 @@
       </div>
         
       <div class="clearfix"></div>
-    </div>
-    
-    <div class="blockContent " style="display:none">
-      <div class="form-group">
-        <label for="">Research topic:</label>
-        <div class="rTopic">${(element.researchOutput.researchOutcome.researchTopic.researchTopic)!}</div>
-      </div>
-      <div class="form-group">
-        <label for="">Outcome:</label>
-        <div class="outcome">${(element.researchOutput.researchOutcome.description)!}</div>
-      </div>
     </div>
   </li>
 [/#macro]

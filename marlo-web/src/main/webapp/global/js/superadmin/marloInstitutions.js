@@ -32,7 +32,8 @@ $(document).ready(function() {
         data: {
             requestID: requestID,
             justification: justificationText,
-            sendNotification : ($modal.find('.sendEmailInput').is(':checked'))? true : false
+            sendNotification : ($modal.find('.sendEmailInput').is(':checked'))? true : false,
+            phaseID: phaseID
         },
         beforeSend: function() {
           $modal.find('.loading').fadeIn();
@@ -83,7 +84,7 @@ $(document).ready(function() {
         },
         success: function(data) {
           if(data.success) {
-            location.reload();
+            window.location.href = window.location.href;
             $request.find('.editForm').slideUp();
             $request.find('.btn-group').slideDown();
           }
@@ -157,7 +158,7 @@ $(document).ready(function() {
         },
         success: function(data) {
           if(data.success) {
-            location.reload();
+            window.location.href = window.location.href;
           }
         },
         complete: function() {
@@ -201,7 +202,7 @@ $(document).ready(function() {
         },
         success: function(data) {
           if(data.success) {
-            location.reload();
+            window.location.href = window.location.href;
           }
         },
         complete: function() {

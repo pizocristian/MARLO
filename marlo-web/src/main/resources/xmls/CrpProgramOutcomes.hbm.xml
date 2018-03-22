@@ -4,7 +4,7 @@
 <!-- Generated May 26, 2016 9:42:29 AM by Hibernate Tools 4.3.1.Final -->
 <hibernate-mapping>
 	<class name="org.cgiar.ccafs.marlo.data.model.CrpProgramOutcome"
-		table="crp_program_outcomes" optimistic-lock="version">
+		table="crp_program_outcomes" optimistic-lock="none">
 		<id name="id" type="java.lang.Long">
 			<column name="id" />
 			<generator class="identity" />
@@ -38,6 +38,12 @@
 		<property name="indicator" type="string">
       <column name="indicator" length="65535"  />
     </property>
+    <property name="composeID" type="string">
+      <column name="composed_id" length="20" />
+    </property>
+     <many-to-one name="phase" class="org.cgiar.ccafs.marlo.data.model.Phase" fetch="select">
+            <column name="id_phase" />
+        </many-to-one>
 		<property name="year" type="java.lang.Integer">
 			<column name="year" not-null="false" />
 		</property>
@@ -68,13 +74,7 @@
 			</key>
 			<one-to-many class="org.cgiar.ccafs.marlo.data.model.ProjectOutcome" />
 		</set>
-		<set name="deliverables" table="deliverables" inverse="true" lazy="true"
-			fetch="select">
-			<key>
-				<column name="outcome_id" />
-			</key>
-			<one-to-many class="org.cgiar.ccafs.marlo.data.model.Deliverable" />
-		</set>
+		
 		<set name="crpClusterKeyOutputOutcomes" order-by="id"
 			table="crp_cluster_key_outputs_outcome" inverse="true" lazy="true"
 			fetch="select">
@@ -92,5 +92,15 @@
 			<one-to-many
 				class="org.cgiar.ccafs.marlo.data.model.ProjectFurtherContribution" />
 		</set>
+		<many-to-one name="file"
+      class="org.cgiar.ccafs.marlo.data.model.FileDB" fetch="select">
+      <column name="file_id" not-null="false" />
+    </many-to-one>
+     <set name="crpProgramOutcomeIndicators" table="crp_program_outcome_indicator" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="crp_program_outcome_id" not-null="true" />
+            </key>
+            <one-to-many class="org.cgiar.ccafs.marlo.data.model.CrpProgramOutcomeIndicator" />
+        </set>
 	</class>
 </hibernate-mapping>

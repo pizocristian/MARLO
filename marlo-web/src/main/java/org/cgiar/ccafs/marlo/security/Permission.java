@@ -50,6 +50,33 @@ public class Permission {
   public static final String PROJECT_CCFASOUTCOME_BASE_PERMISSION = "crp:{0}:project:{1}:ccafsOutcomes";
   public static final String SYNTHESIS_BY_MOG_BASE_PERMISSION = "crp:{0}:synthesisProgram:{1}";
   public static final String SYNTHESIS_BY_MOG_PERMISSION = "crp:{0}:synthesisProgram:{1}:*";
+  public static final String POWB_SYNTHESIS_CAN_VIEW = "crp:{0}:powbSynthesis:manage:canAcess";
+  public static final String POWB_SYNTHESIS_RPL_EFFORT = "crp:{0}:powbSynthesis:{1}:collaboration{2}:effort";
+
+
+  public static final String PROJECT_BUDGET_FLAGSHIP_BASE_PERMISSION = "crp:{0}:project:{1}:budgetByFlagship";
+  public static final String POWB_SYNTHESIS_TOC_BASE_PERMISSION = "crp:{0}:powbSynthesis:{1}:tocAdjustments";
+  public static final String POWB_SYNTHESIS_FLAGSHIPPLANS_BASE_PERMISSION = "crp:{0}:powbSynthesis:{1}:flagshipPlans";
+  public static final String POWB_SYNTHESIS_PERMISSION = "crp:{0}:powbSynthesis:{1}:canEdit";
+  public static final String POWB_SYNTHESIS_EVIDENCES_BASE_PERMISSION = "crp:{0}:powbSynthesis:{1}:evidences";
+  public static final String POWB_SYNTHESIS_EXPECTED_BASE_PERMISSION = "crp:{0}:powbSynthesis:{1}:expectedProgress";
+  public static final String POWB_SYNTHESIS_MEL_BASE_PERMISSION =
+    "crp:{0}:powbSynthesis:{1}:monitoringEvaluationLearning";
+  public static final String POWB_SYNTHESIS_COLLABORATION_BASE_PERMISSION = "crp:{0}:powbSynthesis:{1}:collaboration";
+  public static final String POWB_SYNTHESIS_CROSS_CUTING_BASE_PERMISSION = "crp:{0}:powbSynthesis:{1}:crossCuting";
+
+  public static final String POWB_SYNTHESIS_COLLABORATION_CAN_EDIT_PERMISSION =
+    "crp:{0}:powbSynthesis:{1}:collaboration:canEdit";
+
+
+  public static final String POWB_SYNTHESIS_CRPSTAFFING_BASE_PERMISSION = "crp:{0}:powbSynthesis:{1}:crpStaffing";
+  public static final String POWB_SYNTHESIS_FINANCIAL_PLAN_BASE_PERMISSION = "crp:{0}:powbSynthesis:{1}:financialPlan";
+  public static final String POWB_SYNTHESIS_MANAGEMENT_RISK_BASE_PERMISSION =
+    "crp:{0}:powbSynthesis:{1}:managementRisk";
+  public static final String POWB_SYNTHESIS_MANAGEMENT_GOVERNANCE_BASE_PERMISSION =
+    "crp:{0}:powbSynthesis:{1}:managementGovernance";
+  public static final String POWB_SYNTHESIS_MANAGE_PERMISSION = "crp:{0}:powbSynthesis:{1}:manage";
+  public static final String POWB_SYNTHESIS_SUBMISSION_PERMISSION = "crp:{0}:powbSynthesis:{1}:manage:canSubmmit";
 
   public static final String CRP_INDICATORS_BASE_PERMISSION = "crp:{0}:crpIndicators:{1}";
   public static final String CRP_INDICATORS_PERMISSION = "crp:{0}:crpIndicators:{1}:*";
@@ -84,6 +111,8 @@ public class Permission {
   public static final String PROJECT_HIGH_LIGHTS_EDIT_PERMISSION = "crp:{0}:project:{1}:highlights:canEdit";
   public static final String PROJECT_CASE_STUDY_EDIT_PERMISSION = "crp:{0}:project:{1}:caseStudies:canEdit";
   public static final String PROJECT_ACTIVITIES_BASE_PERMISSION = "crp:{0}:project:{1}:activities";
+  public static final String PROJECT_EXPECTED_STUDIES_BASE_PERMISSION = "crp:{0}:project:{1}:expectedStudies";
+
   public static final String PROJECT_FUNDING_SOURCE_BASE_PERMISSION = "crp:{0}:fundingSource:{1}:canEdit";
   public static final String PROJECT_FUNDING_SOURCE_BUDGET_PERMISSION = "crp:{0}:fundingSource:{1}:budget";
   public static final String PROJECT_FUNDING_SOURCE_ADD_BUDGET_PERMISSION = "crp:{0}:fundingSource:budget";
@@ -102,6 +131,8 @@ public class Permission {
 
 
   public static final String PROJECT_FUNDING_W3_PROJECT_BASE_PERMISSION = "crp:{0}:project:{1}:fundingSource:w3";
+  public static final String PROJECT_GENDER_PROJECT_BASE_PERMISSION = "crp:{0}:project:{1}:fundingSource:gender";
+
   public static final String PROJECT_FUNDING_W3_PROJECT_INSTITUTION_BASE_PERMISSION =
     "crp:{0}:project:{1}:fundingSource:{2}:w3";
 
@@ -138,4 +169,27 @@ public class Permission {
   public static final String CENTER_PROJECT_SUBMISSION_PERMISSION =
     "center:{0}:area:{1}:program:{2}:project:{3}:submitProject";
 
+  /**
+   * REST API Permissions
+   */
+  public static final String FULL_REST_API_PERMISSION = "api:*";
+
+  public static final String FULL_READ_REST_API_PERMISSION = "api:*:read";
+  public static final String FULL_CREATE_REST_API_PERMISSION = "api:*:create";
+  public static final String FULL_UPDATE_REST_API_PERMISSION = "api:*:update";
+  public static final String FULL_DELETE_REST_API_PERMISSION = "api:*:delete";
+
+  // Institutions
+  public static final String INSTITUTIONS_READ_REST_API_PERMISSION = "api:institutions:read";
+  public static final String INSTITUTIONS_CREATE_REST_API_PERMISSION = "api:institutions:create";
+  public static final String INSTITUTIONS_UPDATE_REST_API_PERMISSION = "api:institutions:update";
+  public static final String INSTITUTIONS_DELETE_REST_API_PERMISSION = "api:institutions:delete";
+  public static final String INSTITUTIONS_FULL_REST_API_PERMISSION = "api:institutions:*";
+
+  // Crps
+  public static final String CRPS_READ_REST_API_PERMISSION = "api:crps:read";
+  public static final String CRPS_CREATE_REST_API_PERMISSION = "api:crps:create";
+  public static final String CRPS_UPDATE_REST_API_PERMISSION = "api:crps:update";
+  public static final String CRPS_DELETE_REST_API_PERMISSION = "api:crps:delete";
+  public static final String CRPS_FULL_REST_API_PERMISSION = "api:crps:*";
 }

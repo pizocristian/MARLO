@@ -29,8 +29,10 @@ import org.cgiar.ccafs.marlo.data.model.LiaisonUser;
 import org.cgiar.ccafs.marlo.data.model.Phase;
 import org.cgiar.ccafs.marlo.data.model.ProgramType;
 import org.cgiar.ccafs.marlo.data.model.Project;
+import org.cgiar.ccafs.marlo.data.model.ProjectInfo;
 import org.cgiar.ccafs.marlo.data.model.ProjectPartnerPerson;
 import org.cgiar.ccafs.marlo.data.model.ProjectPhase;
+import org.cgiar.ccafs.marlo.data.model.ProjectStatusEnum;
 import org.cgiar.ccafs.marlo.data.model.Role;
 import org.cgiar.ccafs.marlo.data.model.User;
 import org.cgiar.ccafs.marlo.data.model.UserRole;
@@ -148,27 +150,45 @@ public class CrpUsersAction extends BaseAction {
 
         for (ProjectPartnerPerson projectPartnerPerson : user.getProjectPartnerPersons().stream()
           .filter(c -> c.isActive() && c.getProjectPartner().isActive() && c.getContactType().equalsIgnoreCase("PL")
+            && c.getProjectPartner().getPhase() != null
+            && c.getProjectPartner().getPhase().equals(this.getActualPhase())
             && phasesProjects.contains(c.getProjectPartners().getProject()))
           .collect(Collectors.toList())) {
-          relations.add(projectPartnerPerson.getProjectPartner().getProject()
-            .getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER));
+          if (projectPartnerPerson.getProjectPartner().getProject().getProjecInfoPhase(this.getActualPhase())
+            .getStatus() == Integer.parseInt(ProjectStatusEnum.Ongoing.getStatusId())
+            || projectPartnerPerson.getProjectPartner().getProject().getProjecInfoPhase(this.getActualPhase())
+              .getStatus() == Integer.parseInt(ProjectStatusEnum.Extended.getStatusId())) {
+            relations.add(projectPartnerPerson.getProjectPartner().getProject()
+              .getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER));
+          }
+
         }
         break;
       case "PC":
 
         for (ProjectPartnerPerson projectPartnerPerson : user.getProjectPartnerPersons().stream()
           .filter(c -> c.isActive() && c.getProjectPartner().isActive() && c.getContactType().equalsIgnoreCase("PC")
+            && c.getProjectPartner().getPhase() != null
+            && c.getProjectPartner().getPhase().equals(this.getActualPhase())
             && phasesProjects.contains(c.getProjectPartners().getProject()))
           .collect(Collectors.toList())) {
-          relations.add(projectPartnerPerson.getProjectPartner().getProject()
-            .getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER));
+          if (projectPartnerPerson.getProjectPartner().getProject().getProjecInfoPhase(this.getActualPhase())
+            .getStatus() == Integer.parseInt(ProjectStatusEnum.Ongoing.getStatusId())
+            || projectPartnerPerson.getProjectPartner().getProject().getProjecInfoPhase(this.getActualPhase())
+              .getStatus() == Integer.parseInt(ProjectStatusEnum.Extended.getStatusId())) {
+            relations.add(projectPartnerPerson.getProjectPartner().getProject()
+              .getStandardIdentifier(Project.EMAIL_SUBJECT_IDENTIFIER));
+          }
+
         }
         break;
       case "CL":
         for (CrpClusterActivityLeader crpClusterActivityLeader : user.getCrpClusterActivityLeaders().stream()
           .filter(c -> c.isActive() && c.getCrpClusterOfActivity().isActive()
-            && c.getCrpClusterOfActivity().getCrpProgram().isActive() && c.getCrpClusterOfActivity().getCrpProgram()
-              .getCrp().getId().longValue() == this.getCrpID().longValue())
+            && c.getCrpClusterOfActivity().getPhase() != null
+            && c.getCrpClusterOfActivity().getPhase().equals(this.getActualPhase())
+            && c.getCrpClusterOfActivity().getCrpProgram().isActive()
+            && c.getCrpClusterOfActivity().getCrpProgram().getCrp().getId().longValue() == this.getCrpID().longValue())
           .collect(Collectors.toList())) {
           relations.add(crpClusterActivityLeader.getCrpClusterOfActivity().getIdentifier());
         }
@@ -304,14 +324,48 @@ public class CrpUsersAction extends BaseAction {
               c -> c.getContactType().equals(role.getAcronym()) && c.getProjectPartner().isActive() && c.isActive())
             .collect(Collectors.toList())) {
             if (phasesProjects.contains(projectPartnerPerson.getProjectPartner().getProject())) {
-              users.add(userRole);
+              if (projectPartnerPerson.getProjectPartner().getProject().getProjecInfoPhase(this.getActualPhase())
+                .getStatus() == Integer.parseInt(ProjectStatusEnum.Ongoing.getStatusId())
+                || projectPartnerPerson.getProjectPartner().getProject().getProjecInfoPhase(this.getActualPhase())
+                  .getStatus() == Integer.parseInt(ProjectStatusEnum.Extended.getStatusId())) {
+                users.add(userRole);
+              }
+
             }
           }
         }
-      } else {
-        for (UserRole userRole : role.getUserRoles()) {
-          users.add(userRole);
+      }
+
+
+      else {
+
+        if (role.getAcronym().equals("ML")) {
+
+          for (UserRole userRole : role.getUserRoles()) {
+            User user = userRole.getUser();
+
+
+            for (LiaisonUser liaisonUser : user.getLiasonsUsers().stream().filter(c -> c.isActive())
+              .collect(Collectors.toList())) {
+              for (ProjectInfo project : liaisonUser.getProjects().stream()
+                .filter(c -> c.isActive() && c.getPhase().equals(this.getActualPhase())).collect(Collectors.toList())) {
+                if (phasesProjects.contains(project.getProject())) {
+                  if (project.getStatus() == Integer.parseInt(ProjectStatusEnum.Ongoing.getStatusId())
+                    || project.getStatus() == Integer.parseInt(ProjectStatusEnum.Extended.getStatusId())) {
+                    users.add(userRole);
+                  }
+
+                }
+              }
+
+            }
+          }
+        } else {
+          for (UserRole userRole : role.getUserRoles()) {
+            users.add(userRole);
+          }
         }
+
       }
 
     }

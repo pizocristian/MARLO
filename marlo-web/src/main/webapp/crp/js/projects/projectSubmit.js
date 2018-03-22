@@ -48,10 +48,11 @@ $(document).ready(function() {
                   url: baseURL + "/projectLeaderEdit.do",
                   data: {
                       projectID: $('input[name="projectID"]').val(),
-                      projectStatus: value
+                      projectStatus: value,
+                      phaseID: phaseID
                   },
                   success: function(data) {
-                    location.reload();
+                    window.location.href = window.location.href;
                     if(data.ok) {
                       $thisLabel.siblings().removeClass('radio-checked');
                       $thisLabel.addClass('radio-checked');
@@ -130,6 +131,7 @@ function submitButtonEvent(e) {
               text: 'Ok',
               onClick: function($noty) {
                 $noty.close();
+                $('.projectSubmitButton').hide();
                 window.location.href = $(e.target).attr('href');
               }
           }, {
@@ -168,6 +170,7 @@ function processTasks(tasks,id,button) {
               data: {
                   projectID: id,
                   sectionName: sectionName,
+                  phaseID: phaseID
               },
               beforeSend: function() {
                 $sectionMenu.removeClass('animated flipInX').addClass('loadingSection');
@@ -255,7 +258,8 @@ function unSubmitButtonEvent(e) {
               var projectId = $(".projectUnSubmitButton").attr("id").split("-")[1];
               var data = {
                   projectID: projectId,
-                  justification: $justification.val()
+                  justification: $justification.val(),
+                  phaseID: phaseID
               }
               console.log(data);
               $justification.removeClass('fieldError');
@@ -268,7 +272,7 @@ function unSubmitButtonEvent(e) {
                   function(m) {
                     window.location.href =
                         baseURL + "/projects/" + currentCrpSession + "/description.do?projectID=" + projectId
-                            + "&edit=true";
+                            + "&edit=true&phaseID=" + phaseID;
                   });
             } else {
               $justification.addClass('fieldError');

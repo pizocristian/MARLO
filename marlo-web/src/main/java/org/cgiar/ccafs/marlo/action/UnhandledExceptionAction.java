@@ -14,7 +14,7 @@
  *****************************************************************/
 package org.cgiar.ccafs.marlo.action;
 
-import org.cgiar.ccafs.marlo.data.model.Crp;
+import org.cgiar.ccafs.marlo.data.model.GlobalUnit;
 import org.cgiar.ccafs.marlo.utils.APConfig;
 import org.cgiar.ccafs.marlo.utils.SendMailS;
 
@@ -22,6 +22,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.catalina.connector.ClientAbortException;
 import org.slf4j.Logger;
@@ -62,25 +63,39 @@ public class UnhandledExceptionAction extends BaseAction {
     return writer.toString();
   }
 
+  public HttpServletRequest getServletRequest() {
+    return this.request;
+  }
+
   public void sendExceptionMessage() {
     String subject;
     StringBuilder message = new StringBuilder();
 
     StringWriter writer = new StringWriter();
+    if (exception == null) {
+      exception = new Exception("MARLOCustomPersistFilter ERROR!");
+    }
+
+    Exception e = (Exception) request.getSession().getAttribute("exception");
+    if (e != null) {
+      exception = e;
+    }
+    request.getSession().setAttribute("exception", null);
     exception.printStackTrace(new PrintWriter(writer));
 
 
-    Crp crp = this.getCurrentCrp();
+    GlobalUnit crp = this.getCurrentCrp();
 
     subject = "Exception occurred in MARLO";
 
-    message.append("The user " + this.getCurrentUser().getFirstName() + " " + this.getCurrentUser().getLastName() + " <"
-      + this.getCurrentUser().getEmail() + "> ");
+    message.append("The user " + this.getCurrentUser().getFirstName() + " " + this.getCurrentUser().getLastName() + " ("
+      + this.getCurrentUser().getEmail() + ") ");
     message.append("has experienced an exception on the platform. </br>");
     message.append("This execption occurs in the server: " + config.getBaseUrl() + ".</br>");
+    String crpAcronymName = crp.getAcronym() != null && !crp.getAcronym().isEmpty() ? crp.getAcronym() : crp.getName();
     if (crp != null) {
       message.append("In the CRP : " + crp.getAcronym() != null && !crp.getAcronym().isEmpty() ? crp.getAcronym()
-        : crp.getName() + ".</br>");
+        : crpAcronymName + ".</br>");
     }
     message.append("The exception message was: </br></br>");
     message.append(writer.toString());

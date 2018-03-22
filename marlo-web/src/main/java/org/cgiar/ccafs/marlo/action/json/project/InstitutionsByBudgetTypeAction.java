@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.dispatcher.Parameter;
 
@@ -68,8 +69,9 @@ public class InstitutionsByBudgetTypeAction extends BaseAction {
 
     List<Institution> institutionsPpa = new ArrayList<>();
 
-    List<CrpPpaPartner> ppaPartners = crpPpaPartnerManager.findAll().stream()
-      .filter(c -> c.getCrp().getId().longValue() == this.getCrpID() && c.isActive()).collect(Collectors.toList());
+    List<CrpPpaPartner> ppaPartners =
+      crpPpaPartnerManager.findAll().stream().filter(c -> c.getCrp().getId().longValue() == this.getCrpID()
+        && c.isActive() && c.getPhase().equals(this.getActualPhase())).collect(Collectors.toList());
 
     for (CrpPpaPartner crpPpaPartner : ppaPartners) {
       institutionsPpa.add(crpPpaPartner.getInstitution());
@@ -89,7 +91,7 @@ public class InstitutionsByBudgetTypeAction extends BaseAction {
           .filter(i -> i.isActive() && i.getInstitutionType().getId().intValue() == 3).collect(Collectors.toList());
       } else {
         institutionsType = institutionManager.findAll().stream().filter(i -> i.isActive()).collect(Collectors.toList());
-        institutionsType.removeAll(institutionsPpa);
+        // institutionsType.removeAll(institutionsPpa);
       }
 
 

@@ -17,11 +17,15 @@
 package org.cgiar.ccafs.marlo.action.crp.admin;
 
 import org.cgiar.ccafs.marlo.action.BaseAction;
+import org.cgiar.ccafs.marlo.data.manager.GlobalUnitManager;
 import org.cgiar.ccafs.marlo.data.manager.PhaseManager;
 import org.cgiar.ccafs.marlo.data.manager.ProjectManager;
 import org.cgiar.ccafs.marlo.data.manager.ProjectPhaseManager;
+import org.cgiar.ccafs.marlo.data.model.GlobalUnit;
+import org.cgiar.ccafs.marlo.data.model.GlobalUnitProject;
 import org.cgiar.ccafs.marlo.data.model.Phase;
 import org.cgiar.ccafs.marlo.data.model.Project;
+import org.cgiar.ccafs.marlo.data.model.ProjectInfo;
 import org.cgiar.ccafs.marlo.data.model.ProjectPhase;
 import org.cgiar.ccafs.marlo.utils.APConfig;
 
@@ -45,6 +49,8 @@ public class CrpProjectPhases extends BaseAction {
 
   private PhaseManager phaseManager;
   private ProjectPhaseManager projectPhaseManager;
+  private GlobalUnitManager globalUnitManager;
+
 
   private List<Project> allProjects;
 
@@ -53,11 +59,12 @@ public class CrpProjectPhases extends BaseAction {
 
   @Inject
   public CrpProjectPhases(APConfig config, ProjectManager projectManager, PhaseManager phaseManager,
-    ProjectPhaseManager projectPhaseManager) {
+    ProjectPhaseManager projectPhaseManager, GlobalUnitManager globalUnitManager) {
     super(config);
     this.projectManager = projectManager;
     this.phaseManager = phaseManager;
     this.projectPhaseManager = projectPhaseManager;
+    this.globalUnitManager = globalUnitManager;
 
 
   }
@@ -73,8 +80,18 @@ public class CrpProjectPhases extends BaseAction {
   @Override
   public void prepare() throws Exception {
 
-    allProjects = projectManager.findAll().stream()
-      .filter(c -> c.isActive() && c.getCrp().getId().longValue() == this.getCrpID()).collect(Collectors.toList());
+    /*
+     * Replace the allprojects List obtained by crp relation, now the project list is obtain whit GlobalUnitPorject
+     * cross relation
+     */
+    allProjects = new ArrayList<>();
+    GlobalUnit globalUnit = globalUnitManager.getGlobalUnitById(this.getCrpID());
+    List<GlobalUnitProject> globalUnitProjects = new ArrayList<>(
+      globalUnit.getGlobalUnitProjects().stream().filter(gup -> gup.isActive()).collect(Collectors.toList()));
+    for (GlobalUnitProject globalUnitProject : globalUnitProjects) {
+      allProjects.add(globalUnitProject.getProject());
+    }
+
 
     Phase phase = phaseManager.findCycle(this.getCurrentCycle(), this.getCurrentCycleYear(), this.getCrpID());
     phasesProjects = new ArrayList<Project>();
@@ -86,7 +103,20 @@ public class CrpProjectPhases extends BaseAction {
     Collections.sort(allProjects, (tu1, tu2) -> tu1.getId().compareTo(tu2.getId()));
 
     Collections.sort(phasesProjects, (tu1, tu2) -> tu1.getId().compareTo(tu2.getId()));
+    for (Project project : phasesProjects) {
+      project.getProjecInfoPhase(this.getActualPhase());
+    }
 
+    for (Project project : allProjects) {
+      List<ProjectInfo> projectInfos =
+        project.getProjectInfos().stream().filter(c -> c.isActive()).collect(Collectors.toList());
+      if (!projectInfos.isEmpty()) {
+        project.setProjectInfo(projectInfos.get(projectInfos.size() - 1));
+      } else {
+        System.out.println(project.getId());
+      }
+
+    }
     if (this.isHttpPost()) {
       if (allProjects != null) {
         allProjects.clear();
@@ -143,3 +173,4 @@ public class CrpProjectPhases extends BaseAction {
     this.phasesProjects = phasesProjects;
   }
 }
+

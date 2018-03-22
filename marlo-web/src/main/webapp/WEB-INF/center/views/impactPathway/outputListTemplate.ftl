@@ -7,7 +7,8 @@
       <tr class="subHeader">
         <th id="ids">[@s.text name="programImpact.outputList.idTable" /]</th>
         <th id="outputTitles" >[@s.text name="programImpact.outputList.title" /]</th>
-        <th id="outputDateAdded">[@s.text name="programImpact.outputList.date" /]</th>
+        <th id="outputOutcomes">[@s.text name="programImpact.outputList.outcomes" /]</th>
+        <th id="outputDateAdded">[@s.text name="programImpact.outputList.date" /]</th>      
         <th id="outputRF">[@s.text name="programImpact.outputList.requiredFields" /]</th>
         <th id="outputDelete">[@s.text name="programImpact.outputList.delete" /]</th>
       </tr>
@@ -18,24 +19,35 @@
         <tr>
         [#-- ID --]
         <td class="outputId">
-          <a href="[@s.url namespace=namespace action=defaultAction][@s.param name='outputID']${output.id?c}[/@s.param][@s.param name='edit']true[/@s.param][/@s.url]">O${output.id}</a>
+          <a href="[@s.url namespace=namespace action=defaultAction][@s.param name='outputID']${output.id?c}[/@s.param][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">O${output.id}</a>
         </td>
           [#-- output statement --]
           <td class="left"> 
             [#if output.title?has_content]
-                <a href="[@s.url namespace=namespace action=defaultAction][@s.param name='outputID']${output.id?c}[/@s.param][@s.param name='edit']true[/@s.param][/@s.url]" title="${output.title}">
+                <a href="[@s.url namespace=namespace action=defaultAction][@s.param name='outputID']${output.id?c}[/@s.param][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]" title="${output.title}">
                 [#if output.title?length < 120] ${output.title}</a> [#else] [@utilities.wordCutter string=output.title maxPos=120 /]...</a> [/#if]
             [#else]
-                <a href="[@s.url namespace=namespace action=defaultAction][@s.param name='outputID']${output.id?c}[/@s.param][@s.param name='edit']true[/@s.param][/@s.url] ">
+                <a href="[@s.url namespace=namespace action=defaultAction][@s.param name='outputID']${output.id?c}[/@s.param][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url] ">
                   [@s.text name="programImpact.outputList.title.none" /]
                 </a>
             [/#if]
           </td>
+           [#-- Outcomes Contribution --]
+          <td class="text-center"> 
+            [#if output.centerOutputsOutcomes?has_content]
+              [#list output.centerOutputsOutcomes as outcome]
+                [#if outcome.active]
+                  <span title="${(outcome.centerOutcome.description)!''}">[ OC${(outcome.centerOutcome.id)!''} ]</span>
+                [/#if]
+              [/#list]
+            [#else]
+              [@s.text name="projectsList.none" /]
+            [/#if]
+          </td> 
           [#-- output Year --]
           <td class="text-center">
           ${(output.dateAdded)!'none'}
-          </td>
-          
+          </td> 
           [#-- Output required fields --]
           <td class="text-center">
             [#if action.getCenterOutputStatus(output.id)??]

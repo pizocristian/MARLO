@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Project CCAFS Outcomes" /]
-[#assign currentSectionString = "project-${actionName?replace('/','-')}-${projectID}" /]
+[#assign currentSectionString = "project-${actionName?replace('/','-')}-${projectID}-phase-${(actualPhase.id)!}" /]
 [#assign pageLibs = ["select2", "jsUri"] /]
 [#assign customJS = [ 
   "${baseUrlMedia}/js/projects/projectCcafsOutcomes.js", 
@@ -15,6 +15,7 @@
 
 [#assign breadCrumb = [
   {"label":"projectsList", "nameSpace":"/projects", "action":"${(crpSession)!}/projectsList"},
+  {"text":"P${project.id}", "nameSpace":"/projects", "action":"${crpSession}/description", "param": "projectID=${project.id?c}&edit=true&phaseID=${(actualPhase.id)!}"},
   {"label":"projectCcafsOutcomes", "nameSpace":"/projects", "action":""}
 ] /]
 
@@ -35,7 +36,11 @@
   </div> 
   <div style="display:none" class="viewMore closed"></div>
 </div>
+
     
+[#if (!availabePhase)!false]
+  [#include "/WEB-INF/crp/views/projects/availability-projects.ftl" /]
+[#else]
 <section class="container">
     <div class="row">
       [#-- Project Menu --]
@@ -248,7 +253,7 @@
       </div>
     </div>  
 </section>
-
+[/#if]
 
 [#include "/WEB-INF/crp/pages/footer.ftl"]
 

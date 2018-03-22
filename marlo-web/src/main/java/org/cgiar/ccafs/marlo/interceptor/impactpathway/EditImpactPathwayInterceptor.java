@@ -17,12 +17,14 @@ package org.cgiar.ccafs.marlo.interceptor.impactpathway;
 
 import org.cgiar.ccafs.marlo.action.BaseAction;
 import org.cgiar.ccafs.marlo.config.APConstants;
-import org.cgiar.ccafs.marlo.data.manager.CrpManager;
 import org.cgiar.ccafs.marlo.data.manager.CrpProgramManager;
+import org.cgiar.ccafs.marlo.data.manager.GlobalUnitManager;
+import org.cgiar.ccafs.marlo.data.manager.PhaseManager;
 import org.cgiar.ccafs.marlo.data.manager.UserManager;
-import org.cgiar.ccafs.marlo.data.model.Crp;
 import org.cgiar.ccafs.marlo.data.model.CrpProgram;
 import org.cgiar.ccafs.marlo.data.model.CrpProgramLeader;
+import org.cgiar.ccafs.marlo.data.model.GlobalUnit;
+import org.cgiar.ccafs.marlo.data.model.Phase;
 import org.cgiar.ccafs.marlo.data.model.ProgramType;
 import org.cgiar.ccafs.marlo.data.model.User;
 import org.cgiar.ccafs.marlo.security.Permission;
@@ -44,22 +46,24 @@ import org.apache.struts2.dispatcher.Parameter;
 public class EditImpactPathwayInterceptor extends AbstractInterceptor implements Serializable {
 
   private static final long serialVersionUID = 8294421978295446976L;
-  private final CrpManager crpManager;
+  private final GlobalUnitManager crpManager;
   private final UserManager userManager;
   private final CrpProgramManager crpProgramManager;
 
-
+  private Phase phase;
+  private PhaseManager phaseManager;
   private Map<String, Parameter> parameters;
   private Map<String, Object> session;
-  private Crp crp;
+  private GlobalUnit crp;
   private long crpProgramID = 0;
 
   @Inject
-  public EditImpactPathwayInterceptor(CrpManager crpManager, UserManager userManager,
-    CrpProgramManager crpProgramManager) {
+  public EditImpactPathwayInterceptor(GlobalUnitManager crpManager, UserManager userManager,
+    CrpProgramManager crpProgramManager, PhaseManager phaseManager) {
     this.crpManager = crpManager;
     this.userManager = userManager;
     this.crpProgramManager = crpProgramManager;
+    this.phaseManager = phaseManager;
   }
 
   long getCrpProgramId() {
@@ -67,9 +71,9 @@ public class EditImpactPathwayInterceptor extends AbstractInterceptor implements
       // return Long.parseLong(((String[]) parameters.get(APConstants.CRP_PROGRAM_ID))[0]);
       return Long.parseLong(parameters.get(APConstants.CRP_PROGRAM_ID).getMultipleValues()[0]);
     } catch (Exception e) {
-      Crp loggedCrp = (Crp) session.get(APConstants.SESSION_CRP);
+      GlobalUnit loggedCrp = (GlobalUnit) session.get(APConstants.SESSION_CRP);
 
-      loggedCrp = crpManager.getCrpById(loggedCrp.getId());
+      loggedCrp = crpManager.getGlobalUnitById(loggedCrp.getId());
 
       User user = (User) session.get(APConstants.SESSION_USER);
       user = userManager.getUser(user.getId());
@@ -102,7 +106,8 @@ public class EditImpactPathwayInterceptor extends AbstractInterceptor implements
 
     parameters = invocation.getInvocationContext().getParameters();
     session = invocation.getInvocationContext().getSession();
-    crp = (Crp) session.get(APConstants.SESSION_CRP);
+    baseAction.setSession(session);
+    crp = (GlobalUnit) session.get(APConstants.SESSION_CRP);
     crpProgramID = this.getCrpProgramId();
 
     if (!baseAction
@@ -115,16 +120,19 @@ public class EditImpactPathwayInterceptor extends AbstractInterceptor implements
       this.setPermissionParameters(invocation);
       return invocation.invoke();
     } catch (Exception e) {
+      e.printStackTrace();
       return BaseAction.NOT_FOUND;
     }
   }
 
   public void setPermissionParameters(ActionInvocation invocation) {
     BaseAction baseAction = (BaseAction) invocation.getAction();
+    baseAction.setSession(session);
     boolean canEdit = false;
     boolean hasPermissionToEdit = false;
     boolean editParameter = false;
-
+    phase = baseAction.getActualPhase();
+    phase = phaseManager.getPhaseById(phase.getId());
 
     CrpProgram crpProgram = crpProgramManager.getCrpProgramById(crpProgramID);
 
@@ -146,6 +154,15 @@ public class EditImpactPathwayInterceptor extends AbstractInterceptor implements
           }
         }
 
+        if (!phase.getEditable()) {
+          canEdit = false;
+          baseAction.setCanEditPhase(false);
+        }
+        if (phase.getDescription().equals(APConstants.REPORTING)) {
+          canEdit = false;
+          baseAction.setCanEditPhase(false);
+        }
+
         if (parameters.get(APConstants.EDITABLE_REQUEST).isDefined()) {
           // String stringEditable = ((String[]) parameters.get(APConstants.EDITABLE_REQUEST))[0];
           String stringEditable = parameters.get(APConstants.EDITABLE_REQUEST).getMultipleValues()[0];
@@ -155,7 +172,13 @@ public class EditImpactPathwayInterceptor extends AbstractInterceptor implements
             baseAction.setEditableParameter(hasPermissionToEdit);
           }
         }
+        if (parameters.get(APConstants.TRANSACTION_ID).isDefined()) {
+          // String stringEditable = ((String[]) parameters.get(APConstants.EDITABLE_REQUEST))[0];
 
+          editParameter = false;
+          // If the user is not asking for edition privileges we don't need to validate them.
+
+        }
         // Check the permission if user want to edit or save the form
         if (editParameter || parameters.get("save") != null) {
           hasPermissionToEdit = (baseAction.isAdmin()) ? true : baseAction.hasPermission(baseAction
@@ -163,8 +186,9 @@ public class EditImpactPathwayInterceptor extends AbstractInterceptor implements
         }
 
         // Set the variable that indicates if the user can edit the section
-        baseAction.setEditableParameter(hasPermissionToEdit && canEdit);
+        baseAction.setEditableParameter(editParameter && canEdit);
         baseAction.setCanEdit(canEdit);
+
       } else {
         throw new NullPointerException();
       }

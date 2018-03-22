@@ -1,27 +1,17 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Jul 13, 2016 11:45:52 AM by Hibernate Tools" 4.3.1.Final -->
+<!-- Generated Jun 27, 2017 2:55:00 PM by Hibernate Tools 4.3.1.Final -->
 <hibernate-mapping>
 	<class name="org.cgiar.ccafs.marlo.data.model.Project" table="projects"
-		optimistic-lock="version">
+		optimistic-lock="none">
 		<id name="id" type="java.lang.Long">
 			<column name="id" />
 			<generator class="identity" />
 		</id>
-		<many-to-one name="crp" class="org.cgiar.ccafs.marlo.data.model.Crp"
+		<many-to-one name="modifiedBy" class="org.cgiar.ccafs.marlo.data.model.User"
 			fetch="select">
-			<column name="crp_id" not-null="true" />
-		</many-to-one>
-		<many-to-one name="liaisonInstitution"
-			class="org.cgiar.ccafs.marlo.data.model.LiaisonInstitution" fetch="select">
-			<column name="liaison_institution_id" />
-		</many-to-one>
-		<many-to-one name="liaisonUser"
-			class="org.cgiar.ccafs.marlo.data.model.LiaisonUser" fetch="select">
-			<column name="liaison_user_id">
-				<comment>foreign key to the table liaison_users</comment>
-			</column>
+			<column name="modified_by" not-null="true" />
 		</many-to-one>
 		<many-to-one name="createdBy" class="org.cgiar.ccafs.marlo.data.model.User"
 			fetch="select">
@@ -29,107 +19,23 @@
 				<comment>foreign key to the table users</comment>
 			</column>
 		</many-to-one>
-		<many-to-one name="modifiedBy" class="org.cgiar.ccafs.marlo.data.model.User"
-			fetch="select">
-			<column name="modified_by" not-null="true" />
-		</many-to-one>
-		<property name="title" type="string">
-			<column name="title" length="65535" />
-		</property>
-		<property name="status" type="java.lang.Long">
-			<column name="status" length="65535" />
-		</property>
-		<property name="summary" type="string">
-			<column name="summary" length="65535" />
-		</property>
-		<property name="startDate" type="date">
-			<column name="start_date" length="10" />
-		</property>
-		<property name="endDate" type="date">
-			<column name="end_date" length="10" />
-		</property>
-		<property name="type" type="string">
-			<column name="type" length="14" />
-		</property>
-		<property name="scale" type="integer">
-			<column name="scale" not-null="true" />
-		</property>
-		<property name="cofinancing" type="boolean">
-			<column name="is_cofinancing" not-null="true" />
-		</property>
-		<property name="statusJustification" type="string">
-			<column name="status_justification" length="65535" />
-		</property>
-		<property name="genderAnalysis" type="string">
-			<column name="gender_analysis" length="65535" />
-		</property>
-		<property name="crossCuttingGender" type="java.lang.Boolean">
-			<column name="cross_cutting_gender" />
-		</property>
-		<property name="administrative" type="java.lang.Boolean">
-			<column name="administrative" />
-		</property>
-		<property name="reporting" type="java.lang.Boolean">
-      <column name="reporting" />
-    </property>
-		<property name="crossCuttingYouth" type="java.lang.Boolean">
-			<column name="cross_cutting_youth" />
-		</property>
-		<property name="crossCuttingCapacity" type="java.lang.Boolean">
-			<column name="cross_cutting_capacity" />
-		</property>
-		<property name="crossCuttingNa" type="java.lang.Boolean">
-			<column name="cross_cutting_na" />
-		</property>
-		<property name="dimension" type="string">
-			<column name="dimension" length="65535" />
-		</property>
-		<property name="leaderResponsabilities" type="string">
-			<column name="leader_responsabilities" length="65535" />
-		</property>
-		<property name="requiresWorkplanUpload" type="java.lang.Boolean">
-			<column name="requires_workplan_upload" />
-		</property>
 		<property name="active" type="boolean">
 			<column name="is_active" not-null="true" />
-		</property>
-		<property name="locationGlobal" type="boolean">
-			<column name="is_location_global" />
-		</property>
-		<property name="locationRegional" type="java.lang.Boolean">
-      <column name="is_location_regional" />
-    </property>
-		<property name="noRegional" type="java.lang.Boolean">
-			<column name="no_regional" />
-		</property>
-		<property name="projectEditLeader" type="boolean">
-			<column name="is_project_leader_edit" />
 		</property>
 		<property name="createDate" type="timestamp">
 			<column name="create_date" length="19" not-null="true" />
 		</property>
-		<property name="presetDate" type="timestamp">
-			<column name="preset_date" length="19" />
-		</property>
 		<property name="activeSince" type="timestamp">
 			<column name="active_since" length="19" not-null="true" />
 		</property>
-		<property name="modificationJustification" type="string">
-			<column name="modification_justification" length="65535"
-				not-null="true" />
-		</property>
-		<many-to-one name="annualReportToDonnor"
-			class="org.cgiar.ccafs.marlo.data.model.FileDB" fetch="select">
-			<column name="file_annual_report_to_donnor" not-null="false" />
-		</many-to-one>
-		<many-to-one name="bilateralContractName"
-			class="org.cgiar.ccafs.marlo.data.model.FileDB" fetch="select">
-			<column name="file_bilateral_contract_name" not-null="false" />
-		</many-to-one>
-		<many-to-one name="workplan"
-			class="org.cgiar.ccafs.marlo.data.model.FileDB" fetch="select">
-			<column name="file_workplan" not-null="false" />
-		</many-to-one>
+		<set name="projectInfos" table="projects_info" inverse="true"
+			lazy="true" fetch="select">
+			<key>
+				<column name="project_id" />
+			</key>
+			<one-to-many class="org.cgiar.ccafs.marlo.data.model.ProjectInfo" />
+		</set>
+
 		<set name="projectFocuses" table="project_focuses" order-by="id"
 			inverse="true" lazy="true" fetch="select">
 			<key>
@@ -235,12 +141,13 @@
 			</key>
 			<one-to-many class="org.cgiar.ccafs.marlo.data.model.ProjectBudget" />
 		</set>
-		       <set name="projectPhases" table="project_phases" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="project_id" not-null="true" />
-            </key>
-            <one-to-many class="org.cgiar.ccafs.marlo.data.model.ProjectPhase" />
-        </set>
+		<set name="projectPhases" table="project_phases" inverse="true"
+			lazy="true" fetch="select">
+			<key>
+				<column name="project_id" not-null="true" />
+			</key>
+			<one-to-many class="org.cgiar.ccafs.marlo.data.model.ProjectPhase" />
+		</set>
 		<set name="projectBudgets" order-by="id" table="project_budgets"
 			inverse="true" lazy="true" fetch="select">
 			<key>
@@ -257,7 +164,7 @@
 			<one-to-many
 				class="org.cgiar.ccafs.marlo.data.model.ProjectBudgetsCluserActvity" />
 		</set>
-		<set name="projectHighligths" order-by="id" table="project_highligths"
+		<set name="projectHighlights" order-by="id" table="project_highligths"
 			inverse="true" lazy="true" fetch="select">
 			<key>
 				<column name="project_id" not-null="true" />
@@ -334,20 +241,51 @@
 			<one-to-many
 				class="org.cgiar.ccafs.marlo.data.model.ProjectFurtherContribution" />
 		</set>
-		
-		<set name="projectOutcomesPandr" table="project_outcomes_pandr" order-by="id" inverse="true" lazy="true" fetch="select">
+
+		<set name="projectOutcomesPandr" table="project_outcomes_pandr"
+			order-by="id" inverse="true" lazy="true" fetch="select">
+			<key>
+				<column name="project_id" not-null="true" />
+			</key>
+			<one-to-many class="org.cgiar.ccafs.marlo.data.model.ProjectOutcomePandr" />
+		</set>
+
+		<set name="otherContributions" table="other_contributions"
+			inverse="true" lazy="true" fetch="select">
+			<key>
+				<column name="project_id" not-null="true" />
+			</key>
+			<one-to-many class="org.cgiar.ccafs.marlo.data.model.OtherContribution" />
+		</set>
+		<set name="globalUnitProjects" table="global_unit_projects"
+			inverse="true" lazy="true" fetch="select">
+			<key>
+				<column name="project_id" not-null="true" />
+			</key>
+			<one-to-many class="org.cgiar.ccafs.marlo.data.model.GlobalUnitProject" />
+		</set>
+		<one-to-one name="centerProject"
+			class="org.cgiar.ccafs.marlo.data.model.CenterProject" cascade="save-update"></one-to-one>
+		<set name="projectExpectedStudies" table="project_expected_studies"
+			order-by="id" inverse="true" lazy="false" fetch="select">
+			<key>
+				<column name="project_id" not-null="true" />
+			</key>
+			<one-to-many class="org.cgiar.ccafs.marlo.data.model.ProjectExpectedStudy" />
+		</set>
+		<set name="projectBudgetsFlagships" table="project_budgets_flagships"
+			order-by="id" inverse="true" lazy="false" fetch="select">
+			<key>
+				<column name="project_id" not-null="true" />
+			</key>
+			<one-to-many
+				class="org.cgiar.ccafs.marlo.data.model.ProjectBudgetsFlagship" />
+		</set>
+		<set name="expectedStudyProjects" table="expected_study_projects" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="project_id" not-null="true" />
+                <column name="project_id" />
             </key>
-            <one-to-many class="org.cgiar.ccafs.marlo.data.model.ProjectOutcomePandr" />
-        </set>
-        
-         <set name="otherContributions" table="other_contributions" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="project_id" not-null="true" />
-            </key>
-            <one-to-many class="org.cgiar.ccafs.marlo.data.model.OtherContribution" />
-        </set>
-		
+            <one-to-many class="org.cgiar.ccafs.marlo.data.model.ExpectedStudyProject" />
+        </set>	
 	</class>
 </hibernate-mapping>

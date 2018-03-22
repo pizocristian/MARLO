@@ -17,13 +17,13 @@ package org.cgiar.ccafs.marlo.action.superadmin;
 
 import org.cgiar.ccafs.marlo.action.BaseAction;
 import org.cgiar.ccafs.marlo.config.APConstants;
-import org.cgiar.ccafs.marlo.data.manager.CrpManager;
 import org.cgiar.ccafs.marlo.data.manager.CrpUserManager;
+import org.cgiar.ccafs.marlo.data.manager.GlobalUnitManager;
 import org.cgiar.ccafs.marlo.data.manager.RoleManager;
 import org.cgiar.ccafs.marlo.data.manager.UserManager;
 import org.cgiar.ccafs.marlo.data.manager.UserRoleManager;
-import org.cgiar.ccafs.marlo.data.model.Crp;
 import org.cgiar.ccafs.marlo.data.model.CrpUser;
+import org.cgiar.ccafs.marlo.data.model.GlobalUnit;
 import org.cgiar.ccafs.marlo.data.model.Role;
 import org.cgiar.ccafs.marlo.data.model.User;
 import org.cgiar.ccafs.marlo.data.model.UserRole;
@@ -78,29 +78,29 @@ public class GuestUsersAction extends BaseAction {
   private final UserManager userManager;
 
 
-  private final CrpManager crpManager;
+  // GlobalUnit Manager
+  private GlobalUnitManager crpManager;
 
   private final UserRoleManager userRoleManager;
 
-  private final CrpUserManager crpUserManager;
-  private final RoleManager roleManager;
+  private CrpUserManager crpUserManager;
+
+  private RoleManager roleManager;
 
   private final SendMailS sendMailS;
-
   private User user;
 
   private boolean cigarUser;
 
-
   private Boolean isNewUser;
 
-  private List<Crp> crps;
+  private List<GlobalUnit> crps;
+
 
   private long userID;
 
-
   @Inject
-  public GuestUsersAction(APConfig config, UserManager userManager, CrpManager crpManager,
+  public GuestUsersAction(APConfig config, UserManager userManager, GlobalUnitManager crpManager,
     CrpUserManager crpUserManager, UserRoleManager userRoleManager, SendMailS sendMailS, RoleManager roleManager) {
     super(config);
     this.userManager = userManager;
@@ -111,9 +111,10 @@ public class GuestUsersAction extends BaseAction {
     this.roleManager = roleManager;
   }
 
-  public List<Crp> getCrps() {
+  public List<GlobalUnit> getCrps() {
     return crps;
   }
+
 
   public Boolean getIsNewUser() {
     return isNewUser;
@@ -123,10 +124,10 @@ public class GuestUsersAction extends BaseAction {
     return user;
   }
 
-
   public long getUserID() {
     return userID;
   }
+
 
   public boolean isCigarUser() {
     return cigarUser;
@@ -154,7 +155,6 @@ public class GuestUsersAction extends BaseAction {
     }
 
   }
-
 
   @Override
   public String save() {
@@ -203,7 +203,7 @@ public class GuestUsersAction extends BaseAction {
         for (CrpUser crpUser : user.getCrpUser()) {
           if (crpUser.getId() == -1) {
 
-            Crp crp = crpManager.getCrpById(crpUser.getCrp().getId());
+            GlobalUnit crp = crpManager.getGlobalUnitById(crpUser.getCrp().getId());
 
             CrpUser newCrpUser = new CrpUser();
             newCrpUser.setCrp(crp);
@@ -248,7 +248,8 @@ public class GuestUsersAction extends BaseAction {
     return SUCCESS;
   }
 
-  public void sendMailNewUser(User user, Crp loggedCrp) throws NoSuchAlgorithmException {
+
+  public void sendMailNewUser(User user, GlobalUnit loggedCrp) throws NoSuchAlgorithmException {
     String toEmail = user.getEmail();
     String ccEmail = null;
     String bbcEmails = this.config.getEmailNotification();
@@ -269,9 +270,9 @@ public class GuestUsersAction extends BaseAction {
       .filter(ur -> ur.getUser() != null && ur.getUser().isActive()).collect(Collectors.toList());
     for (UserRole userRole : userRoles) {
       if (crpAdmins.isEmpty()) {
-        crpAdmins += userRole.getUser().getFirstName() + " (" + userRole.getUser().getEmail() + ")";
+        crpAdmins += userRole.getUser().getComposedCompleteName() + " (" + userRole.getUser().getEmail() + ")";
       } else {
-        crpAdmins += ", " + userRole.getUser().getFirstName() + " (" + userRole.getUser().getEmail() + ")";
+        crpAdmins += ", " + userRole.getUser().getComposedCompleteName() + " (" + userRole.getUser().getEmail() + ")";
       }
     }
 
@@ -287,12 +288,12 @@ public class GuestUsersAction extends BaseAction {
 
     // Send pdf
     String contentType = "application/pdf";
-    String fileName = "Introduction_To_MARLO_v2.1.pdf";
+    String fileName = "Introduction_To_MARLO_v2.2.pdf";
     byte[] buffer = null;
     InputStream inputStream = null;
 
     try {
-      inputStream = this.getClass().getResourceAsStream("/manual/Introduction_To_MARLO_v2.1.pdf");
+      inputStream = this.getClass().getResourceAsStream("/manual/Introduction_To_MARLO_v2.2.pdf");
       buffer = readFully(inputStream);
     } catch (FileNotFoundException e) {
       // TODO Auto-generated catch block
@@ -319,10 +320,9 @@ public class GuestUsersAction extends BaseAction {
 
   }
 
-  public void setCrps(List<Crp> crps) {
+  public void setCrps(List<GlobalUnit> crps) {
     this.crps = crps;
   }
-
 
   public void setIsNewUser(Boolean isNewUser) {
     this.isNewUser = isNewUser;

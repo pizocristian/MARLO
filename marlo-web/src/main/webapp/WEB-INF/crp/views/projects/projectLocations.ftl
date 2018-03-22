@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Project Locations" /]
-[#assign currentSectionString = "project-${actionName?replace('/','-')}-${projectID}" /]
+[#assign currentSectionString = "project-${actionName?replace('/','-')}-${projectID}-phase-${(actualPhase.id)!}" /]
 [#assign pageLibs = ["select2"] /]
 [#assign customJS = [
   "${baseUrlMedia}/js/projects/projectLocations.js", 
@@ -11,10 +11,11 @@
 [#assign customCSS = ["${baseUrlMedia}/css/projects/projectLocations.css" ] /]
 [#assign currentSection = "projects" /]
 [#assign currentStage = "locations" /]
-[#assign hideJustification = false /]
+[#assign hideJustification = true /]
 
 [#assign breadCrumb = [
   {"label":"projectsList", "nameSpace":"/projects", "action":"${(crpSession)!}/projectsList"},
+  {"text":"P${project.id}", "nameSpace":"/projects", "action":"${crpSession}/description", "param": "projectID=${project.id?c}&edit=true&phaseID=${(actualPhase.id)!}"},
   {"label":"projectLocations", "nameSpace":"/projects", "action":""}
 ] /]
 
@@ -34,6 +35,9 @@
   <div style="display:none" class="viewMore closed"></div>
 </div>
     
+[#if (!availabePhase)!false]
+  [#include "/WEB-INF/crp/views/projects/availability-projects.ftl" /]
+[#else]
 <section class="container">
     <div class="row">
       [#-- Project Menu --]
@@ -46,6 +50,7 @@
         [#include "/WEB-INF/crp/views/projects/messages-projects.ftl" /]
       
         [@s.form action=actionName method="POST" enctype="multipart/form-data" cssClass=""]
+                        <input class="projectInfo" type="hidden" name="project.id" value="${project.id}" />
            
           <p class="bg-primary" style="padding: 18px; display:none;">
             <span class="glyphicon glyphicon-flash"></span>
@@ -84,14 +89,14 @@
                 
                 [#-- GLOBAL DIMENSION --]
                 <div class="form-group  col-md-12">
-                  [@customForm.yesNoInput  label="projectLocations.globalDimension" name="project.locationGlobal"  editable=editable && action.hasSpecificities("crp_other_locations") inverse=false  cssClass="" /] 
+                  [@customForm.yesNoInput  label="projectLocations.globalDimension" name="project.projectInfo.locationGlobal"  editable=editable && action.hasSpecificities("crp_other_locations") inverse=false  cssClass="" /] 
                 </div>
                 <br />
                 <div class="form-group col-md-12 ">
                   <hr />
                 </div>
                 <div class="form-group col-md-12">
-                  [@customForm.yesNoInput  label="projectLocations.regionalDimension" name="project.locationRegional"   editable=editable && action.hasSpecificities("crp_other_locations") inverse=false  cssClass="isRegional" /]
+                  [@customForm.yesNoInput  label="projectLocations.regionalDimension" name="project.projectInfo.locationRegional"   editable=editable && action.hasSpecificities("crp_other_locations") inverse=false  cssClass="isRegional" /]
                   [#if editable && action.hasSpecificities("crp_other_locations")]
                     <small style="color: #337ab7;">[@s.text name="projectLocations.regionsNote" /] </small>
                   [/#if]
@@ -103,7 +108,7 @@
                   <div class="row recommendedList">
                     [#-- RECOMMENDED REGIONS LIST --]
                     [#if project.regionFS?has_content]
-                    <div class="regionsContent" style="display:${(project.locationRegional?string("block","none"))!"none"};">
+                    <div class="regionsContent" style="display:${(project.projectInfo.locationRegional?string("block","none"))!"none"};">
                       <div class="col-md-12" >
                         <h5 class="sectionSubTitle">Suggested Regions:</h5>
                       </div>
@@ -139,7 +144,7 @@
                       
                   [#-- REGIONS SELECT --]
                   <div class="row">
-                  <div class="regionsBox form-group col-md-12" style="display:${(project.locationRegional?string("block","none"))!"none"};">
+                  <div class="regionsBox form-group col-md-12" style="display:${(project.projectInfo.locationRegional?string("block","none"))!"none"};">
                     <div class="panel tertiary col-md-12">
                      <div class="panel-head">
                        <label for=""> [@customForm.text name="projectCofunded.selectRegions" readText=!editable /]:[@customForm.req required=editable /]</label>
@@ -237,6 +242,7 @@
       </div>
     </div>  
 </section>
+[/#if]
 
 [#--<script src="https://maps.googleapis.com/maps/api/js?key=${config.googleApiKey}&callback=initMap"></script>--]
 
@@ -463,7 +469,10 @@
       [#if element.fundingSources?has_content]
         [#list element.fundingSources as fs]
           [#if action.hasSpecificities('crp_fs_w1w2_cofinancing')] ${(fs.w1w2?string('<small class="text-primary">(Co-Financing)</small>',''))!} [/#if]
-          <span style="font-size:0.7em;">${fs.composedName}</span><br />
+          <a target="_blank" href="[@s.url namespace="/fundingSources" action="${(crpSession)!}/fundingSource"] [@s.param name='fundingSourceID']${fs.id}[/@s.param][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">
+            <span style="font-size:0.7em;">${fs.composedName}</span>
+          </a>
+          <br />
         [/#list]
       [/#if]
     </div>

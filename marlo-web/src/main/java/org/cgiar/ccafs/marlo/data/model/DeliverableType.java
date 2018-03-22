@@ -27,11 +27,17 @@ import com.google.gson.annotations.Expose;
  */
 public class DeliverableType implements java.io.Serializable, IAuditLog {
 
+
   private static final long serialVersionUID = 2591192504126616140L;
+
+
   @Expose
   private Long id;
+
   @Expose
-  private DeliverableType deliverableType;
+  private DeliverableType deliverableCategory;
+
+
   @Expose
   private String name;
 
@@ -46,7 +52,7 @@ public class DeliverableType implements java.io.Serializable, IAuditLog {
 
 
   @Expose
-  private Crp crp;
+  private GlobalUnit crp;
 
 
   private Set<DeliverableType> deliverableTypes = new HashSet<DeliverableType>(0);
@@ -59,7 +65,7 @@ public class DeliverableType implements java.io.Serializable, IAuditLog {
 
   public DeliverableType(DeliverableType deliverableType, String name, String description, Integer timeline,
     Set<DeliverableType> deliverableTypes, Set<Deliverable> deliverables) {
-    this.deliverableType = deliverableType;
+    this.deliverableCategory = deliverableType;
     this.name = name;
     this.description = description;
     this.timeline = timeline;
@@ -72,7 +78,8 @@ public class DeliverableType implements java.io.Serializable, IAuditLog {
     return adminType;
   }
 
-  public Crp getCrp() {
+
+  public GlobalUnit getCrp() {
     return crp;
   }
 
@@ -81,8 +88,9 @@ public class DeliverableType implements java.io.Serializable, IAuditLog {
     return this.deliverables;
   }
 
-  public DeliverableType getDeliverableType() {
-    return this.deliverableType;
+
+  public DeliverableType getDeliverableCategory() {
+    return this.deliverableCategory;
   }
 
   public Set<DeliverableType> getDeliverableTypes() {
@@ -101,6 +109,7 @@ public class DeliverableType implements java.io.Serializable, IAuditLog {
   public Long getId() {
     return this.id;
   }
+
 
   @Override
   public String getLogDeatil() {
@@ -142,16 +151,17 @@ public class DeliverableType implements java.io.Serializable, IAuditLog {
     this.adminType = adminType;
   }
 
-  public void setCrp(Crp crp) {
+  public void setCrp(GlobalUnit crp) {
     this.crp = crp;
   }
+
 
   public void setDeliverables(Set<Deliverable> deliverables) {
     this.deliverables = deliverables;
   }
 
-  public void setDeliverableType(DeliverableType deliverableType) {
-    this.deliverableType = deliverableType;
+  public void setDeliverableCategory(DeliverableType deliverableType) {
+    this.deliverableCategory = deliverableType;
   }
 
   public void setDeliverableTypes(Set<DeliverableType> deliverableTypes) {
@@ -165,6 +175,7 @@ public class DeliverableType implements java.io.Serializable, IAuditLog {
   public void setFair(Boolean fair) {
     this.fair = fair;
   }
+
 
   public void setId(Long id) {
     this.id = id;
@@ -180,7 +191,7 @@ public class DeliverableType implements java.io.Serializable, IAuditLog {
 
   @Override
   public String toString() {
-    return "DeliverableType [id=" + id + ", deliverableType=" + deliverableType + ", name=" + name + ", description="
+    return "DeliverableType [id=" + id + ", deliverableCategory=" + deliverableCategory + ", name=" + name + ", description="
       + description + ", timeline=" + timeline + ", fair=" + fair + ", crp=" + crp + "]";
   }
 

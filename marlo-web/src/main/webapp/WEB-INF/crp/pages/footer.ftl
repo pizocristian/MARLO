@@ -40,8 +40,8 @@
     [/#if]
     
     [#-- Global Javascript --]
-    <script type="text/javascript" src="${baseUrl}/global/js/utils.js" ></script>
-    <script type="text/javascript" src="${baseUrl}/global/js/global.js" ></script>
+    <script type="text/javascript" src="${baseUrl}/global/js/utils.js?20180316" ></script>
+    <script type="text/javascript" src="${baseUrl}/global/js/global.js?1" ></script>
     [#if logged]
       [#-- Pusher app --]
       <script type="text/javascript" src="${baseUrl}/global/js/pusher-app.js" ></script>
@@ -67,6 +67,7 @@
               <li><strong>canEdit:</strong> ${canEdit?string}</li>
               <li><strong>Editable:</strong> ${editable?string}</li>
               <li><strong>currentSectionString:</strong> ${(currentSectionString)!}</li>
+              <li><strong>canEditPhase:</strong> ${canEditPhase?string}</li>
             </ul> 
           </div>
           <h3>Form outputs</h3>

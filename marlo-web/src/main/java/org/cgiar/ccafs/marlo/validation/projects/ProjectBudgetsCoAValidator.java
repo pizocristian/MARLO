@@ -16,11 +16,10 @@ package org.cgiar.ccafs.marlo.validation.projects;
 
 
 import org.cgiar.ccafs.marlo.action.BaseAction;
-import org.cgiar.ccafs.marlo.config.APConstants;
 import org.cgiar.ccafs.marlo.data.manager.BudgetTypeManager;
-import org.cgiar.ccafs.marlo.data.manager.CrpManager;
+import org.cgiar.ccafs.marlo.data.manager.GlobalUnitManager;
 import org.cgiar.ccafs.marlo.data.manager.ProjectManager;
-import org.cgiar.ccafs.marlo.data.model.Crp;
+import org.cgiar.ccafs.marlo.data.model.GlobalUnit;
 import org.cgiar.ccafs.marlo.data.model.Project;
 import org.cgiar.ccafs.marlo.data.model.ProjectBudget;
 import org.cgiar.ccafs.marlo.data.model.ProjectBudgetsCluserActvity;
@@ -51,16 +50,16 @@ import org.apache.commons.collections.CollectionUtils;
 @Named
 public class ProjectBudgetsCoAValidator extends BaseValidator {
 
-  // This is not thread safe
-  private boolean hasErros;
+  private BudgetTypeManager budgetTypeManager;
+  private ProjectManager projectManager;
 
-  private final BudgetTypeManager budgetTypeManager;
-  private final ProjectManager projectManager;
-  private final CrpManager crpManager;
+
+  // GlobalUnit Manager
+  private GlobalUnitManager crpManager;
 
   @Inject
   public ProjectBudgetsCoAValidator(ProjectValidator projectValidator, BudgetTypeManager budgetTypeManager,
-    ProjectManager projectManager, CrpManager crpManager) {
+    ProjectManager projectManager, GlobalUnitManager crpManager) {
     super();
     this.crpManager = crpManager;
     this.projectManager = projectManager;
@@ -84,12 +83,12 @@ public class ProjectBudgetsCoAValidator extends BaseValidator {
     return gender;
   }
 
-  private Path getAutoSaveFilePath(Project project, long crpID) {
-    Crp crp = crpManager.getCrpById(crpID);
+  private Path getAutoSaveFilePath(Project project, long crpID, BaseAction action) {
+    GlobalUnit crp = crpManager.getGlobalUnitById(crpID);
     String composedClassName = project.getClass().getSimpleName();
     String actionFile = ProjectSectionStatusEnum.BUDGETBYCOA.getStatus().replace("/", "_");
-    String autoSaveFile =
-      project.getId() + "_" + composedClassName + "_" + crp.getAcronym() + "_" + actionFile + ".json";
+    String autoSaveFile = project.getId() + "_" + composedClassName + "_" + action.getActualPhase().getDescription()
+      + "_" + action.getActualPhase().getYear() + "_" + crp.getAcronym() + "_" + actionFile + ".json";
 
     return Paths.get(config.getAutoSaveFolder() + autoSaveFile);
   }
@@ -98,14 +97,13 @@ public class ProjectBudgetsCoAValidator extends BaseValidator {
     Project projectBD = projectManager.getProjectById(projectID);
     List<ProjectBudget> budgets = projectBD.getProjectBudgets()
       .stream().filter(c -> c.isActive() && c.getYear() == year
-        && c.getBudgetType().getId().longValue() == type.longValue() && (c.getAmount() != null && c.getAmount() > 0))
+        && c.getBudgetType().getId().longValue() == type.longValue() && (c.getAmount() != null && c.getAmount() >= 0))
       .collect(Collectors.toList());
-
-    return budgets.size() > 0;
-  }
-
-  public boolean isHasErros() {
-    return hasErros;
+    Double totalAmount = 0.0;
+    for (ProjectBudget projectBudget : budgets) {
+      totalAmount += projectBudget.getAmount();
+    }
+    return budgets.size() > 0 && totalAmount >= 0.0;
   }
 
   public void replaceAll(StringBuilder builder, String from, String to) {
@@ -129,19 +127,14 @@ public class ProjectBudgetsCoAValidator extends BaseValidator {
   }
 
 
-  public void setHasErros(boolean hasErros) {
-    this.hasErros = hasErros;
-  }
-
   public void validate(BaseAction action, Project project, boolean saving) {
     action.setInvalidFields(new HashMap<>());
-    hasErros = false;
     if (project != null) {
       if (!saving) {
-        Path path = this.getAutoSaveFilePath(project, action.getCrpID());
+        Path path = this.getAutoSaveFilePath(project, action.getCrpID(), action);
 
         if (path.toFile().exists()) {
-          this.addMissingField("draft");
+          action.addMissingField("draft");
         }
       }
       Project projectDB = projectManager.getProjectById(project.getId());
@@ -150,32 +143,32 @@ public class ProjectBudgetsCoAValidator extends BaseValidator {
       if (!activities.isEmpty()) {
         if (CollectionUtils.isNotEmpty(project.getBudgetsCluserActvities())) {
           if (this.hasBudgets(new Long(1), action.getCurrentCycleYear(), project.getId())) {
-            List<ProjectBudgetsCluserActvity> w1w2List = project
-              .getBudgetsCluserActvities().stream().filter(c -> c.isActive()
+            List<ProjectBudgetsCluserActvity> w1w2List = project.getBudgetsCluserActvities().stream()
+              .filter(c -> c != null && c.getBudgetType() != null && c.getBudgetType().getId() != null
                 && (c.getBudgetType().getId().longValue() == 1) && (c.getYear() == action.getCurrentCycleYear()))
               .collect(Collectors.toList());
             this.validateBudgets(action, w1w2List, new Long(1),
               this.calculateGender(new Long(1), action.getCurrentCycleYear(), project.getId()));
           }
           if (this.hasBudgets(new Long(2), action.getCurrentCycleYear(), project.getId())) {
-            List<ProjectBudgetsCluserActvity> w3List = project
-              .getBudgetsCluserActvities().stream().filter(c -> c.isActive()
+            List<ProjectBudgetsCluserActvity> w3List = project.getBudgetsCluserActvities().stream()
+              .filter(c -> c != null && c.getBudgetType() != null && c.getBudgetType().getId() != null
                 && c.getBudgetType().getId().longValue() == 2 && c.getYear() == action.getCurrentCycleYear())
               .collect(Collectors.toList());
             this.validateBudgets(action, w3List, new Long(2),
               this.calculateGender(new Long(2), action.getCurrentCycleYear(), project.getId()));
           }
           if (this.hasBudgets(new Long(3), action.getCurrentCycleYear(), project.getId())) {
-            List<ProjectBudgetsCluserActvity> bilateralList = project
-              .getBudgetsCluserActvities().stream().filter(c -> c.isActive()
+            List<ProjectBudgetsCluserActvity> bilateralList = project.getBudgetsCluserActvities().stream()
+              .filter(c -> c != null && c.getBudgetType() != null && c.getBudgetType().getId() != null
                 && c.getBudgetType().getId().longValue() == 3 && c.getYear() == action.getCurrentCycleYear())
               .collect(Collectors.toList());
             this.validateBudgets(action, bilateralList, new Long(3),
               this.calculateGender(new Long(3), action.getCurrentCycleYear(), project.getId()));
           }
           if (this.hasBudgets(new Long(4), action.getCurrentCycleYear(), project.getId())) {
-            List<ProjectBudgetsCluserActvity> centerFundsList = project
-              .getBudgetsCluserActvities().stream().filter(c -> c.isActive()
+            List<ProjectBudgetsCluserActvity> centerFundsList = project.getBudgetsCluserActvities().stream()
+              .filter(c -> c != null && c.getBudgetType() != null && c.getBudgetType().getId() != null
                 && c.getBudgetType().getId().longValue() == 4 && c.getYear() == action.getCurrentCycleYear())
               .collect(Collectors.toList());
             this.validateBudgets(action, centerFundsList, new Long(4),
@@ -183,24 +176,22 @@ public class ProjectBudgetsCoAValidator extends BaseValidator {
           }
 
         } else {
-          this.addMessage(action.getText("project.budgets"));
+          action.addMessage(action.getText("project.budgets"));
         }
       }
 
       if (!action.getFieldErrors().isEmpty()) {
-        hasErros = true;
         action.addActionError(action.getText("saving.fields.required"));
-      } else if (validationMessage.length() > 0) {
-        action
-          .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+      } else if (action.getValidationMessage().length() > 0) {
+        action.addActionMessage(
+          " " + action.getText("saving.missingFields", new String[] {action.getValidationMessage().toString()}));
       }
-      if (action.isReportingActive()) {
-        this.saveMissingFields(project, APConstants.REPORTING, action.getReportingYear(),
-          ProjectSectionStatusEnum.BUDGETBYCOA.getStatus());
-      } else {
-        this.saveMissingFields(project, APConstants.PLANNING, action.getPlanningYear(),
-          ProjectSectionStatusEnum.BUDGETBYCOA.getStatus());
-      }
+
+
+      this.saveMissingFields(project, action.getActualPhase().getDescription(), action.getActualPhase().getYear(),
+        ProjectSectionStatusEnum.BUDGETBYCOA.getStatus(), action);
+
+
       // Saving missing fields.
 
     }
@@ -227,17 +218,25 @@ public class ProjectBudgetsCoAValidator extends BaseValidator {
       gender = this.round(gender, 2);
 
     }
-
-    if (amount != 100) {
+    if (amount > 0) {
+      if (amount != 100) {
+        action.getInvalidFields().put("project.budget.coa.amount", "project.budget.coa.amount");
+        action.addMessage(action.getText("project.budget.coa.amount", params));
+      }
+    } else {
       action.getInvalidFields().put("project.budget.coa.amount", "project.budget.coa.amount");
-      this.addMessage(action.getText("project.budget.coa.amount", params));
+      action.addMessage(action.getText("project.budget.coa.amount", params));
     }
-    if (genderTotal > 0) {
+
+    if (gender > 0) {
       if (gender != 100) {
 
         action.getInvalidFields().put("project.budget.coa.gender", "project.budget.coa.gender");
-        this.addMessage(action.getText("project.budget.coa.gender", params));
+        action.addMessage(action.getText("project.budget.coa.gender", params));
       }
+    } else {
+      action.getInvalidFields().put("project.budget.coa.gender", "project.budget.coa.gender");
+      action.addMessage(action.getText("project.budget.coa.gender", params));
     }
 
 

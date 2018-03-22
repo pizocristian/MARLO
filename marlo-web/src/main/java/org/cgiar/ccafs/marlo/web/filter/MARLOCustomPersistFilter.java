@@ -22,18 +22,17 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.servlet.Filter;
 import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.Cache;
 import org.hibernate.SessionFactory;
 import org.hibernate.StaleObjectStateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 /**
  * A Filter that implements the 'open session in view' pattern. See link here
@@ -51,7 +50,7 @@ import org.slf4j.LoggerFactory;
  * @author GrantL
  */
 @Named("MARLOCustomPersistFilter")
-public class MARLOCustomPersistFilter implements Filter {
+public class MARLOCustomPersistFilter extends OncePerRequestFilter {
 
   @Inject
   private SessionFactory sessionFactory;
@@ -69,9 +68,8 @@ public class MARLOCustomPersistFilter implements Filter {
   }
 
   @Override
-  public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-    throws IOException, ServletException {
-    HttpServletRequest httpRequest = (HttpServletRequest) request;
+  protected void doFilterInternal(HttpServletRequest httpRequest, HttpServletResponse response, FilterChain chain)
+    throws ServletException, IOException {
     String url = httpRequest.getRequestURL().toString();
     String queryString = httpRequest.getQueryString();
     StringBuilder stringBuilder = new StringBuilder();
@@ -89,22 +87,34 @@ public class MARLOCustomPersistFilter implements Filter {
       AuditLogContextProvider.push(new AuditLogContext());
 
       LOG.debug("begin doFilter for MARLOCustomPersistFilter for request: " + requestUrl);
+      Cache cache = sessionFactory.getCache();
+
+      if (cache != null) {
+        cache.evictAllRegions(); // Evict data from all query regions.
+      }
       sessionFactory.getCurrentSession().beginTransaction();
 
       // Continue filter chain
-      chain.doFilter(request, response);
+      chain.doFilter(httpRequest, response);
 
-      sessionFactory.getCurrentSession().getTransaction().commit();
+      if (sessionFactory.getCurrentSession() != null && sessionFactory.getCurrentSession().getTransaction() != null) {
+        sessionFactory.getCurrentSession().getTransaction().commit();
+
+      }
+
 
     } catch (StaleObjectStateException staleEx) {
       LOG.error("This interceptor does not implement optimistic concurrency control!");
       LOG.error("Your application will not work until you add compensation actions!");
+      httpRequest.getSession().setAttribute("exception", staleEx);
       // Rollback, close everything, possibly compensate for any permanent changes
       // during the conversation, and finally restart business conversation. Maybe
       // give the user of the application a chance to merge some of his work with
       // fresh data... what you do here depends on your applications design.
       throw staleEx;
     } catch (Throwable ex) {
+
+      httpRequest.getSession().setAttribute("exception", ex);
       // Rollback only
       LOG.error("Exception occurred when trying to commit transaction");
       try {
@@ -119,22 +129,20 @@ public class MARLOCustomPersistFilter implements Filter {
       // Let others handle it... maybe another interceptor for exceptions?
       throw new ServletException(ex);
     }
+
+
     /**
      * We want to decouple or AuditLogInterceptor from our DAOs so we need a mechanism to
      * pass entity values from the DAOs to the Hibernate Interceptors/Hibernate Listeners.
      */
     finally {
       LOG.debug("clean up AuditLogHelper for MARLOCustomPersistFilter request : " + requestUrl);
+
       // This must get executed in a finally block or otherwise we risk a memory leak.
       AuditLogContextProvider.pop();
     }
 
 
-  }
-
-  @Override
-  public void init(FilterConfig filterConfig) throws ServletException {
-    LOG.debug("Initializing MARLOCustomPersistFilter");
   }
 
 }

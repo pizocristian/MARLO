@@ -5,8 +5,8 @@
   { 'slug': 'impactPathway',  'name': 'menu.impactPathway', 'namespace': '/centerImpactPathway',  'action': '${(centerSession)!}/programimpacts', 'visible': (logged && action.centerImpactPathwayActive()), 'active': true, 'param':(programID)! },
 
   { 'slug': 'projects', 'name': 'menu.monitoring.projects',      'namespace': '/monitoring',       'action': '${(centerSession)!}/projectList',    'visible': (logged && action.centerMonitoringActive()), 'active': true, 'param':(programID)! },
-  { 'slug': 'outcomes', 'name': 'menu.monitoring.outcomes',      'namespace': '/monitoring',       'action': '${(centerSession)!}/monitoringOutcomesList',    'visible': (logged && action.centerMonitoringActive()), 'active': true, 'param':(programID)! },
-  { 'slug': 'capdev', 'name': 'menu.capdev',      'namespace': '',       'action': '',    'visible': (logged && action.centerCapDevActive()), 'active':false },
+  { 'slug': 'outcomes', 'name': 'menu.monitoring.outcomes',      'namespace': '/monitoring',       'action': '${(centerSession)!}/monitoringOutcomesList',    'visible': (logged && action.centerMonitoringOutcomeActive()), 'active': true, 'param':(programID)! },
+  { 'slug': 'capdev', 'name': 'menu.capdev',      'namespace': '/capdev',       'action': '${(centerSession)!}/capdev',    'visible': (logged && action.centerCapDevActive()), 'active':true },
   { 'slug': 'summaries', 'name': 'menu.monitoring.summaries',      'namespace': '/centerSummaries',       'action': '${(centerSession)!}/summaries',    'visible': (logged && action.centerSummariesActive()), 'active': true }]
 
   /]
@@ -17,7 +17,7 @@
     <li id="${item.slug}" class="[#if currentSection?? && currentSection == item.slug ]currentSection[/#if] ${(item.active)?string('enabled','disabled')}">
       [#-- Monitoring Programs tag --]
       [#if item_index==3]<span class="tagMainMenu visible-md-block visible-lg-block">Monitoring Programs</span>[/#if]
-      <a href="[@s.url namespace=item.namespace action='${item.action}'][#if logged][@s.param name="edit" value="true"/][/#if][#if item.param??][@s.param name="programID" value=item.param/][/#if][/@s.url]" onclick="return ${item.active?string}">
+      <a href="[@s.url namespace=item.namespace action='${item.action}'][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][#if item.param??][@s.param name="programID" value=item.param/][/#if][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]" onclick="return ${item.active?string}">
         [#if item.icon?has_content]<span class="glyphicon glyphicon-${item.icon}"></span> [/#if]
         [@s.text name=item.name ][@s.param]${(centerSession?upper_case)!'CENTER'}[/@s.param] [/@s.text]
       </a>
@@ -26,7 +26,7 @@
           [#list item.subItems as subItem]
             [#if subItem.visible]
             <li id="${subItem.slug}" class="[#if currentStage?? && currentStage == subItem.slug ]currentSection[/#if] ${(subItem.active)?string('enabled','disabled')}">
-              <a href="[@s.url namespace=subItem.namespace action='${subItem.action}'][#if logged][@s.param name="edit" value="true"/][/#if][/@s.url]" onclick="return ${subItem.active?string}" class="action-${subItem.action}">
+              <a href="[@s.url namespace=subItem.namespace action='${subItem.action}'][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]" onclick="return ${subItem.active?string}" class="action-${subItem.action}">
                 [#if subItem.icon?has_content]<span class="glyphicon glyphicon-${subItem.icon}"></span> [/#if]
                 [@s.text name=subItem.name ][/@s.text]
               </a>

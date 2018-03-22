@@ -8,6 +8,7 @@ function init() {
   });
 
   attachEvents();
+
 }
 
 function attachEvents() {
@@ -23,20 +24,24 @@ function attachEvents() {
 
   // Remove a partner
   $('.removePartner').on('click', removePartner);
-  
-//Add a next User
+
+// Add a next User
   $('.addNextUser').on('click', addNextUser);
-  
+
 // Remove a next User
   $('.removeNextUser').on('click', removeNextUser);
-  
-//When change of beneficiary type
+
+  $(".outputSelect").on("change", addOutput);
+  $(".removeOutput").on("click", removeOutput);
+
+// When change of beneficiary type
   $(".typeSelect").on("change", function() {
     var option = $(this).find("option:selected");
     var $select = $(this).parents(".nextUser").find(".subTypeSelect");
     var url = baseURL + "/nextUserByType.do";
     var data = {
-      "nextUserID": option.val()
+        "nextUserID": option.val(),
+        phaseID: phaseID
     }
     // remove options
     $select.find("option").each(function(i,e) {
@@ -55,6 +60,14 @@ function attachEvents() {
       }
       $select.trigger("change.select2");
     });
+  });
+
+  var outputSelect = $(".outputSelect");
+  $(".outputList").find(".outputs").each(function(i,e) {
+    var idOutput = $(e).find("input.outputId");
+    var outputOption = outputSelect.find("option[value='"+idOutput.val()+"']");
+    console.log("idOut= "+idOutput.val()+" outputOpt= "+outputOption);
+    outputOption.prop('disabled', true);
   });
 
 }
@@ -155,8 +168,8 @@ function updateIndexes() {
       $(e).setNameIndexes(2, i);
     });
   });
-  
-//Update beneficiaries
+
+// Update beneficiaries
   $(".nextUsers-list").find(".nextUser").each(function(i,e) {
     console.log($(e));
     $(e).setNameIndexes(1, i);
@@ -194,4 +207,77 @@ function checkNextUsersItems(block) {
   } else {
     $(block).parent().find('p.message').fadeOut();
   }
+}
+
+/** FUNCTIONS Outputs* */
+
+// Add a new funding source element
+function addOutput() {
+  var $select = $(this);
+  var option = $select.find("option:selected");
+  if(option.val() != "-1") {
+    $.ajax({
+        url: baseURL + "/outcomeInfo.do",
+        type: 'GET',
+        data: {
+          outcomeID: option.val()
+        },
+        success: function(m) {
+          console.log("data");
+          console.log(m);
+          var $list = $(".outputList");
+          var $item = $("#output-template").clone(true).removeAttr("id");
+          $item.find("span.index").text("OC" + m.outcomeInfo.id);
+          console.log('opttext'+option.text());
+          $item.find("div.oStatement").text(option.text());
+          $item.find(".outputId").val(m.outcomeInfo.id);
+          $list.append($item);
+          $item.show('slow');
+          updateOutputs();
+          checkOutputItems($list);
+          $select.find(option).remove();
+          $select.val("-1").trigger("change");
+        },
+        error: function(e) {
+          console.log(e);
+        }
+    });
+  }
+}
+
+// Remove Funding source element
+function removeOutput() {
+  var $list = $(this).parents('.outputList');
+  var $item = $(this).parents('.outputs');
+  var $select = $(".outputSelect");
+  $select.addOption($item.find("input.outputId").val(), $item.find("div.oStatement").text());
+  $item.hide(1000, function() {
+    $item.remove();
+    checkOutputItems($list);
+    updateOutputs();
+  });
+
+}
+
+function updateOutputs() {
+  $(".outputList").find('.outputs').each(function(i,e) {
+    // Set indexes
+    $(e).setNameIndexes(1, i);
+  });
+}
+
+function checkOutputItems(block) {
+  var items = $(block).find('.outputs').length;
+  if(items == 0) {
+    $(block).find('p.outputInf').fadeIn();
+  } else {
+    $(block).find('p.outputInf').fadeOut();
+  }
+}
+
+function checkOutputsToRemove() {
+  $(".outputList").find(".outputs").each(function(i,e) {
+    var option = $(".outputSelect").find("option[value='" + $(e).find(".outputId").val() + "']");
+    option.remove();
+  });
 }

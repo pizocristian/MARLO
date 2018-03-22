@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "Management" /]
-[#assign currentSectionString = "${actionName?replace('/','-')}" /]
+[#assign currentSectionString = "${actionName?replace('/','-')}-phase-${(actualPhase.id)!}" /]
 [#assign pageLibs = ["vanilla-color-picker","intro.js"] /]
 [#assign customJS = [
   "${baseUrl}/global/js/usersManagement.js", 
@@ -96,19 +96,9 @@
         <div id="dialog-confirm"  style="display:none;">
           <p><span class="glyphicon glyphicon-warning-sign" style="float:left; margin:0 7px 20px 0;"></span><strong> Are you sure?</strong></p>
         </div>
+        
         [#-- Section Buttons--]
-        <div class="buttons">
-          <div class="buttons-content">
-          [#if editable]
-            <a href="[@s.url][/@s.url]" class="form-button button-edit"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> [@s.text name="form.buttons.back" /]</a>
-            [@s.submit type="button" name="save" cssClass="button-save"]<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> [@s.text name="form.buttons.save" /][/@s.submit]
-          [#else]
-            [#if canEdit]
-              <a href="[@s.url][@s.param name="edit" value="true"/][/@s.url]" class="form-button button-edit"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> [@s.text name="form.buttons.edit" /]</a>
-            [/#if]
-          [/#if]
-          </div>
-        </div>
+        [#include "/WEB-INF/crp/views/admin/buttons-admin.ftl" /]
         
         [/@s.form]
       </div>
@@ -162,8 +152,9 @@
       [/#if]
     [/#if]
     <div class="leftHead">
+      [#assign globalFlagship][@s.text name="global.flagship"/][/#assign]
       <span class="index">${index+1}</span>
-      <span class="elementId">${(element.composedName)!'Flagship'}</span>
+      <span class="elementId">${(element.composedName)!globalFlagship}</span>
     </div>
     <br />
     [#-- Program Acronym & Name --]
@@ -206,32 +197,40 @@
     </div>
     
     [#-- Managers  --]
-    <label for="">[@s.text name="CrpProgram.managers"/]</label>
-    <div class="usersBlock managers simpleBox" listname="flagshipsPrograms[${index}].managers">
-      [#-- Managers List --]
-      <div class="items-list" >
-        <ul>
-        [#if element.managers?has_content]
-          [#list element.managers as leader]
-            [@userItem element=leader index=leader_index name="${customName}.managers" userRole=fpmRole.id /]
-          [/#list]
-        [/#if]
-        </ul>
-        <p class="text-center usersMessage" style="display:${(element.managers?has_content)?string('none','block')}">[@s.text name="CrpProgram.notManagers.span"/]</p>
-      </div>
-      [#-- Add person Button --]
-      [#if editable]
-      <div class="text-center">
-        <div class="searchUser button-green"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 
-        [@s.text name="form.buttons.addFlagshipManager" ]
-          [@s.param ]mkyong[/@s.param]
-        [/@s.text]
+    <div class="form-group">
+      <label for="">[@s.text name="CrpProgram.managers"/]</label>
+      <div class="usersBlock managers simpleBox" listname="flagshipsPrograms[${index}].managers">
+        [#-- Managers List --]
+        <div class="items-list" >
+          <ul>
+          [#if element.managers?has_content]
+            [#list element.managers as leader]
+              [@userItem element=leader index=leader_index name="${customName}.managers" userRole=fpmRole.id /]
+            [/#list]
+          [/#if]
+          </ul>
+          <p class="text-center usersMessage" style="display:${(element.managers?has_content)?string('none','block')}">[@s.text name="CrpProgram.notManagers.span"/]</p>
         </div>
+        [#-- Add person Button --]
+        [#if editable]
+        <div class="text-center">
+          <div class="searchUser button-green"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 
+          [@s.text name="form.buttons.addFlagshipManager" ]
+            [@s.param ]mkyong[/@s.param]
+          [/@s.text]
+          </div>
+        </div>
+        [/#if]
+        [#-- Hidden Parameters --]
+        <span class="usersType" style="display:none">programUser</span>
+        <span class="usersRole" style="display:none">${fpmRole.id}</span> 
       </div>
-      [/#if]
-      [#-- Hidden Parameters --]
-      <span class="usersType" style="display:none">programUser</span>
-      <span class="usersRole" style="display:none">${fpmRole.id}</span> 
     </div>
+    
+    [#if action.hasSpecificities('crp_baseline_indicators')]
+    <div class="form-group simpleBox">
+      [@customForm.checkBoxFlat id="${customName}.baseLine" name="${customName}.baseLine" label="CrpProgram.allowBaseline" editable=editable value="true" checked=(element.baseLine)!false cssClass="" /]
+    </div>
+    [/#if]
   </li>
 [/#macro]

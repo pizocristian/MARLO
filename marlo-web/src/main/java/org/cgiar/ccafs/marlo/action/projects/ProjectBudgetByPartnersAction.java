@@ -20,17 +20,20 @@ import org.cgiar.ccafs.marlo.action.BaseAction;
 import org.cgiar.ccafs.marlo.config.APConstants;
 import org.cgiar.ccafs.marlo.data.manager.AuditLogManager;
 import org.cgiar.ccafs.marlo.data.manager.BudgetTypeManager;
-import org.cgiar.ccafs.marlo.data.manager.CrpManager;
 import org.cgiar.ccafs.marlo.data.manager.FundingSourceManager;
+import org.cgiar.ccafs.marlo.data.manager.GlobalUnitManager;
 import org.cgiar.ccafs.marlo.data.manager.InstitutionManager;
 import org.cgiar.ccafs.marlo.data.manager.LiaisonInstitutionManager;
+import org.cgiar.ccafs.marlo.data.manager.PhaseManager;
 import org.cgiar.ccafs.marlo.data.manager.ProjectBudgetManager;
 import org.cgiar.ccafs.marlo.data.manager.ProjectManager;
+import org.cgiar.ccafs.marlo.data.manager.ProjectPartnerManager;
 import org.cgiar.ccafs.marlo.data.model.AgreementStatusEnum;
 import org.cgiar.ccafs.marlo.data.model.BudgetType;
-import org.cgiar.ccafs.marlo.data.model.Crp;
+import org.cgiar.ccafs.marlo.data.model.GlobalUnit;
 import org.cgiar.ccafs.marlo.data.model.Institution;
 import org.cgiar.ccafs.marlo.data.model.LiaisonInstitution;
+import org.cgiar.ccafs.marlo.data.model.Phase;
 import org.cgiar.ccafs.marlo.data.model.Project;
 import org.cgiar.ccafs.marlo.data.model.ProjectBudget;
 import org.cgiar.ccafs.marlo.data.model.ProjectPartner;
@@ -55,10 +58,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.inject.Inject;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import javax.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 
 public class ProjectBudgetByPartnersAction extends BaseAction {
@@ -77,18 +81,21 @@ public class ProjectBudgetByPartnersAction extends BaseAction {
 
   private FundingSourceManager fundingSourceManager;
   private ProjectBudgetManager projectBudgetManager;
+  private ProjectPartnerManager projectPartnerManager;
+  private PhaseManager phaseManager;
 
 
   private LiaisonInstitutionManager liaisonInstitutionManager;
 
   private ProjectBudgetsValidator projectBudgetsValidator;
 
-  private CrpManager crpManager;
+  // GlobalUnit Manager
+  private GlobalUnitManager crpManager;
 
 
   private long projectID;
 
-  private Crp loggedCrp;
+  private GlobalUnit loggedCrp;
 
   private Project project;
   private String transaction;
@@ -106,10 +113,11 @@ public class ProjectBudgetByPartnersAction extends BaseAction {
 
   @Inject
   public ProjectBudgetByPartnersAction(APConfig config, InstitutionManager institutionManager,
-    ProjectManager projectManager, CrpManager crpManager, ProjectBudgetManager projectBudgetManager,
+    ProjectManager projectManager, GlobalUnitManager crpManager, ProjectBudgetManager projectBudgetManager,
     AuditLogManager auditLogManager, BudgetTypeManager budgetTypeManager, FundingSourceManager fundingSourceManager,
     HistoryComparator historyComparator, LiaisonInstitutionManager liaisonInstitutionManager,
-    ProjectBudgetsValidator projectBudgetsValidator) {
+    ProjectBudgetsValidator projectBudgetsValidator, ProjectPartnerManager projectPartnerManager,
+    PhaseManager phaseManager) {
     super(config);
 
     this.institutionManager = institutionManager;
@@ -122,6 +130,8 @@ public class ProjectBudgetByPartnersAction extends BaseAction {
     this.liaisonInstitutionManager = liaisonInstitutionManager;
     this.projectBudgetsValidator = projectBudgetsValidator;
     this.historyComparator = historyComparator;
+    this.projectPartnerManager = projectPartnerManager;
+    this.phaseManager = phaseManager;
 
   }
 
@@ -162,7 +172,6 @@ public class ProjectBudgetByPartnersAction extends BaseAction {
     return SUCCESS;
   }
 
-
   public boolean canEditFunding(long type, long institutionID) {
     if (type == 1) {
       boolean permission = this.hasPermissionNoBase(
@@ -189,6 +198,11 @@ public class ProjectBudgetByPartnersAction extends BaseAction {
       this.generatePermission(Permission.PROJECT_FUNDING_SOURCE_ADD_BUDGET_PERMISSION, loggedCrp.getAcronym()));
 
 
+  }
+
+  public boolean canEditGender() {
+    return this.hasPermissionNoBase(this.generatePermission(Permission.PROJECT_GENDER_PROJECT_BASE_PERMISSION,
+      loggedCrp.getAcronym(), projectID + ""));
   }
 
   public boolean canSearchFunding(long institutionID) {
@@ -219,36 +233,46 @@ public class ProjectBudgetByPartnersAction extends BaseAction {
       .clearCachedAuthorizationInfo(securityContext.getSubject().getPrincipals());
   }
 
+  public boolean existOnYear(Long partnerId, int year) {
+    ProjectPartner projectPartner = projectPartnerManager.getProjectPartnerById(partnerId.longValue());
+    Phase phase = phaseManager.findCycle(this.getActualPhase().getDescription(), year, this.getCrpID());
+    if (phase == null) {
+      phase = phaseManager.findCycle(APConstants.PLANNING, APConstants.FIRST_YEAR, this.getCrpID());
+    }
+    if (phase != null) {
+      List<ProjectPartner> partners = phase.getPartners().stream()
+        .filter(c -> c.getProject().getId().longValue() == projectID
+          && projectPartner.getInstitution().getId().equals(c.getInstitution().getId()) && c.isActive())
+        .collect(Collectors.toList());
+      if (!partners.isEmpty()) {
+        return true;
+      }
+
+
+    }
+    return false;
+  }
+
+  /**
+   * The name of the autosave file is constructed and the path is searched
+   * 
+   * @return Auto save file path
+   */
   private Path getAutoSaveFilePath() {
+    // get the class simple name
     String composedClassName = project.getClass().getSimpleName();
+    // get the action name and replace / for _
     String actionFile = this.getActionName().replace("/", "_");
-    String autoSaveFile = project.getId() + "_" + composedClassName + "_" + actionFile + ".json";
+    // concatane name and add the .json extension
+    String autoSaveFile = project.getId() + "_" + composedClassName + "_" + this.getActualPhase().getDescription() + "_"
+      + this.getActualPhase().getYear() + "_" + actionFile + ".json";
 
     return Paths.get(config.getAutoSaveFolder() + autoSaveFile);
   }
 
   public ProjectBudget getBudget(Long institutionId, int year, long type) {
 
-    if (!project.isBilateralProject()) {
-      if (type == 1 || type == 4) {
-
-        return project.getBudgets().get(this.getIndexBudget(institutionId, year, type));
-      } else {
-        ProjectBudget projectBudget = new ProjectBudget();
-        projectBudget.setInstitution(institutionManager.getInstitutionById(institutionId));
-        projectBudget.setYear(year);
-        projectBudget.setBudgetType(budgetTypeManager.getBudgetTypeById(type));
-        projectBudget.setAmount(new Double(0));
-        projectBudget.setGenderPercentage(new Double(0));
-        projectBudget.setGenderValue(new Double(0));
-
-
-        return projectBudget;
-      }
-    } else {
-
-      return project.getBudgets().get(this.getIndexBudget(institutionId, year, type));
-    }
+    return project.getBudgets().get(this.getIndexBudget(institutionId, year, type));
   }
 
   public int getBudgetIndex() {
@@ -259,7 +283,9 @@ public class ProjectBudgetByPartnersAction extends BaseAction {
   public List<ProjectBudget> getBudgetsByPartner(Long institutionId, int year) {
     List<ProjectBudget> budgets = project.getBudgets().stream()
       .filter(c -> c != null && c.getInstitution() != null && c.getInstitution().getId() != null
-        && c.getInstitution().getId().longValue() == institutionId.longValue() && c.getYear() == year)
+        && c.getFundingSource().getFundingSourceInfo(this.getActualPhase()) != null
+        && c.getInstitution().getId().longValue() == institutionId.longValue() && c.getYear() == year
+        && c.getPhase().equals(this.getActualPhase()))
       .collect(Collectors.toList());
     return budgets;
   }
@@ -284,7 +310,8 @@ public class ProjectBudgetByPartnersAction extends BaseAction {
             if (projectBudget.getInstitution().getId().longValue() == institutionId && year == projectBudget.getYear()
               && projectBudget.getBudgetType().getId() != null
               && type == projectBudget.getBudgetType().getId().longValue()
-              && projectBudget.getFundingSource().getId().longValue() == fundingSourceID) {
+              && projectBudget.getFundingSource().getId().longValue() == fundingSourceID
+              && projectBudget.getFundingSource().getFundingSourceInfo(this.getActualPhase()) != null) {
               return i;
             }
 
@@ -303,6 +330,7 @@ public class ProjectBudgetByPartnersAction extends BaseAction {
     projectBudget.setYear(year);
     projectBudget.setFundingSource(fundingSourceManager.getFundingSourceById(fundingSourceID));;
     projectBudget.setBudgetType(budgetTypeManager.getBudgetTypeById(type));
+    projectBudget.getFundingSource().getFundingSourceInfo(this.getActualPhase());
     project.getBudgets().add(projectBudget);
 
     return this.getIndexBudget(institutionId, year, type, fundingSourceID);
@@ -316,6 +344,7 @@ public class ProjectBudgetByPartnersAction extends BaseAction {
         if (projectBudget != null) {
           if (projectBudget.getInstitution() != null) {
             if (projectBudget.getInstitution().getId().longValue() == institutionId.longValue()
+              && projectBudget.getFundingSource().getFundingSourceInfo(this.getActualPhase()) != null
               && year == projectBudget.getYear() && type == projectBudget.getBudgetType().getId().longValue()) {
               return i;
             }
@@ -349,11 +378,6 @@ public class ProjectBudgetByPartnersAction extends BaseAction {
   }
 
 
-  public Crp getLoggedCrp() {
-    return loggedCrp;
-  }
-
-
   public Project getProject() {
     return project;
   }
@@ -372,21 +396,25 @@ public class ProjectBudgetByPartnersAction extends BaseAction {
   }
 
   public String getTotalAmount(long institutionId, int year, long budgetType, Integer coFinancing) {
-    return projectBudgetManager.amountByBudgetType(institutionId, year, budgetType, projectID, coFinancing);
+    return projectBudgetManager.amountByBudgetType(institutionId, year, budgetType, projectID, coFinancing,
+      this.getActualPhase().getId());
   }
 
   public double getTotalGender(long institutionId, int year, long budgetType, Integer coFinancing) {
 
-    List<ProjectBudget> budgets =
-      projectBudgetManager.getByParameters(institutionId, year, budgetType, projectID, coFinancing);
+    List<ProjectBudget> budgets = projectBudgetManager.getByParameters(institutionId, year, budgetType, projectID,
+      coFinancing, this.getActualPhase().getId());
 
     double totalGender = 0;
     if (budgets != null) {
       for (ProjectBudget projectBudget : budgets) {
-        double amount = projectBudget.getAmount() != null ? projectBudget.getAmount() : 0;
-        double gender = projectBudget.getGenderPercentage() != null ? projectBudget.getGenderPercentage() : 0;
+        if (projectBudget.getPhase().equals(this.getActualPhase())) {
+          double amount = projectBudget.getAmount() != null ? projectBudget.getAmount() : 0;
+          double gender = projectBudget.getGenderPercentage() != null ? projectBudget.getGenderPercentage() : 0;
 
-        totalGender = totalGender + (amount * (gender / 100));
+          totalGender = totalGender + (amount * (gender / 100));
+        }
+
       }
     }
 
@@ -491,8 +519,8 @@ public class ProjectBudgetByPartnersAction extends BaseAction {
   @Override
   public void prepare() throws Exception {
     projectID = Long.parseLong(StringUtils.trim(this.getRequest().getParameter(APConstants.PROJECT_REQUEST_ID)));
-    loggedCrp = (Crp) this.getSession().get(APConstants.SESSION_CRP);
-    loggedCrp = crpManager.getCrpById(loggedCrp.getId());
+    loggedCrp = (GlobalUnit) this.getSession().get(APConstants.SESSION_CRP);
+    loggedCrp = crpManager.getGlobalUnitById(loggedCrp.getId());
 
     w3bilateralBudgetTypes = new HashMap<>();
 
@@ -528,6 +556,7 @@ public class ProjectBudgetByPartnersAction extends BaseAction {
         int i = 0;
         project.setBudgets(project.getProjectBudgets().stream().filter(c -> c.isActive()).collect(Collectors.toList()));
         for (ProjectBudget budget : project.getBudgets()) {
+          budget.setFundingSource(fundingSourceManager.getFundingSourceById(budget.getFundingSource().getId()));
           int[] index = new int[1];
           index[0] = i;
           differences.addAll(historyComparator.getDifferencesList(budget, transaction, specialList,
@@ -569,10 +598,10 @@ public class ProjectBudgetByPartnersAction extends BaseAction {
 
         project = (Project) autoSaveReader.readFromJson(jReader);
         Project projectDb = projectManager.getProjectById(project.getId());
-        project.setProjectEditLeader(projectDb.isProjectEditLeader());
-        project.setAdministrative(projectDb.getAdministrative());
-
-
+        project.setProjectInfo(projectDb.getProjecInfoPhase(this.getActualPhase()));
+        project.getProjectInfo()
+          .setProjectEditLeader(projectDb.getProjecInfoPhase(this.getActualPhase()).isProjectEditLeader());
+        reader.close();
         if (project.getBudgets() != null) {
           for (ProjectBudget projectBudget : project.getBudgets()) {
             if (projectBudget != null && projectBudget.getFundingSource() != null) {
@@ -587,19 +616,12 @@ public class ProjectBudgetByPartnersAction extends BaseAction {
       } else {
         this.setDraft(false);
 
-        if (!project.isBilateralProject()) {
-          project
-            .setBudgets(project.getProjectBudgets().stream().filter(c -> c.isActive()).collect(Collectors.toList()));
+        project.setProjectInfo(project.getProjecInfoPhase(this.getActualPhase()));
+        project.setBudgets(project.getProjectBudgets().stream()
+          .filter(c -> c.isActive() && c.getPhase() != null && c.getPhase().equals(this.getActualPhase()))
+          .collect(Collectors.toList()));
 
 
-        } else {
-          project
-            .setBudgets(project.getProjectBudgets().stream().filter(c -> c.isActive()).collect(Collectors.toList()));
-
-
-        }
-
-        System.out.println("Size budgets" + project.getBudgets().size());
       }
 
       // Pre-load Project Co-Funded Lists.
@@ -607,11 +629,12 @@ public class ProjectBudgetByPartnersAction extends BaseAction {
 
 
       Project projectBD = projectManager.getProjectById(projectID);
-      project.setStartDate(projectBD.getStartDate());
-      project.setEndDate(projectBD.getEndDate());
+      project.setProjectInfo(projectBD.getProjecInfoPhase(this.getActualPhase()));
 
-      project
-        .setPartners(projectBD.getProjectPartners().stream().filter(c -> c.isActive()).collect(Collectors.toList()));
+
+      project.setPartners(projectBD.getProjectPartners().stream()
+        .filter(c -> c.isActive() && c.getPhase() != null && c.getPhase().equals(this.getActualPhase()))
+        .collect(Collectors.toList()));
 
       for (ProjectPartner projectPartner : project.getPartners()) {
         projectPartner.setPartnerPersons(
@@ -645,19 +668,17 @@ public class ProjectBudgetByPartnersAction extends BaseAction {
 
     ProjectPartner leader = project.getLeader();
     if (leader != null) {
-      if (project.isBilateralProject()) {
-        project.getPartners().clear();
-        project.getPartners().add(leader);
-      } else {
-        // First we remove the element from the array.
-        project.getPartners().remove(leader);
-        // then we add it to the first position.
-        project.getPartners().add(0, leader);
-      }
 
+      // First we remove the element from the array.
+      project.getPartners().remove(leader);
+      // then we add it to the first position.
+      project.getPartners().add(0, leader);
     }
 
-    if (this.isHttpPost()) {
+
+    if (this.isHttpPost())
+
+    {
       if (project.getPartners() != null) {
         project.getPartners().clear();
       }
@@ -682,12 +703,12 @@ public class ProjectBudgetByPartnersAction extends BaseAction {
 
       List<String> relationsName = new ArrayList<>();
       relationsName.add(APConstants.PROJECT_BUDGETS_RELATION);
+      relationsName.add(APConstants.PROJECT_INFO_RELATION);
 
       project = projectManager.getProjectById(projectID);
-      project.setModifiedBy(this.getCurrentUser());
       project.setActiveSince(new Date());
-      project.setModificationJustification(this.getJustification());
-      projectManager.saveProject(project, this.getActionName(), relationsName);
+      project.setModifiedBy(this.getCurrentUser());
+      projectManager.saveProject(project, this.getActionName(), relationsName, this.getActualPhase());
       Path path = this.getAutoSaveFilePath();
 
       if (path.toFile().exists()) {
@@ -719,21 +740,19 @@ public class ProjectBudgetByPartnersAction extends BaseAction {
   }
 
   public void saveBasicBudgets() {
+    List<ProjectBudget> budgets = project.getBudgets();
     Project projectDB = projectManager.getProjectById(projectID);
 
 
-    if (project.getBudgets() == null) {
-      project.setBudgets(new ArrayList<>());
-    }
+    for (ProjectBudget projectBudget : projectDB.getProjectBudgets().stream()
+      .filter(c -> c.isActive() && c.getPhase().equals(this.getActualPhase())).collect(Collectors.toList())) {
 
-    // get the list of previous budgets
-    List<ProjectBudget> previousBudgets =
-      projectDB.getProjectBudgets().stream().filter(c -> c.isActive()).collect(Collectors.toList());
+      if (budgets == null) {
+        budgets = (new ArrayList<>());
+      }
+      if (projectBudget.getYear() == this.getCurrentCycleYear()) {
 
-    for (ProjectBudget projectBudget : previousBudgets) {
-
-      if (projectBudget.getYear() >= this.getCurrentCycleYear()) {
-        if (!project.getBudgets().contains(projectBudget)) {
+        if (!budgets.contains(projectBudget)) {
           projectBudgetManager.deleteProjectBudget(projectBudget.getId());
 
         }
@@ -741,10 +760,14 @@ public class ProjectBudgetByPartnersAction extends BaseAction {
 
     }
 
-    // Check the budgets that we enter through the interface and save or update them
-    for (ProjectBudget projectBudget : project.getBudgets()) {
-      if (projectBudget != null) {
-        this.saveBudget(projectBudget);
+    if (budgets != null) {
+      for (ProjectBudget projectBudget : budgets) {
+        if (projectBudget != null) {
+          if (projectBudget.getYear() >= this.getActualPhase().getYear()) {
+            this.saveBudget(projectBudget);
+          }
+
+        }
       }
     }
 
@@ -752,6 +775,7 @@ public class ProjectBudgetByPartnersAction extends BaseAction {
 
 
   public void saveBudget(ProjectBudget projectBudget) {
+
     if (projectBudget.getId() == null) {
       projectBudget.setCreatedBy(this.getCurrentUser());
 
@@ -760,11 +784,11 @@ public class ProjectBudgetByPartnersAction extends BaseAction {
       projectBudget.setProject(project);
       projectBudget.setModifiedBy(this.getCurrentUser());
       projectBudget.setModificationJustification("");
-
+      projectBudget.setPhase(this.getActualPhase());
     } else {
       ProjectBudget ProjectBudgetDB = projectBudgetManager.getProjectBudgetById(projectBudget.getId());
       projectBudget.setCreatedBy(ProjectBudgetDB.getCreatedBy());
-
+      projectBudget.setPhase(this.getActualPhase());
       projectBudget.setActiveSince(ProjectBudgetDB.getActiveSince());
       projectBudget.setActive(true);
       projectBudget.setProject(project);
@@ -796,10 +820,6 @@ public class ProjectBudgetByPartnersAction extends BaseAction {
 
   public void setLiaisonInstitutions(List<LiaisonInstitution> liaisonInstitutions) {
     this.liaisonInstitutions = liaisonInstitutions;
-  }
-
-  public void setLoggedCrp(Crp loggedCrp) {
-    this.loggedCrp = loggedCrp;
   }
 
 

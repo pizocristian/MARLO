@@ -19,7 +19,6 @@ import org.cgiar.ccafs.marlo.action.BaseAction;
 import org.cgiar.ccafs.marlo.config.APConstants;
 import org.cgiar.ccafs.marlo.data.manager.ICenterObjectiveManager;
 import org.cgiar.ccafs.marlo.data.manager.ICenterProgramManager;
-import org.cgiar.ccafs.marlo.data.model.Center;
 import org.cgiar.ccafs.marlo.data.model.CenterArea;
 import org.cgiar.ccafs.marlo.data.model.CenterImpact;
 import org.cgiar.ccafs.marlo.data.model.CenterImpactObjective;
@@ -28,6 +27,7 @@ import org.cgiar.ccafs.marlo.data.model.CenterOutcome;
 import org.cgiar.ccafs.marlo.data.model.CenterOutput;
 import org.cgiar.ccafs.marlo.data.model.CenterProgram;
 import org.cgiar.ccafs.marlo.data.model.CenterTopic;
+import org.cgiar.ccafs.marlo.data.model.GlobalUnit;
 import org.cgiar.ccafs.marlo.utils.APConfig;
 
 import java.util.ArrayList;
@@ -37,6 +37,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.dispatcher.Parameter;
 import org.slf4j.Logger;
@@ -81,10 +82,10 @@ public class GraphByCenterAction extends BaseAction {
 
     CenterProgram researchProgram = programService.getProgramById(programID);
     CenterArea researchArea = researchProgram.getResearchArea();
-    Center center = researchArea.getResearchCenter();
+    GlobalUnit center = researchArea.getResearchCenter();
 
     List<CenterArea> areas =
-      new ArrayList<>(center.getResearchAreas().stream().filter(ra -> ra.isActive()).collect(Collectors.toList()));
+      new ArrayList<>(center.getCenterAreas().stream().filter(ra -> ra.isActive()).collect(Collectors.toList()));
 
 
     List<CenterObjective> objectives = new ArrayList<>();
@@ -228,8 +229,7 @@ public class GraphByCenterAction extends BaseAction {
             dataEdgeOutcome.put("data", dataEdgeOutcomeDetail);
             dataEdges.add(dataEdgeOutcome);
 
-            List<CenterOutput> outputs = new ArrayList<>(
-              outcome.getResearchOutputs().stream().filter(ro -> ro.isActive()).collect(Collectors.toList()));
+            List<CenterOutput> outputs = new ArrayList<>();
 
             dataOutcomeDetail.put("Nouptus", outputs.size());
             dataOutcome.put("data", dataOutcomeDetail);
@@ -241,18 +241,18 @@ public class GraphByCenterAction extends BaseAction {
               HashMap<String, Object> dataOutput = new HashMap<>();
               HashMap<String, Object> dataOutputDetail = new HashMap<>();
               dataOutputDetail.put("id", "OP" + output.getId());
-              dataOutputDetail.put("parent", "T" + output.getResearchOutcome().getResearchTopic().getId());
+              // dataOutputDetail.put("parent", "T" + output.getResearchOutcome().getResearchTopic().getId());
               dataOutputDetail.put("label", "Output " + output.getId());
               dataOutputDetail.put("title", "Output " + output.getId());
               dataOutputDetail.put("description", output.getTitle());
-              dataOutputDetail.put("color", output.getResearchOutcome().getResearchImpact().getColor());
+              // dataOutputDetail.put("color", output.getResearchOutcome().getResearchImpact().getColor());
               dataOutputDetail.put("type", "OP");
               dataOutput.put("data", dataOutputDetail);
               dataNodes.add(dataOutput);
               // Relation Outcome - Output
               HashMap<String, Object> dataEdgeOutput = new HashMap<>();
               HashMap<String, Object> dataEdgeOutputDetail = new HashMap<>();
-              dataEdgeOutputDetail.put("source", "OC" + output.getResearchOutcome().getId());
+              // dataEdgeOutputDetail.put("source", "OC" + output.getResearchOutcome().getId());
               dataEdgeOutputDetail.put("target", "OP" + output.getId());
               dataEdgeOutput.put("data", dataEdgeOutputDetail);
               dataEdges.add(dataEdgeOutput);

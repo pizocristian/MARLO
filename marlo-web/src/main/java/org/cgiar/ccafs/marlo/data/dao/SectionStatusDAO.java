@@ -59,7 +59,7 @@ public interface SectionStatusDAO {
   public SectionStatus getSectionStatusByCrpIndicators(long ipLiaisonInstitutionID, String cycle, int year,
     String sectionName);
 
-  public SectionStatus getSectionStatusByCrpProgam(long crpProgramID, String sectionName);
+  public SectionStatus getSectionStatusByCrpProgam(long crpProgramID, String sectionName, String cylce, int year);
 
   public SectionStatus getSectionStatusByDeliverable(long deliverableID, String cycle, int year, String sectionName);
 
@@ -67,6 +67,9 @@ public interface SectionStatusDAO {
     String sectionName);
 
   public SectionStatus getSectionStatusByIpProgram(long ipProgramID, String cycle, int year, String sectionName);
+
+  public SectionStatus getSectionStatusByPowbSynthesis(long powbSynthesisID, String cycle, int year,
+    String sectionName);
 
   public SectionStatus getSectionStatusByProject(long projectID, String cycle, int year, String sectionName);
 

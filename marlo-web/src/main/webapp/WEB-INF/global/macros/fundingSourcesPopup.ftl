@@ -18,7 +18,7 @@
       <div class="accordion-block">
         <div class="search-content clearfix">
           <div class="search-input">
-            [@customForm.input name="" showTitle=false type="text" i18nkey="form.buttons.searchUser" placeholder="Search by funding source name or ID"/]
+            [@customForm.input name="" showTitle=false type="text" i18nkey="form.buttons.searchUser" placeholder="Search by funding source name, ID or finance code"/]
             <div class="search-loader" style="display:none"><img src="${baseUrl}/global/images/loading_2.gif"></div>
           </div>  
           <div class="search-button">[@s.text name="form.buttons.search" /]</div>
@@ -34,10 +34,12 @@
         </div> 
       </div>
       
-      [#-- Create Funding Sources Form --]
+      [#-- Create Funding Sources Form
       <div id="create-user" class="accordion  text-center">
         <span class="glyphicon glyphicon-plus"></span> <span class="title"> Create Funding Source </span> 
       </div>
+       --]
+       
       <div class="accordion-block create-user clearfix" style="display:none">
         <div class="create-user-block">
           [#-- Loading --]
@@ -157,6 +159,7 @@
             <small><span class="red noBudgetMessage pull-left glyphicon glyphicon-exclamation-sign" style="display:none" title="Insufficient funds for {year}"></span></small>
             <span class="contact name">{composedName}</span>
             <span class="currentBudget">{budget}</span>
+            <span class="financeCode"></span>
           </div>
           <div class="col-md-2">
             <span class="listButton select">[@s.text name="form.buttons.select" /]</span>

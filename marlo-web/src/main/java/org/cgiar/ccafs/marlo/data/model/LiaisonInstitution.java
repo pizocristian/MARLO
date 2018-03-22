@@ -33,30 +33,42 @@ public class LiaisonInstitution implements java.io.Serializable, IAuditLog {
    * 
    */
   private static final long serialVersionUID = -1466921023839583918L;
+
+
   @Expose
   private Long id;
+
+
   @Expose
   private CrpProgram crpProgram;
   @Expose
   private Institution institution;
-
   @Expose
   private String name;
-
   @Expose
   private String acronym;
+
   @Expose
-  private Crp crp;
+  private GlobalUnit crp;
+
   @Expose
   private boolean active;
   private Set<LiaisonUser> liaisonUsers = new HashSet<LiaisonUser>(0);
-  private Set<Project> projects = new HashSet<Project>(0);
+  private Set<ProjectInfo> projects = new HashSet<ProjectInfo>(0);
+  private Set<PowbSynthesis> powbSynthesis = new HashSet<PowbSynthesis>(0);
+  private Set<PowbFinancialPlannedBudget> powbFinancialPlannedBudget = new HashSet<PowbFinancialPlannedBudget>(0);
+
+  private double w1;
+
+  private double w3;
+
 
   public LiaisonInstitution() {
   }
 
+
   public LiaisonInstitution(CrpProgram crpProgram, Institution institution, String name, String acronym,
-    Set<LiaisonUser> liaisonUserses, Set<Project> projectses) {
+    Set<LiaisonUser> liaisonUserses, Set<ProjectInfo> projectses) {
     this.crpProgram = crpProgram;
     this.institution = institution;
     this.name = name;
@@ -76,6 +88,7 @@ public class LiaisonInstitution implements java.io.Serializable, IAuditLog {
     return this.acronym;
   }
 
+
   public String getComposedName() {
     if (this.getAcronym() != null) {
       if (this.getAcronym().length() != 0) {
@@ -90,9 +103,11 @@ public class LiaisonInstitution implements java.io.Serializable, IAuditLog {
 
   }
 
-  public Crp getCrp() {
+
+  public GlobalUnit getCrp() {
     return crp;
   }
+
 
   public CrpProgram getCrpProgram() {
     return crpProgram;
@@ -108,11 +123,9 @@ public class LiaisonInstitution implements java.io.Serializable, IAuditLog {
     return institution;
   }
 
-
   public Set<LiaisonUser> getLiaisonUsers() {
     return liaisonUsers;
   }
-
 
   @Override
   public String getLogDeatil() {
@@ -123,7 +136,6 @@ public class LiaisonInstitution implements java.io.Serializable, IAuditLog {
 
     return sb.toString();
   }
-
 
   @Override
   public String getModificationJustification() {
@@ -144,8 +156,26 @@ public class LiaisonInstitution implements java.io.Serializable, IAuditLog {
     return this.name;
   }
 
-  public Set<Project> getProjects() {
+  public Set<PowbFinancialPlannedBudget> getPowbFinancialPlannedBudget() {
+    return powbFinancialPlannedBudget;
+  }
+
+  public Set<PowbSynthesis> getPowbSynthesis() {
+    return powbSynthesis;
+  }
+
+
+  public Set<ProjectInfo> getProjects() {
     return projects;
+  }
+
+  public double getW1() {
+    return w1;
+  }
+
+
+  public double getW3() {
+    return w3;
   }
 
 
@@ -154,21 +184,25 @@ public class LiaisonInstitution implements java.io.Serializable, IAuditLog {
     return active;
   }
 
+
   public void setAcronym(String acronym) {
     this.acronym = acronym;
   }
+
 
   public void setActive(boolean active) {
     this.active = active;
   }
 
-  public void setCrp(Crp crp) {
+
+  public void setCrp(GlobalUnit crp) {
     this.crp = crp;
   }
 
   public void setCrpProgram(CrpProgram crpProgram) {
     this.crpProgram = crpProgram;
   }
+
 
   public void setId(Long id) {
     this.id = id;
@@ -182,13 +216,30 @@ public class LiaisonInstitution implements java.io.Serializable, IAuditLog {
     this.liaisonUsers = liaisonUserses;
   }
 
+
   public void setName(String name) {
     this.name = name;
   }
 
+  public void setPowbFinancialPlannedBudget(Set<PowbFinancialPlannedBudget> powbFinancialPlannedBudget) {
+    this.powbFinancialPlannedBudget = powbFinancialPlannedBudget;
+  }
 
-  public void setProjects(Set<Project> projects) {
+  public void setPowbSynthesis(Set<PowbSynthesis> powbSynthesis) {
+    this.powbSynthesis = powbSynthesis;
+  }
+
+  public void setProjects(Set<ProjectInfo> projects) {
     this.projects = projects;
+  }
+
+  public void setW1(double w1) {
+    this.w1 = w1;
+  }
+
+
+  public void setW3(double w3) {
+    this.w3 = w3;
   }
 
 

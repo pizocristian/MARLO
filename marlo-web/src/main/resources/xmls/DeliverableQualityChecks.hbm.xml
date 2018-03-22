@@ -3,7 +3,7 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated Jan 10, 2017 9:14:53 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="org.cgiar.ccafs.marlo.data.model.DeliverableQualityCheck" table="deliverable_quality_checks" optimistic-lock="version">
+    <class name="org.cgiar.ccafs.marlo.data.model.DeliverableQualityCheck" table="deliverable_quality_checks" optimistic-lock="none">
         <id name="id" type="java.lang.Long">
             <column name="id" />
             <generator class="identity" />
@@ -22,6 +22,9 @@
         </many-to-one>
         <many-to-one name="dataTools" class="org.cgiar.ccafs.marlo.data.model.DeliverableQualityAnswer" fetch="select">
             <column name="data_tools" />
+        </many-to-one>
+         <many-to-one name="phase" class="org.cgiar.ccafs.marlo.data.model.Phase" fetch="select">
+            <column name="id_phase" />
         </many-to-one>
         <many-to-one name="qualityAssurance" class="org.cgiar.ccafs.marlo.data.model.DeliverableQualityAnswer" fetch="select">
             <column name="quality_assurance" />

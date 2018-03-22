@@ -17,10 +17,10 @@ package org.cgiar.ccafs.marlo.action.home;
 
 import org.cgiar.ccafs.marlo.action.BaseAction;
 import org.cgiar.ccafs.marlo.config.APConstants;
-import org.cgiar.ccafs.marlo.data.manager.CrpManager;
+import org.cgiar.ccafs.marlo.data.manager.GlobalUnitManager;
 import org.cgiar.ccafs.marlo.data.manager.PhaseManager;
 import org.cgiar.ccafs.marlo.data.manager.ProjectManager;
-import org.cgiar.ccafs.marlo.data.model.Crp;
+import org.cgiar.ccafs.marlo.data.model.GlobalUnit;
 import org.cgiar.ccafs.marlo.data.model.Phase;
 import org.cgiar.ccafs.marlo.data.model.Project;
 import org.cgiar.ccafs.marlo.data.model.ProjectPhase;
@@ -41,7 +41,9 @@ public class DashboardAction extends BaseAction {
 
   private static final long serialVersionUID = 6686785556753962379L;
 
+
   private PhaseManager phaseManager;
+
 
   private List<Project> myProjects;
 
@@ -49,12 +51,14 @@ public class DashboardAction extends BaseAction {
   private ProjectManager projectManager;
 
 
-  private CrpManager crpManager;
+  // GlobalUnit Manager
+  private GlobalUnitManager crpManager;
 
-  private Crp loggedCrp;
+  private GlobalUnit loggedCrp;
+
 
   @Inject
-  public DashboardAction(APConfig config, ProjectManager projectManager, CrpManager crpManager,
+  public DashboardAction(APConfig config, ProjectManager projectManager, GlobalUnitManager crpManager,
     PhaseManager phaseManager) {
     super(config);
     this.projectManager = projectManager;
@@ -62,7 +66,7 @@ public class DashboardAction extends BaseAction {
     this.phaseManager = phaseManager;
   }
 
-  public Crp getLoggedCrp() {
+  public GlobalUnit getLoggedCrp() {
     return loggedCrp;
   }
 
@@ -70,27 +74,35 @@ public class DashboardAction extends BaseAction {
     return myProjects;
   }
 
+
   @Override
   public void prepare() throws Exception {
-    loggedCrp = (Crp) this.getSession().get(APConstants.SESSION_CRP);
-    loggedCrp = crpManager.getCrpById(loggedCrp.getId());
+    loggedCrp = (GlobalUnit) this.getSession().get(APConstants.SESSION_CRP);
+    loggedCrp = crpManager.getGlobalUnitById(loggedCrp.getId());
     Phase phase =
       phaseManager.findCycle(this.getCurrentCycle(), this.getCurrentCycleYear(), loggedCrp.getId().longValue());
 
+    if (this.isSwitchSession()) {
+      this.clearPermissionsCache();
+    }
 
     if (projectManager.findAll() != null) {
 
       if (this.canAccessSuperAdmin() || this.canAcessCrpAdmin()) {
         myProjects = new ArrayList<>();
         for (ProjectPhase projectPhase : phase.getProjectPhases()) {
+          projectPhase.getProject().setProjectInfo(projectPhase.getProject().getProjecInfoPhase(this.getActualPhase()));
           myProjects.add(projectPhase.getProject());
         }
+
 
       } else {
 
         List<Project> allProjects = new ArrayList<>();
-        for (ProjectPhase projectPhase : phase.getProjectPhases()) {
-          allProjects.add(projectManager.getProjectById(projectPhase.getProject().getId()));
+        if (phase != null) {
+          for (ProjectPhase projectPhase : phase.getProjectPhases()) {
+            allProjects.add(projectManager.getProjectById(projectPhase.getProject().getId()));
+          }
         }
         if (this.isPlanningActive()) {
 
@@ -105,8 +117,10 @@ public class DashboardAction extends BaseAction {
         }
         List<Project> mProjects = new ArrayList<>();
         mProjects.addAll(myProjects);
-        for (Project project : mProjects) {
 
+
+        for (Project project : mProjects) {
+          project.getProjecInfoPhase(this.getActualPhase());
 
           if (!allProjects.contains(project)) {
             myProjects.remove(project);
@@ -115,7 +129,16 @@ public class DashboardAction extends BaseAction {
 
 
       }
-      Collections.sort(myProjects, (p1, p2) -> p1.getId().compareTo(p2.getId()));
+      if (this.getActualPhase() != null && this.getActualPhase().getId() != null) {
+        List<Project> closedProjects =
+          projectManager.getCompletedProjects(this.getCrpID(), this.getActualPhase().getId());
+        if (closedProjects != null) {
+          // closedProjects.addAll(projectManager.getNoPhaseProjects(this.getCrpID(), this.getActualPhase()));
+          myProjects.removeAll(closedProjects);
+        }
+        Collections.sort(myProjects, (p1, p2) -> p1.getId().compareTo(p2.getId()));
+
+      }
 
     }
 
@@ -123,12 +146,13 @@ public class DashboardAction extends BaseAction {
   }
 
 
-  public void setLoggedCrp(Crp loggedCrp) {
+  public void setLoggedCrp(GlobalUnit loggedCrp) {
     this.loggedCrp = loggedCrp;
   }
 
   public void setMyProjects(List<Project> myProjects) {
     this.myProjects = myProjects;
   }
+
 
 }

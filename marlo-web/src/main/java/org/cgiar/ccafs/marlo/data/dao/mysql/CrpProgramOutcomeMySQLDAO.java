@@ -18,15 +18,19 @@ package org.cgiar.ccafs.marlo.data.dao.mysql;
 
 import org.cgiar.ccafs.marlo.data.dao.CrpProgramOutcomeDAO;
 import org.cgiar.ccafs.marlo.data.model.CrpProgramOutcome;
+import org.cgiar.ccafs.marlo.data.model.Phase;
 
 import java.util.List;
 
-import javax.inject.Named;
 import javax.inject.Inject;
+import javax.inject.Named;
+
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 
 @Named
-public class CrpProgramOutcomeMySQLDAO extends AbstractMarloDAO<CrpProgramOutcome, Long> implements CrpProgramOutcomeDAO {
+public class CrpProgramOutcomeMySQLDAO extends AbstractMarloDAO<CrpProgramOutcome, Long>
+  implements CrpProgramOutcomeDAO {
 
 
   @Inject
@@ -57,6 +61,7 @@ public class CrpProgramOutcomeMySQLDAO extends AbstractMarloDAO<CrpProgramOutcom
 
   }
 
+
   @Override
   public List<CrpProgramOutcome> findAll() {
     String query = "from " + CrpProgramOutcome.class.getName() + " where is_active=1";
@@ -68,6 +73,25 @@ public class CrpProgramOutcomeMySQLDAO extends AbstractMarloDAO<CrpProgramOutcom
 
   }
 
+
+  @Override
+  public CrpProgramOutcome getCrpProgramOutcome(String composedId, Phase phase) {
+
+    String query = "select distinct pp from CrpProgramOutcome  pp "
+      + "where composeID=:composeID and phase.id=:phaseID and active=true";
+    Query createQuery = this.getSessionFactory().getCurrentSession().createQuery(query);
+    createQuery.setParameter("composeID", composedId);
+    createQuery.setParameter("phaseID", phase.getId());
+    Object findSingleResult = super.findSingleResult(CrpProgramOutcome.class, createQuery);
+    CrpProgramOutcome crpProgramOutcome = (CrpProgramOutcome) findSingleResult;
+
+
+    // projectPartner.getProjectPartnerLocations().size();
+
+    return crpProgramOutcome;
+
+  }
+
   @Override
   public CrpProgramOutcome save(CrpProgramOutcome crpProgramOutcome) {
     if (crpProgramOutcome.getId() == null) {
@@ -75,6 +99,8 @@ public class CrpProgramOutcomeMySQLDAO extends AbstractMarloDAO<CrpProgramOutcom
     } else {
       crpProgramOutcome = super.update(crpProgramOutcome);
     }
+
+
     return crpProgramOutcome;
   }
 

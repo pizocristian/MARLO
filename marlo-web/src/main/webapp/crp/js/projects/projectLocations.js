@@ -25,7 +25,9 @@ function init() {
   });
   // From funding source countries
   $(".recommendedList").find(".recommended.locElement").each(function(i,e) {
-    if($(e).find(".isoAlpha").exists()) {
+    var isChecked = $(e).find('input[type="checkbox"]:checked').exists();
+    var hasValidCode = $(e).find(".isoAlpha").exists();
+    if(isChecked && hasValidCode) {
       countries.push($(e).find(".isoAlpha").text());
     }
   });
@@ -756,7 +758,8 @@ function formWindowEvents() {
             var select = $("#countriesCmvs");
             var url = baseURL + "/searchCountryListPL.do";
             var data = {
-              parentId: option.val().split("-")[0]
+                parentId: option.val().split("-")[0],
+                phaseID: phaseID
             };
             $.ajax({
                 url: url,
@@ -945,7 +948,8 @@ function addCountryIntoLocLevel(locationId,$locationSelect,locationName) {
       /* GET COORDINATES */
       var url = baseURL + "/geopositionByElement.do";
       var data = {
-        "locElementID": locId
+          "locElementID": locId,
+          phaseID: phaseID
       };
       countID++;
       $.ajax({

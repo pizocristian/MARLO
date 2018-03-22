@@ -17,9 +17,8 @@
 package org.cgiar.ccafs.marlo.validation.projects;
 
 import org.cgiar.ccafs.marlo.action.BaseAction;
-import org.cgiar.ccafs.marlo.config.APConstants;
-import org.cgiar.ccafs.marlo.data.manager.CrpManager;
-import org.cgiar.ccafs.marlo.data.model.Crp;
+import org.cgiar.ccafs.marlo.data.manager.GlobalUnitManager;
+import org.cgiar.ccafs.marlo.data.model.GlobalUnit;
 import org.cgiar.ccafs.marlo.data.model.IpProjectIndicator;
 import org.cgiar.ccafs.marlo.data.model.Project;
 import org.cgiar.ccafs.marlo.data.model.ProjectSectionStatusEnum;
@@ -37,31 +36,30 @@ import javax.inject.Named;
 public class ProjectCCAFSOutcomeValidator extends BaseValidator {
 
 
-  private final CrpManager crpManager;
+  private final GlobalUnitManager crpManager;
 
   @Inject
-  public ProjectCCAFSOutcomeValidator(CrpManager crpManager) {
+  public ProjectCCAFSOutcomeValidator(GlobalUnitManager crpManager) {
     this.crpManager = crpManager;
   }
 
-  private Path getAutoSaveFilePath(Project project, long crpID) {
-    Crp crp = crpManager.getCrpById(crpID);
+  private Path getAutoSaveFilePath(Project project, long crpID, BaseAction action) {
+    GlobalUnit crp = crpManager.getGlobalUnitById(crpID);
     String composedClassName = project.getClass().getSimpleName();
     String actionFile = ProjectSectionStatusEnum.CCAFSOUTCOMES.getStatus().replace("/", "_");
     String autoSaveFile =
-      project.getId() + "_" + composedClassName + "_" + crp.getAcronym() + "_" + actionFile + ".json";
+      project.getId() + "_" + composedClassName + "_" + action.getActualPhase().getDescription() + "_" + action.getActualPhase().getYear() +"_"+crp.getAcronym() +"_"+ actionFile + ".json";
 
     return Paths.get(config.getAutoSaveFolder() + autoSaveFile);
   }
 
   public void validate(BaseAction action, Project project, boolean saving) {
-
     action.setInvalidFields(new HashMap<>());
     if (!saving) {
-      Path path = this.getAutoSaveFilePath(project, action.getCrpID());
+      Path path = this.getAutoSaveFilePath(project, action.getCrpID(),action);
 
       if (path.toFile().exists()) {
-        this.addMissingField("draft");
+        action.addMissingField("draft");
       }
     }
     if (project != null) {
@@ -73,21 +71,21 @@ public class ProjectCCAFSOutcomeValidator extends BaseValidator {
             if (ipProjectIndicator.getYear() == action.getCurrentCycleYear()) {
 
               if (ipProjectIndicator.getArchived() == null || ipProjectIndicator.getArchived().doubleValue() < 0) {
-                this.addMessage(" CCAFS Outcome #" + ipProjectIndicator.getId() + ": Target achieved");
+                action.addMessage(" CCAFS Outcome #" + ipProjectIndicator.getId() + ": Target achieved");
                 action.getInvalidFields().put("input-project.projectIndicators[" + i + "].archived",
                   InvalidFieldsMessages.EMPTYFIELD);
               }
 
               if (!(this.isValidString(ipProjectIndicator.getNarrativeTargets())
                 && this.wordCount(ipProjectIndicator.getNarrativeTargets()) <= 100)) {
-                this.addMessage("CCAFS Outcome ##" + ipProjectIndicator.getId() + ": Narrative Target");
+                action.addMessage("CCAFS Outcome ##" + ipProjectIndicator.getId() + ": Narrative Target");
                 action.getInvalidFields().put("input-project.projectIndicators[" + i + "].narrativeTargets",
                   InvalidFieldsMessages.EMPTYFIELD);
               }
 
               if (!(this.isValidString(ipProjectIndicator.getNarrativeGender())
                 && this.wordCount(ipProjectIndicator.getNarrativeGender()) <= 100)) {
-                this.addMessage("CCAFS Outcome ##" + ipProjectIndicator.getId() + ": Narrative Gender");
+                action.addMessage("CCAFS Outcome ##" + ipProjectIndicator.getId() + ": Narrative Gender");
                 action.getInvalidFields().put("input-project.projectIndicators[" + i + "].narrativeGender",
                   InvalidFieldsMessages.EMPTYFIELD);
               }
@@ -100,18 +98,13 @@ public class ProjectCCAFSOutcomeValidator extends BaseValidator {
 
       if (!action.getFieldErrors().isEmpty()) {
         action.addActionError(action.getText("saving.fields.required"));
-      } else if (validationMessage.length() > 0) {
-        action
-          .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+      } else if (action.getValidationMessage().length() > 0) {
+        action.addActionMessage(
+          " " + action.getText("saving.missingFields", new String[] {action.getValidationMessage().toString()}));
       }
+      this.saveMissingFields(project, action.getActualPhase().getDescription(), action.getActualPhase().getYear(),
+        ProjectSectionStatusEnum.CCAFSOUTCOMES.getStatus(), action);
 
-      if (action.isReportingActive()) {
-        this.saveMissingFields(project, APConstants.REPORTING, action.getReportingYear(),
-          ProjectSectionStatusEnum.CCAFSOUTCOMES.getStatus());
-      } else {
-        this.saveMissingFields(project, APConstants.PLANNING, action.getPlanningYear(),
-          ProjectSectionStatusEnum.CCAFSOUTCOMES.getStatus());
-      }
     }
   }
 }

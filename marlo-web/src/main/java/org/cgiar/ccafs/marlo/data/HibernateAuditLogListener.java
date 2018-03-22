@@ -17,10 +17,17 @@
 package org.cgiar.ccafs.marlo.data;
 
 import org.cgiar.ccafs.marlo.data.model.Auditlog;
+import org.cgiar.ccafs.marlo.data.model.CrpProgram;
+import org.cgiar.ccafs.marlo.data.model.Deliverable;
+import org.cgiar.ccafs.marlo.data.model.FundingSource;
+import org.cgiar.ccafs.marlo.data.model.Phase;
+import org.cgiar.ccafs.marlo.data.model.Project;
+import org.cgiar.ccafs.marlo.data.model.ProjectOutcome;
 import org.cgiar.ccafs.marlo.utils.AuditLogContext;
 import org.cgiar.ccafs.marlo.utils.AuditLogContextProvider;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -32,9 +39,11 @@ import java.util.UUID;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.apache.shiro.util.CollectionUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
+import org.hibernate.LazyInitializationException;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.StatelessSession;
 import org.hibernate.action.spi.BeforeTransactionCompletionProcess;
@@ -52,6 +61,7 @@ import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.proxy.HibernateProxyHelper;
 import org.hibernate.type.ManyToOneType;
+import org.hibernate.type.OneToOneType;
 import org.hibernate.type.OrderedSetType;
 import org.hibernate.type.SetType;
 import org.hibernate.type.Type;
@@ -92,7 +102,8 @@ public class HibernateAuditLogListener
           IAuditLog entity = (IAuditLog) record.get(IAuditLog.ENTITY);
           entity = this.loadRelations(entity, true, 1, sessionFactory);
           Auditlog auditLog = this.createAuditlog(function, entity, gson.toJson(entity), entity.getModifiedBy().getId(),
-            transactionId, new Long(record.get(IAuditLog.PRINCIPAL).toString()), null, actionName);
+            transactionId, new Long(record.get(IAuditLog.PRINCIPAL).toString()), null, actionName,
+            AuditLogContextProvider.getAuditLogContext().getPhase());
           auditLogs.add(auditLog);
         } else {
           /**
@@ -107,10 +118,10 @@ public class HibernateAuditLogListener
             if (collectionRecord.isActive()) {
               String json = gson.toJson(collectionRecord);
 
-              Auditlog auditlog =
-                this.createAuditlog(IAuditLog.UPDATED, collectionRecord, json, collectionRecord.getModifiedBy().getId(),
-                  transactionId, new Long(record.get(IAuditLog.PRINCIPAL).toString()),
-                  record.get(IAuditLog.RELATION_NAME).toString(), actionName);
+              Auditlog auditlog = this.createAuditlog(IAuditLog.UPDATED, collectionRecord, json,
+                collectionRecord.getModifiedBy().getId(), transactionId,
+                new Long(record.get(IAuditLog.PRINCIPAL).toString()), record.get(IAuditLog.RELATION_NAME).toString(),
+                actionName, AuditLogContextProvider.getAuditLogContext().getPhase());
               auditLogs.add(auditlog);
             }
           }
@@ -143,7 +154,7 @@ public class HibernateAuditLogListener
     }
 
     private Auditlog createAuditlog(String action, IAuditLog entity, String json, long userId, String transactionId,
-      Long principal, String relationName, String actionName) {
+      Long principal, String relationName, String actionName, Phase phase) {
       StringBuilder detailBuilder = new StringBuilder();
       if (actionName == null) {
         detailBuilder.append(entity.getLogDeatil());
@@ -152,7 +163,7 @@ public class HibernateAuditLogListener
       }
       Auditlog auditRecord = new Auditlog(action, detailBuilder.toString(), new Date(), entity.getId().toString(),
         entity.getClass().toString(), json, userId, transactionId, principal, relationName,
-        entity.getModificationJustification());
+        entity.getModificationJustification(), phase.getId());
       return auditRecord;
     }
 
@@ -213,13 +224,16 @@ public class HibernateAuditLogListener
               LOG.debug("set property: " + name + ", on entity: " + entity + ", with value: " + entityRelation);
             } else {
               if (!(name.equals("createdBy") || name.equals("modifiedBy"))) {
-                IAuditLog entityRelation = this.unProxyIAuditLogObject(propertyValue, sessionFactory);
-                if (level == 2) {
-                  entityRelation = this.loadRelations(entityRelation, false, 3, sessionFactory);
+                try {
+                  IAuditLog entityRelation = this.unProxyIAuditLogObject(propertyValue, sessionFactory);
+                  if (level == 2) {
+                    entityRelation = this.loadRelations(entityRelation, false, 3, sessionFactory);
+                  }
+                  classMetadata.setPropertyValue(entity, name, entityRelation);
+                  LOG.debug("set property: " + name + ", on entity: " + entity + ", with value: " + entityRelation);
+                } catch (LazyInitializationException e) {
+                  LOG.error(e.getMessage());
                 }
-
-                classMetadata.setPropertyValue(entity, name, entityRelation);
-                LOG.debug("set property: " + name + ", on entity: " + entity + ", with value: " + entityRelation);
               }
             }
 
@@ -289,11 +303,17 @@ public class HibernateAuditLogListener
    * 
    * @param entity
    * @return
+   * @throws SecurityException
+   * @throws NoSuchFieldException
+   * @throws IllegalAccessException
+   * @throws IllegalArgumentException
    */
-  public Set<HashMap<String, Object>> loadListOfRelations(IAuditLog entity, SessionFactory sessionFactory) {
+  public Set<HashMap<String, Object>> loadListOfRelations(IAuditLog entity, Session session)
+    throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
     Set<HashMap<String, Object>> setRelations = new HashSet<>();
+    entity = (IAuditLog) session.get(entity.getClass(), (Long) entity.getId());
 
-    ClassMetadata classMetadata = sessionFactory.getClassMetadata(entity.getClass());
+    ClassMetadata classMetadata = session.getSessionFactory().getClassMetadata(entity.getClass());
     String[] propertyNames = classMetadata.getPropertyNames();
 
     for (String name : propertyNames) {
@@ -316,10 +336,16 @@ public class HibernateAuditLogListener
         HashMap<String, Object> objects = new HashMap<>();
         Set<IAuditLog> listRelation = new HashSet<>();
 
+
         /** Our instanceof check in the if statement above ensures that we will only be dealing with IAuditLog **/
         @SuppressWarnings(value = {"unchecked"})
         Set<IAuditLog> entityRelation = (Set<IAuditLog>) propertyValue;
-        for (IAuditLog iAuditLog : entityRelation) {
+        String fieldSet = propertyType.getName().replaceAll("java.util.Set\\(" + entity.getClass().getName() + ".", "")
+          .replaceAll("\\)", "");
+        Field privateField = entity.getClass().getDeclaredField(fieldSet);
+        privateField.setAccessible(true);
+        Set<IAuditLog> set = (Set<IAuditLog>) privateField.get(entity);
+        for (IAuditLog iAuditLog : set) {
 
           if (iAuditLog.isActive()) {
 
@@ -387,7 +413,7 @@ public class HibernateAuditLogListener
         postDeleteEvent.getSession().getSessionFactory().getClassMetadata(entity.getClass());
       Type[] types = classMetadata.getPropertyTypes();
       auditLogContext.getDeletes().addAll(this.relations(postDeleteEvent.getDeletedState(), types,
-        ((IAuditLog) entity).getId(), true, postDeleteEvent.getSession().getSessionFactory()));
+        ((IAuditLog) entity).getId(), true, postDeleteEvent.getSession(), entity));
     }
 
     postDeleteEvent.getSession().getActionQueue().registerProcess(new MARLOAuditBeforeTransactionCompletionProcess());
@@ -429,7 +455,7 @@ public class HibernateAuditLogListener
       Type[] types = classMetadata.getPropertyTypes();
 
       auditLogContext.getInserts().addAll(this.relations(postInsertEvent.getState(), types,
-        ((IAuditLog) entity).getId(), true, postInsertEvent.getSession().getSessionFactory()));
+        ((IAuditLog) entity).getId(), true, postInsertEvent.getSession(), entity));
     }
     postInsertEvent.getSession().getActionQueue().registerProcess(new MARLOAuditBeforeTransactionCompletionProcess());
 
@@ -439,6 +465,7 @@ public class HibernateAuditLogListener
   @Override
   public void onPostUpdate(PostUpdateEvent postUpdateEvent) {
     Object entity = postUpdateEvent.getEntity();
+
     LOG.debug("begin onPostUpdatefor Entity : " + entity);
 
     AuditLogContext auditLogContext = AuditLogContextProvider.getAuditLogContext();
@@ -462,26 +489,76 @@ public class HibernateAuditLogListener
 
     HashMap<String, Object> updateRecord = new HashMap<>();
     if (entity instanceof IAuditLog) {
-      updateRecord.put(IAuditLog.ENTITY, entity);
-      updateRecord.put(IAuditLog.PRINCIPAL, new Long(1));
-      auditLogContext.getUpdates().add(updateRecord);
+      IAuditLog iAuditLog = (IAuditLog) entity;
+      String name = iAuditLog.getClass().getName();
+      Class<?> className = null;
+      try {
+        className = Class.forName(name);
+      } catch (ClassNotFoundException e) {
 
-      ClassMetadata classMetadata =
-        postUpdateEvent.getSession().getSessionFactory().getClassMetadata(entity.getClass());
+      }
+      Object obj = postUpdateEvent.getSession().get(className, (Serializable) iAuditLog.getId());
+
+      ClassMetadata classMetadata = postUpdateEvent.getSession().getSessionFactory().getClassMetadata(obj.getClass());
       Type[] types = classMetadata.getPropertyTypes();
 
-      auditLogContext.getUpdates().addAll(this.relations(postUpdateEvent.getState(), types,
-        ((IAuditLog) entity).getId(), true, postUpdateEvent.getSession().getSessionFactory()));
+      String[] propertyNamesRelation = classMetadata.getPropertyNames();
+      Phase phaseObject = null;
+      boolean hasPhase = false;
+      for (String nameAtrribute : propertyNamesRelation) {
+        if (nameAtrribute.equals("phase")) {
+          phaseObject = (Phase) classMetadata.getPropertyValue(entity, nameAtrribute);
+          if (phaseObject != null) {
+            phaseObject = (Phase) postUpdateEvent.getSession().get(Phase.class, phaseObject.getId());
+            if (phaseObject != null) {
+              hasPhase = true;
+            }
+          }
+
+
+        }
+      }
+      /*
+       * if have phase and the phase is the current we are checking , we load the info
+       */
+      if (hasPhase || entity instanceof Project || entity instanceof FundingSource || entity instanceof Deliverable
+        || entity instanceof ProjectOutcome || entity instanceof CrpProgram) {
+        if (hasPhase && (entity instanceof Deliverable == false)) {
+          if (AuditLogContextProvider.getAuditLogContext().getPhase().equals(phaseObject)) {
+            updateRecord.put(IAuditLog.ENTITY, entity);
+            updateRecord.put(IAuditLog.PRINCIPAL, new Long(1));
+            auditLogContext.getUpdates().add(updateRecord);
+
+
+            auditLogContext.getUpdates().addAll(this.relations(postUpdateEvent.getState(), types,
+              ((IAuditLog) entity).getId(), true, postUpdateEvent.getSession(), obj));
+            postUpdateEvent.getSession().getActionQueue()
+              .registerProcess(new MARLOAuditBeforeTransactionCompletionProcess());
+
+          }
+        } else {
+          updateRecord.put(IAuditLog.ENTITY, entity);
+          updateRecord.put(IAuditLog.PRINCIPAL, new Long(1));
+          auditLogContext.getUpdates().add(updateRecord);
+
+
+          auditLogContext.getUpdates().addAll(this.relations(postUpdateEvent.getState(), types,
+            ((IAuditLog) entity).getId(), true, postUpdateEvent.getSession(), entity));
+          postUpdateEvent.getSession().getActionQueue()
+            .registerProcess(new MARLOAuditBeforeTransactionCompletionProcess());
+        }
+
+      }
+
+      // LOG.debug("COMPARE LOGS WITH STAGING BRANCH: " + auditLogContext.getUpdates().toString());
+
+
     }
-
-    // LOG.debug("COMPARE LOGS WITH STAGING BRANCH: " + auditLogContext.getUpdates().toString());
-    postUpdateEvent.getSession().getActionQueue().registerProcess(new MARLOAuditBeforeTransactionCompletionProcess());
-
   }
 
 
   public Set<HashMap<String, Object>> relations(Object[] state, Type[] types, Object id, boolean firstRelations,
-    SessionFactory sessionFactory) {
+    Session session, Object object) {
 
     Set<HashMap<String, Object>> relations = new HashSet<>();
     int i = 0;
@@ -501,20 +578,60 @@ public class HibernateAuditLogListener
     for (Type type : types) {
       HashMap<String, Object> objects = new HashMap<>();
 
+      if (type instanceof OneToOneType) {
+
+        IAuditLog audit = (IAuditLog) state[i];
+        if (audit != null) {
+          String name = audit.getClass().getName();
+          Class<?> className;
+          try {
+            className = Class.forName(name);
+
+            Object obj = session.get(className, (Serializable) audit.getId());
+
+            Set<IAuditLog> listRelation = new HashSet<>();
+            listRelation.add((IAuditLog) obj);
+            IAuditLog auditlog = (IAuditLog) obj;
+            auditlog = (IAuditLog) session.get(auditlog.getClass(), (Serializable) auditlog.getId());
+            // session.refresh(auditlog);
+            Set<HashMap<String, Object>> loadList = this.loadListOfRelations(auditlog, session);
+            for (HashMap<String, Object> hashMap : loadList) {
+              HashSet<IAuditLog> relationAudit = (HashSet<IAuditLog>) hashMap.get(IAuditLog.ENTITY);
+              for (IAuditLog iAuditLog2 : relationAudit) {
+                Set<HashMap<String, Object>> loadListRelations = this.loadListOfRelations(iAuditLog2, session);
+
+                relations.addAll(loadListRelations);
+              }
+            }
+
+
+            relations.addAll(loadList);
+
+          } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          }
+
+        }
+      }
+
       if (type instanceof OrderedSetType || type instanceof SetType) {
 
         if (AuditLogContextProvider.getAuditLogContext().getRelationsNames().contains(type.getName())) {
           Set<IAuditLog> listRelation = new HashSet<>();
-
-
-          Set<Object> set = (Set<Object>) state[i];
-
           try {
+
+            String fieldSet = type.getName().replaceAll("java.util.Set\\(" + object.getClass().getName() + ".", "")
+              .replaceAll("\\)", "");
+            Field privateField = object.getClass().getDeclaredField(fieldSet);
+            privateField.setAccessible(true);
+            Set<Object> set = (Set<Object>) privateField.get(object);
+            // Hibernate.initialize(set);
             if (set != null && !set.isEmpty()) {
-              Object reObject = sessionFactory.getCurrentSession()
-                .get(AuditLogContextProvider.getAuditLogContext().getEntityCanonicalName(), (Serializable) id);
-              sessionFactory.getCurrentSession().refresh(reObject);
-              ClassMetadata metadata = sessionFactory.getClassMetadata(reObject.getClass());
+              Object reObject =
+                session.get(AuditLogContextProvider.getAuditLogContext().getEntityCanonicalName(), (Serializable) id);
+              // session.refresh(reObject);
+              ClassMetadata metadata = session.getSessionFactory().getClassMetadata(reObject.getClass());
               Object[] values = metadata.getPropertyValues(reObject);
               set = (Set<Object>) values[i];
               for (Object iAuditLog : set) {
@@ -539,7 +656,9 @@ public class HibernateAuditLogListener
                        * Christian Garcia
                        */
 
-                      Object obj = sessionFactory.getCurrentSession().get(className, (Serializable) audit.getId());
+                      Object obj = session.get(className, (Serializable) audit.getId());
+
+
                       if (obj == null) {
 
 
@@ -553,23 +672,75 @@ public class HibernateAuditLogListener
                         // Add the audit from the state object array
                         listRelation.add(audit);
                         continue;
-                      }
+                      } else {
+
+                        ClassMetadata classMetadataObj = session.getSessionFactory().getClassMetadata(obj.getClass());
+                        String[] propertyNamesRelation = classMetadataObj.getPropertyNames();
+                        Phase phaseObject = null;
+                        boolean hasPhase = false;
+                        for (String nameAtrribute : propertyNamesRelation) {
+                          if (nameAtrribute.equals("phase")) {
+                            phaseObject = (Phase) classMetadataObj.getPropertyValue(obj, nameAtrribute);
+                            if (phaseObject != null) {
+                              phaseObject = (Phase) session.get(Phase.class, phaseObject.getId());
+                              if (phaseObject != null) {
+                                hasPhase = true;
+                              }
+                            }
 
 
-                      listRelation.add((IAuditLog) obj);
-                      Set<HashMap<String, Object>> loadList = this.loadListOfRelations((IAuditLog) obj, sessionFactory);
-                      for (HashMap<String, Object> hashMap : loadList) {
-                        HashSet<IAuditLog> relationAudit = (HashSet<IAuditLog>) hashMap.get(IAuditLog.ENTITY);
-                        for (IAuditLog iAuditLog2 : relationAudit) {
-                          Set<HashMap<String, Object>> loadListRelations =
-                            this.loadListOfRelations(iAuditLog2, sessionFactory);
+                          }
+                        }
+                        /*
+                         * if have phase and the phase is the current we are checking , we load the info
+                         */
+                        if (hasPhase) {
+                          if (AuditLogContextProvider.getAuditLogContext().getPhase().equals(phaseObject)) {
+                            listRelation.add((IAuditLog) obj);
+                            IAuditLog auditlog = (IAuditLog) obj;
+                            auditlog = (IAuditLog) session.get(auditlog.getClass(), (Serializable) auditlog.getId());
 
-                          relations.addAll(loadListRelations);
+                            // session.refresh(auditlog);
+                            Set<HashMap<String, Object>> loadList = this.loadListOfRelations(auditlog, session);
+                            for (HashMap<String, Object> hashMap : loadList) {
+                              HashSet<IAuditLog> relationAudit = (HashSet<IAuditLog>) hashMap.get(IAuditLog.ENTITY);
+                              for (IAuditLog iAuditLog2 : relationAudit) {
+                                Set<HashMap<String, Object>> loadListRelations =
+                                  this.loadListOfRelations(iAuditLog2, session);
+
+                                relations.addAll(loadListRelations);
+                              }
+                            }
+
+
+                            relations.addAll(loadList);
+                          }
+
+                        } else {
+                          /*
+                           * If doesn't have phase we alway load the info
+                           */
+                          listRelation.add((IAuditLog) obj);
+                          IAuditLog auditlog = (IAuditLog) obj;
+                          auditlog = (IAuditLog) session.get(auditlog.getClass(), (Serializable) auditlog.getId());
+                          // session.refresh(auditlog);
+                          Set<HashMap<String, Object>> loadList = this.loadListOfRelations(auditlog, session);
+                          for (HashMap<String, Object> hashMap : loadList) {
+                            HashSet<IAuditLog> relationAudit = (HashSet<IAuditLog>) hashMap.get(IAuditLog.ENTITY);
+                            for (IAuditLog iAuditLog2 : relationAudit) {
+                              Set<HashMap<String, Object>> loadListRelations =
+                                this.loadListOfRelations(iAuditLog2, session);
+
+                              relations.addAll(loadListRelations);
+                            }
+                          }
+
+
+                          relations.addAll(loadList);
                         }
                       }
 
 
-                      relations.addAll(loadList);
                     } catch (ClassNotFoundException e) {
 
                       LOG.error(e.getLocalizedMessage());
@@ -590,7 +761,20 @@ public class HibernateAuditLogListener
 
             }
           } catch (HibernateException e) {
+            e.printStackTrace();
             LOG.info("Can not load lazy relation  " + e.getLocalizedMessage());
+          } catch (IllegalArgumentException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+          } catch (IllegalAccessException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+          } catch (NoSuchFieldException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+          } catch (SecurityException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
           }
         }
 

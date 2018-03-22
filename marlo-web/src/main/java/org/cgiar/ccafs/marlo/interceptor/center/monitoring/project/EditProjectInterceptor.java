@@ -19,9 +19,9 @@ import org.cgiar.ccafs.marlo.action.BaseAction;
 import org.cgiar.ccafs.marlo.config.APConstants;
 import org.cgiar.ccafs.marlo.data.manager.ICenterProgramManager;
 import org.cgiar.ccafs.marlo.data.manager.ICenterProjectManager;
-import org.cgiar.ccafs.marlo.data.model.Center;
 import org.cgiar.ccafs.marlo.data.model.CenterProgram;
 import org.cgiar.ccafs.marlo.data.model.CenterProject;
+import org.cgiar.ccafs.marlo.data.model.GlobalUnit;
 import org.cgiar.ccafs.marlo.security.Permission;
 
 import java.io.Serializable;
@@ -46,22 +46,25 @@ public class EditProjectInterceptor extends AbstractInterceptor implements Seria
   private final ICenterProgramManager programService;
   private Map<String, Object> session;
 
-  private Center researchCenter;
+  private GlobalUnit researchCenter;
   private long areaID = -1;
   private long programID = -1;
   private long projectID = -1;
 
   @Inject
   public EditProjectInterceptor(ICenterProjectManager projectService, ICenterProgramManager programService) {
+
     this.projectService = projectService;
     this.programService = programService;
   }
 
   @Override
   public String intercept(ActionInvocation invocation) throws Exception {
+    BaseAction baseAction = (BaseAction) invocation.getAction();
     parameters = invocation.getInvocationContext().getParameters();
     session = invocation.getInvocationContext().getSession();
-    researchCenter = (Center) session.get(APConstants.SESSION_CENTER);
+    baseAction.setSession(session);
+    researchCenter = (GlobalUnit) session.get(APConstants.SESSION_CRP);
 
     try {
       // projectID = Long.parseLong(((String[]) parameters.get(APConstants.PROJECT_ID))[0]);
@@ -85,7 +88,7 @@ public class EditProjectInterceptor extends AbstractInterceptor implements Seria
     boolean editParameter = false;
     BaseAction baseAction = (BaseAction) invocation.getAction();
     CenterProject project = projectService.getCenterProjectById(projectID);
-
+    baseAction.setSession(session);
     if (project != null) {
 
 
@@ -101,7 +104,8 @@ public class EditProjectInterceptor extends AbstractInterceptor implements Seria
           canEdit = true;
         } else {
 
-          if (baseAction.hasPermission(baseAction.generatePermission(Permission.PROJECT_BASE_PERMISSION, params))) {
+          if (baseAction
+            .hasPermissionCenter(baseAction.generatePermissionCenter(Permission.PROJECT_BASE_PERMISSION, params))) {
             canEdit = true;
           }
         }
@@ -118,8 +122,8 @@ public class EditProjectInterceptor extends AbstractInterceptor implements Seria
 
         // Check the permission if user want to edit or save the form
         if (editParameter || parameters.get("save") != null) {
-          hasPermissionToEdit = (baseAction.isAdmin()) ? true : baseAction
-            .hasPermission(baseAction.generatePermission(Permission.RESEARCH_PROGRAM_FULL_PRIVILEGES, params));
+          hasPermissionToEdit = (baseAction.isAdmin()) ? true : baseAction.hasPermissionCenter(
+            baseAction.generatePermissionCenter(Permission.RESEARCH_PROGRAM_FULL_PRIVILEGES, params));
         }
 
         // Set the variable that indicates if the user can edit the section

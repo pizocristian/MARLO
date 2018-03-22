@@ -16,10 +16,9 @@
 package org.cgiar.ccafs.marlo.validation.projects;
 
 import org.cgiar.ccafs.marlo.action.BaseAction;
-import org.cgiar.ccafs.marlo.config.APConstants;
-import org.cgiar.ccafs.marlo.data.manager.CrpManager;
+import org.cgiar.ccafs.marlo.data.manager.GlobalUnitManager;
 import org.cgiar.ccafs.marlo.data.model.Activity;
-import org.cgiar.ccafs.marlo.data.model.Crp;
+import org.cgiar.ccafs.marlo.data.model.GlobalUnit;
 import org.cgiar.ccafs.marlo.data.model.Project;
 import org.cgiar.ccafs.marlo.data.model.ProjectSectionStatusEnum;
 import org.cgiar.ccafs.marlo.data.model.ProjectStatusEnum;
@@ -43,33 +42,29 @@ import com.ibm.icu.util.Calendar;
 @Named
 public class ProjectActivitiesValidator extends BaseValidator {
 
-  // This is not thread safe
-  BaseAction action;
-
-  private final CrpManager crpManager;
+  private final GlobalUnitManager crpManager;
 
   @Inject
-  public ProjectActivitiesValidator(CrpManager crpManager) {
+  public ProjectActivitiesValidator(GlobalUnitManager crpManager) {
     this.crpManager = crpManager;
   }
 
-  private Path getAutoSaveFilePath(Project project, long crpID) {
-    Crp crp = crpManager.getCrpById(crpID);
+  private Path getAutoSaveFilePath(Project project, long crpID, BaseAction action) {
+    GlobalUnit crp = crpManager.getGlobalUnitById(crpID);
     String composedClassName = project.getClass().getSimpleName();
     String actionFile = ProjectSectionStatusEnum.ACTIVITIES.getStatus().replace("/", "_");
     String autoSaveFile =
-      project.getId() + "_" + composedClassName + "_" + crp.getAcronym() + "_" + actionFile + ".json";
+      project.getId() + "_" + composedClassName + "_" + action.getActualPhase().getDescription() + "_" + action.getActualPhase().getYear() +"_"+crp.getAcronym() +"_"+ actionFile + ".json";
     return Paths.get(config.getAutoSaveFolder() + autoSaveFile);
   }
 
   public void validate(BaseAction action, Project project, boolean saving) {
-    this.action = action;
     action.setInvalidFields(new HashMap<>());
     if (!saving) {
-      Path path = this.getAutoSaveFilePath(project, action.getCrpID());
+      Path path = this.getAutoSaveFilePath(project, action.getCrpID(), action);
 
       if (path.toFile().exists()) {
-        this.addMissingField("draft");
+        action.addMissingField("draft");
       }
     }
 
@@ -81,7 +76,7 @@ public class ProjectActivitiesValidator extends BaseValidator {
         if (activity != null && activity.getActivityStatus() != null) {
           if (activity.getActivityStatus() == Integer.parseInt(ProjectStatusEnum.Ongoing.getStatusId())
             || (activity.getActivityStatus() == Integer.parseInt(ProjectStatusEnum.Extended.getStatusId()))) {
-            this.validateActivity(activity, i, "projectActivities");
+            this.validateActivity(activity, i, "projectActivities", action);
           }
 
         }
@@ -92,63 +87,60 @@ public class ProjectActivitiesValidator extends BaseValidator {
 
     if (!action.getFieldErrors().isEmpty()) {
       action.addActionError(action.getText("saving.fields.required"));
-    } else if (validationMessage.length() > 0) {
-      action
-        .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+    } else if (action.getValidationMessage().length() > 0) {
+      action.addActionMessage(
+        " " + action.getText("saving.missingFields", new String[] {action.getValidationMessage().toString()}));
     }
-    if (action.isReportingActive()) {
-      this.saveMissingFields(project, APConstants.REPORTING, action.getReportingYear(),
-        ProjectSectionStatusEnum.ACTIVITIES.getStatus());
-    } else {
-      this.saveMissingFields(project, APConstants.PLANNING, action.getPlanningYear(),
-        ProjectSectionStatusEnum.ACTIVITIES.getStatus());
-    }
+
+    this.saveMissingFields(project, action.getActualPhase().getDescription(), action.getActualPhase().getYear(),
+      ProjectSectionStatusEnum.ACTIVITIES.getStatus(), action);
+
   }
 
-  public void validateActivity(Activity activity, int index, String listName) {
+  public void validateActivity(Activity activity, int index, String listName, BaseAction action) {
 
     List<String> params = new ArrayList<>();
     params.add(String.valueOf(activity.getId()));
 
     if (!(this.isValidString(activity.getTitle()) && this.wordCount(activity.getTitle()) <= 15)) {
-      this.addMessage(action.getText("activity.title", params));
+      action.addMessage(action.getText("activity.title", params));
       action.getInvalidFields().put("input-project." + listName + "[" + index + "].title",
         InvalidFieldsMessages.EMPTYFIELD);
 
     }
 
     if (!(this.isValidString(activity.getDescription()) && this.wordCount(activity.getDescription()) <= 150)) {
-      this.addMessage(action.getText("activity.description", params));
+      action.addMessage(action.getText("activity.description", params));
       action.getInvalidFields().put("input-project." + listName + "[" + index + "].description",
         InvalidFieldsMessages.EMPTYFIELD);
     }
 
     if (activity.getStartDate() == null) {
-      this.addMessage(action.getText("activity.startDate", params));
+      action.addMessage(action.getText("activity.startDate", params));
       action.getInvalidFields().put("input-project." + listName + "[" + index + "].startDate",
         InvalidFieldsMessages.EMPTYFIELD);
     }
     if (activity.getEndDate() == null) {
-      this.addMessage(action.getText("activity.endDate", params));
+      action.addMessage(action.getText("activity.endDate", params));
       action.getInvalidFields().put("input-project." + listName + "[" + index + "].endDate",
         InvalidFieldsMessages.EMPTYFIELD);
     }
 
     if (activity.getProjectPartnerPerson() != null) {
       if (activity.getProjectPartnerPerson().getId().intValue() == -1) {
-        this.addMessage(action.getText("activity.leader", params));
+        action.addMessage(action.getText("activity.leader", params));
         action.getInvalidFields().put("input-project." + listName + "[" + index + "].projectPartnerPerson.id",
           InvalidFieldsMessages.EMPTYFIELD);
       }
     } else {
-      this.addMessage(action.getText("activity.leader", params));
+      action.addMessage(action.getText("activity.leader", params));
       action.getInvalidFields().put("input-project." + listName + "[" + index + "].projectPartnerPerson.id",
         InvalidFieldsMessages.EMPTYFIELD);
     }
 
     if (activity.getActivityStatus() != null) {
       if (activity.getActivityStatus() == -1) {
-        this.addMessage(action.getText("activity.status", params));
+        action.addMessage(action.getText("activity.status", params));
         action.getInvalidFields().put("input-project." + listName + "[" + index + "].status",
           InvalidFieldsMessages.EMPTYFIELD);
       }
@@ -160,7 +152,7 @@ public class ProjectActivitiesValidator extends BaseValidator {
           cal.set(Calendar.MONTH, 11); // 11 = december
           cal.set(Calendar.DAY_OF_MONTH, 31); // new years eve
           if (activity.getEndDate() != null && activity.getEndDate().compareTo(cal.getTime()) <= 0) {
-            this.addMessage(action.getText("activity.status", params));
+            action.addMessage(action.getText("activity.status", params));
             action.getInvalidFields().put("input-project." + listName + "[" + index + "].activityStatus",
               InvalidFieldsMessages.EMPTYFIELD);
           }
@@ -176,7 +168,7 @@ public class ProjectActivitiesValidator extends BaseValidator {
 
           if (!(this.isValidString(activity.getActivityProgress())
             && this.wordCount(activity.getActivityProgress()) <= 150)) {
-            this.addMessage(action.getText("activity.statusProgress", params));
+            action.addMessage(action.getText("activity.statusProgress", params));
             action.getInvalidFields().put("input-project." + listName + "[" + index + "].activityProgress",
               InvalidFieldsMessages.EMPTYFIELD);
           }
@@ -186,19 +178,19 @@ public class ProjectActivitiesValidator extends BaseValidator {
 
 
     } else {
-      this.addMessage(action.getText("activity.status", params));
+      action.addMessage(action.getText("activity.status", params));
       action.getInvalidFields().put("input-project." + listName + "[" + index + "].activityStatus",
         InvalidFieldsMessages.EMPTYFIELD);
     }
     /*
      * if (activity.getDeliverables() != null) {
      * if (activity.getDeliverables().size() == 0) {
-     * this.addMessage(action.getText("activity.deliverable", params));
+     * action.addMessage(action.getText("activity.deliverable", params));
      * action.getInvalidFields().put("list-project." + listName + "[" + index + "].deliverables",
      * action.getText(InvalidFieldsMessages.EMPTYLIST, new String[] {"Deliverables"}));
      * }
      * } else {
-     * this.addMessage(action.getText("activity.deliverable", params));
+     * action.addMessage(action.getText("activity.deliverable", params));
      * action.getInvalidFields().put("list-project." + listName + "[" + index + "].deliverables",
      * action.getText(InvalidFieldsMessages.EMPTYLIST, new String[] {"Deliverables"}));
      * }

@@ -16,10 +16,9 @@ package org.cgiar.ccafs.marlo.validation.projects;
 
 
 import org.cgiar.ccafs.marlo.action.BaseAction;
-import org.cgiar.ccafs.marlo.config.APConstants;
-import org.cgiar.ccafs.marlo.data.manager.CrpManager;
-import org.cgiar.ccafs.marlo.data.model.Crp;
+import org.cgiar.ccafs.marlo.data.manager.GlobalUnitManager;
 import org.cgiar.ccafs.marlo.data.model.FileDB;
+import org.cgiar.ccafs.marlo.data.model.GlobalUnit;
 import org.cgiar.ccafs.marlo.data.model.Project;
 import org.cgiar.ccafs.marlo.data.model.ProjectHighlight;
 import org.cgiar.ccafs.marlo.data.model.ProjectSectionStatusEnum;
@@ -40,10 +39,10 @@ import javax.inject.Named;
 @Named
 public class ProjectHighLightValidator extends BaseValidator {
 
-  private final CrpManager crpManager;
+  private final GlobalUnitManager crpManager;
 
   @Inject
-  public ProjectHighLightValidator(CrpManager crpManager) {
+  public ProjectHighLightValidator(GlobalUnitManager crpManager) {
     super();
     this.crpManager = crpManager;
   }
@@ -65,25 +64,24 @@ public class ProjectHighLightValidator extends BaseValidator {
 
   }
 
-  private Path getAutoSaveFilePath(Project project, long crpID) {
-    Crp crp = crpManager.getCrpById(crpID);
+  private Path getAutoSaveFilePath(Project project, long crpID, BaseAction action) {
+    GlobalUnit crp = crpManager.getGlobalUnitById(crpID);
     String composedClassName = project.getClass().getSimpleName();
     String actionFile = ProjectSectionStatusEnum.DESCRIPTION.getStatus().replace("/", "_");
     String autoSaveFile =
-      project.getId() + "_" + composedClassName + "_" + crp.getAcronym() + "_" + actionFile + ".json";
+      project.getId() + "_" + composedClassName + "_" + action.getActualPhase().getDescription() + "_" + action.getActualPhase().getYear() +"_"+crp.getAcronym() +"_"+ actionFile + ".json";
 
     return Paths.get(config.getAutoSaveFolder() + autoSaveFile);
   }
 
 
   public void validate(BaseAction action, Project project, ProjectHighlight highLigths, boolean saving) {
-
     action.setInvalidFields(new HashMap<>());
     if (!saving) {
-      Path path = this.getAutoSaveFilePath(project, action.getCrpID());
+      Path path = this.getAutoSaveFilePath(project, action.getCrpID(),action);
 
       if (path.toFile().exists()) {
-        this.addMissingField("draft");
+        action.addMissingField("draft");
       }
     }
     this.checkFileIsValid(highLigths);
@@ -96,26 +94,21 @@ public class ProjectHighLightValidator extends BaseValidator {
 
     if (!action.getFieldErrors().isEmpty()) {
       action.addActionError(action.getText("saving.fields.required"));
-    } else if (validationMessage.length() > 0) {
-      action
-        .addActionMessage(" " + action.getText("saving.missingFields", new String[] {validationMessage.toString()}));
+    } else if (action.getValidationMessage().length() > 0) {
+      action.addActionMessage(
+        " " + action.getText("saving.missingFields", new String[] {action.getValidationMessage().toString()}));
     }
 
-    if (action.isReportingActive()) {
-      this.saveMissingFields(project, highLigths, APConstants.REPORTING, action.getReportingYear(),
-        ProjectSectionStatusEnum.HIGHLIGHT.getStatus());
-    } else {
-      this.saveMissingFields(project, highLigths, APConstants.PLANNING, action.getPlanningYear(),
-        ProjectSectionStatusEnum.HIGHLIGHT.getStatus());
-    }
+    this.saveMissingFields(project, action.getActualPhase().getDescription(), action.getActualPhase().getYear(),
+      ProjectSectionStatusEnum.HIGHLIGHT.getStatus(), action);
 
   }
 
   private void ValidateHightAuthor(BaseAction action, ProjectHighlight higligth) {
 
     if (!this.isValidString(higligth.getAuthor())) {
-      this.addMessage("Author");
-      this.addMissingField("reporting.projectHighligth.author");
+      action.addMessage("Author");
+      action.addMissingField("reporting.projectHighligth.author");
       action.getInvalidFields().put("input-highlight.author", InvalidFieldsMessages.EMPTYFIELD);
     }
   }
@@ -123,8 +116,8 @@ public class ProjectHighLightValidator extends BaseValidator {
   private void ValidateHightLigth(BaseAction action, ProjectHighlight higligth) {
 
     if (higligth.getTypesids().size() == 0) {
-      this.addMessage(action.getText("reporting.projectHighligth.types").toLowerCase());
-      this.addMissingField("reporting.projectHighligth.types");
+      action.addMessage(action.getText("reporting.projectHighligth.types").toLowerCase());
+      action.addMissingField("reporting.projectHighligth.types");
       action.getInvalidFields().put("input-highlight.typesids", InvalidFieldsMessages.EMPTYFIELD);
     }
 
@@ -134,8 +127,8 @@ public class ProjectHighLightValidator extends BaseValidator {
   private void ValidateHightTitle(BaseAction action, ProjectHighlight higligth) {
 
     if (!this.isValidString(higligth.getTitle())) {
-      this.addMessage(action.getText("Title"));
-      this.addMissingField("reporting.projectHighligth.title");
+      action.addMessage(action.getText("Title"));
+      action.addMissingField("reporting.projectHighligth.title");
       action.getInvalidFields().put("input-highlight.title", InvalidFieldsMessages.EMPTYFIELD);
     }
   }
@@ -144,8 +137,8 @@ public class ProjectHighLightValidator extends BaseValidator {
   private void ValidateYear(BaseAction action, ProjectHighlight higligth) {
 
     if (!(higligth.getYear() > 0)) {
-      this.addMessage("Year");
-      this.addMissingField("reporting.projectHighligth.year");
+      action.addMessage("Year");
+      action.addMissingField("reporting.projectHighligth.year");
       action.getInvalidFields().put("input-highlight.year", InvalidFieldsMessages.EMPTYFIELD);
 
     }

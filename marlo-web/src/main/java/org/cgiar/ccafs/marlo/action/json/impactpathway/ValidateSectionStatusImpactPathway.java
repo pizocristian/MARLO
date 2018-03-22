@@ -38,6 +38,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.dispatcher.Parameter;
 import org.slf4j.Logger;
@@ -102,7 +103,8 @@ public class ValidateSectionStatusImpactPathway extends BaseAction {
       }
 
     }
-    sectionStatus = sectionStatusManager.getSectionStatusByCrpProgam(crpProgramID, sectionName);
+    sectionStatus = sectionStatusManager.getSectionStatusByCrpProgam(crpProgramID, sectionName,
+      this.getActualPhase().getDescription(), this.getActualPhase().getYear());
     section = new HashMap<String, Object>();
     section.put("sectionName", sectionStatus.getSectionName());
     section.put("missingFields", sectionStatus.getMissingFields());
@@ -159,8 +161,8 @@ public class ValidateSectionStatusImpactPathway extends BaseAction {
     CrpProgram crpProgram = crpProgramManager.getCrpProgramById(crpProgramID);
     if (crpProgram != null) {
 
-      crpProgram.setClusterofActivities(
-        crpProgram.getCrpClusterOfActivities().stream().filter(c -> c.isActive()).collect(Collectors.toList()));
+      crpProgram.setClusterofActivities(crpProgram.getCrpClusterOfActivities().stream()
+        .filter(c -> c.isActive() && c.getPhase().equals(this.getActualPhase())).collect(Collectors.toList()));
       for (CrpClusterOfActivity crpClusterOfActivity : crpProgram.getClusterofActivities()) {
 
         crpClusterOfActivity.setLeaders(crpClusterOfActivity.getCrpClusterActivityLeaders().stream()
@@ -187,8 +189,8 @@ public class ValidateSectionStatusImpactPathway extends BaseAction {
     CrpProgram crpProgram = crpProgramManager.getCrpProgramById(crpProgramID);
     if (crpProgram != null) {
 
-      crpProgram.setOutcomes(
-        crpProgram.getCrpProgramOutcomes().stream().filter(c -> c.isActive()).collect(Collectors.toList()));
+      crpProgram.setOutcomes(crpProgram.getCrpProgramOutcomes().stream()
+        .filter(c -> c.isActive() && c.getPhase().equals(this.getActualPhase())).collect(Collectors.toList()));
       for (CrpProgramOutcome crpProgramOutcome : crpProgram.getOutcomes()) {
         crpProgramOutcome.setMilestones(
           crpProgramOutcome.getCrpMilestones().stream().filter(c -> c.isActive()).collect(Collectors.toList()));

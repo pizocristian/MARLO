@@ -1,6 +1,6 @@
 [#ftl]
 [#assign title = "MARLO Admin" /]
-[#assign currentSectionString = "${actionName?replace('/','-')}" /]
+[#assign currentSectionString = "${actionName?replace('/','-')}-phase-${(actualPhase.id)!}" /]
 [#assign pageLibs = [] /]
 [#assign customJS = [ "${baseUrl}/global/js/superadmin/marloParameters.js" ] /]
 [#assign customCSS = [ "${baseUrl}/global/css/superadmin/superadmin.css" ] /]
@@ -100,6 +100,8 @@
     <td>
       <input type="hidden" name="${customName}.id" value="${(element.id)!}" />
       <input type="hidden" name="${customName}.parameter.key" value="${(element.parameter.key)!}" />
+            <input type="hidden" name="${customName}.parameter.id" value="${(element.parameter.id)!}" />
+      
       [#if isTemplate]
         [@customForm.input name="${customName}.paramater.description" placeholder="Description" showTitle=false /]
         [@customForm.input name="${customName}.paramater.key" placeholder="Key" showTitle=false /]

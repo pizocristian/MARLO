@@ -6,13 +6,14 @@
     <action name="{crp}/dashboard"
       class="org.cgiar.ccafs.marlo.action.BaseAction">
       <interceptor-ref name="homeStack" />
-      <result name="input">/WEB-INF/crp/views/bi/dashboard.ftl</result>
+      <result name="input">/WEB-INF/crp/views/bi/dashboard.ftl</result>      
     </action>
     
-    <action name="{crp}/anaytics"
-      class="org.cgiar.ccafs.marlo.action.BaseAction">
+    <action name="{crp}/anaytics" class="org.cgiar.ccafs.marlo.action.bi.BiSaikuAnalytics">
       <interceptor-ref name="homeStack" />
       <result name="input">/WEB-INF/crp/views/bi/analytics.ftl</result>
+      <result name="success" type="redirectAction"></result>
+      <param name="urlSaiku">${urlSaiku}</param>
     </action>
     
   </package>

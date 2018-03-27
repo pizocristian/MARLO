@@ -18,7 +18,7 @@
   <article id="" class="col-md-12" > 
     <div class="borderBox">
        
-       [#assign biURL = "http://marlotest.ciat.cgiar.org:8090/pentaho/?userid=admin&password=password"]
+       [#assign biURL = "http://localhost:8080/pentaho"]
        
        <iframe width="1064px" height="800px" src="${biURL}" frameborder="0" style="border:0"></iframe>
        

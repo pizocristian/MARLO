@@ -16,12 +16,8 @@
     
 <section class="container">
   <article id="" class="col-md-12" > 
-    <div class="borderBox">
-       
-       [#assign biURL = "http://localhost:8080/pentaho"]
-       
-       <iframe width="1064px" height="800px" src="${biURL}" frameborder="0" style="border:0"></iframe>
-       
+    <div class="borderBox">       
+       <iframe width="1064px" height="800px" src="${urlSaiku}" frameborder="0" style="border:0"></iframe>       
     </div> 
   </article>
 </section>

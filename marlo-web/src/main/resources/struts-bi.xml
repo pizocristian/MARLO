@@ -11,9 +11,8 @@
     
     <action name="{crp}/anaytics" class="org.cgiar.ccafs.marlo.action.bi.BiSaikuAnalytics">
       <interceptor-ref name="homeStack" />
-      <result name="input">/WEB-INF/crp/views/bi/analytics.ftl</result>
-      <result name="success" type="redirectAction"></result>
-      <param name="urlSaiku">${urlSaiku}</param>
+      <result name="success">/WEB-INF/crp/views/bi/analytics.ftl</result>  
+      <param name="urlSaiku">${urlSaiku}</param>         
     </action>
     
   </package>

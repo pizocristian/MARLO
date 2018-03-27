@@ -25,7 +25,14 @@ import java.util.Date;
 
 import javax.inject.Inject;
 
-
+/**
+ * This action is responsible for generating the URL of BI for SAIKU analysis. The URL is composed of date + security
+ * text + destination. The destination will depend on the user and the CRP, which will obtain the appropriate
+ * destination from the database.
+ * 
+ * @author julianrodriguez
+ * @update Only generate the URL of BI. Pending assign destination by user and Global Unit
+ */
 public class BiSaikuAnalytics extends BaseAction {
 
   private static final long serialVersionUID = 1L;
@@ -51,8 +58,12 @@ public class BiSaikuAnalytics extends BaseAction {
 
     dateOut = dateFormatter.format(today);
 
+    // In the future, the destination will depend of the user and crp
+    // create a token of the date (dd-MM-yyyy) + SomeExtraText + destination form. which understands the .jar that does
+    // the bypass to Pentaho
     String token = MD5Convert.stringToMD5(dateOut + "SomeExtraText" + "destination1");
 
+    // create the url with the bypass
     this.urlSaiku = this.getText("bi.serverurl") + token + "&dst=destination_1";
 
     return SUCCESS;

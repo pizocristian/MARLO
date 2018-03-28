@@ -3,10 +3,10 @@
 <struts>
 	<package name="bi" namespace="/bi" extends="marlo-default">
     
-    <action name="{crp}/dashboard"
-      class="org.cgiar.ccafs.marlo.action.BaseAction">
+    <action name="{crp}/dashboard" class="org.cgiar.ccafs.marlo.action.bi.BiDashboard">
       <interceptor-ref name="homeStack" />
-      <result name="input">/WEB-INF/crp/views/bi/dashboard.ftl</result>      
+      <result name="success">/WEB-INF/crp/views/bi/dashboard.ftl</result>   
+       <param name="urlDashboard">${urlDashboard}</param>            
     </action>
     
     <action name="{crp}/anaytics" class="org.cgiar.ccafs.marlo.action.bi.BiSaikuAnalytics">

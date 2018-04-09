@@ -17,6 +17,9 @@
 package org.cgiar.ccafs.marlo.action.bi;
 
 import org.cgiar.ccafs.marlo.action.BaseAction;
+import org.cgiar.ccafs.marlo.config.APConstants;
+import org.cgiar.ccafs.marlo.data.manager.GlobalUnitManager;
+import org.cgiar.ccafs.marlo.data.model.GlobalUnit;
 import org.cgiar.ccafs.marlo.utils.APConfig;
 import org.cgiar.ccafs.marlo.utils.MD5Convert;
 
@@ -37,12 +40,17 @@ public class BiSaikuAnalytics extends BaseAction {
 
   private static final long serialVersionUID = 1L;
 
+
+  private GlobalUnitManager crpManager;
+
   private String urlSaiku;
+  private GlobalUnit loggedCrp;
 
 
   @Inject
-  public BiSaikuAnalytics(APConfig config) {
+  public BiSaikuAnalytics(APConfig config, GlobalUnitManager crpManager) {
     super(config);
+    this.crpManager = crpManager;
 
   }
 
@@ -78,6 +86,10 @@ public class BiSaikuAnalytics extends BaseAction {
   @Override
   public void prepare() throws Exception {
     // In the future here will validate the roles and the security.
+    loggedCrp = (GlobalUnit) this.getSession().get(APConstants.SESSION_CRP);
+    loggedCrp = crpManager.getGlobalUnitById(loggedCrp.getId());
+
+
   }
 
 

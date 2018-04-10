@@ -18,7 +18,9 @@ package org.cgiar.ccafs.marlo.action.bi;
 
 import org.cgiar.ccafs.marlo.action.BaseAction;
 import org.cgiar.ccafs.marlo.config.APConstants;
+import org.cgiar.ccafs.marlo.data.manager.BiPermissionsManager;
 import org.cgiar.ccafs.marlo.data.manager.GlobalUnitManager;
+import org.cgiar.ccafs.marlo.data.model.BiPermissions;
 import org.cgiar.ccafs.marlo.data.model.GlobalUnit;
 import org.cgiar.ccafs.marlo.data.model.User;
 import org.cgiar.ccafs.marlo.utils.APConfig;
@@ -43,15 +45,18 @@ public class BiSaikuAnalytics extends BaseAction {
 
 
   private GlobalUnitManager crpManager;
+  private BiPermissionsManager biManager;
 
   private String urlSaiku;
   private GlobalUnit loggedCrp;
+  private BiPermissions biPermissions;
 
 
   @Inject
-  public BiSaikuAnalytics(APConfig config, GlobalUnitManager crpManager) {
+  public BiSaikuAnalytics(APConfig config, GlobalUnitManager crpManager, BiPermissionsManager biManager) {
     super(config);
     this.crpManager = crpManager;
+    this.biManager = biManager;
 
   }
 
@@ -70,10 +75,13 @@ public class BiSaikuAnalytics extends BaseAction {
     // In the future, the destination will depend of the user and crp
     // create a token of the date (dd-MM-yyyy) + SomeExtraText + destination form. which understands the .jar that does
     // the bypass to Pentaho
-    String token = MD5Convert.stringToMD5(dateOut + "SomeExtraText" + "destination_1");
+
+    String biUrl = this.biPermissions.getUrlbi();
+
+    String token = MD5Convert.stringToMD5(dateOut + "SomeExtraText" + biUrl);
 
     // create the url with the bypass
-    this.urlSaiku = this.getText("bi.serverurl") + token + "&dst=destination_1";
+    this.urlSaiku = this.getText("bi.serverurl") + token + "&dst=" + biUrl;
 
     return SUCCESS;
 
@@ -90,6 +98,9 @@ public class BiSaikuAnalytics extends BaseAction {
     loggedCrp = (GlobalUnit) this.getSession().get(APConstants.SESSION_CRP);
     loggedCrp = crpManager.getGlobalUnitById(loggedCrp.getId());
     User user = (User) this.getSession().get(APConstants.SESSION_USER);
+
+    this.biPermissions =
+      biManager.searchPermissionByUserAndType(user.getId(), Long.parseLong(APConstants.ANALYTICS_TYPE));
 
 
   }

@@ -556,6 +556,14 @@ public final class APConstants {
   public static final String SUPPORTINGDOCS_DOCUMENTS_RALATION =
     "java.util.Set(org.cgiar.ccafs.marlo.data.model.CapdevSupportingDocs.capdevSuppDocsDocuments)";
 
+  /************************************************************************************************
+   * BI CONSTANTS
+   ************************************************************************************************/
+
+  public static final String ANALYTICS_TYPE = "1";
+
+  public static final String DASHBOARD_TYPE = "2";
+
   public static String getFilterBy() {
     return FILTER_BY;
   }

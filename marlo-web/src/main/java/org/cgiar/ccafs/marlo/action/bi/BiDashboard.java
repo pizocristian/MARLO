@@ -23,6 +23,7 @@ import org.cgiar.ccafs.marlo.data.manager.GlobalUnitManager;
 import org.cgiar.ccafs.marlo.data.model.BiPermissions;
 import org.cgiar.ccafs.marlo.data.model.GlobalUnit;
 import org.cgiar.ccafs.marlo.data.model.User;
+import org.cgiar.ccafs.marlo.security.Permission;
 import org.cgiar.ccafs.marlo.utils.APConfig;
 import org.cgiar.ccafs.marlo.utils.MD5Convert;
 
@@ -61,25 +62,30 @@ public class BiDashboard extends BaseAction {
 
   @Override
   public String execute() throws Exception {
-    Date today;
-    String dateOut;
-    SimpleDateFormat dateFormatter;
-    dateFormatter = new SimpleDateFormat("dd-MM-yyyy", this.getLocale());
 
-    today = new Date();
+    if (this.hasPermission(Permission.BI_DASHBOARD_PERMISSION)) {
+      Date today;
+      String dateOut;
+      SimpleDateFormat dateFormatter;
+      dateFormatter = new SimpleDateFormat("dd-MM-yyyy", this.getLocale());
 
-    dateOut = dateFormatter.format(today);
+      today = new Date();
 
-    // create a token of the date (dd-MM-yyyy) + SomeExtraText + destination form. which understands the .jar that does
-    // the bypass to Pentaho.
+      dateOut = dateFormatter.format(today);
 
-    String biUrl = this.biPermissions.getUrlbi();
+      // create a token of the date (dd-MM-yyyy) + SomeExtraText + destination form. which understands the .jar that
+      // does
+      // the bypass to Pentaho.
+
+      String biUrl = this.biPermissions.getUrlbi();
 
 
-    String token = MD5Convert.stringToMD5(dateOut + "SomeExtraText" + biUrl);
+      String token = MD5Convert.stringToMD5(dateOut + "SomeExtraText" + biUrl);
 
-    // create the url with the bypass
-    this.urlDashboard = this.getText("bi.serverurl") + token + "&dst=" + biUrl;
+      // create the url with the bypass
+      this.urlDashboard = this.getText("bi.serverurl") + token + "&dst=" + biUrl;
+
+    }
 
     return SUCCESS;
   }

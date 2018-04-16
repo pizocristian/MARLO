@@ -72,7 +72,6 @@ public class BiSaikuAnalytics extends BaseAction {
 
     dateOut = dateFormatter.format(today);
 
-    // In the future, the destination will depend of the user and crp
     // create a token of the date (dd-MM-yyyy) + SomeExtraText + destination form. which understands the .jar that does
     // the bypass to Pentaho
 

@@ -25,3 +25,9 @@ insert into permissions (permission,description,type) VALUES ('crp{0}:Bi:Analyti
 insert into roles (description,acronym,`order`,global_unit_id) VALUES ('BI Dashboard','BID',17,1); 
 insert into roles (description,acronym,`order`,global_unit_id) VALUES ('BI Analytics','BIA',18,1);
 
+-- role permissions
+insert into role_permissions (role_id,permission_id) 
+SELECT (select id from roles where description = 'BI Dashboard'), (select id from permissions where permission = 'crp{0}:Bi:Dashboard');
+
+insert into role_permissions (role_id,permission_id) 
+SELECT (select id from roles where description = 'BI Analytics'), (select id from permissions where permission = 'crp{0}:Bi:Analytics');

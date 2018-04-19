@@ -78,12 +78,17 @@ public class BiSaikuAnalytics extends BaseAction {
       // does
       // the bypass to Pentaho
 
-      String biUrl = this.biPermissions.getUrlbi();
+      String biUrl = null;
+      if (this.biPermissions != null) {
+        biUrl = this.biPermissions.getUrlbi();
 
-      String token = MD5Convert.stringToMD5(dateOut + "SomeExtraText" + biUrl);
+        String token = MD5Convert.stringToMD5(dateOut + "SomeExtraText" + biUrl);
 
-      // create the url with the bypass
-      this.urlSaiku = this.getText("bi.serverurl") + token + "&dst=" + biUrl;
+        // create the url with the bypass
+        this.urlSaiku = this.getText("bi.serverurl") + token + "&dst=" + biUrl + "&urlUser="
+          + this.biPermissions.getUserBi() + "&urlPass=" + this.biPermissions.getUserPass();
+      }
+
 
     }
 

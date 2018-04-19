@@ -9,6 +9,8 @@ CREATE TABLE `bi_permissions` (
   `type` tinyint(1),
   `user` bigint(20),
   `urlbi` text,
+  `userBi` text,
+  `userPass` text,
   `is_active` tinyint(1) NOT NULL,  
   PRIMARY KEY (`id`),
   CONSTRAINT `bi_permissions_fk` FOREIGN KEY (`user`) REFERENCES `users` (`id`)  

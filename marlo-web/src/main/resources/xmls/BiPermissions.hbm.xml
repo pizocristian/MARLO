@@ -17,6 +17,12 @@
         <property name="urlbi" type="string">
             <column length="65535" name="urlbi"/>
         </property>
+         <property name="userBi" type="string">
+            <column length="65535" name="userBi"/>
+        </property>
+         <property name="userPass" type="string">
+            <column length="65535" name="userPass"/>
+        </property>
         <property name="isActive" type="boolean">
             <column name="is_active" not-null="true"/>
         </property>

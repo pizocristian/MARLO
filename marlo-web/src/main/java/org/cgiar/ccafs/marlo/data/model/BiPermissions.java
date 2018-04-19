@@ -12,6 +12,8 @@ public class BiPermissions implements java.io.Serializable {
   private Long type;
   private Long user;
   private String urlbi;
+  private String userBi;
+  private String userPass;
   private boolean isActive;
 
   public BiPermissions() {
@@ -22,10 +24,12 @@ public class BiPermissions implements java.io.Serializable {
     this.isActive = isActive;
   }
 
-  public BiPermissions(Long type, Long user, String urlbi, boolean isActive) {
+  public BiPermissions(Long type, Long user, String urlbi, String userBi, String userPass, boolean isActive) {
     this.type = type;
     this.user = user;
     this.urlbi = urlbi;
+    this.userBi = userBi;
+    this.userPass = userPass;
     this.isActive = isActive;
   }
 
@@ -45,6 +49,14 @@ public class BiPermissions implements java.io.Serializable {
     return this.user;
   }
 
+  public String getUserBi() {
+    return userBi;
+  }
+
+  public String getUserPass() {
+    return userPass;
+  }
+
   public boolean isIsActive() {
     return this.isActive;
   }
@@ -61,12 +73,24 @@ public class BiPermissions implements java.io.Serializable {
     this.type = type;
   }
 
+
   public void setUrlbi(String urlbi) {
     this.urlbi = urlbi;
   }
 
+
   public void setUser(Long user) {
     this.user = user;
+  }
+
+
+  public void setUserBi(String userBi) {
+    this.userBi = userBi;
+  }
+
+
+  public void setUserPass(String userPass) {
+    this.userPass = userPass;
   }
 
 

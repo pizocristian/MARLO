@@ -14,7 +14,7 @@
  *****************************************************************/
 
 
-package org.cgiar.ccafas.marlo.pentaho.utils;
+package org.cgiar.ccafs.marlo.pentaho.utils;
 
 import java.io.IOException;
 import java.security.MessageDigest;

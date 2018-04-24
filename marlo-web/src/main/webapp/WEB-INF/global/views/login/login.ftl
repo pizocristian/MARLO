@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Welcome to MARLO" /]
 [#assign pageLibs = ["select2"] /]
-[#assign customJS = ["${baseUrl}/global/js/login/login.js?20180504"] /]
+[#assign customJS = ["${baseUrl}/global/js/login/login.js?20181104"] /]
 [#assign currentSection = "home" /]
 
 [#include "/WEB-INF/global/pages/header.ftl" /]
@@ -22,7 +22,7 @@
         [/#if]
       </div>
       <div class="row">
-        <div class=" col-md-offset-3 col-xs-7 col-sm-6 col-sm-6 col-md-5 col-center">
+        <div class=" col-md-offset-3 col-xs-11 col-sm-7 col-md-5 col-center">
           [#include "/WEB-INF/global/pages/loginForm.ftl" /]
         </div>
       </div>

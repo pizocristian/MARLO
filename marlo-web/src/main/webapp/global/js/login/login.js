@@ -111,7 +111,6 @@ function init() {
   });
 
   $('input#terms').on('change', function(){
-    console.log($('input#terms').is(':checked'));
   });
 
 }
@@ -341,8 +340,10 @@ function secondForm(data){
     if(data.crps.length>1){
       $(".crps-select").removeClass("hidden");
       //move crps select side bar
-      var sideBarPosition=-$(".loginForm").position().left-120;
-      $(".crps-select").css("left",sideBarPosition);
+      //var sideBarPosition=-$(".loginForm").position().left-120;
+      var sideBarPosition=-135;
+      //$(".crps-select").css("left",sideBarPosition);
+      $(".crps-select").addClass('show-select-bar');
     }else{
       //click unique crp loaded
       $('.selection-bar-options ul #crp-'+data.crps[0].acronym).click();

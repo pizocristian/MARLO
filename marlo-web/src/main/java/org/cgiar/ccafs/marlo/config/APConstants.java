@@ -564,6 +564,10 @@ public final class APConstants {
 
   public static final String DASHBOARD_TYPE = "2";
 
+  public static final String BI_ANALYTICS_ACRONYM = "BIA";
+
+  public static final String BI_DASHBOARD_ACRONYM = "BID";
+
   public static String getFilterBy() {
     return FILTER_BY;
   }

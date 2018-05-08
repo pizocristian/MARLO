@@ -23,7 +23,6 @@ import org.cgiar.ccafs.marlo.data.manager.GlobalUnitManager;
 import org.cgiar.ccafs.marlo.data.model.BiPermissions;
 import org.cgiar.ccafs.marlo.data.model.GlobalUnit;
 import org.cgiar.ccafs.marlo.data.model.User;
-import org.cgiar.ccafs.marlo.security.Permission;
 import org.cgiar.ccafs.marlo.utils.APConfig;
 import org.cgiar.ccafs.marlo.utils.MD5Convert;
 
@@ -64,7 +63,7 @@ public class BiSaikuAnalytics extends BaseAction {
   @Override
   public String execute() throws Exception {
 
-    if (this.hasPermission(Permission.BI_ANALYTICS_PERMISSION)) {
+    if (this.canAccessBiAnalytics()) {
       Date today;
       String dateOut;
       SimpleDateFormat dateFormatter;

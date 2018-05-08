@@ -508,17 +508,69 @@ public class BaseAction extends ActionSupport implements Preparable, SessionAwar
 
 
   public boolean canAccessBiAnalytics() {
-    if (this.hasPermission(Permission.BI_ANALYTICS_PERMISSION)) {
-      return true;
+
+    if (this.canAccessSuperAdmin() || this.canAcessCrpAdmin()) {
+      User u = this.getCurrentUser();
+      if (u != null) {
+        u = userManager.getUser(u.getId());
+        for (UserRole userRole : u.getUserRoles()) {
+          if (userRole.getRole().getAcronym().equals(APConstants.BI_ANALYTICS_ACRONYM)) {
+            return true;
+          }
+        }
+
+        return false;
+
+      } else {
+        return false;
+      }
     } else {
+      User u = this.getCurrentUser();
+      if (u != null) {
+        u = userManager.getUser(u.getId());
+        for (UserRole userRole : u.getUserRoles()) {
+          if (userRole.getRole().getAcronym().equals(APConstants.BI_ANALYTICS_ACRONYM)) {
+            return true;
+          }
+        }
+
+      }
+
       return false;
+
+
     }
+
   }
 
   public boolean canAccessBiDashboard() {
-    if (this.hasPermission(Permission.BI_DASHBOARD_PERMISSION)) {
-      return true;
+    if (this.canAccessSuperAdmin() || this.canAcessCrpAdmin()) {
+      User u = this.getCurrentUser();
+      if (u != null) {
+        u = userManager.getUser(u.getId());
+        for (UserRole userRole : u.getUserRoles()) {
+          if (userRole.getRole().getAcronym().equals(APConstants.BI_DASHBOARD_ACRONYM)) {
+            return true;
+          }
+        }
+
+        return false;
+
+      } else {
+        return false;
+      }
     } else {
+      User u = this.getCurrentUser();
+      if (u != null) {
+        u = userManager.getUser(u.getId());
+        for (UserRole userRole : u.getUserRoles()) {
+          if (userRole.getRole().getAcronym().equals(APConstants.BI_DASHBOARD_ACRONYM)) {
+            return true;
+          }
+        }
+
+      }
+
       return false;
     }
   }

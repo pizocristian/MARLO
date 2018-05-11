@@ -31,7 +31,7 @@ BEGIN
          where user_id = `userID`
          and role_id = (select id from roles where roles.acronym = 'BIA' and roles.global_unit_id= `globalId`)) = 0 THEN
          
-         insert into user_roles (user_id,role_id)values(`userID`,(select id from roles where roles.acronym = 'BID' and roles.global_unit_id= `globalId`));
+         insert into user_roles (user_id,role_id)values(`userID`,(select id from roles where roles.acronym = 'BIA' and roles.global_unit_id= `globalId`));
      
       END IF; 
 

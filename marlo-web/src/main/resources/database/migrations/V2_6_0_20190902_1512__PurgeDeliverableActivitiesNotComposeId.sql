@@ -1,0 +1,1 @@
+delete from deliverable_activities where composed_id IS NULL;

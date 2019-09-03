@@ -1,0 +1,1 @@
+delete from deliverable_activities where is_active=0;

@@ -1,0 +1,1 @@
+delete from deliverable_activities where project_activity_id IS NULL;

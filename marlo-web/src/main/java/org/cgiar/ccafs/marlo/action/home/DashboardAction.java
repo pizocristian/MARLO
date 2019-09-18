@@ -102,18 +102,18 @@ public class DashboardAction extends BaseAction {
 
       List<Project> allProjects = new ArrayList<>();
       if (phase != null) {
-        /*
-         * if (phase.getCrp().getGlobalUnitType().getId().equals(APConstants.CRP_DASHBOARD_CENTER_IDENTIFICATION)) {
-         * for (ProjectPhase projectPhase : phase.getProjectPhases()) {
-         * Project project = projectManager.getProjectById(projectPhase.getProject().getId());
-         * if (this.isProjectSubmitted(project.getId())) {
-         * allProjects.add(project);
-         * }
-         * }
-         * }
-         */
-        for (ProjectPhase projectPhase : phase.getProjectPhases()) {
-          allProjects.add(projectManager.getProjectById(projectPhase.getProject().getId()));
+
+        if (phase.getCrp().getGlobalUnitType().getId().equals(APConstants.CRP_DASHBOARD_CENTER_IDENTIFICATION)) {
+          for (ProjectPhase projectPhase : phase.getProjectPhases()) {
+            Project project = projectManager.getProjectById(projectPhase.getProject().getId());
+            if (this.isProjectSubmitted(project.getId())) {
+              allProjects.add(project);
+            }
+          }
+        } else {
+          for (ProjectPhase projectPhase : phase.getProjectPhases()) {
+            allProjects.add(projectManager.getProjectById(projectPhase.getProject().getId()));
+          }
         }
       }
 

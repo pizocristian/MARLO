@@ -494,15 +494,25 @@ public class ProjectCenterListAction extends BaseAction {
         phase.getProjectInfos().stream().filter(pi -> pi.isActive()).collect(Collectors.toList());
       for (ProjectInfo projectInfo : projectInfoList) {
         if (projectInfo != null) {
-          Project project = projectManager.getProjectById(projectInfo.getId());
-          if (project.getProjectInfo().getProjectEditLeader()) {
-            ProjectInfo info = project.getProjectInfo();
-            if ((info.getStatus() == Long.parseLong(ProjectStatusEnum.Ongoing.getStatusId())
-              || info.getStatus() == Long.parseLong(ProjectStatusEnum.Extended.getStatusId()))) {
-              if (this.isSubmit(project.getId())) {
-                project.setCurrentPhase(phase);
-                centerProjects.add(project);
+          Project project = projectManager.getProjectById(projectInfo.getProject().getId());
+          ProjectInfo info = project.getProjecInfoPhase(phase);
+          if (info != null) {
+            if (info.getProjectEditLeader()) {
+              // new find projectPartners
+              List<ProjectPartner> projectPartnersList = project.getProjectPartners().stream()
+                .filter(pp -> pp.isActive() && pp.getInstitution().getId().equals(loggedCrp.getInstitution().getId())
+                  && pp.getPhase().getId().equals(phase.getId()))
+                .collect(Collectors.toList());
+              if (projectPartnersList != null && projectPartnersList.size() > 0) {
+                if ((info.getStatus() == Long.parseLong(ProjectStatusEnum.Ongoing.getStatusId())
+                  || info.getStatus() == Long.parseLong(ProjectStatusEnum.Extended.getStatusId()))) {
+                  if (this.isSubmit(project.getId())) {
+                    project.setCurrentPhase(phase);
+                    centerProjects.add(project);
+                  }
+                }
               }
+
             }
           }
         }

@@ -166,6 +166,9 @@
 			<!-- validating if the user have edit privileges to impact pathway -->
 			<interceptor name="editCenterProject"
 				class="org.cgiar.ccafs.marlo.interceptor.center.monitoring.project.EditProjectInterceptor" />
+				<!-- Custom interceptor to MARLO centers -->
+			<interceptor name="editCenterProjects"
+        class="org.cgiar.ccafs.marlo.interceptor.project.EditCenterProjectsInterceptor" />
 			<interceptor name="editCenterDeliverable"
 				class="org.cgiar.ccafs.marlo.interceptor.center.monitoring.project.EditDeliverableInterceptor" />
 			<!-- Custom interceptor to prevent the unauthorized access of a inactive 
@@ -444,6 +447,17 @@
 				<interceptor-ref name="keepRedirectMessages" />
 				<interceptor-ref name="defaultStack" />
 			</interceptor-stack>
+			
+			<interceptor-stack name="editCenterProjectStack">
+        <interceptor-ref name="i18nFile" />
+        <interceptor-ref name="validCrp" />
+        <interceptor-ref name="requireUser" />
+        <interceptor-ref name="validSessionCrp" />
+        <interceptor-ref name="editCenterProject" />
+        <interceptor-ref name="centerAccessibleStage" />
+        <interceptor-ref name="keepRedirectMessages" />
+        <interceptor-ref name="defaultStack" />
+      </interceptor-stack>
 
 			<interceptor-stack name="centerDeliverableStack">
 				<interceptor-ref name="i18nFile" />

@@ -122,7 +122,7 @@ public class EditCenterProjectsInterceptor extends AbstractInterceptor implement
       if (project != null && project.isActive()) {
         Phase projectPhase = project.getCurrentPhase();
         if (projectPhase != null) {
-          if (!phase.getCrp().getId().equals(loggedCrp.getId())) {
+          if (!projectPhase.getCrp().getId().equals(loggedCrp.getId())) {
             GlobalUnitProject globalUnitProject =
               globalUnitProjectManager.findByProjectAndGlobalUnitId(project.getId(), projectPhase.getCrp().getId());
             if (globalUnitProject != null) {
@@ -151,24 +151,19 @@ public class EditCenterProjectsInterceptor extends AbstractInterceptor implement
                     canEdit = true;
                   }
                   if (project.getProjecInfoPhase(baseAction.getActualPhase()) != null) {
-
                     if (!project.getProjecInfoPhase(baseAction.getActualPhase()).isProjectEditLeader()
                       && !baseAction.hasPermission(baseAction.generatePermission(Permission.PROJECT__SWITCH, params))) {
                       canEdit = false;
                     }
                   }
-
                   LiaisonUser lUser =
                     liaisonUserManager.getLiaisonUserByUserId(user.getId(), projectPhase.getCrp().getId());
                   if (contactPointEditProject && lUser != null) {
                     LiaisonInstitution liaisonInstitution = lUser.getLiaisonInstitution();
                     ProjectPartner projectPartner = project.getLeader();
-
                     if (projectPartner != null) {
                       Institution institutionProject = projectPartner.getInstitution();
-
                       Institution institutionCp = liaisonInstitution.getInstitution();
-
                       if (institutionCp != null) {
                         if (institutionCp.getId().equals(institutionProject.getId())) {
                           canSwitchProject = true;
@@ -189,13 +184,111 @@ public class EditCenterProjectsInterceptor extends AbstractInterceptor implement
                         canSwitchProject = true;
                       }
                     }
-
-
                   } else {
                     if (baseAction.hasPermission(baseAction.generatePermission(Permission.PROJECT__SWITCH, params))) {
                       canSwitchProject = true;
                     }
                   }
+                  if (baseAction.isSubmit(projectId) && !baseAction.getActualPhase().getUpkeep()) {
+                    canEdit = false;
+                  }
+                  if (baseAction.isCrpClosed()) {
+                    if (!(baseAction.hasSpecificities(APConstants.CRP_PMU) && baseAction.isPMU())) {
+                      canEdit = false;
+                    }
+                  }
+                }
+                if (project.getProjecInfoPhase(baseAction.getActualPhase()).getEndDate() != null) {
+                  Calendar cal = Calendar.getInstance();
+                  cal.setTime(project.getProjecInfoPhase(baseAction.getActualPhase()).getEndDate());
+                  if (project.getProjecInfoPhase(baseAction.getActualPhase()).getStatus().longValue() == Long
+                    .parseLong(ProjectStatusEnum.Ongoing.getStatusId())
+                    && baseAction.getActualPhase().getYear() > cal.get(Calendar.YEAR)) {
+                    canEdit = false;
+                    canSwitchProject = false;
+                    baseAction.setEditStatus(true);
+                  }
+                }
+
+                if (project.getProjecInfoPhase(baseAction.getActualPhase()).getEndDate() != null) {
+                  Calendar cal = Calendar.getInstance();
+                  cal.setTime(project.getProjecInfoPhase(baseAction.getActualPhase()).getEndDate());
+                  System.out.println(cal.get(Calendar.YEAR));
+                  System.out.println(baseAction.getActualPhase().getYear());
+                  if (project.getProjecInfoPhase(baseAction.getActualPhase()).getStatus().longValue() == Long
+                    .parseLong(ProjectStatusEnum.Complete.getStatusId())) {
+                    if (baseAction.getActualPhase().getYear() > cal.get(Calendar.YEAR)) {
+                      if (!isAdmin) {
+                        canEdit = false;
+                      }
+                      canSwitchProject = false;
+                    }
+                  }
+                }
+
+
+                if (project.getProjecInfoPhase(baseAction.getActualPhase()).getPhase().getDescription()
+                  .equals(APConstants.REPORTING)
+                  && project.getProjecInfoPhase(baseAction.getActualPhase()).getPhase().getYear() == 2016) {
+                  canEdit = false;
+                  baseAction.setEditStatus(false);
+                }
+                String actionName = baseAction.getActionName().replaceAll(crp.getAcronym() + "/", "");
+
+                // check permission to edit budget execution in reporting
+                if (baseAction.isReportingActive()
+                  && actionName.contains(ProjectSectionStatusEnum.BUDGET.getStatus())) {
+                  canEdit = baseAction.canEditAnyProjectExecution(projectId);
+                }
+                // TODO Validate is the project is new
+                if (parameters.get(APConstants.EDITABLE_REQUEST).isDefined()) {
+                  String stringEditable = parameters.get(APConstants.EDITABLE_REQUEST).getMultipleValues()[0];
+                  editParameter = stringEditable.equals("true");
+                  if (!editParameter) {
+                    baseAction.setEditableParameter(hasPermissionToEdit);
+                  }
+                }
+                // Check the permission if user want to edit or save the form
+                if (editParameter || parameters.get("save").isDefined()) {
+                  hasPermissionToEdit = ((baseAction.canAccessSuperAdmin() || baseAction.canEditCrpAdmin())) ? true
+                    : baseAction.hasPermission(baseAction.generatePermission(Permission.PROJECT__PERMISSION, params));
+                }
+                if (parameters.get(APConstants.TRANSACTION_ID).isDefined()) {
+                  // String stringEditable = ((String[]) parameters.get(APConstants.EDITABLE_REQUEST))[0];
+                  editParameter = false;
+                }
+                // If the user is not asking for edition privileges we don't need to validate them.
+                if (!baseAction.getActualPhase().getEditable()) {
+                  canEdit = false;
+                  baseAction.setCanEditPhase(false);
+                }
+
+                // Check if is a Shared project (Crp to Center)
+                if (!globalUnitProject.isOrigin()) {
+                  canEdit = false;
+                  if (actionName.equals(SharedProjectSectionStatusEnum.CENTER_MAPPING.getStatus())) {
+                    if (baseAction
+                      .hasPermission(baseAction.generatePermission(Permission.SHARED_PROJECT_PERMISSION, params))) {
+                      canEdit = true;
+                    }
+                  }
+
+                }
+
+                if (!editParameter) {
+                  baseAction.setEditStatus(false);
+                }
+                // Set the variable that indicates if the user can edit the section
+                baseAction.setEditableParameter(editParameter && canEdit && baseAction.getActualPhase().getEditable());
+                baseAction.setCanSwitchProject(canSwitchProject && globalUnitProject.isOrigin());
+                baseAction.setCanEdit(canEdit);
+                baseAction.setEditStatus(baseAction.isEditStatus() && globalUnitProject.isOrigin());
+
+                // Allow Superadmin edit
+                if (baseAction.canAccessSuperAdmin() && editParameter) {
+                  baseAction.setEditableParameter(true);
+                  baseAction.setCanEdit(true);
+                  baseAction.setEditStatus(true);
                 }
               }
             } else {
@@ -203,199 +296,6 @@ public class EditCenterProjectsInterceptor extends AbstractInterceptor implement
             }
           }
         }
-      }
-    } else {
-      GlobalUnitProject globalUnitProject =
-        globalUnitProjectManager.findByProjectAndGlobalUnitId(project.getId(), loggedCrp.getId());
-      if (globalUnitProject != null) {
-
-        if (project != null && project.isActive()) {
-          if (!globalUnitProject.isOrigin()) {
-            GlobalUnitProject globalUnitProjectOrigin = globalUnitProjectManager.findByProjectId(project.getId());
-            List<Phase> phases =
-              globalUnitProjectOrigin.getGlobalUnit().getPhases().stream()
-                .filter(c -> c.isActive() && c.getDescription().equals(baseAction.getActualPhase().getDescription())
-                  && c.getYear() == baseAction.getActualPhase().getYear() && c.getUpkeep())
-                .collect(Collectors.toList());
-            if (phases.size() > 0) {
-              baseAction.setPhaseID(phases.get(0).getId());
-              project.getProjecInfoPhase(phases.get(0));
-            }
-          }
-          String params[] =
-            {crp.getAcronym(), project.getId() + "", baseAction.getActionName().replaceAll(crp.getAcronym() + "/", "")};
-
-          if (baseAction.canAccessSuperAdmin() || baseAction.canEditCrpAdmin()) {
-            isAdmin = true;
-            if (!baseAction.isSubmit(projectId)) {
-              canSwitchProject = true;
-            }
-            canEdit = true;
-          } else {
-            if (baseAction.hasPermission(baseAction.generatePermission(Permission.PROJECT__PERMISSION, params))) {
-              canEdit = true;
-
-            }
-            if (project.getProjecInfoPhase(baseAction.getActualPhase()) != null) {
-
-              if (!project.getProjecInfoPhase(baseAction.getActualPhase()).isProjectEditLeader()
-                && !baseAction.hasPermission(baseAction.generatePermission(Permission.PROJECT__SWITCH, params))) {
-                canEdit = false;
-              }
-            }
-
-
-            LiaisonUser lUser = liaisonUserManager.getLiaisonUserByUserId(user.getId(), loggedCrp.getId());
-            if (contactPointEditProject && lUser != null) {
-              LiaisonInstitution liaisonInstitution = lUser.getLiaisonInstitution();
-              ProjectPartner projectPartner = project.getLeader();
-
-              if (projectPartner != null) {
-                Institution institutionProject = projectPartner.getInstitution();
-
-                Institution institutionCp = liaisonInstitution.getInstitution();
-
-                if (institutionCp != null) {
-                  if (institutionCp.getId().equals(institutionProject.getId())) {
-                    canSwitchProject = true;
-                  } else {
-                    if (baseAction.hasPermission(baseAction.generatePermission(Permission.PROJECT__SWITCH, params))) {
-                      canSwitchProject = true;
-                    }
-                  }
-                } else {
-                  if (baseAction.hasPermission(baseAction.generatePermission(Permission.PROJECT__SWITCH, params))) {
-                    canSwitchProject = true;
-                  }
-                }
-              } else {
-                if (baseAction.hasPermission(baseAction.generatePermission(Permission.PROJECT__SWITCH, params))) {
-                  canSwitchProject = true;
-                }
-              }
-
-
-            } else {
-              if (baseAction.hasPermission(baseAction.generatePermission(Permission.PROJECT__SWITCH, params))) {
-                canSwitchProject = true;
-              }
-            }
-
-
-            if (baseAction.isSubmit(projectId) && !baseAction.getActualPhase().getUpkeep()) {
-              canEdit = false;
-
-            }
-
-
-            if (baseAction.isCrpClosed()) {
-              if (!(baseAction.hasSpecificities(APConstants.CRP_PMU) && baseAction.isPMU())) {
-                canEdit = false;
-              }
-            }
-
-
-          }
-          if (project.getProjecInfoPhase(baseAction.getActualPhase()).getEndDate() != null) {
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(project.getProjecInfoPhase(baseAction.getActualPhase()).getEndDate());
-            if (project.getProjecInfoPhase(baseAction.getActualPhase()).getStatus().longValue() == Long
-              .parseLong(ProjectStatusEnum.Ongoing.getStatusId())
-              && baseAction.getActualPhase().getYear() > cal.get(Calendar.YEAR)) {
-              canEdit = false;
-              canSwitchProject = false;
-              baseAction.setEditStatus(true);
-
-            }
-
-          }
-
-          if (project.getProjecInfoPhase(baseAction.getActualPhase()).getEndDate() != null) {
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(project.getProjecInfoPhase(baseAction.getActualPhase()).getEndDate());
-            System.out.println(cal.get(Calendar.YEAR));
-            System.out.println(baseAction.getActualPhase().getYear());
-            if (project.getProjecInfoPhase(baseAction.getActualPhase()).getStatus().longValue() == Long
-              .parseLong(ProjectStatusEnum.Complete.getStatusId())) {
-              if (baseAction.getActualPhase().getYear() > cal.get(Calendar.YEAR)) {
-                if (!isAdmin) {
-                  canEdit = false;
-                }
-                canSwitchProject = false;
-              }
-            }
-          }
-
-
-          if (project.getProjecInfoPhase(baseAction.getActualPhase()).getPhase().getDescription()
-            .equals(APConstants.REPORTING)
-            && project.getProjecInfoPhase(baseAction.getActualPhase()).getPhase().getYear() == 2016) {
-            canEdit = false;
-            baseAction.setEditStatus(false);
-          }
-          String actionName = baseAction.getActionName().replaceAll(crp.getAcronym() + "/", "");
-
-          // check permission to edit budget execution in reporting
-          if (baseAction.isReportingActive() && actionName.contains(ProjectSectionStatusEnum.BUDGET.getStatus())) {
-            canEdit = baseAction.canEditAnyProjectExecution(projectId);
-          }
-          // TODO Validate is the project is new
-          if (parameters.get(APConstants.EDITABLE_REQUEST).isDefined()) {
-            String stringEditable = parameters.get(APConstants.EDITABLE_REQUEST).getMultipleValues()[0];
-            editParameter = stringEditable.equals("true");
-            if (!editParameter) {
-              baseAction.setEditableParameter(hasPermissionToEdit);
-            }
-          }
-          // Check the permission if user want to edit or save the form
-          if (editParameter || parameters.get("save").isDefined()) {
-            hasPermissionToEdit = ((baseAction.canAccessSuperAdmin() || baseAction.canEditCrpAdmin())) ? true
-              : baseAction.hasPermission(baseAction.generatePermission(Permission.PROJECT__PERMISSION, params));
-          }
-          if (parameters.get(APConstants.TRANSACTION_ID).isDefined()) {
-            // String stringEditable = ((String[]) parameters.get(APConstants.EDITABLE_REQUEST))[0];
-            editParameter = false;
-          }
-          // If the user is not asking for edition privileges we don't need to validate them.
-          if (!baseAction.getActualPhase().getEditable()) {
-            canEdit = false;
-            baseAction.setCanEditPhase(false);
-          }
-
-          // Check if is a Shared project (Crp to Center)
-          if (!globalUnitProject.isOrigin()) {
-            canEdit = false;
-            if (actionName.equals(SharedProjectSectionStatusEnum.CENTER_MAPPING.getStatus())) {
-              if (baseAction
-                .hasPermission(baseAction.generatePermission(Permission.SHARED_PROJECT_PERMISSION, params))) {
-                canEdit = true;
-              }
-            }
-
-          }
-
-          if (!editParameter) {
-            baseAction.setEditStatus(false);
-          }
-          // Set the variable that indicates if the user can edit the section
-          baseAction.setEditableParameter(editParameter && canEdit && baseAction.getActualPhase().getEditable());
-          baseAction.setCanSwitchProject(canSwitchProject && globalUnitProject.isOrigin());
-          baseAction.setCanEdit(canEdit);
-          baseAction.setEditStatus(baseAction.isEditStatus() && globalUnitProject.isOrigin());
-
-          // Allow Superadmin edit
-          if (baseAction.canAccessSuperAdmin() && editParameter) {
-            baseAction.setEditableParameter(true);
-            baseAction.setCanEdit(true);
-            baseAction.setEditStatus(true);
-          }
-
-
-        } else {
-          throw new NullPointerException();
-        }
-      } else {
-        throw new NullPointerException();
       }
     }
   }

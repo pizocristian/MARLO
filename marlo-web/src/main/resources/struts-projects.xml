@@ -26,7 +26,7 @@
 		
 		<action name="{crp}/projectsCenterList"
       class="org.cgiar.ccafs.marlo.action.projects.ProjectCenterListAction">
-      <interceptor-ref name="editCenterProjectStack" />
+      <interceptor-ref name="projectsStack" />
       <result name="input">/WEB-INF/crp/views/projects/projectsCenterList.ftl
       </result>
       <result name="success" type="redirectAction">

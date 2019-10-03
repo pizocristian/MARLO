@@ -338,7 +338,27 @@ public class EditProjectInterceptor extends AbstractInterceptor implements Seria
         throw new NullPointerException();
       }
     } else {
-      throw new NullPointerException();
+      // **************Diego Perez changes
+      // validate if are we in Centers
+      if (loggedCrp.isCenterType()) {
+        if (project != null && project.isActive()) {
+          Phase projectPhase = project.getCurrentPhase();
+          GlobalUnitProject globalUnitProjectOrigin = globalUnitProjectManager.findByProjectId(project.getId());
+          List<Phase> phases = globalUnitProjectOrigin.getGlobalUnit().getPhases().stream()
+            .filter(c -> c.isActive() && c.getDescription().equals(baseAction.getActualPhase().getDescription())
+              && c.getYear() == baseAction.getActualPhase().getYear() && c.getUpkeep())
+            .collect(Collectors.toList());
+          if (phases.size() > 0) {
+            baseAction.setPhaseID(phases.get(0).getId());
+            project.getProjecInfoPhase(phases.get(0));
+          }
+        }
+      } else {
+        throw new NullPointerException();
+      }
+
+      // ***************Ends Diego Perez Changes
+      // throw new NullPointerException();
     }
   }
 

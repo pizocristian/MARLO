@@ -43,7 +43,7 @@
         <ul class="nav nav-tabs" role="tablist">
           <li role="presentation" class="active">
             <a href="#active-tab" aria-controls="home" role="tab" data-toggle="tab">
-              <strong><span class="glyphicon glyphicon-flag"></span>  [@s.text name="projectsList.active"/] </strong> <br /><small>([@s.text name="projectsList.active${reportingActive?string('Reporting', 'Planning')}.help"/])</small>
+              <strong><span class="glyphicon glyphicon-flag"></span>  [@s.text name="projectsrList.active"/] </strong> <br /><small>([@s.text name="projectsList.active${reportingActive?string('Reporting', 'Planning')}.help"/])</small>
             </a>
           </li>
           [#if !reportingActive]

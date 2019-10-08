@@ -133,10 +133,9 @@ public class EditProjectInterceptor extends AbstractInterceptor implements Seria
       if (project != null && project.isActive()) {
         if (!globalUnitProject.isOrigin()) {
           GlobalUnitProject globalUnitProjectOrigin = globalUnitProjectManager.findByProjectId(project.getId());
-          List<Phase> phases = globalUnitProjectOrigin.getGlobalUnit().getPhases().stream()
-            .filter(c -> c.isActive() && c.getDescription().equals(baseAction.getActualPhase().getDescription())
-              && c.getYear() == baseAction.getActualPhase().getYear() && c.getUpkeep())
-            .collect(Collectors.toList());
+          List<Phase> phases = globalUnitProjectOrigin.getGlobalUnit().getPhases().stream().filter(c -> c.isActive()
+            && c.getDescription().equals(loggedCrp.isCenterType() ? "ÄR" : baseAction.getActualPhase().getDescription())
+            && c.getYear() == baseAction.getActualPhase().getYear() && c.getUpkeep()).collect(Collectors.toList());
           if (phases.size() > 0) {
             baseAction.setPhaseID(phases.get(0).getId());
             project.getProjecInfoPhase(phases.get(0));
@@ -344,13 +343,84 @@ public class EditProjectInterceptor extends AbstractInterceptor implements Seria
         if (project != null && project.isActive()) {
           Phase projectPhase = project.getCurrentPhase();
           GlobalUnitProject globalUnitProjectOrigin = globalUnitProjectManager.findByProjectId(project.getId());
-          List<Phase> phases = globalUnitProjectOrigin.getGlobalUnit().getPhases().stream()
-            .filter(c -> c.isActive() && c.getDescription().equals(baseAction.getActualPhase().getDescription())
-              && c.getYear() == baseAction.getActualPhase().getYear() && c.getUpkeep())
+          List<Phase> phases = globalUnitProjectOrigin.getGlobalUnit().getPhases().stream().filter(c -> c.isActive()
+            && c.getDescription().equals("AR") && c.getYear() == baseAction.getActualPhase().getYear() && c.getUpkeep())
             .collect(Collectors.toList());
+
           if (phases.size() > 0) {
+            projectPhase = phases.get(0);
             baseAction.setPhaseID(phases.get(0).getId());
             project.getProjecInfoPhase(phases.get(0));
+          }
+          String params[] = {projectPhase.getCrp().getAcronym(), project.getId() + "",
+            baseAction.getActionName().replaceAll(projectPhase.getCrp().getAcronym() + "/", "")};
+
+          if (baseAction.canAccessSuperAdmin() || baseAction.canEditCrpAdmin()) {
+            isAdmin = true;
+            if (!baseAction.isSubmit(projectId)) {
+              canSwitchProject = true;
+            }
+            canEdit = true;
+          } else {
+            if (baseAction.hasPermission(baseAction.generatePermission(Permission.PROJECT__PERMISSION, params))) {
+              canEdit = true;
+            }
+            if (project.getProjecInfoPhase(baseAction.getActualPhase()) != null) {
+              if (!project.getProjecInfoPhase(baseAction.getActualPhase()).isProjectEditLeader()
+                && !baseAction.hasPermission(baseAction.generatePermission(Permission.PROJECT__SWITCH, params))) {
+                canEdit = false;
+              }
+            }
+            LiaisonUser lUser = liaisonUserManager.getLiaisonUserByUserId(user.getId(), projectPhase.getCrp().getId());
+            if (contactPointEditProject && lUser != null) {
+              LiaisonInstitution liaisonInstitution = lUser.getLiaisonInstitution();
+              ProjectPartner projectPartner = project.getLeader();
+
+              if (projectPartner != null) {
+                Institution institutionProject = projectPartner.getInstitution();
+
+                Institution institutionCp = liaisonInstitution.getInstitution();
+
+                if (institutionCp != null) {
+                  if (institutionCp.getId().equals(institutionProject.getId())) {
+                    canSwitchProject = true;
+                  } else {
+                    if (baseAction.hasPermission(baseAction.generatePermission(Permission.PROJECT__SWITCH, params))) {
+                      canSwitchProject = true;
+                    }
+                  }
+                } else {
+                  if (baseAction.hasPermission(baseAction.generatePermission(Permission.PROJECT__SWITCH, params))) {
+                    canSwitchProject = true;
+                  }
+                }
+              } else {
+                if (baseAction.hasPermission(baseAction.generatePermission(Permission.PROJECT__SWITCH, params))) {
+                  canSwitchProject = true;
+                }
+              }
+
+
+            } else {
+              if (baseAction.hasPermission(baseAction.generatePermission(Permission.PROJECT__SWITCH, params))) {
+                canSwitchProject = true;
+              }
+            }
+
+
+            if (baseAction.isSubmit(projectId) && !baseAction.getActualPhase().getUpkeep()) {
+              canEdit = false;
+
+            }
+
+
+            if (baseAction.isCrpClosed()) {
+              if (!(baseAction.hasSpecificities(APConstants.CRP_PMU) && baseAction.isPMU())) {
+                canEdit = false;
+              }
+            }
+
+
           }
         }
       } else {

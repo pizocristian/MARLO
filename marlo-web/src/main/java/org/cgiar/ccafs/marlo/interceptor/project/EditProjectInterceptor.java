@@ -338,13 +338,14 @@ public class EditProjectInterceptor extends AbstractInterceptor implements Seria
       }
     } else {
       // **************Diego Perez changes
-      // validate if are we in Centers
+      // validate if we are in Centers
       if (loggedCrp.isCenterType()) {
         if (project != null && project.isActive()) {
           Phase projectPhase = project.getCurrentPhase();
           GlobalUnitProject globalUnitProjectOrigin = globalUnitProjectManager.findByProjectId(project.getId());
-          List<Phase> phases = globalUnitProjectOrigin.getGlobalUnit().getPhases().stream().filter(c -> c.isActive()
-            && c.getDescription().equals("AR") && c.getYear() == baseAction.getActualPhase().getYear() && c.getUpkeep())
+          List<Phase> phases = globalUnitProjectOrigin.getGlobalUnit().getPhases().stream()
+            .filter(c -> c.isActive() && c.getDescription().equals("AR")
+              && c.getYear() == baseAction.getActualPhase().getYear() && !c.getUpkeep())
             .collect(Collectors.toList());
 
           if (phases.size() > 0) {

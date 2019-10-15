@@ -96,7 +96,7 @@ public class Innovations {
 
   @ApiOperation(tags = {"Table 4 - CRP Innovations"}, value = "${Innovation.innovation.DELETE.id.value}",
     response = InnovationDTO.class)
-  @RequiresPermissions(Permission.FULL_READ_REST_API_PERMISSION)
+  @RequiresPermissions(Permission.FULL_DELETE_REST_API_PERMISSION)
   @RequestMapping(value = "/{CGIAREntity}/innovations/{id}", method = RequestMethod.DELETE,
     produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<InnovationDTO> deleteInnovationById(
@@ -154,7 +154,7 @@ public class Innovations {
 
   @ApiOperation(tags = {"Table 4 - CRP Innovations"}, value = "${Innovation.innovation.PUT.value}",
     response = InnovationDTO.class)
-  @RequiresPermissions(Permission.FULL_CREATE_REST_API_PERMISSION)
+  @RequiresPermissions(Permission.FULL_UPDATE_REST_API_PERMISSION)
   @RequestMapping(value = "/{CGIAREntity}/innovations/{id}", method = RequestMethod.PUT,
     produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Long> putInnovation(

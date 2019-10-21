@@ -566,17 +566,21 @@ public class POWBPOISummary2019Action extends BaseSummariesAction implements Sum
 
             for (CrpOutcomeSubIdo subIdo : outcome.getSubIdos()) {
               if (subIdo.getSrfSubIdo() != null) {
+                String primary = "";
+                if (subIdo.getPrimary() == true) {
+                  primary = " {primary} ";
+                }
                 if (subIDO.isEmpty()) {
                   if (subIdo.getSrfSubIdo().getSrfIdo().isIsCrossCutting()) {
-                    subIDO = "• CC " + subIdo.getSrfSubIdo().getDescription();
+                    subIDO = "•" + primary + " CC " + subIdo.getSrfSubIdo().getDescription();
                   } else {
-                    subIDO = "• " + subIdo.getSrfSubIdo().getDescription();
+                    subIDO = "• " + primary + subIdo.getSrfSubIdo().getDescription();
                   }
                 } else {
                   if (subIdo.getSrfSubIdo().getSrfIdo().isIsCrossCutting()) {
-                    subIDO += "\n • CC " + subIdo.getSrfSubIdo().getDescription();
+                    subIDO += "\n •" + primary + " CC " + subIdo.getSrfSubIdo().getDescription();
                   } else {
-                    subIDO += "\n • " + subIdo.getSrfSubIdo().getDescription();
+                    subIDO += "\n •" + primary + subIdo.getSrfSubIdo().getDescription();
                   }
                 }
               }
@@ -837,7 +841,8 @@ public class POWBPOISummary2019Action extends BaseSummariesAction implements Sum
 
     this.getFpPlannedList(this.getFlagships(), this.getSelectedPhase().getId());
 
-    if (powbSynthesis.getPowbEvidence() != null && powbSynthesis.getPowbEvidence().getPlannedStudies() != null) {
+    if (powbSynthesis != null && powbSynthesis.getPowbEvidence() != null
+      && powbSynthesis.getPowbEvidence().getPlannedStudies() != null) {
 
       for (PowbEvidencePlannedStudy powbEvidencePlannedStudy : powbSynthesis.getPowbEvidence().getPlannedStudies()) {
         String studyInfo = " ", geographicScope = " ", commissionStudy = " ";
@@ -1235,7 +1240,7 @@ public class POWBPOISummary2019Action extends BaseSummariesAction implements Sum
         CTDocument1 doc = document.getDocument();
         CTBody body = doc.getBody();
 
-        poiSummary.pageRightHeader(document, this.getText("summaries.powb2019.hppaderCRP"));
+        poiSummary.pageRightHeader(document, this.getText("summaries.powb2019.headerCRP"));
 
         // Get datetime
         ZonedDateTime timezone = ZonedDateTime.now();

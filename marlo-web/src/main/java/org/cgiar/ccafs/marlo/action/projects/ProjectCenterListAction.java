@@ -486,36 +486,38 @@ public class ProjectCenterListAction extends BaseAction {
       .filter(gp -> gp.isActive() && gp.isMarlo() && gp.getGlobalUnitType().getId() == 1).collect(Collectors.toList());
 
     for (GlobalUnit globalUnit : globalUnits) {
-
-      Phase phase = phaseManager.findCycle(this.getCurrentCycle(), this.getCurrentCycleYear(),
-        this.getActualPhase().getUpkeep(), globalUnit.getId());
-      List<ProjectInfo> projectInfoList =
-        phase.getProjectInfos().stream().filter(pi -> pi.isActive()).collect(Collectors.toList());
-      for (ProjectInfo projectInfo : projectInfoList) {
-        if (projectInfo != null) {
-          Project project = projectManager.getProjectById(projectInfo.getProject().getId());
-          ProjectInfo info = project.getProjecInfoPhase(phase);
-          if (info != null) {
-            if (info.getProjectEditLeader()) {
-              // new find projectPartners
-              List<ProjectPartner> projectPartnersList = project.getProjectPartners().stream()
-                .filter(pp -> pp.isActive() && pp.getInstitution().getId().equals(loggedCrp.getInstitution().getId())
-                  && pp.getPhase().getId().equals(phase.getId()))
-                .collect(Collectors.toList());
-              if (projectPartnersList != null && projectPartnersList.size() > 0) {
-                if ((info.getStatus() == Long.parseLong(ProjectStatusEnum.Ongoing.getStatusId())
-                  || info.getStatus() == Long.parseLong(ProjectStatusEnum.Extended.getStatusId()))) {
-                  if (this.isSubmit(project.getId())) {
-                    project.setCurrentPhase(phase);
-                    centerProjects.add(project);
+      if (!globalUnit.isCenterType()) {
+        Phase phase =
+          phaseManager.findCycle(APConstants.REPORTING, this.getCurrentCycleYear(), false, globalUnit.getId());
+        List<ProjectInfo> projectInfoList =
+          phase.getProjectInfos().stream().filter(pi -> pi.isActive()).collect(Collectors.toList());
+        for (ProjectInfo projectInfo : projectInfoList) {
+          if (projectInfo != null) {
+            Project project = projectManager.getProjectById(projectInfo.getProject().getId());
+            ProjectInfo info = project.getProjecInfoPhase(phase);
+            if (info != null) {
+              if (info.getProjectEditLeader()) {
+                // new find projectPartners
+                List<ProjectPartner> projectPartnersList = project.getProjectPartners().stream()
+                  .filter(pp -> pp.isActive() && pp.getInstitution().getId().equals(loggedCrp.getInstitution().getId())
+                    && pp.getPhase().getId().equals(phase.getId()))
+                  .collect(Collectors.toList());
+                if (projectPartnersList != null && projectPartnersList.size() > 0) {
+                  if ((info.getStatus() == Long.parseLong(ProjectStatusEnum.Ongoing.getStatusId())
+                    || info.getStatus() == Long.parseLong(ProjectStatusEnum.Extended.getStatusId()))) {
+                    if (this.isSubmit(project.getId())) {
+                      project.setCurrentPhase(phase);
+                      centerProjects.add(project);
+                    }
                   }
                 }
-              }
 
+              }
             }
           }
         }
       }
+
     }
   }
 
@@ -583,6 +585,9 @@ public class ProjectCenterListAction extends BaseAction {
         allProjects.add(projectManager.getProjectById(projectPhase.getProject().getId()));
       }
     }
+
+    myProjects = new ArrayList<Project>();
+
     myProjects = projectManager.getUserProjects(this.getCurrentUser().getId(), loggedCrp.getAcronym()).stream()
       .filter(p -> p.isActive()).collect(Collectors.toList());
     List<Project> mProjects = new ArrayList<>();
@@ -600,9 +605,11 @@ public class ProjectCenterListAction extends BaseAction {
     for (Project project : allProjects) {
       project.setProjectInfo(project.getProjecInfoPhase(this.getActualPhase()));
     }
+
     for (Project project : myProjects) {
       project.setProjectInfo(project.getProjecInfoPhase(this.getActualPhase()));
     }
+
     this.loadFlagshipgsAndRegions(myProjects);
     this.loadFlagshipgsAndRegions(allProjects);
 

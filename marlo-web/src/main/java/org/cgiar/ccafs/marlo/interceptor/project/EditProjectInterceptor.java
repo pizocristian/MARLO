@@ -128,7 +128,7 @@ public class EditProjectInterceptor extends AbstractInterceptor implements Seria
     // Get The Crp/Center/Platform where the project was created
     GlobalUnitProject globalUnitProject =
       globalUnitProjectManager.findByProjectAndGlobalUnitId(project.getId(), loggedCrp.getId());
-    if (globalUnitProject != null) {
+    if (globalUnitProject != null && globalUnitProject.isOrigin()) {
 
       if (project != null && project.isActive()) {
         if (!globalUnitProject.isOrigin()) {
@@ -254,24 +254,7 @@ public class EditProjectInterceptor extends AbstractInterceptor implements Seria
           canEdit = false;
           baseAction.setEditStatus(false);
         }
-        /*
-         * List<ProjectPhase> projectPhases = phase.getProjectPhases().stream()
-         * .filter(c -> c.isActive() && c.getProject().getId().longValue() == projectId).collect(Collectors.toList());
-         * if (projectPhases.isEmpty()) {
-         * List<ProjectInfo> infos =
-         * project.getProjectInfos().stream().filter(c -> c.isActive()).collect(Collectors.toList());
-         * infos.sort((p1, p2) -> p1.getId().compareTo(p2.getId()));
-         * // baseAction.setActualPhase(infos.get(0).getPhase());
-         * baseAction.setAvailabePhase(false);
-         * }
-         * if (!baseAction.getActualPhase().getEditable()) {
-         * canEdit = false;
-         * }
-         */
 
-        // String paramsPermissions[] = {loggedCrp.getAcronym(), project.getId() + ""};
-        // baseAction
-        // .setBasePermission(baseAction.getText(Permission.PROJECT_DESCRIPTION_BASE_PERMISSION, paramsPermissions));
         String actionName = baseAction.getActionName().replaceAll(crp.getAcronym() + "/", "");
 
 
@@ -344,7 +327,7 @@ public class EditProjectInterceptor extends AbstractInterceptor implements Seria
           Phase projectPhase = project.getCurrentPhase();
           GlobalUnitProject globalUnitProjectOrigin = globalUnitProjectManager.findByProjectId(project.getId());
           List<Phase> phases = globalUnitProjectOrigin.getGlobalUnit().getPhases().stream()
-            .filter(c -> c.isActive() && c.getDescription().equals("AR")
+            .filter(c -> c.isActive() && c.getDescription().equals(APConstants.REPORTING)
               && c.getYear() == baseAction.getActualPhase().getYear() && !c.getUpkeep())
             .collect(Collectors.toList());
 

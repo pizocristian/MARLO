@@ -25,6 +25,8 @@ import org.cgiar.ccafs.marlo.data.model.Project;
 import org.cgiar.ccafs.marlo.data.model.ProjectCommunication;
 import org.cgiar.ccafs.marlo.data.model.ProjectMilestone;
 import org.cgiar.ccafs.marlo.data.model.ProjectOutcome;
+import org.cgiar.ccafs.marlo.data.model.ProjectPartner;
+import org.cgiar.ccafs.marlo.data.model.ProjectPartnerPerson;
 import org.cgiar.ccafs.marlo.data.model.ProjectStatusEnum;
 import org.cgiar.ccafs.marlo.data.model.SrfTargetUnit;
 import org.cgiar.ccafs.marlo.utils.APConfig;
@@ -136,6 +138,8 @@ public class OutcomesContributionsSummaryAction extends BaseSummariesAction impl
       this.getText("projectOutcomeMilestone.expectedNarrative.readText"));
     masterReport.getParameterValues().put("i8nComunications",
       this.getText("summaries.flagshipOutcomes.communications"));
+    masterReport.getParameterValues().put("i8nInstitutionLeader", this.getText("summaries.oaprojects.leadInstitution"));
+    masterReport.getParameterValues().put("i8nPPAPartners", this.getText("summaries.oaprojects.ppaPartners"));
 
 
     return masterReport;
@@ -280,28 +284,31 @@ public class OutcomesContributionsSummaryAction extends BaseSummariesAction impl
       new String[] {"project_id", "flagship", "projectSummary", "outcome", "project_url", "milestone", "expected_value",
         "expected_unit", "narrative_target", "title", "outcomeIndicator", "phaseID", "outcome_expected_value",
         "achieved_value", "achieved_narrative", "startDate", "endDate", "outcomeTargetValue", "milestoneExpectedValue",
-        "achieved_value_string"},
+        "achieved_value_string", "ppa", "institutionLeader"},
       new Class[] {String.class, String.class, String.class, String.class, String.class, String.class, Long.class,
         String.class, String.class, String.class, String.class, Long.class, BigDecimal.class, Long.class, String.class,
-        String.class, String.class, String.class, String.class, String.class},
+        String.class, String.class, String.class, String.class, String.class, String.class, String.class},
       0);
     SimpleDateFormat formatter = new SimpleDateFormat("MMM yyyy");
 
-    for (ProjectMilestone projectMilestone : projectMilestones.stream().sorted((po1, po2) -> Long
-      .compare(po1.getProjectOutcome().getProject().getId(), po2.getProjectOutcome().getProject().getId()))
+    for (ProjectMilestone projectMilestone : projectMilestones.stream()
+      .filter(pm -> pm.isActive() && pm.getCrpMilestone() != null && pm.getCrpMilestone().isActive())
+      .sorted((po1, po2) -> Long.compare(po1.getProjectOutcome().getProject().getId(),
+        po2.getProjectOutcome().getProject().getId()))
       .collect(Collectors.toList())) {
 
       String projectId = "", title = "", flagship = "", outcome = "", projectUrl = "", milestone = "",
         expectedUnit = "", narrativeTarget = "", outcomeIndicator = null, achievedTarget = "", startDate = "",
         endDate = "", projectSummary = "", outcomeTargetValue = "", milestoneExpectedValue = "",
-        achievedValueString = "";
+        achievedValueString = "", ppa = "", institutionLeader = null;;;
       Double expectedValue = new Double(0);
       Long phaseID = null;
       projectId = projectMilestone.getProjectOutcome().getProject().getId().toString();
       BigDecimal outcomeExpectedValue = new BigDecimal(0);
       Long achievedValue = new Long(0);
-      if (projectMilestone.getProjectOutcome().getProject().getProjecInfoPhase(this.getSelectedPhase())
-        .getSummary() != null
+      if (projectMilestone.isActive()
+        && projectMilestone.getProjectOutcome().getProject().getProjecInfoPhase(this.getSelectedPhase())
+          .getSummary() != null
         && !projectMilestone.getProjectOutcome().getProject().getProjecInfoPhase(this.getSelectedPhase()).getSummary()
           .isEmpty()) {
         projectSummary =
@@ -309,7 +316,8 @@ public class OutcomesContributionsSummaryAction extends BaseSummariesAction impl
       } else {
         projectSummary = "";
       }
-      if (projectMilestone.getProjectOutcome().getProject().getProjecInfoPhase(this.getSelectedPhase()) != null) {
+      if (projectMilestone.isActive()
+        && projectMilestone.getProjectOutcome().getProject().getProjecInfoPhase(this.getSelectedPhase()) != null) {
         title =
           projectMilestone.getProjectOutcome().getProject().getProjecInfoPhase(this.getSelectedPhase()).getTitle();
         phaseID = projectMilestone.getProjectOutcome().getProject().getProjectInfo().getPhase().getId();
@@ -331,7 +339,48 @@ public class OutcomesContributionsSummaryAction extends BaseSummariesAction impl
       projectUrl = "P" + projectMilestone.getProjectOutcome().getProject().getId().toString();
       milestone = projectMilestone.getCrpMilestone().getComposedName();
 
-      if (projectMilestone.getCrpMilestone() != null && projectMilestone.getCrpMilestone().getSrfTargetUnit() != null) {
+      // Institution leader
+      if (projectMilestone.getProjectOutcome().getProject().getLeaderPersonDB(this.getSelectedPhase()) != null) {
+        ProjectPartnerPerson projectLeader =
+          projectMilestone.getProjectOutcome().getProject().getLeaderPersonDB(this.getSelectedPhase());
+        if (projectLeader != null) {
+          institutionLeader = projectLeader.getProjectPartner().getInstitution().getComposedName();
+        }
+      }
+
+      // Get PPA Partners
+      List<ProjectPartner> listPPA = new ArrayList<>();
+      List<ProjectPartner> tempPartners = new ArrayList<>();
+      if (projectMilestone.isActive() && projectMilestone.getProjectOutcome().getProject() != null
+        && projectMilestone.getProjectOutcome().getProject() != null) {
+        tempPartners = new ArrayList<>(projectMilestone.getProjectOutcome().getProject().getProjectPartners().stream()
+          .filter(c -> c.isActive() && c.getPhase().getId().equals(this.getSelectedPhase().getId()))
+          .collect(Collectors.toList()));
+
+        for (ProjectPartner partner : tempPartners) {
+          if (partner.getInstitution().isPPA(this.getLoggedCrp().getId(), this.getSelectedPhase())) {
+            listPPA.add(partner);
+          }
+        }
+
+        String t = "";
+        for (ProjectPartner projectPartner : listPPA) {
+          if (!t.equals(projectPartner.getComposedName())) {
+            t = projectPartner.getComposedName();
+            if (ppa.isEmpty()) {
+              ppa += projectPartner.getComposedName();
+            } else {
+              ppa += ", " + projectPartner.getComposedName();
+            }
+
+          } else {
+            t = projectPartner.getComposedName();
+          }
+        }
+      }
+
+      if (projectMilestone.isActive() && projectMilestone.getCrpMilestone() != null
+        && projectMilestone.getCrpMilestone().getSrfTargetUnit() != null) {
         expectedUnit = projectMilestone.getCrpMilestone().getSrfTargetUnit().getName();
         if (projectMilestone.getCrpMilestone().getSrfTargetUnit().getId() == -1) {
           expectedValue = -1.0;
@@ -405,9 +454,10 @@ public class OutcomesContributionsSummaryAction extends BaseSummariesAction impl
         achievedTarget = "<Not Defined>";
       }
 
-      model.addRow(new Object[] {projectId, flagship, projectSummary, outcome, projectUrl, milestone, expectedValue,
-        expectedUnit, narrativeTarget, title, outcomeIndicator, phaseID, outcomeExpectedValue, achievedValue,
-        achievedTarget, startDate, endDate, outcomeTargetValue, milestoneExpectedValue, achievedValueString});
+      model.addRow(
+        new Object[] {projectId, flagship, projectSummary, outcome, projectUrl, milestone, expectedValue, expectedUnit,
+          narrativeTarget, title, outcomeIndicator, phaseID, outcomeExpectedValue, achievedValue, achievedTarget,
+          startDate, endDate, outcomeTargetValue, milestoneExpectedValue, achievedValueString, ppa, institutionLeader});
     }
     return model;
   }
@@ -418,10 +468,10 @@ public class OutcomesContributionsSummaryAction extends BaseSummariesAction impl
       new String[] {"project_id", "title", "projectSummary", "flagship", "outcome", "expected_value", "expected_unit",
         "expected_narrative", "project_url", "outcomeIndicator", "phaseID", "outcome_expected_value", "achieved_value",
         "achieved_narrative", "startDate", "endDate", "communications", "outcomeTargetValue", "expectedValueS",
-        "achieved_value_string"},
+        "achieved_value_string", "ppa", "institutionLeader"},
       new Class[] {String.class, String.class, String.class, String.class, String.class, BigDecimal.class, String.class,
         String.class, String.class, String.class, Long.class, BigDecimal.class, Long.class, String.class, String.class,
-        String.class, String.class, String.class, String.class, String.class},
+        String.class, String.class, String.class, String.class, String.class, String.class, String.class},
       0);
 
     SimpleDateFormat formatter = new SimpleDateFormat("MMM yyyy");
@@ -437,13 +487,14 @@ public class OutcomesContributionsSummaryAction extends BaseSummariesAction impl
     if (activeProjects != null && !activeProjects.isEmpty()) {
       for (Project project : activeProjects) {
         for (ProjectOutcome projectOutcome : project.getProjectOutcomes().stream()
+          .filter(po -> po.isActive() && po.getPhase().getId().equals(this.getSelectedPhase().getId()))
           .sorted((po1, po2) -> Long.compare(po1.getId(), po2.getId()))
           .filter(po -> po.isActive() && po.getPhase() != null && po.getPhase().equals(this.getSelectedPhase()))
           .collect(Collectors.toList())) {
           String projectId = "", title = "", flagship = "", outcome = "", outcomeIndicator = null, expectedUnit = "",
             expectedNarrative = "", projectUrl = "", achievedNarrative = "", startDate = "", endDate = "",
             communications = "", projectSummary = "", outcomeTargetValue = "", expectedValueS = "",
-            achievedValueString = "";
+            achievedValueString = "", ppa = "", institutionLeader = null;
           Double expectedValue = new Double(0);
           BigDecimal outcomeExpectedValue = new BigDecimal(0);
           Double achievedValue = new Double(0);
@@ -463,6 +514,43 @@ public class OutcomesContributionsSummaryAction extends BaseSummariesAction impl
           if (project.getProjectInfo().getEndDate() != null) {
             endDate = formatter.format(project.getProjectInfo().getEndDate());
           }
+
+          // Institution leader
+          if (project.getLeaderPersonDB(this.getSelectedPhase()) != null) {
+            ProjectPartnerPerson projectLeader = project.getLeaderPersonDB(this.getSelectedPhase());
+            if (projectLeader != null) {
+              institutionLeader = projectLeader.getProjectPartner().getInstitution().getComposedName();
+            }
+          }
+
+          // Get PPA Partners
+          List<ProjectPartner> listPPA = new ArrayList<>();
+          List<ProjectPartner> tempPartners = new ArrayList<>();
+          tempPartners = new ArrayList<>(project.getProjectPartners().stream()
+            .filter(c -> c.isActive() && c.getPhase().getId().equals(this.getSelectedPhase().getId()))
+            .collect(Collectors.toList()));
+
+          for (ProjectPartner partner : tempPartners) {
+            if (partner.getInstitution().isPPA(this.getLoggedCrp().getId(), this.getSelectedPhase())) {
+              listPPA.add(partner);
+            }
+          }
+
+          String t = "";
+          for (ProjectPartner projectPartner : listPPA) {
+            if (!t.equals(projectPartner.getComposedName())) {
+              t = projectPartner.getComposedName();
+              if (ppa.isEmpty()) {
+                ppa += projectPartner.getComposedName();
+              } else {
+                ppa += ", " + projectPartner.getComposedName();
+              }
+
+            } else {
+              t = projectPartner.getComposedName();
+            }
+          }
+
 
           if (projectOutcome.getCrpProgramOutcome() != null) {
             if (projectOutcome.getCrpProgramOutcome().getCrpProgram() != null) {
@@ -557,8 +645,9 @@ public class OutcomesContributionsSummaryAction extends BaseSummariesAction impl
           model.addRow(new Object[] {projectId, title, projectSummary, flagship, outcome, expectedValue, expectedUnit,
             expectedNarrative, projectUrl, outcomeIndicator, phaseID, outcomeExpectedValue, achievedValue,
             achievedNarrative, startDate, endDate, communications, outcomeTargetValue, expectedValueS,
-            achievedValueString});
+            achievedValueString, ppa, institutionLeader});
           if (projectOutcome.getProjectMilestones() != null && projectOutcome.getProjectMilestones().size() > 0) {
+
             for (ProjectMilestone projectMilestone : projectOutcome.getProjectMilestones().stream()
               .filter(pm -> pm.isActive()).collect(Collectors.toList())) {
               projectMilestones.add(projectMilestone);

@@ -485,11 +485,12 @@
         </div>
   	    [#-- Contact Email --]
         <div class="col-md-8 partnerPerson-email userField" >
-          [#attempt]
+           [#--[#attempt]
             [#assign canEditEmail=!((action.getActivitiesLedByUser((element.id)!-1)!false)?has_content) && canEditContactType/]
           [#recover]
             [#assign canEditEmail=true /]
-          [/#attempt]
+          [/#attempt] --]
+          [#assign canEditEmail = editable && isTemplate]
           <input type="hidden" class="canEditEmail" value="${canEditEmail?string}" />
           [#-- Contact Person information is going to come from the users table, not from project_partner table (refer to the table project_partners in the database) --] 
           [#assign partnerClass = "${name}.user.id"?string?replace("\\W+", "", "r") /]
@@ -529,12 +530,12 @@
               </ul>
             </div>
           [/#if]
-          [#if action.getDeliverablesLedByUser(element.id)?has_content]
-            <div class="tag deliverables">[@s.text name="projectPartners.personDeliverables"][@s.param]${action.getDeliverablesLedByUser(element.id)?size}[/@s.param][/@s.text]</div>
+          [#if action.getDeliverablesLedByUser(element.user.id)?has_content]
+            <div class="tag deliverables">[@s.text name="projectPartners.personDeliverables"][@s.param]${action.getDeliverablesLedByUser(element.user.id)?size}[/@s.param][/@s.text]</div>
             <div class="deliverablesList" style="display:none">
               <h3>Deliverables</h3>
               <ul>
-              [#list action.getDeliverablesLedByUser(element.id) as deliverable]
+              [#list action.getDeliverablesLedByUser(element.user.id) as deliverable]
                 <li>${deliverable.deliverableInfo.title}  <a target="_blank" href="[@s.url namespace=namespace action='${crpSession}/deliverable' ][@s.param name='deliverableID']${deliverable.id}[/@s.param][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]"><img class="external-link" src="${baseUrlCdn}/global/images/external-link.png" /></a></li>
               [/#list]
               </ul>

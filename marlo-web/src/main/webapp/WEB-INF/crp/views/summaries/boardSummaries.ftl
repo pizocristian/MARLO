@@ -173,8 +173,10 @@
           "label":  "Type of report",
           "name":   "showAllYears",
           "data" : [ 
-            { "label": "Only the specific cycle year",  "value": "false"},
+            { "label": "Only the specific cycle year",  "value": "false"}
+           ,
             { "label": "All Years",                     "value": "true"}
+            
           ] 
         }
       ]
@@ -232,15 +234,7 @@
       "formats": [ "Excel" ],
       "cycles": [ "Planning" ]
     },
-    { "active": !centerGlobalUnit,
-      "available": true,
-      "title": "summaries.board.report.powbMOG", 
-      "description": "summaries.board.report.powbMOG.description",
-      "namespace": "/projects",
-      "action": "${crpSession}/budgetByCoAsSummary",
-      "formats": [ "Excel" ],
-      "cycles": [ "Planning" ]
-    },
+    
     { "active": true,
       "available": true,
       "title": "summaries.board.report.fundingSourceSummary", 

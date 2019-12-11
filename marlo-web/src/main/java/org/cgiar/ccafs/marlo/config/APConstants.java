@@ -121,6 +121,7 @@ public final class APConstants {
   public static final String CRP_HAS_DISEMINATION = "crp_has_disemination";
   public static final String CRP_ENABLE_BUDGET_EXECUTION = "crp_enable_budget_execution";
   public static final Long CRP_DASHBOARD_CENTER_IDENTIFICATION = new Long(4);
+  public static final String CRP_ENABLE_BUDGETBYCOAS = "crp_budgetbycoas";
 
 
   // Email parameters to copy to FL FM CL
@@ -176,6 +177,8 @@ public final class APConstants {
   public static final String FUNDING_SOURCES_INSTITUTIONS_RELATION =
     "java.util.Set(org.cgiar.ccafs.marlo.data.model.FundingSource.fundingSourceInstitutions)";
 
+  public static final String FUNDING_SOURCES_DIVISIONS_RELATION =
+    "java.util.Set(org.cgiar.ccafs.marlo.data.model.FundingSource.fundingSourceDivisions)";
 
   public static final String FUNDING_SOURCES_LOCATIONS_RELATION =
     "java.util.Set(org.cgiar.ccafs.marlo.data.model.FundingSource.fundingSourceLocations)";

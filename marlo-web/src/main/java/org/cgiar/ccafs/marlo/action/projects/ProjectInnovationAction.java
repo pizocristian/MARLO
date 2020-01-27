@@ -730,8 +730,9 @@ public class ProjectInnovationAction extends BaseAction {
         .collect(Collectors.toList());
 
       // consulting groups that we are created
+      projectInnovationGroupList = new ArrayList<ProjectInnovation>();
       List<ProjectInnovationGroup> GroupList = projectInnovationGroupManager.findAll().stream()
-        .filter(c -> c.isActive() && c.getPhase().getYear() == this.getActualPhase().getYear()
+        .filter(c -> c != null && c.isActive() && c.getPhase().getYear() == this.getActualPhase().getYear()
           && c.getPhase().getDescription().equals(this.getActualPhase().getDescription())
           && c.getProjectInnovationOwner().longValue() == c.getProjectInnovation().getId().longValue())
         .collect(Collectors.toList());

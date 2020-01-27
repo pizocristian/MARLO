@@ -444,6 +444,7 @@
     <mapping resource="xmls/ProjectExpectedStudyCenters.hbm.xml" />
     <mapping resource="xmls/ProjectPolicyCenters.hbm.xml" />
     <mapping resource="xmls/ProjectInnovationCenters.hbm.xml" /> 
-    <mapping resource="xmls/PolicyMilestones.hbm.xml" /> 
+    <mapping resource="xmls/PolicyMilestones.hbm.xml" />
+    <mapping resource="xmls/ProjectInnovationGroup.hbm.xml" />  
   </session-factory>
 </hibernate-configuration>

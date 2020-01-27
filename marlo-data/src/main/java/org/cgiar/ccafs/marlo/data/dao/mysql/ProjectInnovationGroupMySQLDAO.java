@@ -23,6 +23,7 @@ package org.cgiar.ccafs.marlo.data.dao.mysql;
 import org.cgiar.ccafs.marlo.data.dao.ProjectInnovationGroupDAO;
 import org.cgiar.ccafs.marlo.data.model.ProjectInnovationGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -66,7 +67,7 @@ public class ProjectInnovationGroupMySQLDAO extends AbstractMarloDAO<ProjectInno
     if (list.size() > 0) {
       return list;
     }
-    return null;
+    return list = new ArrayList<ProjectInnovationGroup>();
   }
 
   @Override

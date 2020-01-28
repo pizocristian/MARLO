@@ -92,4 +92,5 @@ public class ProjectInnovationGroupMySQLDAO extends AbstractMarloDAO<ProjectInno
     return projectInnovationGroup;
   }
 
+
 }

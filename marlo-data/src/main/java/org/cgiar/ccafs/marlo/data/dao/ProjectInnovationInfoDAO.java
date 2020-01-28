@@ -72,6 +72,13 @@ public interface ProjectInnovationInfoDAO {
   public List<ProjectInnovationInfo> getProjectInnovationInfoByPhase(Phase phase);
 
   /**
+   * This method gets a list of ProjectInnovationInfo that are active by a phase year and phase name
+   * 
+   * @return a list from ProjectInnovationInfo null if no exist records
+   */
+  public List<ProjectInnovationInfo> getProjectInnovationsWithoutGroup(long year, String phase);
+
+  /**
    * This method saves the information of the given projectInnovationInfo
    * 
    * @param projectInnovationInfo - is the projectInnovationInfo object with the new information to be added/updated.

@@ -102,6 +102,7 @@ public class ProjectInnovationInfoMySQLDAO extends AbstractMarloDAO<ProjectInnov
     return projectInnovationInfos;
   }
 
+
   @Override
   public List<ProjectInnovationInfo> getProjectInnovationInfoByPhase(Phase phase) {
     StringBuilder query = new StringBuilder();
@@ -116,6 +117,32 @@ public class ProjectInnovationInfoMySQLDAO extends AbstractMarloDAO<ProjectInnov
     query.append("pii.`id_phase` =" + phase.getId() + " AND ");
     query.append("pii.`year` =" + phase.getYear());
 
+    List<Map<String, Object>> rList = super.findCustomQuery(query.toString());
+    List<ProjectInnovationInfo> projectInnovationInfos = new ArrayList<>();
+
+    if (rList != null) {
+      for (Map<String, Object> map : rList) {
+        ProjectInnovationInfo projectInnovationInfo = this.find(Long.parseLong(map.get("id").toString()));
+        projectInnovationInfos.add(projectInnovationInfo);
+      }
+    }
+
+    return projectInnovationInfos;
+  }
+
+  @Override
+  public List<ProjectInnovationInfo> getProjectInnovationsWithoutGroup(long year, String phase) {
+    StringBuilder query = new StringBuilder();
+    query.append("select pin.* ");
+    query.append("from project_innovations pi ");
+    query.append("join project_innovation_info pin on pin.project_innovation_id = pi.id ");
+    query.append("join phases ph on ph.id =pin.id_phase ");
+    query.append("where pi.is_active ");
+    query.append(
+      "and not exists (select 1 from project_innovation_group pig where pig.project_innovation_id = pin.project_innovation_id and pig.id_phase = pin.id_phase) ");
+    query.append("and ph.year = " + year + "  ");
+    query.append("and ph.name='" + phase + "'  ");
+    query.append("order by project_innovation_id ");
     List<Map<String, Object>> rList = super.findCustomQuery(query.toString());
     List<ProjectInnovationInfo> projectInnovationInfos = new ArrayList<>();
 

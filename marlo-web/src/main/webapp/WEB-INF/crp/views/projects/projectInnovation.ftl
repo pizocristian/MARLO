@@ -203,7 +203,7 @@
       [#-- Shared innovations --]
       <h3 class="headTitle">[@s.text name="projectInnovations.sharedInnovations.title" /]</h3>
       <div class="borderBox">
-        [@customForm.elementsListComponent name="innovation.sharedInnovations" elementType="projectInnovation" elementList="" label="projectInnovations.sharedInnovations"  listName="" keyFieldName="id" displayFieldName="composedName" required=false /]
+        [@customForm.elementsListComponent name="innovation.sharedInnovations" elementType="projectInnovation" elementList=(innovation.crpInnovationShared)![] label="projectInnovations.sharedInnovations"  listName="projectInnovationGroupList" keyFieldName="id" displayFieldName="composedName" required=false /]
       </div>
         
       [#-- Projects shared --]

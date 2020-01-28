@@ -75,7 +75,7 @@ public class ProjectInnovation extends MarloAuditableEntity implements java.io.S
   // AR2019 Field
   private Set<ProjectInnovationCenter> projectInnovationCenters = new HashSet<ProjectInnovationCenter>(0);
   private List<ProjectInnovationCenter> centers;
-
+  public List<ProjectInnovation> crpInnovationShared = new ArrayList<>();
 
   public List<ProjectInnovationCenter> getCenters() {
     return centers;
@@ -124,6 +124,11 @@ public class ProjectInnovation extends MarloAuditableEntity implements java.io.S
   }
 
 
+  public List<ProjectInnovation> getCrpInnovationShared() {
+    return crpInnovationShared;
+  }
+
+
   public List<ProjectInnovationCrp> getCrps() {
     return this.crps;
   }
@@ -156,6 +161,7 @@ public class ProjectInnovation extends MarloAuditableEntity implements java.io.S
   public List<ProjectInnovationOrganization> getOrganizations() {
     return this.organizations;
   }
+
 
   public Project getProject() {
     return this.project;
@@ -190,10 +196,10 @@ public class ProjectInnovation extends MarloAuditableEntity implements java.io.S
     return this.projectInnovationGeographicScopes;
   }
 
-
   public ProjectInnovationInfo getProjectInnovationInfo() {
     return this.projectInnovationInfo;
   }
+
 
   public ProjectInnovationInfo getProjectInnovationInfo(Phase phase) {
     if (this.getProjectInnovationInfo() != null) {
@@ -219,11 +225,11 @@ public class ProjectInnovation extends MarloAuditableEntity implements java.io.S
     return this.projectInnovationOrganizations;
   }
 
-
   public List<ProjectInnovationOrganization> getProjectInnovationOrganizations(Phase phase) {
     return new ArrayList<>(this.getProjectInnovationOrganizations().stream()
       .filter(pc -> pc.isActive() && pc.getPhase().equals(phase)).collect(Collectors.toList()));
   }
+
 
   public Set<ProjectInnovationRegion> getProjectInnovationRegions() {
     return this.projectInnovationRegions;
@@ -284,9 +290,13 @@ public class ProjectInnovation extends MarloAuditableEntity implements java.io.S
     this.countriesIds = countriesIds;
   }
 
-
   public void setCountriesIdsText(String countriesIdsText) {
     this.countriesIdsText = countriesIdsText;
+  }
+
+
+  public void setCrpInnovationShared(List<ProjectInnovation> crpInnovationShared) {
+    this.crpInnovationShared = crpInnovationShared;
   }
 
   public void setCrps(List<ProjectInnovationCrp> crps) {

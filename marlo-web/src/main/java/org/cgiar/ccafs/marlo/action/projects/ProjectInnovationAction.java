@@ -63,6 +63,7 @@ import org.cgiar.ccafs.marlo.data.model.ProjectInnovationCrp;
 import org.cgiar.ccafs.marlo.data.model.ProjectInnovationDeliverable;
 import org.cgiar.ccafs.marlo.data.model.ProjectInnovationGeographicScope;
 import org.cgiar.ccafs.marlo.data.model.ProjectInnovationGroup;
+import org.cgiar.ccafs.marlo.data.model.ProjectInnovationInfo;
 import org.cgiar.ccafs.marlo.data.model.ProjectInnovationOrganization;
 import org.cgiar.ccafs.marlo.data.model.ProjectInnovationRegion;
 import org.cgiar.ccafs.marlo.data.model.ProjectInnovationShared;
@@ -731,18 +732,46 @@ public class ProjectInnovationAction extends BaseAction {
 
       // consulting groups that we are created
       projectInnovationGroupList = new ArrayList<ProjectInnovation>();
-      List<ProjectInnovationGroup> GroupList = projectInnovationGroupManager.findAll().stream()
+      List<ProjectInnovationGroup> groupList = projectInnovationGroupManager.findAll().stream()
         .filter(c -> c != null && c.isActive() && c.getPhase().getYear() == this.getActualPhase().getYear()
-          && c.getPhase().getDescription().equals(this.getActualPhase().getDescription())
+          && c.getPhase().getName().equals(this.getActualPhase().getName())
           && c.getProjectInnovationOwner().longValue() == c.getProjectInnovation().getId().longValue())
         .collect(Collectors.toList());
-      for (ProjectInnovationGroup projectInnovationGroup : GroupList) {
+      for (ProjectInnovationGroup projectInnovationGroup : groupList) {
         ProjectInnovation projectInnovation =
           projectInnovationManager.getProjectInnovationById(projectInnovationGroup.getProjectInnovationOwner());
+        projectInnovation.getProjectInnovationInfo(projectInnovationGroup.getPhase());
         if (projectInnovation != null && projectInnovation.getId() != null) {
-          projectInnovationGroupList.add(projectInnovation);
+          if (projectInnovation.getProjectInnovationInfo() != null
+            && projectInnovation.getProjectInnovationInfo().getTitle().length() > 0) {
+            projectInnovationGroupList.add(projectInnovation);
+          }
+
         }
       }
+      List<ProjectInnovation> innovationList = new ArrayList<ProjectInnovation>();
+      List<ProjectInnovationInfo> groupList2 = projectInnovationInfoManager.findAll().stream()
+        .filter(c -> c != null && c.isActive() && c.getPhase().getYear() == this.getActualPhase().getYear()
+          && c.getPhase().getName().equals(this.getActualPhase().getName()))
+        .collect(Collectors.toList());
+      for (ProjectInnovationInfo projectInnovationInfo : groupList2) {
+        ProjectInnovation projectInnovation =
+          projectInnovationManager.getProjectInnovationById(projectInnovationInfo.getProjectInnovation().getId());
+
+        if (projectInnovation != null && projectInnovation.getId() != null) {
+          projectInnovation.getProjectInnovationInfo(projectInnovationInfo.getPhase());
+          if (projectInnovation.getProjectInnovationInfo() != null
+            && projectInnovation.getProjectInnovationInfo().getTitle().length() > 0) {
+            innovationList.add(projectInnovation);
+          }
+
+        }
+      }
+      if (innovationList.size() > 0) {
+        innovationList.remove(projectInnovationGroupList);
+        projectInnovationGroupList.addAll(innovationList);
+      }
+
 
       phaseResearchList = repIndPhaseResearchPartnershipManager.findAll();
       stageInnovationList = repIndStageInnovationManager.findAll();

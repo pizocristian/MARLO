@@ -79,6 +79,9 @@
           [@customForm.select name="${customName}.projectPolicyInfo.year" className="setSelect2" i18nkey="policy.year" listName="years" required=true editable=editable/]
       </div>      
       <div class="col-md-8">
+        [#if editable=false]
+          ${element.projectPolicyInfo.year}
+        [/#if]
       </div>
     </div>
     <hr />
@@ -169,21 +172,11 @@
       [@customForm.elementsListComponent name="${customName}.crps" elementType="globalUnit" elementList=element.crps label="policy.contributingCrpsPtfs"  listName="crps" keyFieldName="id" displayFieldName="composedName" /]
     </div>
     
-    [#-- Contributing Centers/ PPA partners  --]
-    <div class="form-group">
-      [@customForm.elementsListComponent name="${customName}.centers" elementType="institution" elementList=element.centers label="policy.contributingCenters"  listName="centers" keyFieldName="id" displayFieldName="composedName" /]
-    </div>
-    
-    [#-- Sub IDOs (maxLimit=3 -Requested for AR2019) --]
+    [#-- Sub IDOs (maxLimit=2) --]
     <div class="form-group">
       [@customForm.elementsListComponent name="${customName}.subIdos" elementType="srfSubIdo" elementList=element.subIdos label="policy.subIDOs" listName="subIdos" maxLimit=3 keyFieldName="id" displayFieldName="description"/]
     </div>
     
-    [#-- Primary Sub IDOs --]
-    <div class="form-group">
-       [@customForm.select name="${customName}.principalSubIdo" className="setSelect2 principalSubIdo" i18nkey="policy.subIDO.primary" listName="" keyFieldName="id"  displayFieldName="description" required=true editable=editable/]
-    </div>
-        
     [#-- CGIAR Cross-cutting Markers  --]
     <div class="form-group">
       <h5 class="labelheader">[@s.text name="policy.crossCuttingMarkers" /]</h5>

@@ -637,6 +637,13 @@ public class ProjectInnovationAction extends BaseAction {
           }
         }
 
+        // Innovations shared between Crps Autosave
+        if (this.innovation.getCrpInnovationShared() != null) {
+          for (ProjectInnovation projectInnovation : this.innovation.getCrpInnovationShared()) {
+            projectInnovation = this.projectInnovationManager.getProjectInnovationById(projectInnovation.getId());
+          }
+        }
+
         this.setDraft(true);
       } else {
         this.setDraft(false);
@@ -703,11 +710,18 @@ public class ProjectInnovationAction extends BaseAction {
             .filter(c -> c.isActive() && c.getPhase().getId().equals(phase.getId())).collect(Collectors.toList())));
         }
 
+        // Innovation Share between Cpr List
+        if (this.innovation.getCprProjectInnovationShareds() != null) {
+          List<ProjectInnovationGroup> crpInnovationsGroup =
+            innovation.getCprProjectInnovationShareds().stream().filter(c -> c.isActive()).collect(Collectors.toList());
+
+        }
         // Innovation shared Projects List
         if (this.innovation.getProjectInnovationShareds() != null) {
           this.innovation.setSharedInnovations(new ArrayList<>(this.innovation.getProjectInnovationShareds().stream()
             .filter(o -> o.isActive() && o.getPhase().getId().equals(phase.getId())).collect(Collectors.toList())));
         }
+
       }
 
       if (!this.isDraft()) {

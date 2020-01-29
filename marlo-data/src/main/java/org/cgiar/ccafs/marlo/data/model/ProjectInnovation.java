@@ -76,7 +76,7 @@ public class ProjectInnovation extends MarloAuditableEntity implements java.io.S
   private Set<ProjectInnovationCenter> projectInnovationCenters = new HashSet<ProjectInnovationCenter>(0);
   private List<ProjectInnovationCenter> centers;
 
-  public List<ProjectInnovation> crpInnovationShared = new ArrayList<>();
+  private ProjectInnovation crpInnovationShared;
   private Set<ProjectInnovationGroup> cprProjectInnovationShareds = new HashSet<ProjectInnovationGroup>(0);
 
 
@@ -132,7 +132,7 @@ public class ProjectInnovation extends MarloAuditableEntity implements java.io.S
   }
 
 
-  public List<ProjectInnovation> getCrpInnovationShared() {
+  public ProjectInnovation getCrpInnovationShared() {
     return crpInnovationShared;
   }
 
@@ -308,7 +308,7 @@ public class ProjectInnovation extends MarloAuditableEntity implements java.io.S
   }
 
 
-  public void setCrpInnovationShared(List<ProjectInnovation> crpInnovationShared) {
+  public void setCrpInnovationShared(ProjectInnovation crpInnovationShared) {
     this.crpInnovationShared = crpInnovationShared;
   }
 

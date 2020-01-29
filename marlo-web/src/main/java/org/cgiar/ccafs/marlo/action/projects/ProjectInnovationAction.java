@@ -167,7 +167,7 @@ public class ProjectInnovationAction extends BaseAction {
   private ProjectInnovationValidator validator;
   private Boolean clearLead;
   private List<Institution> centers;
-  private List<ProjectInnovation> projectInnovationGroupList;
+  private List<ProjectInnovation> crpInnovationShareds;
 
 
   @Inject
@@ -292,6 +292,10 @@ public class ProjectInnovationAction extends BaseAction {
     return countries;
   }
 
+  public List<ProjectInnovation> getCrpInnovationShareds() {
+    return crpInnovationShareds;
+  }
+
   @Override
   public List<GlobalUnit> getCrpList() {
     return crpList;
@@ -329,6 +333,7 @@ public class ProjectInnovationAction extends BaseAction {
     return innovationTypeList;
   }
 
+
   public List<Institution> getInstitutions() {
     return institutions;
   }
@@ -337,7 +342,6 @@ public class ProjectInnovationAction extends BaseAction {
   public GlobalUnit getLoggedCrp() {
     return loggedCrp;
   }
-
 
   public List<Project> getMyProjects() {
     return myProjects;
@@ -355,13 +359,9 @@ public class ProjectInnovationAction extends BaseAction {
     return project;
   }
 
+
   public long getProjectID() {
     return projectID;
-  }
-
-
-  public List<ProjectInnovation> getProjectInnovationGroupList() {
-    return projectInnovationGroupList;
   }
 
   public List<RepIndRegion> getRegionList() {
@@ -637,12 +637,6 @@ public class ProjectInnovationAction extends BaseAction {
           }
         }
 
-        // Innovations shared between Crps Autosave
-        if (this.innovation.getCrpInnovationShared() != null) {
-          for (ProjectInnovation projectInnovation : this.innovation.getCrpInnovationShared()) {
-            projectInnovation = this.projectInnovationManager.getProjectInnovationById(projectInnovation.getId());
-          }
-        }
 
         this.setDraft(true);
       } else {
@@ -711,11 +705,21 @@ public class ProjectInnovationAction extends BaseAction {
         }
 
         // Innovation Share between Cpr List
-        if (this.innovation.getCprProjectInnovationShareds() != null) {
-          List<ProjectInnovationGroup> crpInnovationsGroup =
-            innovation.getCprProjectInnovationShareds().stream().filter(c -> c.isActive()).collect(Collectors.toList());
+        if (projectInnovationGroupManager.findAll() != null) {
+          List<ProjectInnovation> projectInnovationList = new ArrayList<ProjectInnovation>();
+          List<ProjectInnovationGroup> crpInnovationsGroups = projectInnovationGroupManager.findAll().stream()
+            .filter(c -> c.isActive() && innovation.getId().longValue() == c.getProjectInnovation().getId().longValue()
+              && c.getPhase().getYear() == this.getActualPhase().getYear()
+              && c.getPhase().getName().equals(this.getActualPhase().getName()))
+            .collect(Collectors.toList());
 
+          ProjectInnovation projectInnovation =
+            projectInnovationManager.getProjectInnovationById(crpInnovationsGroups.get(0).getProjectInnovationOwner());
+          projectInnovation.getProjectInnovationInfo(crpInnovationsGroups.get(0).getPhase());
+
+          this.innovation.setCrpInnovationShared(projectInnovation);
         }
+
         // Innovation shared Projects List
         if (this.innovation.getProjectInnovationShareds() != null) {
           this.innovation.setSharedInnovations(new ArrayList<>(this.innovation.getProjectInnovationShareds().stream()
@@ -745,7 +749,7 @@ public class ProjectInnovationAction extends BaseAction {
         .collect(Collectors.toList());
 
       // consulting groups that we are created
-      projectInnovationGroupList = new ArrayList<ProjectInnovation>();
+      crpInnovationShareds = new ArrayList<ProjectInnovation>();
       List<ProjectInnovationGroup> groupList = projectInnovationGroupManager.findAll().stream()
         .filter(c -> c != null && c.isActive() && c.getPhase().getYear() == this.getActualPhase().getYear()
           && c.getPhase().getName().equals(this.getActualPhase().getName())
@@ -758,7 +762,7 @@ public class ProjectInnovationAction extends BaseAction {
         if (projectInnovation != null && projectInnovation.getId() != null) {
           if (projectInnovation.getProjectInnovationInfo() != null
             && projectInnovation.getProjectInnovationInfo().getTitle().length() > 0) {
-            projectInnovationGroupList.add(projectInnovation);
+            crpInnovationShareds.add(projectInnovation);
           }
 
         }
@@ -778,12 +782,11 @@ public class ProjectInnovationAction extends BaseAction {
             && projectInnovation.getProjectInnovationInfo().getTitle().length() > 0) {
             innovationList.add(projectInnovation);
           }
-
         }
       }
       if (innovationList.size() > 0) {
-        innovationList.remove(projectInnovationGroupList);
-        projectInnovationGroupList.addAll(innovationList);
+        innovationList.removeAll(crpInnovationShareds);
+        crpInnovationShareds.addAll(innovationList);
       }
 
 
@@ -917,6 +920,7 @@ public class ProjectInnovationAction extends BaseAction {
       if (innovation.getCenters() != null) {
         innovation.getCenters().clear();
       }
+
       // HTTP Post info Values
       // innovation.getProjectInnovationInfo().setGenderFocusLevel(null);
       // innovation.getProjectInnovationInfo().setYouthFocusLevel(null);
@@ -947,6 +951,7 @@ public class ProjectInnovationAction extends BaseAction {
       this.saveCrps(innovationDB, phase);
       this.saveProjects(innovationDB, phase);
       this.saveCenters(innovationDB, phase);
+      this.saveSharedInnovation(innovationDB, phase);
 
       this.saveGeographicScope(innovationDB, phase);
 
@@ -1129,6 +1134,7 @@ public class ProjectInnovationAction extends BaseAction {
     }
   }
 
+
   public void saveCenters(ProjectInnovation projectInnovation, Phase phase) {
 
     // Search and deleted form Information
@@ -1300,7 +1306,6 @@ public class ProjectInnovationAction extends BaseAction {
     }
   }
 
-
   /**
    * Save Project Innovation Geographic Scope Information
    * 
@@ -1390,6 +1395,7 @@ public class ProjectInnovationAction extends BaseAction {
     }
   }
 
+
   /**
    * Save Innovations Shared Projects Information
    * 
@@ -1436,7 +1442,6 @@ public class ProjectInnovationAction extends BaseAction {
 
   }
 
-
   /**
    * Save Project Innovation Region Information
    * 
@@ -1480,6 +1485,17 @@ public class ProjectInnovationAction extends BaseAction {
     }
   }
 
+
+  public void saveSharedInnovation(ProjectInnovation projectInnovation, Phase phase) {
+    if (projectInnovation.getCrpInnovationShared() != null && innovation.getCrpInnovationShared() != null) {
+      if (!innovation.getCrpInnovationShared().getId().equals(projectInnovation.getCrpInnovationShared().getId())) {
+
+      }
+    } else {
+
+    }
+  }
+
   public void setCenters(List<Institution> centers) {
     this.centers = centers;
   }
@@ -1496,6 +1512,10 @@ public class ProjectInnovationAction extends BaseAction {
     this.countries = countries;
   }
 
+  public void setCrpInnovationShareds(List<ProjectInnovation> crpInnovationShareds) {
+    this.crpInnovationShareds = crpInnovationShareds;
+  }
+
   public void setCrpList(List<GlobalUnit> crpList) {
     this.crpList = crpList;
   }
@@ -1504,10 +1524,10 @@ public class ProjectInnovationAction extends BaseAction {
     this.degreeInnovationList = degreeInnovationList;
   }
 
+
   public void setDeliverableList(List<Deliverable> deliverableList) {
     this.deliverableList = deliverableList;
   }
-
 
   public void setExpectedStudyList(List<ProjectExpectedStudy> expectedStudyList) {
     this.expectedStudyList = expectedStudyList;
@@ -1559,10 +1579,6 @@ public class ProjectInnovationAction extends BaseAction {
 
   public void setProjectID(long projectID) {
     this.projectID = projectID;
-  }
-
-  public void setProjectInnovationGroupList(List<ProjectInnovation> projectInnovationGroupList) {
-    this.projectInnovationGroupList = projectInnovationGroupList;
   }
 
   public void setRegionList(List<RepIndRegion> regionList) {

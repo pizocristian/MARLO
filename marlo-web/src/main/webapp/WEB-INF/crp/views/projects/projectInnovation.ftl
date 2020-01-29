@@ -197,16 +197,13 @@
           <div class="form-group">
             [@customForm.elementsListComponent name="innovation.centers" elementType="institution" elementList=innovation.centers label="projectInnovations.contributingCenters"  listName="centers" keyFieldName="id" displayFieldName="composedName" /]
           </div>
-        
         </div>
-        
-         
       </div>
       
       [#-- Shared innovations --]
       <h3 class="headTitle">[@s.text name="projectInnovations.sharedInnovations.title" /]</h3>
       <div class="borderBox">
-        [@customForm.elementsListComponent name="innovation.sharedInnovations" elementType="projectInnovation" elementList=(innovation.crpInnovationShared)![] label="projectInnovations.sharedInnovations"  listName="projectInnovationGroupList" keyFieldName="id" displayFieldName="composedName" required=false /]
+        [@customForm.select name="innovation.crpInnovationShared.id"  i18nkey="projectInnovations.sharedInnovations" listName="crpInnovationShareds" keyFieldName="id"  displayFieldName="composedName"  multiple=false required=true  className="keyOutput" editable=editable/]       
       </div>
         
       [#-- Projects shared --]

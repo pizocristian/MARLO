@@ -59,6 +59,8 @@ public interface ProjectInnovationGroupDAO {
 
   public ProjectInnovationGroup getProjectInnovationGroupById(long innovationowner, long innovationid, long phaseID);
 
+  public ProjectInnovationGroup getProjectInnovationGroupByPhase(long InnovationId, long year, String name);
+
   /**
    * This method saves the information of the given projectInnovationGroup
    * 

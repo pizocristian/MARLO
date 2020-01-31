@@ -83,6 +83,18 @@ public class ProjectInnovationGroupMySQLDAO extends AbstractMarloDAO<ProjectInno
   }
 
   @Override
+  public ProjectInnovationGroup getProjectInnovationGroupByPhase(long InnovationId, long year, String name) {
+    String query = "select projectinnovationgroup.id from project_innovation_group as projectinnovationgroup "
+      + " INNER JOIN phases ON phases.id =  projectinnovationgroup.id_phase " + "where phases.year = " + year
+      + " AND phases.name='" + name + "' AND projectinnovationgroup.project_innovation_id=" + InnovationId;
+    List<ProjectInnovationGroup> list = super.findAll(query);
+    if (list.size() > 0) {
+      return list.get(0);
+    }
+    return null;
+  }
+
+  @Override
   public ProjectInnovationGroup save(ProjectInnovationGroup projectInnovationGroup) {
     if (projectInnovationGroup.getId() == null) {
       super.saveEntity(projectInnovationGroup);

@@ -108,6 +108,11 @@ public class ProjectInnovationGroupManagerImpl implements ProjectInnovationGroup
     return projectInnovationGroupDAO.getProjectInnovationGroupById(innovationowner, innovationid, phaseID);
   }
 
+  @Override
+  public ProjectInnovationGroup getProjectInnovationGroupByPhase(long InnovationId, long year, String name) {
+    return projectInnovationGroupDAO.getProjectInnovationGroupByPhase(InnovationId, year, name);
+  }
+
   public void saveInnovationGroupPhase(Phase next, long innovationid, ProjectInnovationGroup projectInnovationGroup) {
 
     Phase phase = phaseDAO.find(next.getId());

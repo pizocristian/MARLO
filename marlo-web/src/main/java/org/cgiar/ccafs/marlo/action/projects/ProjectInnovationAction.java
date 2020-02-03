@@ -951,7 +951,7 @@ public class ProjectInnovationAction extends BaseAction {
       this.saveCrps(innovationDB, phase);
       this.saveProjects(innovationDB, phase);
       this.saveCenters(innovationDB, phase);
-      this.saveSharedInnovation(innovationDB, phase);
+      // this.saveSharedInnovation(innovationDB, phase);
 
       this.saveGeographicScope(innovationDB, phase);
 
@@ -1486,13 +1486,93 @@ public class ProjectInnovationAction extends BaseAction {
   }
 
 
-  public void saveSharedInnovation(ProjectInnovation projectInnovation, Phase phase) {
-    if (projectInnovation.getCrpInnovationShared() != null && innovation.getCrpInnovationShared() != null) {
-      if (!innovation.getCrpInnovationShared().getId().equals(projectInnovation.getCrpInnovationShared().getId())) {
-
+  public void saveSharedInnovation(ProjectInnovation projectInnovationDB, Phase phase) {
+    if (projectInnovationDB.getCrpInnovationShared() != null && innovation.getCrpInnovationShared() != null) {
+      if (!innovation.getCrpInnovationShared().getId().equals(projectInnovationDB.getCrpInnovationShared().getId())) {
+        // looking for latest group saved to delete replication
+        ProjectInnovationGroup projectInnovationGroupDB = projectInnovationGroupManager
+          .getProjectInnovationGroupByPhase(projectInnovationDB.getCrpInnovationShared().getId().longValue(),
+            this.getActualPhase().getYear(), this.getActualPhase().getName());
+        if (projectInnovationGroupDB != null) {
+          projectInnovationGroupManager.deleteProjectInnovationGroup(projectInnovationGroupDB.getId());
+        }
+        // getting Innovation info to get innovation phase
+        List<ProjectInnovationInfo> projectInnovationInfoList = projectInnovationInfoManager.findAll().stream()
+          .filter(c -> c.isActive() && c.getPhase().getYear() == this.getActualPhase().getYear()
+            && c.getPhase().getName().equals(this.getActualPhase().getName())
+            && c.getProjectInnovation().getId().equals(this.innovation.getCrpInnovationShared().getId()))
+          .collect(Collectors.toList());
+        if (projectInnovationInfoList != null && projectInnovationInfoList.size() > 0) {
+          // looking if this innovation is a group or is a stand alone innovation
+          ProjectInnovationGroup projectInnovationGroup = projectInnovationGroupManager
+            .getProjectInnovationGroupByPhase(innovation.getCrpInnovationShared().getId().longValue(),
+              this.getActualPhase().getYear(), this.getActualPhase().getName());
+          if (projectInnovationGroup != null) {
+            // if selected is a group that exists, create a new registry with innovation owner and this innovation.
+            ProjectInnovationGroup projectInnovationGroupNew = new ProjectInnovationGroup();
+            projectInnovationGroupNew.setProjectInnovationOwner(projectInnovationGroup.getProjectInnovationOwner());
+            projectInnovationGroupNew.setPhase(phase);
+            projectInnovationGroupNew.setProjectInnovation(this.innovation.getCrpInnovationShared());
+            projectInnovationGroupManager.saveProjectInnovationGroup(projectInnovationGroupNew);
+          } else {
+            // if no exist a group, needs to be created a new group with de innovation selected.
+            ProjectInnovationGroup projectInnovationGroupNew = new ProjectInnovationGroup();
+            projectInnovationGroupNew.setProjectInnovationOwner(innovation.getId());
+            projectInnovationGroupNew.setPhase(phase);
+            projectInnovationGroupNew.setProjectInnovation(innovation);
+            projectInnovationGroupManager.saveProjectInnovationGroup(projectInnovationGroupNew);
+            // create registry in the group with selected Innovation to share in frontend
+            ProjectInnovationGroup projectInnovationGroupNew2 = new ProjectInnovationGroup();
+            projectInnovationGroupNew2.setProjectInnovationOwner(innovation.getId());
+            projectInnovationGroupNew2.setPhase(projectInnovationInfoList.get(0).getPhase());
+            projectInnovationGroupNew2.setProjectInnovation(innovation.getCrpInnovationShared());
+            projectInnovationGroupManager.saveProjectInnovationGroup(projectInnovationGroupNew2);
+          }
+        }
       }
-    } else {
+    } else if (projectInnovationDB.getCrpInnovationShared() == null && innovation.getCrpInnovationShared() != null) {
+      // getting Innovation info to get innovation phase
+      List<ProjectInnovationInfo> projectInnovationInfoList = projectInnovationInfoManager.findAll().stream()
+        .filter(c -> c.isActive() && c.getPhase().getYear() == this.getActualPhase().getYear()
+          && c.getPhase().getName().equals(this.getActualPhase().getName())
+          && c.getProjectInnovation().getId().equals(this.innovation.getCrpInnovationShared().getId()))
+        .collect(Collectors.toList());
+      if (projectInnovationInfoList != null && projectInnovationInfoList.size() > 0) {
+        // looking if this innovation is a group or is a stand alone innovation
+        ProjectInnovationGroup projectInnovationGroup = projectInnovationGroupManager.getProjectInnovationGroupByPhase(
+          innovation.getCrpInnovationShared().getId().longValue(), this.getActualPhase().getYear(),
+          this.getActualPhase().getName());
+        if (projectInnovationGroup != null) {
+          // if selected is a group that exists, create a new registry with innovation owner and this innovation.
+          ProjectInnovationGroup projectInnovationGroupNew = new ProjectInnovationGroup();
+          projectInnovationGroupNew.setProjectInnovationOwner(projectInnovationGroup.getProjectInnovationOwner());
+          projectInnovationGroupNew.setPhase(phase);
+          projectInnovationGroupNew.setProjectInnovation(this.innovation.getCrpInnovationShared());
+          projectInnovationGroupManager.saveProjectInnovationGroup(projectInnovationGroupNew);
+        } else {
+          // if no exist a group, needs to be created a new group with de innovation selected.
+          ProjectInnovationGroup projectInnovationGroupNew = new ProjectInnovationGroup();
+          projectInnovationGroupNew.setProjectInnovationOwner(innovation.getId());
+          projectInnovationGroupNew.setPhase(phase);
+          projectInnovationGroupNew.setProjectInnovation(innovation);
+          projectInnovationGroupManager.saveProjectInnovationGroup(projectInnovationGroupNew);
+          // create registry in the group with selected Innovation to share in frontend
+          ProjectInnovationGroup projectInnovationGroupNew2 = new ProjectInnovationGroup();
+          projectInnovationGroupNew2.setProjectInnovationOwner(innovation.getId());
+          projectInnovationGroupNew2.setPhase(projectInnovationInfoList.get(0).getPhase());
+          projectInnovationGroupNew2.setProjectInnovation(innovation.getCrpInnovationShared());
+          projectInnovationGroupManager.saveProjectInnovationGroup(projectInnovationGroupNew2);
+        }
+      }
 
+    } else if (projectInnovationDB.getCrpInnovationShared() != null && innovation.getCrpInnovationShared() == null) {
+      // looking for latest group saved to delete replication
+      ProjectInnovationGroup projectInnovationGroupDB = projectInnovationGroupManager.getProjectInnovationGroupByPhase(
+        projectInnovationDB.getCrpInnovationShared().getId().longValue(), this.getActualPhase().getYear(),
+        this.getActualPhase().getName());
+      if (projectInnovationGroupDB != null) {
+        projectInnovationGroupManager.deleteProjectInnovationGroup(projectInnovationGroupDB.getId());
+      }
     }
   }
 

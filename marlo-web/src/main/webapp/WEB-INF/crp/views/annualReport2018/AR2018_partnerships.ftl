@@ -61,7 +61,7 @@
               [#-- Content --] 
               <div class="tab-content ">
                 
-                <div id="tab-keyPartnerships" role="tabpanel" class="tab-pane fade in active">
+                <div id="tab-keyPartnerships" role="tabpanel" class="tab-pane fade show active">
                   [#-- 2.2.1 Highlights of External Partnerships  --]
                   <div class="form-group">
                     [#-- Partnerships summary --]

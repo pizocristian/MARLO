@@ -111,14 +111,14 @@
 <nav id="mainMenu"> 
 <div class="menuContent">
 	<div class="container">
-	  <ul class="hidden-md hidden-lg">
+	  <ul class="d-md-none">
 	   <li> <span class="glyphicon glyphicon-menu-hamburger"></span> Main menu
 	     <ul class="subMenu">
 	       [@mainMenuList /]
 	     </ul>
 	   </li>
 	  </ul>
-	  <ul class="visible-md-block visible-lg-block">
+	  <ul class="d-none d-md-block">
 	    [@mainMenuList /]
 	  </ul>
 	  

@@ -27,8 +27,8 @@
                 <a href="${capdevUrl}">C${i.id}</a></td>
               <td>
                 [#-- Tags --]
-                [#if i.category == 1]<span class="label label-success">[@s.text name="Individual" /]</span>[/#if]
-                [#if i.category == 2]<span class="label label-primary">[@s.text name="Grupal" /]</span>[/#if]
+                [#if i.category == 1]<span class="badge badge-success">[@s.text name="Individual" /]</span>[/#if]
+                [#if i.category == 2]<span class="badge badge-primary">[@s.text name="Grupal" /]</span>[/#if]
                 [#-- Title --]
                 <a href="${capdevUrl}">
                   [#if i.title?has_content]${i.title}[#else]Not defined[/#if]

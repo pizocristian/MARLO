@@ -1,6 +1,6 @@
 [#ftl]
 [#if breadCrumb??]
-<ol class="breadcrumb">
+<ol class="breadcrumb d-flex justify-content-between align-items-center">
   [#if breadCrumb?has_content] 
     [#list breadCrumb as item]
       <li class="[#if !item_has_next]active[/#if]">

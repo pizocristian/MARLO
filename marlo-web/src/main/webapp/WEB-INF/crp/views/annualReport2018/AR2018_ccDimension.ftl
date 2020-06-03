@@ -62,7 +62,7 @@
               </ul>
               [#-- Content --] 
               <div class="tab-content ">
-                <div id="tab-gender" role="tabpanel" class="tab-pane fade in active">
+                <div id="tab-gender" role="tabpanel" class="tab-pane fade show active">
                   [#-- 1.3.1 Gender --]
                   [@customForm.helpLabel name="${customLabel}.gender.help" showIcon=false editable=editable /]
                   

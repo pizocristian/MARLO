@@ -105,7 +105,7 @@
               <a href="${dlurl}">${(item.id)!'ID'}</a>
             </td> 
             <td class="">
-              [#if isNew] <span class="label label-info">[@s.text name="global.new" /]</span> [/#if] 
+              [#if isNew] <span class="badge badge-info">[@s.text name="global.new" /]</span> [/#if] 
               <a href="${dlurl}"}>[@utils.tableText value=(item.projectPolicyInfo.title)!"" /]</a>
             </td>
             <td class="">

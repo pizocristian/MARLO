@@ -46,7 +46,7 @@
     "jquery-tag-editor": "^1.0.20",
     "sly": "https://github.com/darsain/sly.git#^1.6.1",
     "pickadate": "^3.5.6",
-    "components-font-awesome": "^5.0.6",
+    "components-font-awesome": "^5.12.1",
     "pusher-js": "pusher#^4.2.2",
     "trumbowyg": "^2.15.1",
     "malihu-custom-scrollbar-plugin": "^3.1.5",
@@ -82,8 +82,19 @@
       ]
     },
     "flag-icon-css": {
-      "main": ["css/flag-icon.min.css", "less/flag-icon.less", "sass/_flag-icon.scss"],
-      "ignore": ["**/.*", "assets", "Gruntfile.coffee", "index.html", "LICENSE", "package.json"]
+      "main": [
+        "css/flag-icon.min.css",
+        "less/flag-icon.less",
+        "sass/_flag-icon.scss"
+      ],
+      "ignore": [
+        "**/.*",
+        "assets",
+        "Gruntfile.coffee",
+        "index.html",
+        "LICENSE",
+        "package.json"
+      ]
     },
     "countdown": {
       "main": [

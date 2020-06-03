@@ -73,7 +73,7 @@
               [#-- Annual progress --]
               [#list project.startDate?string.yyyy?number..2019?number-1 as year]
               
-              <span class="label label-default">${year}</span>
+              <span class="badge badge-default">${year}</span>
                [#assign indexYear = (action.getIndex(year))!-1 /]
                [#assign outcome = (action.getOutcome(year))!{} /]
                 [#assign yearEditable = false /]

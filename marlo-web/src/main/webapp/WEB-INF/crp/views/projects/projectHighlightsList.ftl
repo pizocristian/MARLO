@@ -98,7 +98,7 @@
             <td class="id" ><a href="${dlurl}">${hl.id}</a></td> 
             <td class="name">
               [#if reportingActive && ((hl.projectHighlightInfo.year == currentCycleYear)!false)]
-                <span class="label label-primary" title="Required for this cycle"><span class="glyphicon glyphicon-flash" ></span> Report</span>
+                <span class="badge badge-primary" title="Required for this cycle"><span class="glyphicon glyphicon-flash" ></span> Report</span>
               [/#if]
               <a href="${dlurl}">[#if hl.projectHighlightInfo.title?trim?has_content]${hl.projectHighlightInfo.title}[#else]Untitled[/#if]</a>
             </td>

@@ -45,9 +45,9 @@
             [#-- Draft Tag --]
             [#if hasDraft]<strong class="text-info">[DRAFT]</strong>[/#if]
             [#-- Report --]
-            [#if toReport]<span class="label label-primary" title="Required for this cycle"><span class="glyphicon glyphicon-flash" ></span> Report</span>[/#if]
+            [#if toReport]<span class="badge badge-primary" title="Required for this cycle"><span class="glyphicon glyphicon-flash" ></span> Report</span>[/#if]
             [#-- New Tag --]
-            [#if isDeliverableNew]<span class="label label-info">New</span>[/#if]
+            [#if isDeliverableNew]<span class="badge badge-info">New</span>[/#if]
             
             [#if deliverable.deliverableInfo.title?has_content]
               <a href="[@s.url namespace=namespace action=defaultAction] [@s.param name='deliverableID']${deliverable.id?c}[/@s.param][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]" >
@@ -171,11 +171,11 @@
           [#-- Deliverable Title --]
           <td class="left">
             [#-- New Tag --]
-            [#if isDeliverableNew]<span class="label label-info">New</span>[/#if]
+            [#if isDeliverableNew]<span class="badge badge-info">New</span>[/#if]
             [#-- Draft Tag --]
             [#if hasDraft]<strong class="text-info">[DRAFT]</strong>[/#if]
             [#-- To report --]
-            [#if toReport]<span class="label label-primary" title="Required for this cycle"><span class="glyphicon glyphicon-flash" ></span> Report</span>[/#if]
+            [#if toReport]<span class="badge badge-primary" title="Required for this cycle"><span class="glyphicon glyphicon-flash" ></span> Report</span>[/#if]
             
             [#if deliverable.deliverableInfo.title?has_content]
                 <a href="[@s.url namespace=namespace action=defaultAction] [@s.param name='deliverableID']${deliverable.id?c}[/@s.param][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">

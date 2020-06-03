@@ -56,8 +56,8 @@
         </td>
           [#-- Project Title --]
           <td class="left">
-            [#if isProjectNew]<span class="label label-info">[@s.text name="global.new" /]</span>[/#if]
-            [#if project.projectInfo.administrative]<span class="label label-primary">[@s.text name="project.management" /]</span>[/#if]
+            [#if isProjectNew]<span class="badge badge-info">[@s.text name="global.new" /]</span>[/#if]
+            [#if project.projectInfo.administrative]<span class="badge badge-primary">[@s.text name="project.management" /]</span>[/#if]
             [#if project.projectInfo.title?has_content]
               <a href="${projectUrl}" title="${(project.projectInfo.title)!}">[@utilities.wordCutter string=(project.projectInfo.title)!'' maxPos=120 /]</a>
             [#else]
@@ -226,8 +226,8 @@
         </td>
           [#-- Project Title --]
           <td class="left">
-            [#if isProjectNew]<span class="label label-info">[@s.text name="global.new" /]</span>[/#if]
-            [#if project.projectInfo.administrative]<span class="label label-primary">[@s.text name="project.management" /]</span>[/#if]
+            [#if isProjectNew]<span class="badge badge-info">[@s.text name="global.new" /]</span>[/#if]
+            [#if project.projectInfo.administrative]<span class="badge badge-primary">[@s.text name="project.management" /]</span>[/#if]
             [#if project.projectInfo.title?has_content]
               <a href="${projectUrl}" title="${project.projectInfo.title}">
               [#if project.projectInfo.title?length < 120] ${project.projectInfo.title}</a> [#else] [@utilities.wordCutter string=project.projectInfo.title maxPos=120 /]...</a> [/#if]

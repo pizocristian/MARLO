@@ -56,7 +56,7 @@
               
               [#-- Content --] 
               <div class="tab-content ">
-                <div id="tab-table10" role="tabpanel" class="tab-pane fade in active">
+                <div id="tab-table10" role="tabpanel" class="tab-pane fade show active">
                   [#-- Short narrative to introduce the table 9 --]
                   <div class="form-group">
                     [#-- Word Document Tag --]
@@ -193,7 +193,7 @@
             [#local isNew = (action.isEvidenceNew(item.id)) /]
             <tr>
               <td>
-                [#if isNew] <span class="label label-info">[@s.text name="global.new" /]</span> [/#if] 
+                [#if isNew] <span class="badge badge-info">[@s.text name="global.new" /]</span> [/#if] 
                 [@utils.tableText value=(item.composedName)!"" /]
                 [#if item.project??]<br /> <small>(From Project P${item.project.id})</small> [/#if]
                 

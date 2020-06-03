@@ -80,7 +80,7 @@
         <div class="flex-container">
         [#assign canAddCoreProject = (action.canAddCoreProject()) && (!crpClosed) && (!reportingActive) && (action.getActualPhase().editable)]
         [#if canAddCoreProject]<a href="[@s.url namespace="/projects" action='${crpSession}/addNewCoreProject'][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">[/#if]
-          <div id="newProject" class="hvr-float option ${(!canAddCoreProject)?string('disabled','')}" ${(!canAddCoreProject)?string('title="This link is disabled"','')}>
+          <div id="newProject" class="hvr-float option ${(!canAddCoreProject)?string('disabled','')} d-flex align-items-center justify-content-center" ${(!canAddCoreProject)?string('title="This link is disabled"','')}>
             <p>[@s.text name="dashboard.decisionTree.newProject" /]</p>
           </div>
         [#if canAddCoreProject]</a>[/#if]
@@ -90,7 +90,7 @@
         <div class="flex-container">
         [#assign canUpdateOngoingProjects = !crpClosed && canEditPhase ]
         [#if canUpdateOngoingProjects]<a href="[@s.url namespace="/projects" action='${crpSession}/projectsList'][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]"> [/#if]
-          <div id="updatePlanning" class="hvr-float option ${(!canUpdateOngoingProjects)?string('disabled','')}" ${(!canUpdateOngoingProjects)?string('title="This link is disabled"','')}>
+          <div id="updatePlanning" class="hvr-float option ${(!canUpdateOngoingProjects)?string('disabled','')} d-flex align-items-center justify-content-center" ${(!canUpdateOngoingProjects)?string('title="This link is disabled"','')}>
             <p>[@s.text name="dashboard.decisionTree.updateProject" /]</p>
           </div>
         [#if canUpdateOngoingProjects]</a>[/#if]
@@ -98,7 +98,7 @@
         
         [#-- Evaluate Project --]
         <div class="flex-container">
-          <div id="reportProject" class="option disabled" title="This link is disabled">
+          <div id="reportProject" class="option disabled d-flex align-items-center justify-content-center" title="This link is disabled">
             <p>[@s.text name="dashboard.decisionTree.evaluateProject" /]</p>
           </div>
         </div>
@@ -115,8 +115,8 @@
       <div class="homeTitle"><strong>Timeline</strong></div>   
       <div class="borderBox col-md-12">
         <div id="timeline">
-        <span class="timelineControl leftControl glyphicon glyphicon-chevron-left"></span>
-        <span class="timelineControl rigthControl control glyphicon glyphicon-chevron-right"></span>
+        <span class="timelineControl leftControl fa fa-chevron-left"></span>
+        <span class="timelineControl rigthControl control fa fa-chevron-right"></span>
           <ul id="dates">
           [#list timeline as time]
             <li><a href="#${time.id}">[#if time.startDate?has_content]${(time.startDate)?date("MM/dd/yyyy")}[/#if]</a></li>
@@ -157,7 +157,7 @@
         </ul>
         
         <div class="tab-content">
-          <div role="tabpanel" class="tab-pane fade in active" id="myProjects">
+          <div role="tabpanel" class="tab-pane fade show active" id="myProjects">
             [@projectList.dashboardProjectsList projects=myProjects canValidate=true canEdit=true namespace="/projects" defaultAction="${(crpSession)!}/description" /]
           </div>
           
@@ -173,7 +173,7 @@
               [#--  <span id="buttonShowAll"><span class="glyphicon glyphicon-download-alt"></span></span>--]
               <div id="impactGraphic" ></div>
               [#-- Download button--]
-              <span title="View full graph" id="fullscreen" class="glyphicon glyphicon-fullscreen"></span>
+              <span title="View full graph" id="fullscreen" class="fa fa-fullscreen"></span>
             </div>
           </div>
         </div>  
@@ -203,7 +203,7 @@
   </div>
   
   [#-- Download button--]
-  <a class="download" href=""><span title="download" id="buttonDownload"><span class="glyphicon glyphicon-download-alt"></span></span></a>
+  <a class="download" href=""><span title="download" id="buttonDownload"><span class="fa fa-download-alt"></span></span></a>
   
   <div id="impactGraphic-fullscreen"></div>
 </div>

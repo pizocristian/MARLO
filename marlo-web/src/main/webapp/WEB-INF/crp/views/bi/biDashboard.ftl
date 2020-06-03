@@ -36,7 +36,7 @@
                 </li>
             </ul>
             <div class="tab-content ">
-              <div id="project-submission-status" role="tabpanel" class="tab-pane fade in active">
+              <div id="project-submission-status" role="tabpanel" class="tab-pane fade show active">
                <iframe width="1100" height="720" src="https://app.powerbi.com/view?r=eyJrIjoiYThkZjAxODktODA0MC00NDk3LTg0YzQtODhmMTIzMDk4MzBkIiwidCI6IjZhZmEwZTAwLWZhMTQtNDBiNy04YTJlLTIyYTdmOGMzNTdkNSIsImMiOjh9" frameborder="0" allowFullScreen="true"></iframe>
               </div>
               <div id="project-deliverables" role="tabpanel" class="tab-pane fade ">

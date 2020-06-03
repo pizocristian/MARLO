@@ -107,7 +107,7 @@
           </td>
           [#-- Title --]
           <td class="tb-title">
-            [#if isNew] <span class="label label-info">[@s.text name="global.new" /]</span> [/#if] 
+            [#if isNew] <span class="badge badge-info">[@s.text name="global.new" /]</span> [/#if] 
             <a href="${tsURL}">[@utils.tableText value=(innovation.projectInnovationInfo.title)!"" /]</a>
           </td>
           [#-- Type --]

@@ -381,9 +381,10 @@
   <div class="form-group" style="opacity:${report.available?string('1','0.5')}">
     [#-- Tags --]
     <div class="tags pull-right">
-      [#list report.cycles![] as tag ]<span class="label label-default type-${tag?lower_case}">${tag}</span>[/#list]
+      [#list report.cycles![] as tag ]<span class="badge badge-default type-${tag?lower_case}">${tag}</span>[/#list]
+      
       [#list report.formats as icon ]
-      <span class="label label-default type-${icon?lower_case}"><span class="fa fa-file-${icon?lower_case}-o ${icon?lower_case}Icon file"></span> ${icon}</span>
+      <span class="badge badge-default type-${icon?lower_case}"><span class="fa fa-file-${icon?lower_case}-o ${icon?lower_case}Icon file"></span> ${icon}</span>
       [/#list] 
     </div>
     [#-- Title --]

@@ -283,8 +283,8 @@
       
       [#-- Tags --]
       <div class="partnerTags pull-right">
-        <span class="label label-success type-leader" style="display:${(isLeader?string('inline','none'))!'none'}">Leader</span>
-        <span class="label label-default type-coordinator" style="display:${(isCoordinator?string('inline','none'))!'none'}">Coordinator</span>
+        <span class="badge badge-success type-leader" style="display:${(isLeader?string('inline','none'))!'none'}">Leader</span>
+        <span class="badge badge-default type-coordinator" style="display:${(isCoordinator?string('inline','none'))!'none'}">Coordinator</span>
         <span class="index ${isPPA?string('ppa','')}">${isPPA?string('Managing / PPA Partner','Partner')} </span>
       </div>
       
@@ -440,7 +440,7 @@
     [/#if]
     
     [#if customForm.changedField('${name}.id') != '']
-      <span class="label label-info pull-right">Added/Updated</span> 
+      <span class="badge badge-info pull-right">Added/Updated</span> 
     [/#if]
     <div class="">
     	<div class="form-group row">

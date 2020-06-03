@@ -530,7 +530,7 @@
 [/#macro]
 
 [#macro tag name=""]
-  [#-- <span class="label label-info pull-right"> <i class="fas fa-tag"></i> ${name} </span> --]
+  [#-- <span class="badge badge-info pull-right"> <i class="fas fa-tag"></i> ${name} </span> --]
 [/#macro]
 
 [#macro studyLink name element index=-1 template=false]

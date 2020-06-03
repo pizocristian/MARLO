@@ -85,9 +85,9 @@
                   [#-- Label --]
                   [#if action.isFlagship()]
                     [#if indicatorReport.crpIndicator.id lte 6] 
-                      <div class="form-group"><span class="label label-warning"><strong> [@s.text name="synthesis.crpIndicators.lookAtCenter" /]</strong></span></div>
+                      <div class="form-group"><span class="badge badge-warning"><strong> [@s.text name="synthesis.crpIndicators.lookAtCenter" /]</strong></span></div>
                     [#else]
-                      <div class="form-group"><span class="label label-info"><strong> [@s.text name="synthesis.crpIndicators.reportOnFlagship" /]</strong></span></div>
+                      <div class="form-group"><span class="badge badge-info"><strong> [@s.text name="synthesis.crpIndicators.reportOnFlagship" /]</strong></span></div>
                     [/#if]
                   [/#if]
                   

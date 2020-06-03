@@ -1,7 +1,7 @@
 [#ftl]  
 [#if phases??]
   [#if phases?size > 1]
-    <div class="container hidden-print"> 
+    <div class="container d-print"> 
       <link rel="stylesheet" type="text/css" href="${baseUrlCdn}/global/css/timeline-phases.css" />
         
         [#-- Timeline Scroll --]
@@ -12,8 +12,8 @@
           <div class="frame">
             <ul>
               [#list phases as phase]
-                <li id="phase-${(phase.id)!}" class="phaseBox text-left ${(phase.isReporting())?string('reporting','planning')} [#if (actualPhase.id == phase.id)][#assign currenPhaseIndex = phase_index  /]active phaseSelected[#else]phaseNoSelected[/#if] ${phase.editable?string('', '')}">
-                  <h4> [#if centerGlobalUnit] ${(phase.year)!} [#else] ${(phase.composedName)!} [/#if] <small class="pull-right">${phase.editable?string('', '<span class="label label-danger">Closed</span>')}</small></h4>
+                <li id="phase-${(phase.id)!}" class="phaseBox d-flex align-items-center text-left ${(phase.isReporting())?string('reporting','planning')} [#if (actualPhase.id == phase.id)][#assign currenPhaseIndex = phase_index  /]active phaseSelected[#else]phaseNoSelected[/#if] ${phase.editable?string('', '')}">
+                  <h4> [#if centerGlobalUnit] ${(phase.year)!} [#else] ${(phase.composedName)!} [/#if] <small class="pull-right ml-1">${phase.editable?string('', '<span class="badge badge-danger">Closed</span>')}</small></h4>
                   [#-- <small><strong>From: </strong>${phase.startDate} | <strong>Until: </strong>${phase.endDate}</small> --]
                 </li>
               [/#list] 

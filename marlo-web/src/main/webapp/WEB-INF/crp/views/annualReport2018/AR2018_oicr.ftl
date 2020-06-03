@@ -133,7 +133,7 @@
             <tr>
               <td>
                 [#-- Report Tag --]
-                [#if isNew] <span class="label label-info">[@s.text name="global.new" /]</span> [/#if]
+                [#if isNew] <span class="badge badge-info">[@s.text name="global.new" /]</span> [/#if]
               
                 [@utils.tableText value=(item.composedName)!"" /]
                 

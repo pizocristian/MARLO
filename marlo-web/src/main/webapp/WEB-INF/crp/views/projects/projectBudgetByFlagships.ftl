@@ -116,7 +116,7 @@
             <div class="simpleBox emptyMessage text-center">
               [@s.text name="projectBudgetByFlagships.beforeFillingSections"]
                 [@s.param]<a href="[@s.url action="${crpSession}/description"][@s.param name="projectID" value=projectID /][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">description section </a>[/@s.param]
-                [@s.param]<span class="label label-success">save</span>[/@s.param]
+                [@s.param]<span class="badge badge-success">save</span>[/@s.param]
               [/@s.text]
             </div>  
           [/#if]

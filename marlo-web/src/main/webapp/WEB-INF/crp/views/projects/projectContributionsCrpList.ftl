@@ -143,7 +143,7 @@
         
         [#-- Report --]
         [#if reportingActive && !isThisComplete]
-          <span class="label label-primary" title="Required for reporting"><span class="glyphicon glyphicon-flash" ></span> Report</span>
+          <span class="badge badge-primary" title="Required for reporting"><span class="glyphicon glyphicon-flash" ></span> Report</span>
         [/#if]
         
         <a href="${projectOutcomeUrl}">

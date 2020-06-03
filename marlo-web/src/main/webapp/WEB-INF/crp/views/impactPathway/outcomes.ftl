@@ -226,7 +226,7 @@
     <!-- Tab panes -->
     <div class="tab-content impactpathwayTabContent">
       [#-- Outcome Sub-IDOs List --]
-      <div role="tabpanel" class="tab-pane fade in active" id="subIdos-tab-${index}">
+      <div role="tabpanel" class="tab-pane fade show active" id="subIdos-tab-${index}">
         [#-- <h5 class="sectionSubTitle">[@s.text name="outcome.subIDOs.sectionTitle"/] <p class="contributioRem pull-right">Contribution <span class="value">0%</span></p></h5>--]
         <div class="subIdos-list" listname="${outcomeCustomName}.subIdos">
         [#if outcome.subIdos?has_content]

@@ -16,17 +16,17 @@ $(document).ready(function() {
   // Reject Request button Event
   $modal.find('.rejectButton').on('click', function() {
     var $request = $('#partnerRequestItem-' + requestID);
-    
+
     var justificationText = $modal.find('textarea').val();
-    
+
     if(!justificationText){
       var notyOptions = jQuery.extend({}, notyDefaultOptions);
       notyOptions.text = 'The justification field is required';
       noty(notyOptions);
       return
     }
-    
-    
+
+
     $.ajax({
         url: baseURL + '/rejectPartnerRequest.do',
         data: {
@@ -114,18 +114,18 @@ $(document).ready(function() {
     var $countriesSelected = $request.find('.officeRequest:checked').map(function() {
       return $(this).parent().clone(true).find('label').text();
     }).get().join(', ');
-    
+
     // Validate if there are countries selected
     if($request.find('.officeRequest:checked').length == 0) {
       var notyOptions = jQuery.extend({}, notyDefaultOptions);
       notyOptions.text = 'Please select at least a country';
       noty(notyOptions);
-      
+
       return
     }else{
       $rejectOfficeRequest.modal('show');
     }
-    
+
     $rejectOfficeRequest.find('.requestInfo').html($countriesSelected);
   });
 
@@ -142,7 +142,7 @@ $(document).ready(function() {
           return this.value;
         }).get().join()
     }
-    
+
     // Validate if there are countries selected
     if(!formData.justification) {
       var notyOptions = jQuery.extend({}, notyDefaultOptions);
@@ -171,7 +171,7 @@ $(document).ready(function() {
   // Accept office request
   $('a.acceptOfficesRequest').on('click', function(e) {
     e.preventDefault();
-    
+
     institutionOfficeRequestId = $(this).classParam('institutionOfficeRequestId');
     var $request = $('#officesRequestItem-' + institutionOfficeRequestId)
     var countriesSelected = $request.find('.officeRequest:checked');
@@ -188,12 +188,12 @@ $(document).ready(function() {
       noty(notyOptions);
       return
     }
-    
+
     // Confirm Alert
     if (!confirm('Are you sure you want to accept this request?')) {
       return
     }
-    
+
     $.ajax({
         url: baseURL + '/acceptOfficesRequest.do',
         data: formData,
@@ -233,7 +233,7 @@ function findSameness() {
             $(e).find('.sameness').show();
 
             $.each(data.institutions, function(i,partner) {
-              var ppaText = partner.isPPA? '<small><span class="label label-warning">PPA</span></small>':'';
+              var ppaText = partner.isPPA? '<small><span class="badge badge-warning">PPA</span></small>':'';
               var $li = $('<li title="' + partner.composedName + '">' + partner.composedName + ' '+ ppaText + '</li>');
               $(e).find('.sameness ul').append($li);
               // Text Difference

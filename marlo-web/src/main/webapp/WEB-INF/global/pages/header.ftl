@@ -122,9 +122,9 @@
             [/#if]
             <div class="clearfix"></div>
             [#-- Testing Environment --]
-            [#if !config.production]<h4 class="testEnvironment"><span class="label label-danger text-left">Testing Environment</span> </h4>[/#if]
+            [#if !config.production]<h4 class="testEnvironment"><span class="badge badge-danger text-left">Testing Environment</span> </h4>[/#if]
             [#-- Closed --]
-            <h4 class="">[#if crpClosed] <span class="label label-default text-left">Closed</span> [/#if]</h4>
+            <h4 class="">[#if crpClosed] <span class="badge badge-default text-left">Closed</span> [/#if]</h4>
           </div>
           
         </div>

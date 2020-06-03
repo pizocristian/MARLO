@@ -20,7 +20,7 @@
           <td class="type"><span class="logType ${log.action?lower_case}" title="${log.action?capitalize}">&nbsp;</span></td>
           <td class="date"> 
             ${log.createdDate?datetime} 
-            [#if log_index == 0]<!--span class="label label-primary">Current</span--> 
+            [#if log_index == 0]<!--span class="badge badge-primary">Current</span--> 
               [#if canEdit]<a id="cancelButton" class="btn btn-danger btn-xs" href="#" role="button">[@s.text name="form.buttons.recover" /] [@s.text name="logHistory.thisVersion" /]</a>[/#if]
             [/#if]
           </td>

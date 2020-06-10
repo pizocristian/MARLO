@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "MARLO Deliverables" /]
 [#assign currentSectionString = "${actionName?replace('/','-')}-phase-${(actualPhase.id)!}" /]
-[#assign pageLibs = ["datatables.net", "datatables.net-bs"] /]
+[#assign pageLibs = ["datatables.net", "datatables.net-bs4"] /]
 [#assign customJS = [
   "${baseUrlMedia}/js/monitoring/deliverable/deliverableList.js" 
   ] 

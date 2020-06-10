@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "CRP Users" /]
 [#assign currentSectionString = "${actionName?replace('/','-')}-phase-${(actualPhase.id)!}" /]
-[#assign pageLibs = ["select2", "datatables.net", "datatables.net-bs"] /]
+[#assign pageLibs = ["select2", "datatables.net", "datatables.net-bs4"] /]
 [#assign customJS = [ 
   "https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js",
   "//cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js",

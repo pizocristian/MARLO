@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "MARLO Evidences" /]
 [#assign currentSectionString = "${actionName?replace('/','-')}-phase-${(actualPhase.id)!}" /]
-[#assign pageLibs = ["datatables.net", "datatables.net-bs"] /]
+[#assign pageLibs = ["datatables.net", "datatables.net-bs4"] /]
 [#assign customJS = ["${baseUrlMedia}/js/studies/studiesList.js?20180725" ] /]
 [#assign customCSS = [
   "${baseUrlCdn}/global/css/customDataTable.css"
@@ -56,7 +56,7 @@
 
 [#-- MACRO --]
 [#macro studiesList elements=[] owned=true canValidate=false canEdit=false isPlanning=false namespace="/" defaultAction="study"]
-  <table class="projectsList" id="projects">
+  <table class="table table-striped table-bordered projectsList" style="width:100%" id="projects">
     <thead>
       <tr class="subHeader">
         [#-- ID --]

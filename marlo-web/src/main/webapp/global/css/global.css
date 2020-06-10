@@ -1068,7 +1068,6 @@ span.logType.saved {
   font-size: 0.85em !important;
   margin-right: 12px;
   text-align: right !important;
-  float: right;
 }
 
 a.popup-link {
@@ -7073,4 +7072,12 @@ hr{
    position: relative;
    display: block; 
    padding: 10px 15px;
+}
+
+.dt-bootstrap4, div.dataTables_length label {
+  display: block; 
+}
+
+ul.pagination {
+  justify-content: flex-end;
 }

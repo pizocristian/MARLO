@@ -4,7 +4,7 @@
 
 [#assign title = "Outcome Synthesis" /]
 [#assign currentSectionString = "synthesis-${actionName?replace('/','-')}-${liaisonInstitutionID}-phase-${(actualPhase.id)!}" /]
-[#assign pageLibs = [ "datatables.net", "datatables.net-bs" ] /]
+[#assign pageLibs = [ "datatables.net", "datatables.net-bs4" ] /]
 [#assign customJS = ["${baseUrlMedia}/js/synthesis/outcomeSynthesis.js"] /]
 [#assign customCSS = ["${baseUrlMedia}/css/synthesis/synthesisGlobal.css"] /]
 [#assign currentSection = "synthesis" /]

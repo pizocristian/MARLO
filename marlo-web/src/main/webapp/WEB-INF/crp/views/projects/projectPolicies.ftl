@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Policies" /]
 [#assign currentSectionString = "project-${actionName?replace('/','-')}-${projectID}-phase-${(actualPhase.id)!}" /]
-[#assign pageLibs = [ "datatables.net", "datatables.net-bs" ] /]
+[#assign pageLibs = [ "datatables.net", "datatables.net-bs4" ] /]
 [#assign customJS = [
   "${baseUrlMedia}/js/projects/projectPoliciesList.js",
   "${baseUrlCdn}/global/js/fieldsValidation.js"] 

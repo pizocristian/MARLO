@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "MARLO Publications" /]
 [#assign currentSectionString = "${actionName?replace('/','-')}-phase-${(actualPhase.id)!}" /]
-[#assign pageLibs = ["datatables.net", "datatables.net-bs"] /]
+[#assign pageLibs = ["datatables.net", "datatables.net-bs4"] /]
 [#assign customJS = ["${baseUrlMedia}/js/publications/publicationsList.js" ] /]
 [#assign customCSS = [
   "${baseUrlCdn}/global/css/customDataTable.css", 

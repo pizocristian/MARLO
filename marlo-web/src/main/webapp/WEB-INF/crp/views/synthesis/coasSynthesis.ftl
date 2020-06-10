@@ -45,7 +45,7 @@
 
 [#assign title = "Outcome By CoAs" /]
 [#assign currentSectionString = "synthesis-${actionName?replace('/','-')}-${liaisonInstitutionID}-phase-${(actualPhase.id)!}" /]
-[#assign pageLibs = [ "datatables.net", "datatables.net-bs" ] /]
+[#assign pageLibs = [ "datatables.net", "datatables.net-bs4" ] /]
 [#assign customJS = ["${baseUrlMedia}/js/synthesis/synthesisByCoAs.js"] /]
 [#assign customCSS = ["${baseUrlMedia}/css/synthesis/synthesisGlobal.css"] /]
 [#assign currentSection = "synthesis" /]

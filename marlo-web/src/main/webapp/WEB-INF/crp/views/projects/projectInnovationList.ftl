@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Innovations" /]
 [#assign currentSectionString = "project-${actionName?replace('/','-')}-${projectID}-phase-${(actualPhase.id)!}" /]
-[#assign pageLibs = [ "datatables.net", "datatables.net-bs"] /]
+[#assign pageLibs = [ "datatables.net", "datatables.net-bs4"] /]
 [#assign customJS = [
   "${baseUrlMedia}/js/projects/projectInnovationsList.js",
   "${baseUrlCdn}/global/js/autoSave.js",

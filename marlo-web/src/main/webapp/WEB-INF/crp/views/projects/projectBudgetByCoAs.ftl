@@ -65,7 +65,7 @@
             [#-- Year Tabs --]
             <ul class="nav nav-tabs budget-tabs" role="tablist">
               [#list startYear .. selectedYear as year]
-                <li class="[#if year == selectedYear]active[/#if]"><a href="#year-${year}" role="tab" data-toggle="tab">${year} [@customForm.req required=isYearRequired(year) /] </a></li>
+                <li class="nav-item"><a href="#year-${year}" class="nav-link [#if year == selectedYear]active[/#if]" role="tab" data-toggle="tab">${year} [@customForm.req required=isYearRequired(year) /] </a></li>
               [/#list]
             </ul>
             [#-- Years Content --]

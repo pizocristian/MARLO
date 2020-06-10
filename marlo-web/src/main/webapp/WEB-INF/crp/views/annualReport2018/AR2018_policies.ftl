@@ -3,7 +3,7 @@
 [#assign currentSectionString = "annualReport-${actionName?replace('/','-')}-${synthesisID}" /]
 [#assign currentSection = "synthesis" /]
 [#assign currentStage = actionName?split('/')[1]/]
-[#assign pageLibs = [ "datatables.net", "datatables.net-bs", "components-font-awesome", "trumbowyg" ] /]
+[#assign pageLibs = [ "datatables.net", "datatables.net-bs4", "components-font-awesome", "trumbowyg" ] /]
 [#assign customJS = [ 
   "https://www.gstatic.com/charts/loader.js",  
   "https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js",

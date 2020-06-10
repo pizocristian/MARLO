@@ -345,9 +345,9 @@
 [/#macro]
 
 [#macro dashboardProjectsList projects={} owned=true canValidate=false canEdit=false isPlanning=false namespace="/" defaultAction="description"]
-  <table class="projectsList" id="projects">
+  <table class="table table-striped table-bordered projectsList" style="width:100%" id="projects">
     <thead>
-      <tr class="subHeader">
+      <tr>
         <th id="ids">[@s.text name="projectsList.projectids" /]</th>
         <th id="projectTitles" >[@s.text name="projectsList.projectTitles" /]</th>
         [#-- <th id="projectType">[@s.text name="projectsList.projectType" /]</th> --]
@@ -361,11 +361,11 @@
       [#list projects as project]
         <tr>
         [#-- ID --]
-        <td class="projectId">
+        <td>
           <a href="[@s.url namespace=namespace action=defaultAction][@s.param name='projectID']${project.id?c}[/@s.param][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]"> P${project.id}</a>
         </td>
           [#-- Project Title --]
-          <td class="left"> 
+          <td> 
             [#if (project.projectInfo.title?has_content)!false]
               <a href="[@s.url namespace=namespace action=defaultAction] [@s.param name='projectID']${project.id?c}[/@s.param][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]" >
               [#if project.projectInfo.title?length < 120] ${project.projectInfo.title}</a> [#else] [@utilities.wordCutter string=project.projectInfo.title maxPos=120 /]...</a> [/#if]

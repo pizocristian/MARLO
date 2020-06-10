@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "MARLO Funding sources" /]
 [#assign currentSectionString = "${actionName?replace('/','-')}-phase-${(actualPhase.id)!}" /]
-[#assign pageLibs = ["datatables.net", "datatables.net-bs", "malihu-custom-scrollbar-plugin"] /]
+[#assign pageLibs = ["datatables.net", "datatables.net-bs4", "malihu-custom-scrollbar-plugin"] /]
 [#assign customJS = ["${baseUrlMedia}/js/fundingSources/fundingSourcesList.js" ] /]
 [#assign customCSS = [
   "${baseUrlCdn}/global/css/customDataTable.css",
@@ -25,8 +25,8 @@
     <div style="display:none">
       <!-- Nav tabs -->
       <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active">
-          <a href="#active-tab" aria-controls="home" role="tab" data-toggle="tab">
+        <li role="presentation">
+          <a href="#active-tab" class="active" aria-controls="home" role="tab" data-toggle="tab">
             <strong><span class="glyphicon glyphicon-flag"></span>  [@s.text name="fundingSourcesList.active"/] </strong> <br /><small>[@s.text name="fundingSourcesList.active.help"/]</small>
           </a>
         </li>

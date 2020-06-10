@@ -3,7 +3,7 @@
 [#assign currentSectionString = "annualReport-${actionName?replace('/','-')}-${(synthesisID)!}" /]
 [#assign currentSection = "synthesis" /]
 [#assign currentStage = actionName?split('/')[1]/]
-[#assign pageLibs = [ "select2", "components-font-awesome", "datatables.net", "datatables.net-bs" ] /]
+[#assign pageLibs = [ "select2", "components-font-awesome", "datatables.net", "datatables.net-bs4" ] /]
 [#assign customJS = [ 
   "${baseUrlMedia}/js/annualReport/annualReport_${currentStage}.js",
   "${baseUrlMedia}/js/annualReport/annualReportGlobal.js" 

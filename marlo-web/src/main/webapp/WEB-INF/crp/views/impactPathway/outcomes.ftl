@@ -216,11 +216,11 @@
 
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
-      <li role="presentation" class="active"><a href="#subIdos-tab-${index}" aria-controls="home" role="tab" data-toggle="tab">Sub-IDOs <span class="badge">${(outcome.subIdos?size)!'0'}</span></a></li>
+      <li role="presentation" class="nav-item"><a href="#subIdos-tab-${index}" class="nav-link active" aria-controls="home" role="tab" data-toggle="tab">Sub-IDOs <span class="badge badge-pill badge-dark">${(outcome.subIdos?size)!'0'}</span></a></li>
       [#if action.hasSpecificities('crp_baseline_indicators') && (selectedProgram.baseLine)!false]
-      <li role="presentation"><a href="#baseline-tab-${index}" aria-controls="profile" role="tab" data-toggle="tab">Baseline Indicators <span class="badge">${(outcome.indicators?size)!'0'}</span></a></li>
+      <li role="presentation" class="nav-item"><a href="#baseline-tab-${index}" class="nav-link" aria-controls="profile" role="tab" data-toggle="tab">Baseline Indicators <span class="badge badge-pill badge-dark">${(outcome.indicators?size)!'0'}</span></a></li>
       [/#if]
-      <li role="presentation"><a href="#milestones-tab-${index}" aria-controls="messages" role="tab" data-toggle="tab">Milestones <span class="badge">${(outcome.milestones?size)!'0'}</span></a></li>
+      <li role="presentation" class="nav-item"><a href="#milestones-tab-${index}" class="nav-link" aria-controls="messages" role="tab" data-toggle="tab">Milestones <span class="badge badge-pill badge-dark">${(outcome.milestones?size)!'0'}</span></a></li>
     </ul>
   
     <!-- Tab panes -->
@@ -515,7 +515,7 @@
         </div>
       </div>
       [#-- Add Assumption Button --]
-      [#if editable]<div class="addAssumption button-green"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> [@s.text name="form.buttons.addAssumption"/]</div>[/#if]
+      [#if editable]<div class="addAssumption button-green d-flex align-items-end"><div class="mb-4"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> [@s.text name="form.buttons.addAssumption"/]</div></div>[/#if]
     </div>
   </div>
 [/#macro]

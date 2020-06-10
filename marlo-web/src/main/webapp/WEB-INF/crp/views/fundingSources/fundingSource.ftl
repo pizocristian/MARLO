@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "MARLO Funding Sources" /]
 [#assign currentSectionString = "${actionName?replace('/','-')}-${fundingSource.id}-phase-${(actualPhase.id)!}" /]
-[#assign pageLibs = ["select2", "blueimp-file-upload", "datatables.net", "datatables.net-bs","flag-icon-css"] /]
+[#assign pageLibs = ["select2", "blueimp-file-upload", "datatables.net", "datatables.net-bs4","flag-icon-css"] /]
 [#assign customJS = [
   "${baseUrlCdn}/global/js/fieldsValidation.js",
   "${baseUrlMedia}/js/fundingSources/fundingSource.js?20181210",
@@ -484,7 +484,7 @@
       [#-- Year Tabs --]
       <ul class="nav nav-tabs budget-tabs" role="tablist">
         [#list fundingSourceYears as year]
-          <li class="[#if year == currentCycleYear]active[/#if]"><a href="#fundingYear-${year}" role="tab" data-toggle="tab">${year} </a></li>
+          <li class="nav-item"><a href="#fundingYear-${year}" class="nav-link [#if year == currentCycleYear]active[/#if]" role="tab" data-toggle="tab">${year} </a></li>
         [/#list]
       </ul>
       [#-- Years Content --]

@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Project CapDev" /]
 [#assign currentSectionString = "project-${actionName?replace('/','-')}-${projectID}" /]
-[#assign pageLibs = ["datatables.net", "datatables.net-bs"] /]
+[#assign pageLibs = ["datatables.net", "datatables.net-bs4"] /]
 [#assign customJS = [
   "${baseUrlCdn}/global/js/usersManagement.js", 
   "${baseUrlMedia}/js/impactPathway/output.js", 

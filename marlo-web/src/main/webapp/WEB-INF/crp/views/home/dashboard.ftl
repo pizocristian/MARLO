@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Welcome to MARLO" /]
 [#assign currentSectionString = "${actionName?replace('/','-')}-phase-${(actualPhase.id)!}" /]
-[#assign pageLibs = ["jQuery-Timelinr","cytoscape","cytoscape-panzoom","cytoscape-qtip","qtip2","datatables.net", "datatables.net-bs"] /]
+[#assign pageLibs = ["jQuery-Timelinr","cytoscape","cytoscape-panzoom","cytoscape-qtip","qtip2","datatables.net","datatables.net-bs4"] /]
 [#assign customJS = [
   "${baseUrlMedia}/js/home/dashboard.js",
   "${baseUrlCdn}/global/js/impactGraphic.js"

@@ -15,9 +15,9 @@ ul.nav.nav-tabs.budget-tabs li a{
     height: 29px;
 }
 
-ul.nav.nav-tabs.budget-tabs>li.active>a, 
-ul.nav.nav-tabs.budget-tabs>li.active>a:focus, 
-ul.nav.nav-tabs.budget-tabs>li.active>a:hover {
+ul.nav.nav-tabs.budget-tabs>li>a.active, 
+ul.nav.nav-tabs.budget-tabs>li>a.active:focus, 
+ul.nav.nav-tabs.budget-tabs>li>a.active:hover {
     background-color: #fff;
     line-height: 1em;
 }
@@ -25,11 +25,6 @@ ul.nav.nav-tabs.budget-tabs>li.active>a:hover {
 ul.nav.nav-tabs.budget-tabs>li {
     /* border-bottom: 1px solid #dddddd; */
     margin-bottom: -1px;
-}
-
-ul.nav.nav-tabs.budget-tabs>li.active {
-    border-bottom: 1px solid #fff;
-    z-index: 10;
 }
 
 ul.nav.nav-tabs.budget-tabs>li>a:hover {

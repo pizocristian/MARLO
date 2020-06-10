@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "MARLO Admin - Emails" /]
 [#assign currentSectionString = "${actionName?replace('/','-')}-phase-${(actualPhase.id)!}" /]
-[#assign pageLibs = [ "datatables.net", "datatables.net-bs" ] /]
+[#assign pageLibs = [ "datatables.net", "datatables.net-bs4" ] /]
 [#assign customJS = [ "${baseUrlCdn}/global/js/superadmin/emails.js" ] /]
 [#assign customCSS = [ 
   "${baseUrlCdn}/global/css/superadmin/superadmin.css"

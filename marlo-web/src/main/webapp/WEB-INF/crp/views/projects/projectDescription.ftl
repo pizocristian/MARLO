@@ -258,7 +258,7 @@
                     /]
                     [#if editable]
                       [#list crossCuttingMarkers as marker]
-                        <label class="checkbox-inline"><input type="checkbox" name="project.projectInfo.${marker.name}" id="${marker.id}" class="[#if marker.id != "na"]ccMarker[/#if]" value="true" [#if (project.projectInfo[marker.name])!false ]checked="checked"[/#if]>[@s.text name="crossCuttingMarker.${marker.id}" /]</label>
+                        <label class="form-check form-check-inline"><input type="checkbox" name="project.projectInfo.${marker.name}" id="${marker.id}" class="[#if marker.id != "na"]ccMarker[/#if] form-check-input" value="true" [#if (project.projectInfo[marker.name])!false ]checked="checked"[/#if]><label class="form-check-label" for="${marker.id}">[@s.text name="crossCuttingMarker.${marker.id}" /]</label></label>
                       [/#list]
                     [#else]
                       [#assign checkedItems = false /]

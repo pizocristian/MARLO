@@ -68,12 +68,12 @@
   <div class="filterPanel panel-default">
     <div class="panel-heading"> 
       <form id="filterForm"  role="form">
-        <label class="checkbox-inline">Filter By:</label>
-        <label class="checkbox-inline">
-          <input type="checkbox" value="IDO" checked>IDOs
+        <label class="form-check form-check-inline">Filter By:</label>
+        <label class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" value="IDO" checked>IDOs
         </label>
-        <label class="checkbox-inline">
-          <input type="checkbox" value="CCIDO" checked>Cross-cutting IDOs
+        <label class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" value="CCIDO" checked>Cross-cutting IDOs
         </label>
       </form>
     </div>

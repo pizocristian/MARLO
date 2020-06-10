@@ -149,7 +149,7 @@
         [@customForm.textArea name="${clusterCustomName}.description" i18nkey="cluster.title" required=true className="outcome-statement limitWords-20" editable=editable /]
       </div>
       [#-- Cluster Activity Leaders --]
-      <span class="subtitle cold-md-12"><label>[@s.text name="cluster.leaders.title"][@s.param][@s.text name="global.sClusterOfActivities" /][/@s.param] [/@s.text]
+      <span><label>[@s.text name="cluster.leaders.title"][@s.param][@s.text name="global.sClusterOfActivities" /][/@s.param] [/@s.text]
       [#if !action.hasSpecificities("crp_cluster_leader")]
          <span class="red">*</span>
       [/#if]

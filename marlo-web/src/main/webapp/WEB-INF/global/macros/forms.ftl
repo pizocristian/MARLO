@@ -700,8 +700,8 @@
     <li class="[#if template]relationElement-template[/#if] relationElement indexLevel-${indexLevel}">
       [#-- Remove button --]
       [#if editable]<div class="removeElement sm removeIcon removeElementType-${composedID}" title="Remove"></div>[/#if] 
-          <div class="form-group row primary-list">
-          <div class="col-md-1 primary-radio">
+        <div class="form-group primary-list d-flex align-items-center">
+          <div class="">
           [#if editable]
             [@radioFlat id="${customName}.primary" name="${customName}.primary" value="true" cssClassLabel="radio-label-yes" editable=editable checked=(primaryValue)!false /]
             [#else]
@@ -710,15 +710,14 @@
               [/#if]
           [/#if]
           </div>
-          <div class="col-md-1"></div>
-          <div class="col-md-10">
-          [#-- Hidden Inputs --]
-          <input type="hidden" class="elementID" name="${customName}.id" value="${(element.id)!}" />
-          <input type="hidden" class="elementRelationID" name="${customName}.${type}.id" value="${(element[type][keyFieldName])!}" />
-          [#-- Title --]
-          <span class="elementName">${(element[type][displayFieldName])!'{elementNameUndefined}'}</span>
+          <div class="ml-1">
+            [#-- Hidden Inputs --]
+            <input type="hidden" class="elementID" name="${customName}.id" value="${(element.id)!}" />
+            <input type="hidden" class="elementRelationID" name="${customName}.${type}.id" value="${(element[type][keyFieldName])!}" />
+            [#-- Title --]
+            <span class="elementName">${(element[type][displayFieldName])!'{elementNameUndefined}'}</span>
           </div>
-          </div>
+        </div>
       </li>  
   [#else]
   <li class="[#if template]relationElement-template[/#if] relationElement indexLevel-${indexLevel}">

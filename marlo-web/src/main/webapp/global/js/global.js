@@ -643,7 +643,7 @@ jQuery.fn.setPrimarySelectorFunction = function() {
   $select.on('change', onSelectPrimary);
 
   // On click remove button
-  //$parent.find('[class*="removeElementType-"]').on('click', onClickRemoveElementPrimary);
+  $parent.find('[class*="removeElementType-"]').on('click', onClickRemoveElementPrimary);
 }*/
 
 //Function for Primary radio
@@ -758,7 +758,8 @@ function onClickRemoveElement() {
       $(element).setNameIndexes(indexLevel, i);
 
       if(className.indexOf("primary") >= 0){
-        $(element).find('label.radio-label').attr('for', $(element).find('label.radio-label').parents('.radiot').find('input').attr("id"));
+        var $radioParent = $(element).find('label.radio-label').parent();
+        $(element).find('label.radio-label').attr('for', $radioParent.find('input').attr("id"));
         //$(element).find('input.radio-input').attr('checked', true);
         /*
         if ($list.children().length < 3){

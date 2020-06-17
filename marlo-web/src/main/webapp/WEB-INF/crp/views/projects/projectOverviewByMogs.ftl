@@ -45,7 +45,7 @@
             <ul class="nav nav-tabs budget-tabs" role="tablist">
               [#list allYears as year]
               [#if year <=currentCycleYear]
-                <li class="[#if year == currentCycleYear]active[/#if]"><a href="#year-${year}" role="tab" data-toggle="tab">${year} [#if year == currentCycleYear] <span class="red">*</span> [/#if] </a></li>
+                <li class="nav-item"><a href="#year-${year}" class="[#if year == currentCycleYear]active[/#if]" role="tab" data-toggle="tab">${year} [#if year == currentCycleYear] <span class="red">*</span> [/#if] </a></li>
               [/#if]
               [/#list]
             </ul>

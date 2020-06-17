@@ -54,7 +54,7 @@
     [#-- CENTERS --]
     <br>
     <div class="row left-margin">
-      <div class="col-md-offset-3 col-md-2">
+      <div class="col-md-2 offset-md-3">
         <label>[@s.text name="login.participating.centers"/]:</label>
         <div class="login-logos-container">
           <ul>

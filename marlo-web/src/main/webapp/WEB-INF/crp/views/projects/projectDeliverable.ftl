@@ -104,12 +104,12 @@
             </ul>
             <div class="tab-content ">
               [#-- Deliverable Information --] 
-              <div id="deliverable-mainInformation" role="tabpanel" class="tab-pane fade [#if indexTab==1 || indexTab==0]in active[/#if]">
+              <div id="deliverable-mainInformation" role="tabpanel" class="tab-pane fade [#if indexTab==1 || indexTab==0]show active[/#if]">
                 [#include "/WEB-INF/crp/views/projects/deliverableInfo.ftl" /]
               </div>
               [#if (reportingActive || actualPhase.upkeep) && action.hasSpecificities("crp_has_disemination") ]
               [#-- Deliverable disseminationMetadata --] 
-              <div id="deliverable-disseminationMetadata" role="tabpanel" class="tab-pane fade [#if indexTab==2]in active[/#if]">
+              <div id="deliverable-disseminationMetadata" role="tabpanel" class="tab-pane fade [#if indexTab==2]show active[/#if]">
                 [#-- Is this deliverable already disseminated? --]
                 [@deliverableMacros.alreadyDisseminatedMacro /]
                 
@@ -129,7 +129,7 @@
                 </div>
               </div>
               [#-- Deliverable qualityCheck --]
-              <div id="deliverable-qualityCheck" role="tabpanel" class="tab-pane fade [#if indexTab==3]in active[/#if]">
+              <div id="deliverable-qualityCheck" role="tabpanel" class="tab-pane fade [#if indexTab==3]show active[/#if]">
                 [#--  Database/Dataset/Data documentation -- Maps/Geospatial data --]
                 <div id="complianceCheck" style="display:${deliverableMacros.displayDeliverableRule(deliverable, deliverableComplianceCheck)!};">
                   [#-- Compliance check (Data products only) --]

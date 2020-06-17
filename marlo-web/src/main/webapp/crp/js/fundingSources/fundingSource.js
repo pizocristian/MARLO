@@ -829,7 +829,7 @@ function refreshYears() {
       content += '<div class="col-md-4">';
       content += '<label for="">Budget for ' + startYear + ':</label>';
       content += '<input type="hidden" name="' + customName + '.year" value="' + startYear + '">';
-      content += '<input type="text" name="' + customName + '.budget" class="currencyInput form-control input-sm" />';
+      content += '<input type="text" name="' + customName + '.budget" class="currencyInput input-sm" />';
       content += '</div>';
       content += '</div>';
       content += '</div>';

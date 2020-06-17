@@ -3,7 +3,7 @@
 <ol class="breadcrumb d-flex justify-content-between align-items-center">
   [#if breadCrumb?has_content] 
     [#list breadCrumb as item]
-      <li class="[#if !item_has_next]active[/#if]">
+      <li class="breadcrumb-item [#if !item_has_next]active[/#if]">
         [#if item.action?has_content]
           [#if item.param?exists]
             <a href="${baseUrl}/${item.nameSpace}/${item.action}.do?${item.param}&phaseID=${(actualPhase.id)!}" >[#if item.label?exists][@s.text name="breadCrumb.menu.${item.label}" /][#else][@s.text name="${item.text}" /][/#if]</a>
@@ -17,7 +17,7 @@
     [/#list]
   [/#if]
   
-  <div class="usersInfo">
+  <div class="usersInfo ml-auto">
     [#-- 
       [#assign users = action.getUsersOnline()]
       <button type="button" class="btn btn-xs btn-default" title="[#list users as us]${(us.user.firstName)!} ${(us.user.lastName)!} - ${(us.section)!} <br/> [/#list]">Users Online : ${online}</button>

@@ -8,11 +8,11 @@
   [#-- Form --]
   [@s.form method="POST" namespace="/" action="login"]
      [#-- Login CRPs select bar --]
-     <div class="crps-select hidden">
+     <div class="crps-select d-none">
       [#if listGlobalUnitTypes??]
         [#list listGlobalUnitTypes as globalUnitType]
           [#if globalUnitType.globalUnitsList?has_content]
-          <div class="name-type-container type-${globalUnitType.id} hidden">
+          <div class="name-type-container type-${globalUnitType.id} d-none">
             <span class="selection-bar-title">${globalUnitType.name!}s:</span>
           </div>
           <div class="selection-bar-options">
@@ -36,7 +36,7 @@
           <div class="col-sm-12">
             [#-- Email input --]
             <div class="login-input-container" id="login-email">
-              <input id="user.email" class="login-input user-email form-control" type="text" name="user.email" value="" tabindex=0 required/>
+              <input id="user.email" class="login-input user-email form-control h-auto" type="text" name="user.email" value="" tabindex=0 required/>
               <label for="user.email">[@s.text name="login.email"/]</label>
             </div>
             [#-- CRP Session (hidden input) --]
@@ -60,7 +60,7 @@
           <div class="col-sm-12">
             [#-- Password input --]
             <div class="login-input-container hidden" id="login-password" >
-              <input id="user.password" class="login-input user-password form-control" type="password" name="user.password" tabindex=0 required/>
+              <input id="user.password" class="login-input user-password form-control h-auto" type="password" name="user.password" tabindex=0 required/>
               <label for="user.password">[@s.text name="login.password"/]</label>
             </div>
             [#-- Error messages --]
@@ -72,7 +72,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
             [#-- Terms and conditions checkbox --]
             <div class="terms-container hidden">
               <input type="checkbox" name="user.agree" id="terms" class="terms" value="true" required> [@s.text name="login.agree"/] <a target="_blank" href="[@s.url namespace="/" action='legalInformation'][/@s.url]#termsConditions">[@s.text name="login.terms"/]</a>
@@ -86,7 +86,7 @@
               [#-- This one to jump to second form and validate user data --]
               [@s.submit key="Next" name="next" cssClass="login-form-button" role="button" disabled=false /]
               [#-- and This one to send login form --]
-              [@s.submit name="formSubmit" cssClass="hidden" role="button "/]
+              [@s.submit name="formSubmit" cssClass="d-none" role="button "/]
             </div>
           </div>
         </div>

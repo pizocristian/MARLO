@@ -25,7 +25,7 @@
   <div id="${composedID}" class="form-group elementRelations ${className}">
     [#if projects?has_content]
       [#-- Button --]
-      <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#modal-projects-${composedID}">
+      <button type="button" class="btn btn-outline-secondary btn-xs" data-toggle="modal" data-target="#modal-projects-${composedID}">
         <span class="icon-20 project"></span> <strong>${projects?size}</strong> [#if labelText][@s.text name="global.Project" /](s)[/#if]
       </button>
       
@@ -34,13 +34,12 @@
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
               <h4 class="modal-title" id="myModalLabel">
-              
                 [@s.text name="global.projects" /] that are contributing to this [@s.text name="global.${className}" /] 
                 <br />
                 <small>${elementTitle}</small>
               </h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
               [#-- Projects table --]
@@ -67,7 +66,7 @@
               </table>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
             </div>
           </div>
         </div>
@@ -76,7 +75,7 @@
     
     [#if deliverables?has_content]
       [#-- Button --]
-      <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#modal-deliverables-${composedID}">
+      <button type="button" class="btn btn-outline-secondary btn-xs" data-toggle="modal" data-target="#modal-deliverables-${composedID}">
         <span class="icon-20 deliverable"></span> <strong>${deliverables?size}</strong> [#if labelText] Deliverable(s)[/#if]
       </button>
       
@@ -84,8 +83,7 @@
       <div class="modal fade" id="modal-deliverables-${composedID}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <div class="modal-header">              
               <h4 class="modal-title" id="myModalLabel">
                
                  [#if className=="ProjectBudget"]
@@ -97,6 +95,7 @@
                 <br />
                 <small>${elementTitle}</small>
               </h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body"> 
               [#-- Deliverables table --]
@@ -123,7 +122,7 @@
               </table>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
             </div>
           </div>
         </div>
@@ -133,7 +132,7 @@
     [#-- policies --]
     [#if policies?has_content]
       [#-- Button --]
-      <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#modal-policies-${composedID}">
+      <button type="button" class="btn btn-outline-secondary btn-xs" data-toggle="modal" data-target="#modal-policies-${composedID}">
         <span class="icon-20 policies"></span> <strong>${policies?size}</strong> [#if labelText] Policy(ies)[/#if]
       </button>
       
@@ -141,8 +140,7 @@
       <div class="modal fade" id="modal-policies-${composedID}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <div class="modal-header">              
               <h4 class="modal-title" id="myModalLabel">
                
                  [#if className=="ProjectBudget"]
@@ -154,6 +152,7 @@
                 <br />
                 <small>${elementTitle}</small>
               </h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body"> 
               [#-- Policies table --]
@@ -180,7 +179,7 @@
               </table>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
             </div>
           </div>
         </div>
@@ -190,7 +189,7 @@
     [#-- innovations --]
     [#if innovations?has_content]
       [#-- Button --]
-      <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#modal-innovations-${composedID}">
+      <button type="button" class="btn btn-outline-secondary btn-xs" data-toggle="modal" data-target="#modal-innovations-${composedID}">
         <span class="icon-20 innovations"></span> <strong>${innovations?size}</strong> [#if labelText] Innovation(s)[/#if]
       </button>
       
@@ -198,8 +197,7 @@
       <div class="modal fade" id="modal-innovations-${composedID}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <div class="modal-header">              
               <h4 class="modal-title" id="myModalLabel">
                
                  [#if className=="ProjectBudget"]
@@ -211,6 +209,7 @@
                 <br />
                 <small>${elementTitle}</small>
               </h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body"> 
               [#-- innovations table --]
@@ -239,7 +238,7 @@
               </table>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
             </div>
           </div>
         </div>
@@ -249,7 +248,7 @@
     [#-- Evidencies --]
     [#if evidencies?has_content]
       [#-- Button --]
-      <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#modal-evidencies-${composedID}">
+      <button type="button" class="btn btn-outline-secondary btn-xs" data-toggle="modal" data-target="#modal-evidencies-${composedID}">
         <span class="icon-20 evidences"></span> <strong>${evidencies?size}</strong> [#if labelText] Evidence(s)[/#if]
       </button>
       
@@ -257,8 +256,7 @@
       <div class="modal fade" id="modal-evidencies-${composedID}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <div class="modal-header">              
               <h4 class="modal-title" id="myModalLabel">
                
                  [#if className=="ProjectBudget"]
@@ -270,6 +268,7 @@
                 <br />
                 <small>${elementTitle}</small>
               </h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body"> 
               [#-- Evidencies table --]
@@ -296,7 +295,7 @@
               </table>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
             </div>
           </div>
         </div>

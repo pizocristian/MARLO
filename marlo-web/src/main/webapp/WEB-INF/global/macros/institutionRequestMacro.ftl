@@ -51,7 +51,7 @@
           [#-- Action --]
           <div class="btn-group pull-right" role="group" aria-label="..."">
             [#-- Edit --]
-            <a class="btn btn-default btn-sm editRequest" href="#">
+            <a class="btn btn-outline-secondary btn-sm editRequest" href="#">
               <span class="glyphicon glyphicon-pencil"></span> Edit Request
             </a>
             [#-- Accept --]
@@ -130,7 +130,7 @@
                <h4 style="font-family: 'Open Sans';">${partner.institution.composedName}</h4><hr />
                [#if partner.institution.institutionsLocations??]
                [#list partner.institution.institutionsLocations as location]
-                 <span class="btn btn-default"> ${(location.locElement.name)!'null'} </span>
+                 <span class="btn btn-outline-secondary"> ${(location.locElement.name)!'null'} </span>
                [/#list]
                [/#if]
             </div>

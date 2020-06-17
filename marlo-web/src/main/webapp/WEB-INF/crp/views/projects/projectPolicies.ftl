@@ -112,7 +112,7 @@
               [@utils.tableText value=(item.projectPolicyInfo.repIndPolicyInvestimentType.name)!"" /]
             </td>
             <td class="text-center">
-              <a title='[@utils.tableList list=(item.subIdos)![] displayFieldName="srfSubIdo.description" /]' class="btn btn-default btn-xs">${(item.subIdos?size)!'0'}</a>
+              <a title='[@utils.tableList list=(item.subIdos)![] displayFieldName="srfSubIdo.description" /]' class="btn btn-outline-secondary btn-xs">${(item.subIdos?size)!'0'}</a>
             </td>
             <td class="">
               [@utils.tableText value=(item.projectPolicyInfo.repIndStageProcess.name)!"" /]
@@ -142,8 +142,8 @@
                     <div class="modal-content">
                       [@s.form action="deletePolicy.do"]
                         <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                           <h4 class="modal-title">Remove this item <br /> <small>${(item.projectPolicyInfo.title)!}</small> </h4>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>                         
                         </div>
                         <div class="modal-body">
                           [@customForm.textArea name="justification" i18nkey="projectPolicies.removeJustification" required=false className="removeJustification"/]
@@ -152,7 +152,7 @@
                           <input type="hidden"  name="phaseID"  value="${(actualPhase.id)!}"/>
                         </div>
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
                           <button type="submit" class="btn btn-danger">Remove</button>
                         </div>
                       [/@s.form]

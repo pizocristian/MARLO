@@ -120,7 +120,7 @@
               
               [#-- Buttons --]
               <div class="form-group btn-group btn-group-sm pull-right" role="group" aria-label="...">
-                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-innovations"><span class="glyphicon glyphicon-fullscreen"></span> See Full Table 4</button>
+                <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#modal-innovations"><span class="glyphicon glyphicon-fullscreen"></span> See Full Table 4</button>
               </div>
     
               [#-- Modal --]
@@ -128,15 +128,15 @@
                 <div class="modal-dialog modal-lg" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                       <h4 class="modal-title" id="myModalLabel"></h4>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="modal-body">
                       [#-- Full table --]
                       [@innovationsTable name="table4" list=(projectInnovations)![]  expanded=true/]
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
                     </div>
                   </div>
                 </div>
@@ -177,12 +177,12 @@
             <th class="text-center"> [@s.text name="${customLabel}.${name}.organization" /] </th>
             <th class="text-center"> Top five contributing partners</th>
             <th class="text-center"> [@s.text name="${customLabel}.${name}.geoScope" /] </th>
-            <th class="text-center col-md-1"> [@s.text name="${customLabel}.${name}.evidence" /] </th>
+            <th class="text-center"> [@s.text name="${customLabel}.${name}.evidence" /] </th>
             <th class="text-center"></th>
           [/#if]
           [#if !expanded]
-            <th class="col-md-1 text-center"> [@s.text name="${customLabel}.${name}.missingFields" /] </th>
-            <th class="col-md-1 text-center"> [@s.text name="${customLabel}.${name}.includeAR" /] </th>
+            <th class="text-center"> [@s.text name="${customLabel}.${name}.missingFields" /] </th>
+            <th class="text-center"> [@s.text name="${customLabel}.${name}.includeAR" /] </th>
           [/#if]
         </tr>
       </thead>
@@ -246,7 +246,7 @@
                 [#if isStageFour && ((item.projectInnovationInfo.projectExpectedStudy?has_content)!false)]
                   [#local summaryPDF = "${baseUrl}/projects/${crpSession}/studySummary.do?studyID=${(item.projectInnovationInfo.projectExpectedStudy.id)!}&cycle=Reporting&year=${(actualPhase.year)!}"]
                   <p>
-                    <a href="${summaryPDF}" class="btn btn-default btn-xs" target="_blank" style="text-decoration: none;" title="${(item.projectInnovationInfo.projectExpectedStudy.composedName)!''}">
+                    <a href="${summaryPDF}" class="btn btn-outline-secondary btn-xs" target="_blank" style="text-decoration: none;" title="${(item.projectInnovationInfo.projectExpectedStudy.composedName)!''}">
                       <img src="${baseUrlCdn}/global/images/pdf.png" height="20"  /> ${(item.projectInnovationInfo.projectExpectedStudy.composedIdentifier)!''}
                     </a>
                   </p>

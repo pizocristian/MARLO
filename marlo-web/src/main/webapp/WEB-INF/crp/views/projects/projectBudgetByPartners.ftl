@@ -266,7 +266,7 @@
       
       [#assign expandedProjectFundingSource = !(projectFundingSources?size > 0) ]
       [#if projectFundingSources?size > 0]
-      <a class="btn btn-default btn-xs pull-right toggleProjectFundingSource"> 
+      <a class="btn btn-outline-secondary btn-xs pull-right toggleProjectFundingSource"> 
         <span class="project-fs-expandible-true" style="display:${expandedProjectFundingSource?string('none', 'block')}"><span class="glyphicon glyphicon-resize-full"></span> Expand</span>
         <span class="project-fs-expandible-false" style="display:${expandedProjectFundingSource?string('block', 'none')}"><span class="glyphicon glyphicon-resize-small"></span> Collapse all</span>
       </a>
@@ -457,7 +457,7 @@
       </div>
       <div class="col-md-4">
         <div class="row col-md-5">
-          <div class="row"><strong>Amount:</strong></div>
+          <div class="row ml-0"><strong>Amount:</strong></div>
         </div>
         <div class="row col-md-9">
           [#-- TODO: Allow to add funding sources when there is no aggregate (problem with permissions)  --]
@@ -474,7 +474,7 @@
       </div>
       <div class="col-md-4">
         [#if ((project.projectInfo.projectEditLeader)!false) && action.hasSpecificities('crp_budget_gender')]
-          <div class="row col-md-6"> <div class="row"><strong>Gender %:</strong></div> </div>
+          <div class="row col-md-6"> <div class="row ml-0"><strong>Gender %:</strong></div> </div>
           <div class="row col-md-7">
             [#-- TODO: Allow to add funding sources when there is no aggregate (problem with permissions)  --]
             [#-- Added action.canSearchFunding to allow to modify gender depending on institution  --]

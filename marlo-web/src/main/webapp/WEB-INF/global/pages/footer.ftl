@@ -1,5 +1,5 @@
 [#ftl]
-    <span id="test" class="errorTag glyphicon glyphicon-info-sign" style="display:none;"> </span>
+    <span id="test" class="errorTag fa fa-info-circle" style="display:none;"> </span>
     <!-- ${actionName} Content end-->
     <footer class="footer">    
       <div class="container">

@@ -3,10 +3,10 @@
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
       <div class="modal-header">
+        <h4 class="modal-title"><span class="glyphicon glyphicon-bell"></span> Save Changes ?</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title"><span class="glyphicon glyphicon-bell"></span> Save Changes ?</h4>
       </div>
       <div class="modal-body">
         <p>[@s.text name="message.confirmChanges"][@s.param]save[/@s.param][/@s.text]</p>

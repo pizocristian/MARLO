@@ -139,7 +139,7 @@
               [#if PMU][@utilities.tag label="annualReport.docBadge" tooltip="annualReport.docBadge.tooltip"/][/#if]
               
               [#-- Button --]
-              <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#modal-policies">
+              <button type="button" class="btn btn-outline-secondary btn-xs pull-right" data-toggle="modal" data-target="#modal-policies">
                  <span class="glyphicon glyphicon-fullscreen"></span> See Full table 2
               </button>
               [#-- Modal --]
@@ -147,8 +147,8 @@
                 <div class="modal-dialog modal-lg" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                       <h4 class="modal-title" id="myModalLabel">[@s.text name="${customLabel}.title" /]</h4>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>                      
                     </div>
                     <div class="modal-body">
                       [#-- Full table --]
@@ -157,7 +157,7 @@
                       </div>
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
                     </div>
                   </div>
                 </div>
@@ -206,9 +206,9 @@
         [/#if]
         [#if !expanded]
         [#-- Complete Status    --]
-        <th class="col-md-1 text-center no-sort" rowspan="${rows}">[@s.text name="${customLabel}.table2.missingFields" /]</th>
+        <th class="text-center no-sort" rowspan="${rows}">[@s.text name="${customLabel}.table2.missingFields" /]</th>
      
-        <th class="col-md-1 text-center" rowspan="${rows}">[@s.text name="${customLabel}.table2.includeAR" /]</th>
+        <th class="text-center" rowspan="${rows}">[@s.text name="${customLabel}.table2.includeAR" /]</th>
         [/#if]        
       </tr>
       [#if expanded]
@@ -272,9 +272,9 @@
             <td>[@utils.tableText value=(item.projectPolicyInfo)!"" /]</td>
              --]
             [#-- Owners--]
-            <td class="col-md-1">[@utils.tableList list=(item.owners)![]  displayFieldName="repIndPolicyType.name" nobr=true /]</td>
+            <td class="">[@utils.tableList list=(item.owners)![]  displayFieldName="repIndPolicyType.name" nobr=true /]</td>
             [#-- Geographic Scope--]
-            <td class="col-md-1">
+            <td class="">
               <div class="">
                 <strong>[@utils.tableList list=(item.geographicScopes)![]  displayFieldName="repIndGeographicScope.name" nobr=true /]</strong>
               </div>
@@ -289,7 +289,7 @@
               [#list (item.evidences)![] as item]
                 [#local summaryPDF = "${baseUrl}/projects/${crpSession}/studySummary.do?studyID=${(item.projectExpectedStudy.id)!}&cycle=Reporting&year=${(actualPhase.year)!}"]
                 <p>
-                  <a href="${summaryPDF}" class="btn btn-default btn-xs" target="_blank" style="text-decoration: none;" title="${item.projectExpectedStudy.composedName}">
+                  <a href="${summaryPDF}" class="btn btn-outline-secondary btn-xs" target="_blank" style="text-decoration: none;" title="${item.projectExpectedStudy.composedName}">
                     <img src="${baseUrlCdn}/global/images/pdf.png" height="20"  /> ${item.projectExpectedStudy.composedIdentifier}
                   </a>
                 </p>
@@ -340,18 +340,18 @@
   
   [#if element.evidences?has_content]
     <br /> 
-    <button type="button" class="policiesOicrsButton btn btn-default btn-xs" data-toggle="modal" data-target="#policiesOicrs-${element.id}">
+    <button type="button" class="policiesOicrsButton btn btn-outline-secondary btn-xs" data-toggle="modal" data-target="#policiesOicrs-${element.id}">
       <span class="icon-20 project"></span> <strong>${totalContributions}</strong> [#if !tiny][@s.text name="${customLabel}.table2.linkToOicrs" /][/#if]
     </button>
     <!-- Modal -->
     <div class="modal fade" id="policiesOicrs-${element.id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <div class="modal-header">           
             <h4 class="modal-title" id="myModalLabel">
               [@s.text name="${customLabel}.table2.policiesOicrs" /]
             </h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
           <div class="modal-body">
             <div class="">            
@@ -380,7 +380,7 @@
                 </table>           
             </div>
           </div>
-          <div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div>
+          <div class="modal-footer"><button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button></div>
         </div>
       </div>
     </div>

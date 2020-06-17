@@ -207,8 +207,8 @@
     <div class="modal-content">
       <div class="loading" style="display:none"></div>
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="exampleModalLabel"></h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>        
       </div>
       <div class="modal-body">
         <form>
@@ -526,7 +526,7 @@
     [#if editable]<div class="removeLocElement removeIcon" title="Remove Location"></div>[/#if] 
     
     [#-- Location Name --]
-    <span class="flag-icon"><i class="flag-icon flag-icon-${(element.locElement.isoAlpha2?lower_case)!}"></i></span> <span class="name">${(element.composedName)!'{name}'}</span><br />
+    <span class="flag-icon-container"><i class="flag-icon flag-icon-${(element.locElement.isoAlpha2?lower_case)!}"></i></span> <span class="name">${(element.composedName)!'{name}'}</span><br />
     
     [#-- Hidden inputs --]
     <input type="hidden" class="locElementCountry" name="${locElementName}.locElement.isoAlpha2" value="${(element.locElement.isoAlpha2)!}" /> 

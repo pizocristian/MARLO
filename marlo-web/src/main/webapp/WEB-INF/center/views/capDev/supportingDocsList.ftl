@@ -69,8 +69,8 @@
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>                
               </div>
               <div class="modal-body">
                 <p>You are about to delete one track, this procedure is irreversible.</p>
@@ -78,7 +78,7 @@
                 <p class="debug-url"></p>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
                 <a class="btn btn-danger btn-ok">Delete</a>
               </div>
             </div>

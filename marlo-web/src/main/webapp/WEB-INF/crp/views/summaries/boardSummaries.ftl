@@ -308,7 +308,7 @@
 <span class="hidden reportingYear">${(action.getReportingYear())!}</span>
     
 <section class="container">
-  <article id="" class="">
+  <article id="" class="row">
   
     [#--  Reports Tabs --]
     <div class="summariesButtons col-md-3">
@@ -450,7 +450,7 @@
           <textarea name="keys" class="keywords" cols="30" rows="40"></textarea>
         </div>
         [#if action.hasSpecificities('show_gender_keywords_summaries')]
-        <div class="btn btn-default btn-xs addGenderKeys" role="button">Add predefined <strong>gender</strong> keywords</div>
+        <div class="btn btn-outline-secondary btn-xs addGenderKeys" role="button">Add predefined <strong>gender</strong> keywords</div>
         [/#if]
         <div class="btn btn-danger btn-xs removeAllTags" role="button">Remove all keywords</div>
       </div>

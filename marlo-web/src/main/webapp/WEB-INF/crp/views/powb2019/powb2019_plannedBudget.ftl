@@ -104,7 +104,7 @@
     <table class="table table-bordered">
       <thead>
         <tr>
-          <th class="col-md-1 text-center"> FP </th>
+          <th class="text-center"> FP </th>
           [#list columns as column]<th> [@s.text name="${customLabel}.${tableName}.column${column_index}" /] </th>[/#list]
         </tr>
       </thead>
@@ -233,7 +233,7 @@
       [#local projects = (action.loadFlagShipBudgetInfoProgram(element.id))![] ]
     [/#if]
     [#if projects?size > 0]
-    <a class=" btn btn-default btn-xs" data-toggle="modal" style="border-color: #00BCD4;color: #057584;" data-target="#projectBudgets-${type}-${(element.id)!}">
+    <a class="btn btn-outline-secondary btn-xs" data-toggle="modal" style="border-color: #00BCD4;color: #057584;" data-target="#projectBudgets-${type}-${(element.id)!}">
        <span class="glyphicon glyphicon-fullscreen" style="color:#b3b3b3"></span>  
        <nobr>US$ <span >${((totalValue)!0)?number?string(",##0.00")}</span></nobr>
     </a>
@@ -242,8 +242,7 @@
     <div class="modal fade" id="projectBudgets-${type}-${(element.id)!}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <div class="modal-header">            
             <h4 class="modal-title" id="myModalLabel">
               [#if type == "W1W2"]
                 [@s.text name="expectedProgress.projectBudgetsW1w2" /]
@@ -253,7 +252,8 @@
                 [@s.text name="expectedProgress.projectBudgetsCenterFunds" /]
               [/#if]
             </h4>
-            <span class="programTag" style="border-color:${(element.color)!'#fff'}">${(element.composedName)!}</span> 
+            <span class="programTag" style="border-color:${(element.color)!'#fff'}">${(element.composedName)!}</span>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
           <div class="modal-body">
             <div class="">
@@ -302,7 +302,7 @@
                   [#list projects as project]
                     [#local pURL][@s.url namespace="/projects" action="${(crpSession)!}/budgetByPartners"][@s.param name='projectID']${project.id}[/@s.param][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url][/#local]
                     <tr>
-                      <td class="col-md-6"> <a href="${pURL}" target="_blank">${(project.composedName)!}</a></td>
+                      <td class=""> <a href="${pURL}" target="_blank">${(project.composedName)!}</a></td>
                       [#if type == "W1W2"]
                         <td class="text-right"> <nobr>US$ ${(project.coreBudget?number?string(",##0.00"))!}</nobr></td> 
                         <td class="text-right"> <nobr> <span class="text-primary"> ${(project.percentageW1)!}% </span> (US$ ${(project.totalW1?number?string(",##0.00"))!})</nobr></td>
@@ -332,7 +332,7 @@
                 </tbody>
                 <tfoot>
                   <tr>
-                    <td class="col-md-6"> <strong>Total</strong> </td>
+                    <td class=""> <strong>Total</strong> </td>
                     [#if type == "W1W2"]
                       [#if totalProjectsW1W2 != 0]
                         [#local percentageContributionW1W2 = (totalContributionW1W2/ totalProjectsW1W2) * 100 ]
@@ -376,7 +376,7 @@
             </div>
             
           </div>
-          <div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div>
+          <div class="modal-footer"><button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button></div>
         </div>
       </div>
     </div>

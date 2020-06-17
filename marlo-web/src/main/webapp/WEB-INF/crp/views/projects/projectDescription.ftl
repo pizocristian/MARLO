@@ -336,7 +336,7 @@
 
 [#macro outcomesRelationsPopup  element outcomesContributions clustersContributions]
   [#-- Button --]
-  <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#modal-outcomesContributions-${element.id}">
+  <button type="button" class="btn btn-outline-secondary btn-xs" data-toggle="modal" data-target="#modal-outcomesContributions-${element.id}">
     <span class="icon-20 outcomesCont"></span> <strong>${outcomesContributions?size}</strong>
   </button>
   
@@ -344,13 +344,13 @@
   <div class="modal fade" id="modal-outcomesContributions-${element.id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <div class="modal-header">         
           <h4 class="modal-title" id="myModalLabel">
             Project flagship contributions
             <br />
             <small>${element.composedName}</small>
           </h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         </div>
         <div class="modal-body">
           [#-- Outcomes table --]
@@ -397,7 +397,7 @@
           [/#if]
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>

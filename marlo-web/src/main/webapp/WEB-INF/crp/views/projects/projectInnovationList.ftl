@@ -153,9 +153,9 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                       [@s.form action="deleteInnovation.do"]
-                        <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <div class="modal-header">                          
                           <h4 class="modal-title">Remove this item <br /> <small>${(innovation.projectInnovationInfo.title)!}</small> </h4>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         </div>
                         <div class="modal-body">
                           [@customForm.textArea name="justification" i18nkey="projectInnovations.removeJustification" required=false className="removeJustification"/]
@@ -164,7 +164,7 @@
                           <input type="hidden"  name="phaseID"  value="${(actualPhase.id)!}"/>
                         </div>
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
                           <button type="submit" class="btn btn-danger">Remove</button>
                         </div>
                       [/@s.form]

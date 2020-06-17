@@ -120,7 +120,7 @@
 <br />
 <div class="text-center">
   [#assign documentLink][@s.url namespace="/summaries" action="${crpSession}/AnnualReportSummary2018"][@s.param name='phaseID']${actualPhase.id}[/@s.param][/@s.url][/#assign]
-  <a class="btn btn-default" href="${documentLink}" target="_blank">
+  <a class="btn btn-outline-secondary" href="${documentLink}" target="_blank">
    <img  src="${baseUrlCdn}/global/images/icons/file-doc.png" alt="" /> Generate DOC file <br /> [#-- <small> (Beta version, this is still under development)</small> --]
   </a>
 </div>

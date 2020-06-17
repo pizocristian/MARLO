@@ -302,8 +302,8 @@
     <div class="modal-content">
       <div class="loading" style="display:none"></div>
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="exampleModalLabel">Request an Output</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>        
       </div>
       <div class="modal-body">
         <form>

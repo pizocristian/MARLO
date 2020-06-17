@@ -135,7 +135,7 @@
 <br />
 <div class="text-center">
   [#assign documentLink][@s.url namespace="/summaries" action="${crpSession}/POWBSummaryPLT2019"][@s.param name='phaseID']${actualPhase.id}[/@s.param][/@s.url][/#assign]
-  <a class="btn btn-default" href="${documentLink}" target="_blank">
+  <a class="btn btn-outline-secondary" href="${documentLink}" target="_blank">
    <img  src="${baseUrlCdn}/global/images/icons/file-doc.png" alt="" /> Generate DOC file <small>(Beta version)</small>
   </a>
 </div>

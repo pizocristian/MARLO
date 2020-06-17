@@ -178,7 +178,7 @@
   <table class="table table-bordered">
     <thead>
       <tr>
-        <th class="col-md-1"> [@s.text name="collaborationIntegration.tableFlagshipsOverall.fp" /] </th>
+        <th class=""> [@s.text name="collaborationIntegration.tableFlagshipsOverall.fp" /] </th>
         <th> [@s.text name="collaborationIntegration.tableFlagshipsOverall.collaborator" /] </th>
         <th> Description of collaboration and value added </th>
         <th> [@s.text name="evidenceRelevant.tablePlannedStudies.include" /] </th>
@@ -191,17 +191,17 @@
           [#assign collaborations = collaborations + [coll] ]
           <tr>
             <td><span class="programTag" style="border-color:${(coll.powbSynthesis.liaisonInstitution.crpProgram.color)!'#fff'}" title="${coll.powbSynthesis.liaisonInstitution.crpProgram.composedName}">${coll.powbSynthesis.liaisonInstitution.crpProgram.acronym}</span></td>
-            <td class="col-md-3">
+            <td class="">
               [#-- CGIAR Entity --]
               [#if coll.globalUnit??]${(coll.globalUnit.composedName)!} <br /> <i>(${(coll.globalUnit.globalUnitType.name)!})</i>[/#if]
               [#-- Non-CGIAR Institution --]
               [#if coll.institution??]${coll.institution.composedName} <br /> <i>(${coll.institution.institutionType.name})</i> [/#if]
             </td>
-            <td class="col-md-8">
+            <td class="">
               ${(coll.brief?replace('\n', '<br>'))!} 
             </td>
             [#-- Include in POWB --]
-            <td class="col-md-1 text-center">
+            <td class="text-center">
               [#local isCollaborationChecked = ((!powbSynthesis.collaboration.collaborationsIds?seq_contains(coll.id))!true) ]
               [@customForm.checkmark id="coll-${(coll.id)!''}" name="${customName}.collaborationsValue" value="${(coll.id)!''}" checked=isCollaborationChecked editable=editable centered=true/]
             </td>
@@ -222,9 +222,9 @@
   <table class="table annual-report-table table-border">
     <thead>
       <tr class="subHeader">
-        <th class="col-md-1"> Project</th>
-        <th class="col-md-3"> Partner </th>
-        <th class="col-md-7"> Responsibilities </th>
+        <th class=""> Project</th>
+        <th class=""> Partner </th>
+        <th class=""> Responsibilities </th>
       </tr>
     </thead>
     <tbody>

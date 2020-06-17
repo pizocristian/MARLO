@@ -88,15 +88,15 @@
 
                       [#if true]
                       <div class="form-group btn-group btn-group-sm pull-right" role="group" aria-label="...">
-                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-evidenceF"><span class="glyphicon glyphicon-fullscreen"></span> AR Evidence F</button>
+                        <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#modal-evidenceF"><span class="glyphicon glyphicon-fullscreen"></span> AR Evidence F</button>
                       </div>
                       [#-- Evidence F: Full List of Current External Partners --]
                       <div class="modal fade" id="modal-evidenceF" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                         <div class="modal-dialog modal-lg" role="document">
                           <div class="modal-content">
-                            <div class="modal-header">
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <div class="modal-header">                              
                               <h4 class="modal-title" id="myModalLabel"> Evidence F: Full List of Current External Partners </h4>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             </div>
                             <div class="modal-body">
                               [#-- Full table --]
@@ -105,7 +105,7 @@
                               </div>
                             </div>
                             <div class="modal-footer">
-                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                              <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
                             </div>
                           </div>
                         </div>
@@ -121,7 +121,7 @@
                               <th>Description of partnership</th>
                               <th>List of key partners</th>
                               <th>Main area of partnership</th>
-                              <th class="col-md-1">Include in AR</th>
+                              <th class="">Include in AR</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -209,7 +209,7 @@
                               <th> Description of collaboration</th>
                               <th> Center, CRP or Platform</th>
                               <th> Value Added</th>
-                              <th class="col-md-1"><small> Include in AR </small></th>
+                              <th class=""><small> Include in AR </small></th>
                             </tr>
                           </thead>
                           <tbody>
@@ -353,10 +353,10 @@
   <table class="annual-report-table table-border">
     <thead>
       <tr class="subHeader">
-        <th class="col-md-1"> Project</th>
-        <th class="col-md-3"> Partner </th>
-        <th class="col-md-1"> Formal</th>
-        <th class="col-md-7"> Responsibilities </th>
+        <th class=""> Project</th>
+        <th class=""> Partner </th>
+        <th class=""> Formal</th>
+        <th class=""> Responsibilities </th>
       </tr>
     </thead>
     <tbody>

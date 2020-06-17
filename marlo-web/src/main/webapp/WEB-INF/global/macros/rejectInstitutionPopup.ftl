@@ -4,9 +4,9 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="loading" style="display:none"></div>
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-header">        
         <h4 class="modal-title" id="myModalLabel">Reject the request</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
       </div>
       <div class="modal-body">
         [#-- Request Info is filled by marloInstitutions.js --]
@@ -28,7 +28,7 @@
         </ul> 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-danger rejectButton"> <span class="glyphicon glyphicon-remove"></span> Reject</button>
       </div>
     </div>
@@ -40,9 +40,9 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="loading" style="display:none"></div>
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-header">       
         <h4 class="modal-title" id="myModalLabel">Reject selected Country office(s)</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
       </div>
       <div class="modal-body">
         [#-- Request Info is filled by marloInstitutions.js --]
@@ -61,7 +61,7 @@
         </ul> 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> 
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button> 
         <a class="btn btn-danger btn-sm rejectOfficesRequest" href="#">
           <span class="glyphicon glyphicon-remove"></span> Reject selected
         </a>

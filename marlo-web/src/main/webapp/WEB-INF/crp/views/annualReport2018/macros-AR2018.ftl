@@ -34,7 +34,7 @@
       [#if showHeader]
       <thead>
         <tr>
-          <th class="col-md-1 text-center"> [@s.text name="annualReport2018.tableFP" /] </th>
+          <th class="text-center"> [@s.text name="annualReport2018.tableFP" /] </th>
           [#if allInOne]
             <th class="text-center"> Progress By [@s.text name="global.flagship" /]s </th>
           [#else]
@@ -54,7 +54,7 @@
             [#list columns as column][#if (item[column]?has_content)!false][#local isEmptyRow = false /][#break][/#if][/#list]
             [#if (isEmptyRow && showEmptyRows) || (!isEmptyRow) ]
             <tr>
-              <td class="col-md-1 text-center">
+              <td class="text-center">
                 <span class="programTag" style="border-color:${(crpProgram.color)!'#fff'}">${(crpProgram.acronym)!}</span>
               </td>
               [#if allInOne]
@@ -98,7 +98,7 @@
   <div id="${composedID}" class="form-group elementRelations ${className}">
     [#if list?has_content]
       [#-- Button --]
-      <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#modal-projects-${composedID}">
+      <button type="button" class="btn btn-outline-secondary btn-xs" data-toggle="modal" data-target="#modal-projects-${composedID}">
         <span class="icon-20 files"></span> <strong>${list?size}</strong> [@s.text name="global.evidence" /](s)
       </button>
       
@@ -107,12 +107,12 @@
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
               <h4 class="modal-title" id="myModalLabel">
                 [@s.text name="global.evidences" /] that are contributing to this [@s.text name="global.${className}" /] 
                 <br />
                 <small>${(element.narrative)!}</small>
               </h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
               [#-- Projects table --]
@@ -132,11 +132,11 @@
                     [#local url][@s.url namespace="/projects" action="${(crpSession)!}/study"][@s.param name='expectedID']${item.id?c}[/@s.param][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url][/#local]
                     [#local summaryPDF = "${baseUrl}/projects/${crpSession}/studySummary.do?studyID=${(item.id)!}&cycle=Reporting&year=${(actualPhase.year)!}"]
                     <tr>
-                      <td class="col-md-5">  
+                      <td class="">  
                         [@utils.tableText value=(item.composedName)!"" /]
                         [#if item.project??]<br /> <small>(From Project P${item.project.id})</small> [/#if]
                       </td>
-                      <td class="col-md-4"> [@utils.tableList list=(item.srfTargets)![] displayFieldName="srfSloIndicator.title" /] </td>
+                      <td class=""> [@utils.tableList list=(item.srfTargets)![] displayFieldName="srfSloIndicator.title" /] </td>
                       <td> [@utils.tableText value=(item.projectExpectedStudyInfo.studyType.name)!"" /] </td>
                       <td> [@utils.tableText value=(item.projectExpectedStudyInfo.year)!"" /] </td>
                       <td> <a href="${summaryPDF}" target="_blank"><img src="${baseUrlCdn}/global/images/pdf.png" height="25" title="[@s.text name="projectsList.downloadPDF" /]" /></a>  </td>
@@ -147,7 +147,7 @@
               </table>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
             </div>
           </div>
         </div>

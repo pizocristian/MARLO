@@ -92,7 +92,7 @@
             <a href="${elementUrl}">${(element.id)!}</a>
           </td>
           [#-- Title / Name --]
-          <td class="col-md-4 left">
+          <td class="left">
             <a href="${elementUrl}">
               [#if (element.projectExpectedStudyInfo.title?has_content)!false]${(element.projectExpectedStudyInfo.title)!}[#else]Not defined[/#if]
             </a>

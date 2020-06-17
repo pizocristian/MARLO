@@ -52,13 +52,13 @@
                 [#if ((i.capdevParticipants?size > 1)!false) || ((i.deliverables?has_content)!false)]
                   [#-- Number of Participants --]
                   [#if (i.capdevParticipants?size > 1)!false]
-                    <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#modal-participants-${i_index}">
+                    <button type="button" class="btn btn-outline-secondary btn-xs" data-toggle="modal" data-target="#modal-participants-${i_index}">
                       <span class="icon-20 outcomesCont"></span> <strong>${i.capdevParticipants?size}</strong>
                     </button>
                   [/#if]
                   [#-- Number of Deliverables --]
                   [#if (i.deliverables?has_content)!false]
-                    <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#modal-deliverables-${i_index}">
+                    <button type="button" class="btn btn-outline-secondary btn-xs" data-toggle="modal" data-target="#modal-deliverables-${i_index}">
                       <span class="icon-20 deliverable"></span> <strong>${i.deliverables?size}</strong>
                     </button>
                   [/#if]
@@ -90,15 +90,15 @@
                     <div class="modal-dialog">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                           <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
+                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         </div>
                         <div class="modal-body">
                           <p>You are about to delete the track <b>C${i.id} - [#if i.title?has_content]${i.title}[#else]Not defined[/#if]</b>, this procedure is irreversible.</p>
                           <p>Do you want to proceed?</p>
                         </div>
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
                           <a class="btn btn-danger btn-ok modal-button-delete" href="[@s.url namespace='/capdev' action='${centerSession}/deleteCapdev'][@s.param name='projectID']${projectID}[/@s.param][@s.param name='capdevID']${i.id}[/@s.param] [/@s.url]" >Delete</a>
                         </div>
                       </div>

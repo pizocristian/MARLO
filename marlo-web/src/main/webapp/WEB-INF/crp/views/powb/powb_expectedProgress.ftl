@@ -54,7 +54,7 @@
             <hr />
           
             [#-- Modal Large --]
-            <button type="button" class="pull-right btn btn-default " data-toggle="modal" data-target="#tableA-bigger"> 
+            <button type="button" class="pull-right btn btn-outline-secondary" data-toggle="modal" data-target="#tableA-bigger"> 
               <span class="glyphicon glyphicon-fullscreen"></span> See Full Table A
             </button>
             <div id="tableA-bigger" class="modal fade bs-example-modal-lg " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
@@ -214,7 +214,7 @@
 [#macro milestoneContributions element tiny=false]
 [#local projectContributions = action.getContributions(element.id) ]
 [#if projectContributions?size > 0]
-<button type="button" class="milestoneContributionButton btn btn-default btn-xs" data-toggle="modal" data-target="#milestone-${element.id}">
+<button type="button" class="milestoneContributionButton btn btn-outline-secondary btn-xs" data-toggle="modal" data-target="#milestone-${element.id}">
   <span class="icon-20 project"></span> <strong>${projectContributions?size}</strong> [#if !tiny][@s.text name="expectedProgress.milestonesContributions" /][/#if]
 </button>
 
@@ -222,8 +222,7 @@
 <div class="modal fade" id="milestone-${element.id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-header">        
         <h4 class="modal-title" id="myModalLabel">[@s.text name="expectedProgress.milestonesContributions" /]</h4>
         <hr />
         <p><strong>Milestone for ${actualPhase.year}</strong> - ${(element.title!)}</p>
@@ -231,6 +230,7 @@
         [#if hasTarget]
           <p><strong>Target unit:</strong> ${(element.srfTargetUnit.name!)} <br /> <strong>Target value:</strong> ${(element.value!)}</p>
         [/#if]
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
       </div>
       <div class="modal-body">
         <div class="">
@@ -265,7 +265,7 @@
         </div>
         
       </div>
-      <div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div>
+      <div class="modal-footer"><button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button></div>
     </div>
   </div>
 </div>

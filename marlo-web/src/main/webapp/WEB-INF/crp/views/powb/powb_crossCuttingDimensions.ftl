@@ -103,7 +103,7 @@
             <td class="text-center"> <span class="animated flipInX">${tableC.percentageGenderNotScored?string(",##0.00")}%</span> </td> 
             <td rowspan="3" class="text-center"> 
               <h3 class="animated flipInX">
-                <a class="btn btn-default btn-lg" data-toggle="modal" data-target="#overallOutputsMacro">
+                <a class="btn btn-outline-secondary btn-lg" data-toggle="modal" data-target="#overallOutputsMacro">
                   <span class="glyphicon glyphicon-fullscreen" style="color:#b3b3b3"></span> ${tableC.total}
                 </a>
               </h3>
@@ -134,14 +134,14 @@
   <div class="modal fade" id="overallOutputsMacro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-lg" style="" role="document">
       <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <div class="modal-header">          
           <h4 class="subTitle headTitle"> Deliverables </h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         </div>
         <div class="modal-body">
           [@tableDeliverablesMacro dList=deliverableList/]
         </div>
-        <div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div>
+        <div class="modal-footer"><button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button></div>
       </div>
     </div>
   </div>

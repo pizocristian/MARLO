@@ -121,8 +121,8 @@
             
 
               <div class="form-group btn-group btn-group-sm pull-right" role="group" aria-label="...">
-                <button type="button" class="btn btn-default evidenceD-export" data-toggle="modal" data-target="#modal-evidenceC"><span class="glyphicon glyphicon-fullscreen"></span> Export Evidence D</button>
-                <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#modal-publications"><span class="glyphicon glyphicon-fullscreen"></span> See Full Evidence D</button>
+                <button type="button" class="btn btn-outline-secondary evidenceD-export" data-toggle="modal" data-target="#modal-evidenceC"><span class="glyphicon glyphicon-fullscreen"></span> Export Evidence D</button>
+                <button type="button" class="btn btn-outline-secondary btn-xs pull-right" data-toggle="modal" data-target="#modal-publications"><span class="glyphicon glyphicon-fullscreen"></span> See Full Evidence D</button>
               </div>
               
               
@@ -131,8 +131,8 @@
                 <div class="modal-dialog modal-lg" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                       <h4 class="modal-title" id="myModalLabel">Export Evidence D: Full Publications List</h4>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="modal-body">
                       <small><i>[@s.text name="${customLabel}.export.evidenceD.help" /]</i></small>
@@ -142,7 +142,7 @@
                       </div>
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
                     </div>
                   </div>
                 </div>
@@ -153,14 +153,14 @@
                 <div class="modal-dialog modal-lg" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                       <h4 class="modal-title" id="myModalLabel">[@s.text name="${customLabel}.fullList.title" /]</h4>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>                     
                     </div>
                     <div class="modal-body">
                       [@listOfPublications name="fullList" list=(deliverables)![] allowPopups=false /]
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
                     </div>
                   </div>
                 </div>
@@ -195,7 +195,7 @@
         <tr>
           <th class="numbersTitle"></th>
           <th class="text-center"> [@s.text name="${customLabel}.${name}.totalAmount" /] </th>
-          <th class="text-center col-md-3"> [@s.text name="${customLabel}.${name}.percent" /] </th>
+          <th class="text-center"> [@s.text name="${customLabel}.${name}.percent" /] </th>
         </tr>
       </thead>
       <tbody>
@@ -239,11 +239,11 @@
           <th class="text-center"> [@s.text name="${customLabel}.${name}.openAccess" /] </th>
           <th class="text-center"> [@s.text name="${customLabel}.${name}.isi" /] </th>
           [#if !allowPopups]
-            <th class="text-center col-md-1"> [@s.text name="${customLabel}.${name}.identifier" /] </th>
+            <th class="text-center"> [@s.text name="${customLabel}.${name}.identifier" /] </th>
           [/#if]
           [#if allowPopups]
-            <th class="col-md-1 text-center">[@s.text name="${customLabel}.${name}.missingFields" /]</th>
-            <th class="col-md-1 text-center"> [@s.text name="${customLabel}.${name}.includeAR" /] </th>
+            <th class="text-center">[@s.text name="${customLabel}.${name}.missingFields" /]</th>
+            <th class="text-center"> [@s.text name="${customLabel}.${name}.includeAR" /] </th>
           [/#if]
         </tr>
       </thead>
@@ -301,9 +301,9 @@
                 [#-- Volume --]
                 <td class="text-center urlify"  style="width: 50px !important;">[@utils.tableText value=(item.publication.volume)!"" /]</td>
                 [#-- Issue --]
-                <td class="text-center col-md-1" style="width: 50px !important;">[@utils.tableText value=(item.publication.issue)!"" /]</td>
+                <td class="text-center" style="width: 50px !important;">[@utils.tableText value=(item.publication.issue)!"" /]</td>
                 [#-- Page --]
-                <td class="text-center col-md-1" style="width: 50px !important;">[@utils.tableText value=(item.publication.pages)!"" /]</td>
+                <td class="text-center" style="width: 50px !important;">[@utils.tableText value=(item.publication.pages)!"" /]</td>
               [/#if]
               [#-- Is OpenAccess --]
               <td class="text-center">
@@ -376,8 +376,8 @@
           <th class="text-center"> [@s.text name="${customLabel}.${name}.page" /] </th>
           <th class="text-center"> [@s.text name="${customLabel}.${name}.openAccess" /] </th>
           <th class="text-center"> [@s.text name="${customLabel}.${name}.isi" /] </th>
-          <th class="text-center col-md-1"> [@s.text name="${customLabel}.${name}.identifier" /] </th>
-          <th class="col-md-1 text-center"> Included in AR </th>
+          <th class="text-center"> [@s.text name="${customLabel}.${name}.identifier" /] </th>
+          <th class="text-center"> Included in AR </th>
           
         </tr>
       </thead>
@@ -434,9 +434,9 @@
               [#-- Volume --]
               <td class="text-center urlify"  style="width: 50px !important;">[@utils.tableText value=(item.publication.volume)!"" /]</td>
               [#-- Issue --]
-              <td class="text-center col-md-1" style="width: 50px !important;">[@utils.tableText value=(item.publication.issue)!"" /]</td>
+              <td class="text-center" style="width: 50px !important;">[@utils.tableText value=(item.publication.issue)!"" /]</td>
               [#-- Page --]
-              <td class="text-center col-md-1" style="width: 50px !important;">[@utils.tableText value=(item.publication.pages)!"" /]</td>
+              <td class="text-center" style="width: 50px !important;">[@utils.tableText value=(item.publication.pages)!"" /]</td>
               [#-- Is OpenAccess --]
               <td class="text-center">${((item.dissemination.isOpenAccess)!false)?string('Yes', 'No')}</td>
               [#-- Is ISI --]

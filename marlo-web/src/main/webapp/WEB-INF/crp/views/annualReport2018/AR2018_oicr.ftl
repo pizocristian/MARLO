@@ -54,7 +54,7 @@
               [#if PMU][@utilities.tag label="annualReport.docBadge" tooltip="annualReport.docBadge.tooltip"/][/#if]
             
               [#-- Button --]
-              <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#modal-oicr">
+              <button type="button" class="btn btn-outline-secondary btn-xs pull-right" data-toggle="modal" data-target="#modal-oicr">
                  <span class="glyphicon glyphicon-fullscreen"></span> See Full table 3
               </button>
               [#-- Modal --]
@@ -62,15 +62,15 @@
                 <div class="modal-dialog modal-lg" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                       <h4 class="modal-title" id="myModalLabel"></h4>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>                      
                     </div>
                     <div class="modal-body">
                       [#-- Full table --]
                       [@listOfOutcomeImpactCaseReports name="table3" list=(projectExpectedStudies)![] expanded=true /]
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
                     </div>
                   </div>
                 </div>
@@ -111,8 +111,8 @@
           <th></th>
           [/#if]
           [#if !expanded]
-            <th class="col-md-1 text-center no-sort">[@s.text name="${customLabel}.${name}.missingFields" /]</th>
-            <th class="col-md-1 text-center"> [@s.text name="${customLabel}.${name}.includeAR" /] </th>
+            <th class="text-center no-sort">[@s.text name="${customLabel}.${name}.missingFields" /]</th>
+            <th class="text-center"> [@s.text name="${customLabel}.${name}.includeAR" /] </th>
           [/#if]
         </tr>
       </thead>
@@ -196,7 +196,7 @@
   
   [#if policiesContributions?has_content || innovationsContributions?has_content]
     <br /> 
-    <button type="button" class="outcomesContributionButton btn btn-default btn-xs" data-toggle="modal" data-target="#oicrContributions-${element.id}">
+    <button type="button" class="outcomesContributionButton btn btn-outline-secondary btn-xs" data-toggle="modal" data-target="#oicrContributions-${element.id}">
       <span class="icon-20 project"></span> <strong>${totalContributions}</strong> [#if !tiny][@s.text name="${customLabel}.table3.linkToPoliciesAndInnovations" /][/#if]
     </button>
     <!-- Modal -->
@@ -204,10 +204,10 @@
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title" id="myModalLabel">
               [@s.text name="${customLabel}.table3.outcomeContributions" /]
             </h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
           <div class="modal-body">
             <div class="">            
@@ -227,10 +227,10 @@
                       [#list policiesContributions as policy]
                         [#local policyUrl][@s.url namespace="/projects" action="${(crpSession)!}/policy"][@s.param name='policyID']${policy.id?c}[/@s.param][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url][/#local]
                         <tr>
-                          <th scope="row" class="col-md-1">${policy.id}</th>
+                          <th scope="row" class="">${policy.id}</th>
                           <td>${(policy.projectPolicyInfo.title)!'Untitled'}</td>
                            [#--<td>${(p.projectPolicyInfo.policyType.name?capitalize)!'none'}</td>--]
-                          <td class="col-md-2 text-center"> <a href="${policyUrl}" target="_blank"><span class="glyphicon glyphicon-new-window"></span></a>  </td>
+                          <td class="text-center"> <a href="${policyUrl}" target="_blank"><span class="glyphicon glyphicon-new-window"></span></a>  </td>
                         </tr>
                         [/#list]
                     </tbody>
@@ -254,11 +254,11 @@
                     [#list innovationsContributions as innovation]
                       [#local innovationUrl][@s.url namespace="/projects" action="${(crpSession)!}/innovation"][@s.param name='innovationID']${innovation.id?c}[/@s.param][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url][/#local]
                       <tr>
-                        <th scope="row" class="col-md-1">${innovation.id}</th>
+                        <th scope="row" class="">${innovation.id}</th>
                         <td>${(innovation.projectInnovationInfo.title)!'Untitled'}</td>
                         [#--<td>${(i.innovationInfo.innovationType.name?capitalize)!'none'}</td>
                         <td class="col-md-6">${(i.projectInnovationInfo.title)!'Untitled'}</td>--]
-                        <td class="col-md-2 text-center"> <a href="${innovationUrl}" target="_blank"><span class="glyphicon glyphicon-new-window"></span></a>  </td>
+                        <td class="text-center"> <a href="${innovationUrl}" target="_blank"><span class="glyphicon glyphicon-new-window"></span></a>  </td>
                       </tr>
                       [/#list]
                   </tbody>
@@ -266,7 +266,7 @@
               [/#if]            
             </div>
           </div>
-          <div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div>
+          <div class="modal-footer"><button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button></div>
         </div>
       </div>
     </div>

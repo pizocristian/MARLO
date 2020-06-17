@@ -10,7 +10,7 @@
       [#local projects = (action.loadFlagShipBudgetInfoProgram(element.id))![] ]
     [/#if]
     [#if projects?size > 0]
-    <a class=" btn btn-default btn-xs" data-toggle="modal" style="border-color: #00BCD4;color: #057584;" data-target="#projectBudgets-${type}-${(element.id)!}">
+    <a class=" btn btn-outline-secondary btn-xs" data-toggle="modal" style="border-color: #00BCD4;color: #057584;" data-target="#projectBudgets-${type}-${(element.id)!}">
        [#-- <span class="glyphicon glyphicon-fullscreen" style="color:#b3b3b3"></span>  --]
        <span >${((totalValue)!0)?number?string(",##0.00")}</span>
     </a>
@@ -19,8 +19,7 @@
     <div class="modal fade" id="projectBudgets-${type}-${(element.id)!}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <div class="modal-header">           
             <h4 class="modal-title" id="myModalLabel">
               [#if type == "W1W2"]
                 [@s.text name="expectedProgress.projectBudgetsW1w2" /]
@@ -30,7 +29,8 @@
                 [@s.text name="expectedProgress.projectBudgetsCenterFunds" /]
               [/#if]
             </h4>
-            <span class="programTag" style="border-color:${(element.color)!'#fff'}">${(element.composedName)!}</span> 
+            <span class="programTag" style="border-color:${(element.color)!'#fff'}">${(element.composedName)!}</span>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
           <div class="modal-body">
             <div class="">
@@ -153,7 +153,7 @@
             </div>
             
           </div>
-          <div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div>
+          <div class="modal-footer"><button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button></div>
         </div>
       </div>
     </div>

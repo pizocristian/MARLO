@@ -70,7 +70,7 @@
                     [#if PMU][@utilities.tag label="annualReport.docBadge" tooltip="annualReport.docBadge.tooltip"/][/#if]
                     
                     [#-- Button --]
-                    <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#modal-policies">
+                    <button type="button" class="btn btn-outline-secondary btn-xs pull-right" data-toggle="modal" data-target="#modal-policies">
                        <span class="glyphicon glyphicon-fullscreen"></span> See Full table 10
                     </button>
                     [#-- Missing fields in FPs --] [#--
@@ -90,9 +90,9 @@
                     <div class="modal fade" id="modal-policies" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                       <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                          <div class="modal-header">                            
                             <h4 class="modal-title" id="myModalLabel">[@s.text name="${customLabel}.table10.title" /]</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                           </div>
                           <div class="modal-body">
                             [#-- Full table --]
@@ -101,7 +101,7 @@
                             </div>
                           </div>
                           <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
                           </div>
                         </div>
                       </div>
@@ -166,16 +166,16 @@
       <thead>
         <tr>
           <th class="text-center"> [@s.text name="${customLabel}.table10.studies" /] </th>
-          <th class="text-center col-md-2"> [@s.text name="${customLabel}.table10.status" /] </th>
+          <th class="text-center"> [@s.text name="${customLabel}.table10.status" /] </th>
           <th class="text-center"> [@s.text name="${customLabel}.table10.type" /] </th>
-          <th class="text-center col-md-4"> [@s.text name="${customLabel}.table10.comments" /] </th>
+          <th class="text-center"> [@s.text name="${customLabel}.table10.comments" /] </th>
           [#if expandedTable]
-          <th class="text-center col-md-4"> [@s.text name="${customLabel}.table10.publicationsLinks" /] </th>
+          <th class="text-center"> [@s.text name="${customLabel}.table10.publicationsLinks" /] </th>
           [/#if]
           [#if !expandedTable]
-            <th class="col-md-1 text-center"> <small>[@s.text name="${customLabel}.table11.missingFields" /]</small>  </th>
+            <th class="text-center"> <small>[@s.text name="${customLabel}.table11.missingFields" /]</small>  </th>
 
-            <th class="col-md-1 text-center"> <small>[@s.text name="${customLabel}.table10.includeAR" /]</small>  </th>
+            <th class="text-center"> <small>[@s.text name="${customLabel}.table10.includeAR" /]</small>  </th>
           [/#if]
         </tr>
       </thead>

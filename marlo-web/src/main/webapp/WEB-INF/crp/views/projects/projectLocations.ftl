@@ -230,7 +230,7 @@
               
               [#-- OTHER LOCATIONS (MAP) --]   
               <div class="borderBox" style="display:${action.hasSpecificities('crp_other_locations')?string('block', 'none')}">
-                <div class="allLocationsButton btn btn-default pull-right" data-toggle="modal" data-target=".allLocationsModal">
+                <div class="allLocationsButton btn btn-outline-secondary pull-right" data-toggle="modal" data-target=".allLocationsModal">
                   <img src="${baseUrlCdn}/global/images/map.png" alt="" /> <span>[@s.text name="projectLocations.allLocationsMap" /]</span>
                 </div>
                 <h5 id="locations-list-title" class="sectionSubTitle">[@s.text name="projectLocations.locationsList" /]:</h5>
@@ -419,8 +419,8 @@
             [#-- Content of locations--]
             <div class="optionSelect-content row">
               [#-- Other countries --]
-              <div class="row countriesList">
-                <div class="col-sm-12">
+              <div class="col-sm-12 countriesList">
+                <div class="row">
                 [#if element.locElements?has_content]
                   [#list element.locElements as location]
                     [@locationMacro element=location name="${customName}.${locationName}" index=location_index isList=list template=element.allCountries /]

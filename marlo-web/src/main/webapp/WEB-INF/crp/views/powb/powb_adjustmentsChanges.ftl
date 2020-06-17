@@ -86,7 +86,7 @@
   <table class="table-flagshipsAdjustments table-border-powb" id="table-flagshipsAdjustments">
     <thead>
       <tr class="subHeader">
-        <th id="tb-name" class="col-md-1">[@s.text name="adjustmentsChanges.flagshipsTable.flagshipName" /]</th>
+        <th id="tb-name">[@s.text name="adjustmentsChanges.flagshipsTable.flagshipName" /]</th>
         <th id="tb-narrative" class="text-center" width="60%">[@s.text name="adjustmentsChanges.flagshipsTable.narrative" /]</th>
       </tr>
     </thead>

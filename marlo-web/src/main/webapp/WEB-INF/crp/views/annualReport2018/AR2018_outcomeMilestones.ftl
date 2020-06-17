@@ -57,8 +57,8 @@
                 <div class="borderBox">
                 
                   <div class="form-group btn-group btn-group-sm pull-right" role="group" aria-label="...">
-                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-evidenceC"><span class="glyphicon glyphicon-fullscreen"></span> AR Evidence C</button>
-                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-table5"><span class="glyphicon glyphicon-fullscreen"></span> See Full Table 5</button>
+                    <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#modal-evidenceC"><span class="glyphicon glyphicon-fullscreen"></span> AR Evidence C</button>
+                    <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#modal-table5"><span class="glyphicon glyphicon-fullscreen"></span> See Full Table 5</button>
                     [#-- Missing fields in FPs --]
                     [#if listOfFlagships?has_content]
                       </br>
@@ -76,9 +76,9 @@
                   <div class="modal fade" id="modal-evidenceC" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                     <div class="modal-dialog modal-lg" role="document">
                       <div class="modal-content">
-                        <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <div class="modal-header">                          
                           <h4 class="modal-title" id="myModalLabel"> Evidence C: Outcomes and milestones </h4>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         </div>
                         <div class="modal-body">
                           [#-- Full table --]
@@ -87,7 +87,7 @@
                           </div>
                         </div>
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
                         </div>
                       </div>
                     </div>
@@ -98,14 +98,14 @@
                     <div class="modal-dialog modal-lg" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                           <h4 class="modal-title" id="myModalLabel">[@s.text name="${customLabel}.title" /]</h4>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>                         
                         </div>
                         <div class="modal-body">
                           [@tableOutcomesMilestones allowPopups=false  /]
                         </div>
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
                         </div>
                       </div>
                     </div>
@@ -115,7 +115,6 @@
                   [@tableOutcomesMilestones  /]
                 </div>
               [#else]
-                <div>${outcomes?size}</div>
                 [#list outcomes as outcome]
                   [@annualReport2018OutcomesMacro element=outcome name="${customName}.outcomeList" index=outcome_index /]
                 [/#list]
@@ -316,8 +315,7 @@
     [#-- Narrative on progress --]
     <div class="form-group">
       [#-- Word Document Tag --]
-      [@utilities.tag label="annualReport.docBadge" tooltip="annualReport.docBadge.tooltip"/]
-      <div>${customName}</div>       
+      [@utilities.tag label="annualReport.docBadge" tooltip="annualReport.docBadge.tooltip"/]      
       <input type="hidden" name="${customName}.id" value="${(annualReportElement.id)!}"/>
       <input type="hidden" name="${customName}.crpProgramOutcome.id" value="${(element.id)!}"/>
       [@customForm.textArea name="${customName}.summary" i18nkey="${customLabel}.outcome.progressNarrative" help="${customLabel}.outcome.progressNarrative.help" className="limitWords-200" helpIcon=false required=true editable=editable allowTextEditor=true /]
@@ -339,7 +337,6 @@
     <h4 class="simpleTitle">[@s.text name="${customLabel}.milestones.title" /]</h4>
     <div class="form-group">
        [#list element.milestones as milestone]
-        <div>${milestone_index}</div>
         [@annualReport2018MilestoneMacro element=milestone name="${customName}.milestones" index=milestone_index reportedOutcomeID=(annualReportElement.id)!-1 /]
       [/#list]
     </div> 
@@ -467,7 +464,7 @@
 [#macro milestoneContributions element tiny=false]
   [#local projectContributions = (action.getContributions(element.id))![] ]
   [#if projectContributions?size > 0]
-  <button type="button" class="milestoneContributionButton btn btn-default btn-xs" data-toggle="modal" data-target="#milestone-${element.id}">
+  <button type="button" class="milestoneContributionButton btn btn-outline-secondary btn-xs" data-toggle="modal" data-target="#milestone-${element.id}">
     <span class="icon-20 project"></span> <strong>${projectContributions?size}</strong> [#if !tiny][@s.text name="expectedProgress.milestonesContributions" /][/#if]
   </button>
   
@@ -475,8 +472,7 @@
   <div class="modal fade" id="milestone-${element.id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <div class="modal-header">  
           <h4 class="modal-title" id="myModalLabel">[@s.text name="expectedProgress.milestonesContributions" /]</h4>
           <hr />
           <p><strong>Milestone for ${actualPhase.year}</strong> - ${(element.title!)}</p>
@@ -484,6 +480,7 @@
           [#if hasTarget]
             <p><strong>Target unit:</strong> ${(element.srfTargetUnit.name!)} <br /> <strong>Target value:</strong> ${(element.value!)}</p>
           [/#if]
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         </div>
         <div class="modal-body">
           <div class="">
@@ -607,7 +604,7 @@
             [/#if]--]
           </div>
         </div>
-        <div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div>
+        <div class="modal-footer"><button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button></div>
       </div>
     </div>
   </div>

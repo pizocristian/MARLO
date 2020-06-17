@@ -5,8 +5,8 @@
     <div class="modal-content">
       [@s.form action='${(centerSession)!}/addNewProject' method="GET"]
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Add New Project</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
       </div>
       <div class="modal-body">
         <div class="loading" style="display:none"></div>

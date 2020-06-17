@@ -73,7 +73,7 @@
     <table class="table table-bordered">
       <thead>
         <tr>
-          <th class="col-md-1 text-center"> FP </th>
+          <th class="text-center"> FP </th>
           [#list columns as column]<th> [@s.text name="${customLabel}.${tableName}.column${column_index}" /] </th>[/#list]
         </tr>
       </thead>

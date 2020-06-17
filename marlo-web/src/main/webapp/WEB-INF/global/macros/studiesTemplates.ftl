@@ -509,7 +509,7 @@
         <br />
         <div class="input-group">
           <span class="input-group-btn">
-            <button class="btn btn-default btn-sm copyButton" type="button"> <span class="glyphicon glyphicon-link"></span> Copy URL </button>
+            <button class="btn btn-outline-secondary btn-sm copyButton" type="button"> <span class="glyphicon glyphicon-link"></span> Copy URL </button>
           </span>
           [#local summaryPDF = "${baseUrl}/projects/${crpSession}/studySummary.do?studyID=${(element.id)!}&cycle=Reporting&year=${(actualPhase.year)!}"]
           <input type="text" class="form-control input-sm urlInput" value="${summaryPDF}" readonly>

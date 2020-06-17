@@ -95,7 +95,7 @@
                 <div class="input-group">
                   <input type="text" id="filterText" class="form-control" placeholder="Filter by IDs...">
                   <span class="input-group-btn">
-                    <button id="filterButton" class="btn btn-default" type="button">Go!</button>
+                    <button id="filterButton" class="btn btn-outline-secondary" type="button">Go!</button>
                   </span>
                 </div><!-- /input-group -->
               </div>

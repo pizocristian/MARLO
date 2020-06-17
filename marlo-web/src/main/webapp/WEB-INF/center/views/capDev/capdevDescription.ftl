@@ -217,8 +217,8 @@
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title" id="myModalLabel">Confirm Clear</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                   </div>
                   <div class="modal-body">
                     <p>You are about to clear the list of participants, this procedure is irreversible.</p>
@@ -226,7 +226,7 @@
                     <p class="debug-url"></p>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
                     <a class="btn btn-danger btn-ok" href="[@s.url action='${centerSession}/delete_list_of_participants'][@s.param name='capdevID']${capdevID}[/@s.param][@s.param name='projectID']${projectID?c}[/@s.param][@s.param name='category']${capdev.category}[/@s.param] [@s.param name='edit' value='true' /][/@s.url]">Clear</a>
                   </div>
                 </div>
@@ -265,11 +265,10 @@
             <div class="modal-dialog modal-lg" role="document">
               <div class="modal-content highlight">
                 <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Preview participants file</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
-                  <h5 class="modal-title" id="exampleModalLabel">Preview participants file</h5>
-                  
                 </div>
                 <div id="participantsTable"  class="modal-body">
                   

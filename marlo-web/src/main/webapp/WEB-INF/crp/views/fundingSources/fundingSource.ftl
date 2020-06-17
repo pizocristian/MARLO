@@ -120,7 +120,7 @@
               [#if editable]
                 [#-- Finance Channel --]
                 <div class="input-group-btn financeChannel" style="display:${hasCIAT?string('', 'none')}">
-                  <button type="button" class="btn btn-default btn-sm disabled dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <button type="button" class="btn btn-outline-secondary btn-sm disabled dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <small>CIAT-OCS</small>  [#--<span class="caret"></span>--]
                   </button>
                   [#-- 
@@ -136,7 +136,7 @@
                    --]
                 </div><!-- /btn-group -->
                 [#-- Finance Input --]
-                <input type="text" name="fundingSource.fundingSourceInfo.financeCode" value="${(fundingSource.fundingSourceInfo.financeCode)!}" class="form-control input-sm financeCode optional" [#if isSynced]readonly="readonly"[/#if] placeholder="e.g. OCS Code">
+                <input type="text" name="fundingSource.fundingSourceInfo.financeCode" value="${(fundingSource.fundingSourceInfo.financeCode)!}" class="input-sm financeCode optional" [#if isSynced]readonly="readonly"[/#if] placeholder="e.g. OCS Code">
               [#else]
                 <input type="hidden" class="financeCode" name="fundingSource.fundingSourceInfo.financeCode" value="${(fundingSource.fundingSourceInfo.financeCode)!}"/>
                 <small style="display:${hasCIAT?string('block', 'none')}">CIAT-OCS:</small> ${(fundingSource.fundingSourceInfo.financeCode)!}
@@ -193,7 +193,7 @@
           <label for="fundingSource.startDate">[@s.text name="fundingSource.startDate" /]:[@customForm.req required=editable && action.canEditFundingSourceBudget()  /]</label>
           [#if editable]
             <input id="fundingSource.fundingSourceInfo.startDate" type="hidden" name="fundingSource.fundingSourceInfo.startDate" value="${(fundingSource.fundingSourceInfo.startDate?string["yyyy-MM-dd"])!}" class="form-control input-sm metadataValue startDateInput">
-            <p class="dateLabel btn btn-default ${isSynced?string('disabled','')}">${(fundingSource.fundingSourceInfo.startDate?string["MMMM yyyy"])!}</p>
+            <p class="dateLabel btn btn-outline-secondary ${isSynced?string('disabled','')}">${(fundingSource.fundingSourceInfo.startDate?string["MMMM yyyy"])!}</p>
           [#else]
             <input type="hidden" class="startDateInput" name="fundingSource.fundingSourceInfo.startDate" value="${(fundingSource.fundingSourceInfo.startDate?string["yyyy-MM-dd"])!}" />
             <div class="input"><p>${(fundingSource.fundingSourceInfo.startDate?string["MMMM yyyy"])!}</p></div>
@@ -205,7 +205,7 @@
           <label for="fundingSource.endDate">[@s.text name="fundingSource.endDate" /]:[@customForm.req required=editable && action.canEditFundingSourceBudget()  /]</label>
           [#if editable]
             <input id="fundingSource.fundingSourceInfo.endDate" type="hidden" name="fundingSource.fundingSourceInfo.endDate" value="${(fundingSource.fundingSourceInfo.endDate?string["yyyy-MM-dd"])!}" class="form-control input-sm metadataValue endDateInput">
-            <p class="dateLabel btn btn-default ${(isSynced || showEXtDate)?string('disabled','')}">${(fundingSource.fundingSourceInfo.endDate?string["MMMM yyyy"])!}</p>
+            <p class="dateLabel btn btn-outline-secondary${(isSynced || showEXtDate)?string('disabled','')}">${(fundingSource.fundingSourceInfo.endDate?string["MMMM yyyy"])!}</p>
           [#else]
             <input type="hidden" class="endDateInput" name="fundingSource.fundingSourceInfo.endDate" value="${(fundingSource.fundingSourceInfo.endDate?string["yyyy-MM-dd"])!}" />
             <div class="input"><p>${(fundingSource.fundingSourceInfo.endDate?string["MMMM yyyy"])!}</p></div>
@@ -221,7 +221,7 @@
           [/#if]
           [#if (editable || editStatus)]
             <input id="fundingSource.fundingSourceInfo.extensionDate" type="hidden" name="fundingSource.fundingSourceInfo.extensionDate" value="${extensionValue}" class="form-control input-sm metadataValue extensionDateInput">
-            <p class="dateLabel btn btn-default ${isSynced?string('disabled','')}">${(fundingSource.fundingSourceInfo.extensionDate?string["MMMM yyyy"])!}</p>    
+            <p class="dateLabel btn btn-outline-secondaryc ${isSynced?string('disabled','')}">${(fundingSource.fundingSourceInfo.extensionDate?string["MMMM yyyy"])!}</p>    
             <small class="pull-right clearDate syncVisibles" style="display:${isSynced?string('none', 'block')}"> <span class="glyphicon glyphicon-remove"></span> Clear</small>
           [#else]
             <input type="hidden" class="extensionDateInput" name="fundingSource.fundingSourceInfo.extensionDate" value="${(fundingSource.fundingSourceInfo.extensionDate?string["yyyy-MM-dd"])!}" />

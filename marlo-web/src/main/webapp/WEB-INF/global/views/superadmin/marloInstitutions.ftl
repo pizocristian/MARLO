@@ -38,7 +38,7 @@
       <div class="col-md-9">
         <br />
         <div class="text-right">
-          <a class="btn btn btn-default" data-toggle="modal" data-target="#allInstitutions">
+          <a class="btn btn-outline-secondary" data-toggle="modal" data-target="#allInstitutions">
             <span class="glyphicon glyphicon-list-alt"></span>  All Institutions & location offices
           </a>
         </div>

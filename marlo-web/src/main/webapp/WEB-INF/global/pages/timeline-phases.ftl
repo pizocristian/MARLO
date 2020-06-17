@@ -13,7 +13,7 @@
             <ul>
               [#list phases as phase]
                 <li id="phase-${(phase.id)!}" class="phaseBox d-flex align-items-center text-left ${(phase.isReporting())?string('reporting','planning')} [#if (actualPhase.id == phase.id)][#assign currenPhaseIndex = phase_index  /]active phaseSelected[#else]phaseNoSelected[/#if] ${phase.editable?string('', '')}">
-                  <h4> [#if centerGlobalUnit] ${(phase.year)!} [#else] ${(phase.composedName)!} [/#if] <small class="pull-right ml-1">${phase.editable?string('', '<span class="badge badge-danger">Closed</span>')}</small></h4>
+                  <h5 class="d-flex align-items-center"> [#if centerGlobalUnit] ${(phase.year)!} [#else] ${(phase.composedName)!} [/#if] <small class="ml-1">${phase.editable?string('', '<span class="badge badge-danger">Closed</span>')}</small></h5>
                   [#-- <small><strong>From: </strong>${phase.startDate} | <strong>Until: </strong>${phase.endDate}</small> --]
                 </li>
               [/#list] 

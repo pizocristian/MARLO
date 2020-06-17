@@ -1027,7 +1027,7 @@ function PartnerObject(partner) {
     $item.find('input.locElementCountry').val(contryISO);
 
     // Add Flag
-    var $flag = $item.find('.flag-icon');
+    var $flag = $item.find('.flag-icon-container');
     var flag = '<i class="flag-icon flag-icon-' + contryISO.toLowerCase() + '"></i>';
     $flag.html(flag);
     // Remove coordinates span

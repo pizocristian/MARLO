@@ -49,7 +49,7 @@
           </div>
           
           [#-- Action --]
-          <div class="btn-group pull-right" role="group" aria-label="..."">
+          <div class="btn-group float-right" role="group" aria-label="..."">
             [#-- Edit --]
             <a class="btn btn-outline-secondary btn-sm editRequest" href="#">
               <span class="glyphicon glyphicon-pencil"></span> Edit Request
@@ -139,7 +139,7 @@
                 <i>(<a href="${partner.institution.websiteLink}" target="_blank">${partner.institution.websiteLink}</a>)</i>
              [/#if]            
             [#-- Action --]
-            <div class="btn-group pull-right" role="group" aria-label="..."">
+            <div class="btn-group float-right" role="group" aria-label="..."">
               [#-- Accept --]
               <a class="btn btn-success btn-sm acceptOfficesRequest institutionOfficeRequestId-${partner.institution.id}" href="#">
                 <span class="glyphicon glyphicon-ok"></span> Accept selected
@@ -159,7 +159,7 @@
                     <li class="inputsFlat li-item officeCountryRequest">
                       <input type="checkbox"  name="${customOfficeName}.id" id="officeRequest-${officeRequest.id}" class="officeRequest" value="${officeRequest.id}" />
                       <label class="checkbox-label" for="officeRequest-${officeRequest.id}">${officeRequest.locElement.name}</label>
-                      <i class="pull-right flag-icon flag-icon-${(officeRequest.locElement.isoAlpha2?lower_case)!}"></i> 
+                      <i class="float-right flag-icon flag-icon-${(officeRequest.locElement.isoAlpha2?lower_case)!}"></i> 
                       [#-- It was muted, its better to show in the form --]
                       [#-- Added Requested Source --]
                       <br><strong>[@s.text name="Requested Source" /]:</strong> <i>${(officeRequest.requestSource)}</i>                    

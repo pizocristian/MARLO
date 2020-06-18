@@ -1,7 +1,7 @@
 [#ftl]
 [#import "/WEB-INF/global/pages/bowerComponents.ftl" as components /]
 [#import "/WEB-INF/global/macros/forms.ftl" as customForm /]
-[#assign globalLibs = ["jquery", "bootstrap", "jquery-ui", "pusher-js", "noty", "countdown", "animate.css", "autogrow-textarea", "jReject", "cookieconsent" ] /]
+[#assign globalLibs = ["jquery", "bootstrap", "jquery-ui", "pusher-js", "noty", "countdown", "animate.css", "autogrow-textarea", "jReject", "cookieconsent", "components-font-awesome" ] /]
 <!doctype html>
   <html lang="en">
   <head>
@@ -124,7 +124,7 @@
             [#-- Testing Environment --]
             [#if !config.production]<h4 class="testEnvironment"><span class="badge badge-danger text-left">Testing Environment</span> </h4>[/#if]
             [#-- Closed --]
-            <h4 class="">[#if crpClosed] <span class="badge badge-default text-left">Closed</span> [/#if]</h4>
+            <h4 class="">[#if crpClosed] <span class="badge badge-secondary text-left">Closed</span> [/#if]</h4>
           </div>
           
         </div>

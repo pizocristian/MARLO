@@ -176,7 +176,7 @@
     [/#if]
     
     [#if !isTemplate]
-      <div class="pull-right">
+      <div class="float-right">
         [@popUps.relationsMacro element=outcome /]
       </div>
     [/#if]
@@ -227,7 +227,7 @@
     <div class="tab-content impactpathwayTabContent">
       [#-- Outcome Sub-IDOs List --]
       <div role="tabpanel" class="tab-pane fade show active" id="subIdos-tab-${index}">
-        [#-- <h5 class="sectionSubTitle">[@s.text name="outcome.subIDOs.sectionTitle"/] <p class="contributioRem pull-right">Contribution <span class="value">0%</span></p></h5>--]
+        [#-- <h5 class="sectionSubTitle">[@s.text name="outcome.subIDOs.sectionTitle"/] <p class="contributioRem float-right">Contribution <span class="value">0%</span></p></h5>--]
         <div class="subIdos-list" listname="${outcomeCustomName}.subIdos">
         [#if outcome.subIdos?has_content]
           [#list outcome.subIdos as subIdo]
@@ -356,7 +356,7 @@
     <input type="hidden" class="mileStoneId" name="${milestoneCustomName}.id" value="${(milestone.id)!}"/>
     <input type="hidden" class="mileStoneComposeId" name="${milestoneCustomName}.composeID" value="${(milestone.composeID)!}"/>
 
-    <div class="pull-right">
+    <div class="float-right">
       [@popUps.relationsMacro element=(milestone)!{} /]
     </div>
    

@@ -66,7 +66,7 @@
             </br>
             [#-- SEND EMAIL --]
             [#-- 
-            <div class="pull-left">
+            <div class="float-left">
               [@customForm.checkmark  id="sendEmail"  i18nkey="guestUsers.sendEmail" name="emailSend" value="true" checked=true editable=true /]
             </div>
              --]

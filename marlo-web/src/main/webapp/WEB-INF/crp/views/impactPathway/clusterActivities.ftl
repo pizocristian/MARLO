@@ -135,7 +135,7 @@
       [/#if]
       
       [#if !isTemplate]
-        <div class="pull-right">
+        <div class="float-right">
           [@popUps.relationsMacro element=cluster /]
         </div>
       [/#if]
@@ -207,7 +207,7 @@
     <input class="id" type="hidden" name="${customName}.id" value="${(element.id)!}"/>
     [#-- Remove Button --]
     [#if editable]
-      <span class="glyphicon glyphicon-remove pull-right remove-userItem" aria-hidden="true"></span>
+      <span class="glyphicon glyphicon-remove float-right remove-userItem" aria-hidden="true"></span>
     [/#if]
   </li>
 [/#macro]
@@ -226,7 +226,7 @@
     [#-- Partner Title --]
     <div class="blockTitle closed">
        <span title="${(element.keyOutput)!}" class="koTitle col-md-9">[#if element.keyOutput?has_content][@utils.wordCutter string=(element.keyOutput) maxPos=70 substr=" "/][#else]New Key output[/#if]</span>
-      <span class="pull-right koContribution-title"><span><b>Contribution:</b></span> <span class="koContribution-percentage">${(element.contribution?string["0.##"])!}%</span></span>
+      <span class="float-right koContribution-title"><span><b>Contribution:</b></span> <span class="koContribution-percentage">${(element.contribution?string["0.##"])!}%</span></span>
     <div class="clearfix"></div>
     </div>
     
@@ -286,7 +286,7 @@
       <div class="form-group">
          [#if !isTemplate]
        
-         <div class="pull-right">
+         <div class="float-right">
           [@popUps.relationsMacro element=element /]
         </div>
       [/#if]

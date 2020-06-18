@@ -53,7 +53,7 @@
            [#-- Table 4: Condensed list of innovations --]
             <div class="form-group">
               [#assign guideSheetURL = "https://drive.google.com/file/d/1JvceA0bdvqS5Een056ctL7zJr3hidToe/view" /]
-              <small class="pull-right"><a href="${guideSheetURL}" target="_blank"> <img src="${baseUrlCdn}/global/images/icon-file.png" alt="" /> #C1 Innovations -  Guideline </a> </small>
+              <small class="float-right"><a href="${guideSheetURL}" target="_blank"> <img src="${baseUrlCdn}/global/images/icon-file.png" alt="" /> #C1 Innovations -  Guideline </a> </small>
             </div>
             
             <div class="form-group row">
@@ -119,7 +119,7 @@
               [#if PMU][@utilities.tag label="annualReport.docBadge" tooltip="annualReport.docBadge.tooltip"/][/#if]
               
               [#-- Buttons --]
-              <div class="form-group btn-group btn-group-sm pull-right" role="group" aria-label="...">
+              <div class="form-group btn-group btn-group-sm float-right" role="group" aria-label="...">
                 <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#modal-innovations"><span class="glyphicon glyphicon-fullscreen"></span> See Full Table 4</button>
               </div>
     
@@ -211,7 +211,7 @@
                 <span>[@s.text name="${customLabel}.${name}.linkToOicr" /] <a href="${oicrUrl}" target="_blank">${(item.projectInnovationInfo.projectExpectedStudy.composedName)!'Untitled'}</span></a>
               [/#if]
               [#-- [#if !expanded] [@oicrPopup element=item isStageFour=true /] [/#if] --]
-              <a href="${url}" target="_blank" class="pull-right">[@s.text name="${customLabel}.${name}.linkToInnovation" /] <span class="glyphicon glyphicon-new-window"></span></a>
+              <a href="${url}" target="_blank" class="float-right">[@s.text name="${customLabel}.${name}.linkToInnovation" /] <span class="glyphicon glyphicon-new-window"></span></a>
             </td>
             [#-- 3. Description of Innovation  --]
             [#if expanded]

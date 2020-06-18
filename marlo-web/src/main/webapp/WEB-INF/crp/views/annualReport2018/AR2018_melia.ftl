@@ -70,7 +70,7 @@
                     [#if PMU][@utilities.tag label="annualReport.docBadge" tooltip="annualReport.docBadge.tooltip"/][/#if]
                     
                     [#-- Button --]
-                    <button type="button" class="btn btn-outline-secondary btn-xs pull-right" data-toggle="modal" data-target="#modal-policies">
+                    <button type="button" class="btn btn-outline-secondary btn-xs float-right" data-toggle="modal" data-target="#modal-policies">
                        <span class="glyphicon glyphicon-fullscreen"></span> See Full table 10
                     </button>
                     [#-- Missing fields in FPs --] [#--
@@ -205,7 +205,7 @@
                   [/#list]
                 </div>
                 [/#if]
-                <a href="${url}" target="_blank" class="pull-right"><span class="glyphicon glyphicon-new-window"></span></a>
+                <a href="${url}" target="_blank" class="float-right"><span class="glyphicon glyphicon-new-window"></span></a>
               </td>
               <td class="text-center">
                 [@utils.tableText value=(item.projectExpectedStudyInfo.status.name)!"" /]

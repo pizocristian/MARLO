@@ -87,7 +87,7 @@
                       [@utilities.tag label="annualReport.docBadge" tooltip="annualReport.docBadge.tooltip"/]
 
                       [#if true]
-                      <div class="form-group btn-group btn-group-sm pull-right" role="group" aria-label="...">
+                      <div class="form-group btn-group btn-group-sm float-right" role="group" aria-label="...">
                         <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#modal-evidenceF"><span class="glyphicon glyphicon-fullscreen"></span> AR Evidence F</button>
                       </div>
                       [#-- Evidence F: Full List of Current External Partners --]

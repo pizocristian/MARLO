@@ -103,7 +103,7 @@
       <div class="removeLink"><div class="removeElement sm removeLink disable" title="Cannot be removed"></div></div>
     [/#if]
      [#if !isTemplate]
-      <div class="pull-right">
+      <div class="float-right">
         [@popUps.relationsMacro element=ppaPartner /]
       </div>
     [/#if]
@@ -150,9 +150,9 @@
     [#-- Remove Button --]
     [#if editable]
       [#if template || action.canBeDeleted(element.id, element.class.name)!false]
-        <span class="glyphicon glyphicon-remove pull-right remove-userItem" aria-hidden="true"></span>
+        <span class="glyphicon glyphicon-remove float-right remove-userItem" aria-hidden="true"></span>
       [#else]
-        <span class="glyphicon glyphicon-remove pull-right" style="color:#ccc" aria-hidden="true" title="Can not be deleted"></span>
+        <span class="glyphicon glyphicon-remove float-right" style="color:#ccc" aria-hidden="true" title="Can not be deleted"></span>
       [/#if]
     [/#if]
   </li>

@@ -185,9 +185,9 @@
       <span class="partnerTitle">${(element.institution.composedName)!''}</span>
       <span class="partnerInstitutionId" style="display:none">${(element.institution.id)!}</span>
       [#-- Tags --]
-      <div class="partnerTags pull-right">
+      <div class="partnerTags float-right">
         <span class="badge badge-success type-leader" style="display:${(isLeader?string('inline','none'))!'none'}">Leader</span>
-        <span class="badge badge-default type-coordinator" style="display:${(isCoordinator?string('inline','none'))!'none'}">Coordinator</span>
+        <span class="badge badge-secondary type-coordinator" style="display:${(isCoordinator?string('inline','none'))!'none'}">Coordinator</span>
         <span class="index ${isPPA?string('ppa','')}">${isPPA?string('Managing / PPA Partner','Partner')}</span>
       </div>
       <div class="clearfix"></div>
@@ -266,7 +266,7 @@
       
       [#assign expandedProjectFundingSource = !(projectFundingSources?size > 0) ]
       [#if projectFundingSources?size > 0]
-      <a class="btn btn-outline-secondary btn-xs pull-right toggleProjectFundingSource"> 
+      <a class="btn btn-outline-secondary btn-xs float-right toggleProjectFundingSource"> 
         <span class="project-fs-expandible-true" style="display:${expandedProjectFundingSource?string('none', 'block')}"><span class="glyphicon glyphicon-resize-full"></span> Expand</span>
         <span class="project-fs-expandible-false" style="display:${expandedProjectFundingSource?string('block', 'none')}"><span class="glyphicon glyphicon-resize-small"></span> Collapse all</span>
       </a>
@@ -310,7 +310,7 @@
     <td>
       [#-- Relations --]
       [#if !isTemplate]
-        <div class="pull-right">[@popUps.relationsMacro element=element labelText=false /] </div>
+        <div class="float-right">[@popUps.relationsMacro element=element labelText=false /] </div>
       [/#if]
     
       [#-- Funding Source Title --]
@@ -404,7 +404,7 @@
         <div class="removeIcon disable text-right" title="Project Budget cannot be deleted"></div>
       [/#if]  
       [#if !isTemplate]
-      <div class="pull-right">[@popUps.relationsMacro element=element /] </div>
+      <div class="float-right">[@popUps.relationsMacro element=element /] </div>
       [/#if]
     [/#if]
     
@@ -492,7 +492,7 @@
     </div>
     
     <div class="">
-      <small class="pull-right">
+      <small class="float-right">
         [#if fsEndDate?has_content]
           [#local fsYear = fsEndDate?date?string('yyyy')?number ]
           [#local validDate = (fsYear >= actualPhase.year)!false ]

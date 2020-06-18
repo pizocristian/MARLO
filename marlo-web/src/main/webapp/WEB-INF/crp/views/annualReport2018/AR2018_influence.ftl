@@ -48,7 +48,7 @@
           <div class="borderBox">
           
             [#assign guideSheetURL = "https://drive.google.com/file/d/1GYLsseeZOOXF9zXNtpUtE1xeh2gx3Vw2/view" /]
-            <small class="pull-right"><a href="${guideSheetURL}" target="_blank"> <img src="${baseUrlCdn}/global/images/icon-file.png" alt="" /> #I1 Policies - Guideline </a> </small>
+            <small class="float-right"><a href="${guideSheetURL}" target="_blank"> <img src="${baseUrlCdn}/global/images/icon-file.png" alt="" /> #I1 Policies - Guideline </a> </small>
             <h4 class="sectionSubTitle">[@s.text name="${customLabel}.indicatorI1.title" /]</h4>
             
             <div class="form-group row">
@@ -154,7 +154,7 @@
             
             <div class="form-group">
               [#-- Modal Large --]
-                <button type="button" class="pull-right btn btn-link btn-sm" data-toggle="modal" data-target="#tableA-bigger"> 
+                <button type="button" class="float-right btn btn-link btn-sm" data-toggle="modal" data-target="#tableA-bigger"> 
                   <span class="glyphicon glyphicon-fullscreen"></span> See Full Table 2
                 </button>
                 <div id="tableA-bigger" class="modal fade bs-example-modal-lg " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">

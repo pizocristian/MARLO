@@ -126,7 +126,7 @@
           [#-- Budget --]
           <div class="form-group" style="display:${(action.canEditFundingSourceBudget())?string('block','none')}">
             <div class="budgetByYears">
-                <strong class="pull-right">Entire funding budget $US <span class="fundingTotalAmount">0.00</span></strong>
+                <strong class="float-right">Entire funding budget $US <span class="fundingTotalAmount">0.00</span></strong>
                 <ul class="nav nav-tabs" role="tablist">
                 </ul>
                 <div class="tab-content">
@@ -156,7 +156,7 @@
             FS<span class="contactId">{userId}</span>
           </div>
           <div class="col-md-9">
-            <small><span class="red noBudgetMessage pull-left glyphicon glyphicon-exclamation-sign" style="display:none" title="Insufficient funds for {year}"></span></small>
+            <small><span class="red noBudgetMessage float-left glyphicon glyphicon-exclamation-sign" style="display:none" title="Insufficient funds for {year}"></span></small>
             <span class="contact name">{composedName}</span>
             <span class="currentBudget">{budget}</span>
             <span class="financeCode"></span>

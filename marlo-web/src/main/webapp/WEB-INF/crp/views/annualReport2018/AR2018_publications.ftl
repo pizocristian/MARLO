@@ -52,7 +52,7 @@
             
             <div class="form-group">
               [#assign guideSheetURL = "https://drive.google.com/file/d/1apWx9qJk5NXlZQTzZzhGqRNSx934Bp5H/view" /]
-                <small class="pull-right"><a href="${guideSheetURL}" target="_blank"> <img src="${baseUrlCdn}/global/images/icon-file.png" alt="" /> #C4 Peer review papers  -  Guideline </a> </small>
+                <small class="float-right"><a href="${guideSheetURL}" target="_blank"> <img src="${baseUrlCdn}/global/images/icon-file.png" alt="" /> #C4 Peer review papers  -  Guideline </a> </small>
             </div>
             <br />
             
@@ -120,9 +120,9 @@
             
             
 
-              <div class="form-group btn-group btn-group-sm pull-right" role="group" aria-label="...">
+              <div class="form-group btn-group btn-group-sm float-right" role="group" aria-label="...">
                 <button type="button" class="btn btn-outline-secondary evidenceD-export" data-toggle="modal" data-target="#modal-evidenceC"><span class="glyphicon glyphicon-fullscreen"></span> Export Evidence D</button>
-                <button type="button" class="btn btn-outline-secondary btn-xs pull-right" data-toggle="modal" data-target="#modal-publications"><span class="glyphicon glyphicon-fullscreen"></span> See Full Evidence D</button>
+                <button type="button" class="btn btn-outline-secondary btn-xs float-right" data-toggle="modal" data-target="#modal-publications"><span class="glyphicon glyphicon-fullscreen"></span> See Full Evidence D</button>
               </div>
               
               
@@ -278,7 +278,7 @@
                 </div>
                 [/#if]
                 
-                <a href="${url}" target="_blank" class="pull-right">[@s.text name="${customLabel}.${name}.linkToPublication" /] <span class="glyphicon glyphicon-new-window"></span></a>
+                <a href="${url}" target="_blank" class="float-right">[@s.text name="${customLabel}.${name}.linkToPublication" /] <span class="glyphicon glyphicon-new-window"></span></a>
                 
               </td>
               [#if !allowPopups]

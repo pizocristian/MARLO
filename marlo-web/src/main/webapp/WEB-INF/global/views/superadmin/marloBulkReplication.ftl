@@ -100,7 +100,7 @@
                 </div><!-- /input-group -->
               </div>
               <div class="col-md-5">
-                <label for="toggleSelectAll" class="pull-right"><input type="checkbox" name="" id="toggleSelectAll" checked="checked"/> Select/Unselect All</label>
+                <label for="toggleSelectAll" class="float-right"><input type="checkbox" name="" id="toggleSelectAll" checked="checked"/> Select/Unselect All</label>
               </div>
             </div>
             <small><i> Items Checked: <span class="count">0</span></i></small>

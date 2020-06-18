@@ -17,7 +17,7 @@
 
       <h1 class="contentTitle">Legal Information</h1>
       [#--  
-      <div class="btn-group pull-right" role="group" aria-label="...">
+      <div class="btn-group float-right" role="group" aria-label="...">
         <a class="btn btn-default" href="#privacyNotice">Privacy Notice</a>
         <a class="btn btn-default" href="#termsConditions">Terms and Conditions</a>
         <a class="btn btn-default" href="#copyRight" >Copyright</a>
@@ -135,8 +135,8 @@
           <li><strong>Use License</strong>
             <p><u>Software</u></p>
             <div class="image-container">
-              <a class="pull-right" target="_blank" href="https://www.gnu.org/licenses/gpl-3.0.en.html"> <img class="" src="https://www.gnu.org/graphics/gplv3-127x51.png" alt="GPL" /> </a>
-              <a class="pull-right" target="_blank" href="https://www.gnu.org/licenses/gpl-3.0.en.html"> <img height="51px" class="" src="https://www.gnu.org/graphics/heckert_gnu.small.png" alt="GPL" /> </a>
+              <a class="float-right" target="_blank" href="https://www.gnu.org/licenses/gpl-3.0.en.html"> <img class="" src="https://www.gnu.org/graphics/gplv3-127x51.png" alt="GPL" /> </a>
+              <a class="float-right" target="_blank" href="https://www.gnu.org/licenses/gpl-3.0.en.html"> <img height="51px" class="" src="https://www.gnu.org/graphics/heckert_gnu.small.png" alt="GPL" /> </a>
             </div>
             <p>MARLO is a free software licensed under the GNU General Public License V 3.0 (GPL-3)</p>
             <p><a href="https://www.gnu.org/licenses/gpl-3.0.en.html">https://www.gnu.org/licenses/gpl-3.0.en.html</a></p>

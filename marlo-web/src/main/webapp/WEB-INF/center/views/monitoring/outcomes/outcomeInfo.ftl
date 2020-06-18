@@ -40,7 +40,7 @@
 
       [@s.form action=actionName method="POST" enctype="multipart/form-data" cssClass=""]
       [#-- Back --]
-      <div class="pull-right">
+      <div class="float-right">
         <a href="[@s.url action='${centerSession}/monitoringOutcomesList'][@s.param name="programID" value=selectedProgram.id /][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">
           <span class="glyphicon glyphicon-circle-arrow-left"></span> Back to the outcome list
         </a>
@@ -69,7 +69,7 @@
         [/#if]
       </div> 
       [#-- View Porjects contributions 
-      <button type="button" class="btn btn-default btn-xs pull-right outcomeProjects-${outcome.id}" data-toggle="modal" data-target="#outcomeProjectsModal">
+      <button type="button" class="btn btn-default btn-xs float-right outcomeProjects-${outcome.id}" data-toggle="modal" data-target="#outcomeProjectsModal">
         <span class="glyphicon glyphicon-pushpin"></span> View Project Contributions
       </button>
       --]

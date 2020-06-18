@@ -337,7 +337,7 @@
             [@utils.tableText value=(item.eventActivityName)!"" /] 
             [#-- Deliverable ID --]
             <br /><i style="opacity:0.5"><small>(From D${(item.deliverable.id)!''})</small></i>
-            <a href="${URL}" target="_blank" class="pull-right"> <span class="glyphicon glyphicon-new-window"></span> </a>
+            <a href="${URL}" target="_blank" class="float-right"> <span class="glyphicon glyphicon-new-window"></span> </a>
           </td>
           [#-- Activity Type --]
           <td class="">

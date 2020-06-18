@@ -52,7 +52,7 @@
           </div><div class="clearfix"></div>
         
         [#-- Back --]
-        <small class="pull-right">
+        <small class="float-right">
           <a href="[@s.url action='${centerSession}/outputsList'][@s.param name="crpProgramID" value=programID /][@s.param name="outcomeID" value=outcomeID /][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">
             <span class="glyphicon glyphicon-circle-arrow-left"></span> Back to the outputs list
           </a>
@@ -80,7 +80,7 @@
           [#-- Select a organization/institution  --]
           [#if editable]
           <div class="partnerSelect"> 
-            <div class="pull-left"> <span class="glyphicon glyphicon-plus"></span>  &nbsp</div>
+            <div class="float-left"> <span class="glyphicon glyphicon-plus"></span>  &nbsp</div>
             [@customForm.select name="" label="" disabled=!canEdit i18nkey="output.selectInstitution"  listName="institutions" keyFieldName="id" displayFieldName="composedName" className="" value="" /]
           </div>
           [/#if] 
@@ -125,7 +125,7 @@
     
     [#-- Partner Title --]    
     <div class="form-group">
-      <div class="pull-right">[@s.radio label="outputPartner.mode" name="${customName}.internal" list="partnerModes" value="${(element.internal?c)!}" /]</div>
+      <div class="float-right">[@s.radio label="outputPartner.mode" name="${customName}.internal" list="partnerModes" value="${(element.internal?c)!}" /]</div>
       <h5 class="sectionSubTitle title">${(element.institution.composedName)!'Undefined'}</h5> 
       <div class="clearfix"></div>
     </div>
@@ -163,7 +163,7 @@
     <input class="id" type="hidden" name="${customName}.id" value="${(element.id)!}"/>
     [#-- Remove Button --]
     [#if editable]
-      <span class="glyphicon glyphicon-remove pull-right remove-userItem" aria-hidden="true"></span>
+      <span class="glyphicon glyphicon-remove float-right remove-userItem" aria-hidden="true"></span>
     [/#if]
   </li>
 [/#macro]

@@ -43,7 +43,7 @@
     <h1 class="contentTitle">[@s.text name="home.glossary.title"/]</h1>
     [@s.text name="home.glossary.contact"/] [@s.text name="home.glossary.mailto"/]
     
-    <div id="searchInput" class="pull-right form-group search-word has-feedback">
+    <div id="searchInput" class="float-right form-group search-word has-feedback">
       <input type="text" class="form-control" name="search" id="search" placeholder="search" autocomplete="off">
       <span class="glyphicon glyphicon-search form-control-feedback"></span>
     </div>

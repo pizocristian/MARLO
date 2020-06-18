@@ -88,7 +88,7 @@
                   [#list globalUnitList as globalUnit]
                     <li id="globalUnit-${(globalUnit.id)!}">
                       <strong>${(globalUnit.acronym)!}</strong>
-                      <span class="pull-right"><i>(${(globalUnit.globalUnitType.name)!})</i> </span>
+                      <span class="float-right"><i>(${(globalUnit.globalUnitType.name)!})</i> </span>
                       <p>${(globalUnit.name)!}</p>
                     </li>
                   [/#list]

@@ -89,9 +89,9 @@
     </span>
     [#-- Remove Button --]
     [#if canDelete || (element?? && action.canBeDeleted((element.id)!, (element.class.name)!)!)]
-      <span class="glyphicon glyphicon-remove pull-right remove-targetUnit" aria-hidden="true"></span>
+      <span class="glyphicon glyphicon-remove float-right remove-targetUnit" aria-hidden="true"></span>
     [#else]
-      <span class="glyphicon glyphicon-remove pull-right " style="color:#ccc" aria-hidden="true" title="Can not be deleted"></span>
+      <span class="glyphicon glyphicon-remove float-right " style="color:#ccc" aria-hidden="true" title="Can not be deleted"></span>
     [/#if]   
   </li>
 [/#macro]

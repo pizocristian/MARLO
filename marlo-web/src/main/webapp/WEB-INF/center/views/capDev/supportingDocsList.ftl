@@ -38,7 +38,7 @@
     <br />
     
     <div class="col-md-12">
-      <div class="pull-right">
+      <div class="float-right">
         [#if projectID > 0]
           <a class="" href="[@s.url namespace='/monitoring' action='${centerSession}/projectCapdev'] [@s.param name='projectID']${projectID?c}[/@s.param][@s.param name='edit' value="true" /] [/@s.url] "><span class="glyphicon glyphicon-circle-arrow-left"></span>[@s.text name="capdev.gotoBackProjects" /]</a>
         [#else]
@@ -55,7 +55,7 @@
         <div>[@deliverableList.deliverableList deliverables=deliverables canValidate=true canEdit=true namespace="/capdev" defaultAction="${(centerSession)!}/detailSupportingDoc" /]</div>
           [#if editable]
             <div class="col-md-12 newCapdevField">
-              <div class="pull-right">
+              <div class="float-right">
                 <div class="buttons-content">        
                   <a class="addButton" href="[@s.url action='${centerSession}/addSupportingDoc'][@s.param name='deliverableID']${deliverableID}[/@s.param] [@s.param name='capdevID']${capdevID}[/@s.param] [@s.param name='projectID']${projectID}[/@s.param][@s.param name='edit' value="true" /][/@s.url]">[@s.text name="capdev.addSupportingDoc" /]</a>
                   <div class="clearfix"></div>

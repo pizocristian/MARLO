@@ -45,7 +45,7 @@
     [#include "/WEB-INF/center/views/capDev/messages-capdev.ftl" /]
     <br />
 
-    <div class="pull-right">
+    <div class="float-right">
       [#if projectID > 0]
       	<a class="" href="[@s.url namespace='/monitoring' action='${centerSession}/projectCapdev'] [@s.param name='projectID']${projectID?c}[/@s.param][@s.param name='edit' value="true" /] [/@s.url] "><span class="glyphicon glyphicon-circle-arrow-left"></span>[@s.text name="capdev.gotoBackProjects" /]</a>
       [#else]
@@ -208,7 +208,7 @@
       <div class="capdev-participantslist-title">List of participants</div>
       [@capdevList capdev.capdevParticipant /]
       <div class="col-md-12">
-        <div class="pull-right">
+        <div class="float-right">
           [#if editable]  
             <button type="button" class="" title="Delete list of participants">
               <a id="" class="removeCapdev" data-href=""  data-toggle="modal" data-target="#confirm-clear-participantList"> Clear</a>
@@ -239,7 +239,7 @@
   [#else]
     [#if editable]
       <div class="form-group col-md-12 newCapdevField participantsheader">
-        <div class="pull-right">
+        <div class="float-right">
           <button type="button" class="capdevButtons" aria-label="Left Align" title="Download template to upload the list of participants">
             <a class="downloadButton" href="[@s.url action='${centerSession}/downloadFile' /] ">[@s.text name="capdev.downloadTemplate" /]</a>
           </button>

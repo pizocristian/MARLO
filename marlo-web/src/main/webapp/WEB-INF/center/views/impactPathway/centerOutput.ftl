@@ -49,7 +49,7 @@
         <span id="programSelected" class="hidden">${(selectedProgram.id)!}</span>
         
         [#-- Back --]
-        <h5 class="pull-right">
+        <h5 class="float-right">
           <a href="[@s.url action='${centerSession}/outputsList'][@s.param name="crpProgramID" value=programID /][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">
             <span class="glyphicon glyphicon-circle-arrow-left"></span> Back to the outputs list
           </a>

@@ -54,7 +54,7 @@
             <hr />
           
             [#-- Modal Large --]
-            <button type="button" class="pull-right btn btn-outline-secondary" data-toggle="modal" data-target="#tableA-bigger"> 
+            <button type="button" class="float-right btn btn-outline-secondary" data-toggle="modal" data-target="#tableA-bigger"> 
               <span class="glyphicon glyphicon-fullscreen"></span> See Full Table A
             </button>
             <div id="tableA-bigger" class="modal fade bs-example-modal-lg " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
@@ -136,7 +136,7 @@
                 [#-- Outcomes --]
                 [#if isOutcomeRow && !allowPopups]<td rowspan="${outcomesSize}" class="milestonesSize-${outcomesSize}"> ${outcome.composedName}</td>[/#if]
                 [#-- Milestone --]
-                <td> ${milestone.composedName} [#if allowPopups] <div class="pull-right">[@milestoneContributions element=milestone tiny=true /] [/#if]</div></td>
+                <td> ${milestone.composedName} [#if allowPopups] <div class="float-right">[@milestoneContributions element=milestone tiny=true /] [/#if]</div></td>
                 [#-- W1W2 --]
                 [#if isFlagshipRow && !allowPopups]<td rowspan="${milestoneSize}">[@powbMacros.projectBudgetsByFlagshipMacro element=fp totalValue=fp.w1 type="W1W2" popupEnabled=allowPopups/] </td>[/#if]
                 [#-- W3/Bilateral --]
@@ -188,7 +188,7 @@
     
     [#-- Title --]
     <div class="form-group">
-      <div class="pull-right">[@milestoneContributions element=element /]</div>
+      <div class="float-right">[@milestoneContributions element=element /]</div>
       <p class="text-justify"><strong>Milestone for ${actualPhase.year}</strong> - ${(element.title)!} </p>
     </div>
     

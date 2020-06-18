@@ -54,7 +54,7 @@
               [#if PMU][@utilities.tag label="annualReport.docBadge" tooltip="annualReport.docBadge.tooltip"/][/#if]
             
               [#-- Button --]
-              <button type="button" class="btn btn-outline-secondary btn-xs pull-right" data-toggle="modal" data-target="#modal-oicr">
+              <button type="button" class="btn btn-outline-secondary btn-xs float-right" data-toggle="modal" data-target="#modal-oicr">
                  <span class="glyphicon glyphicon-fullscreen"></span> See Full table 3
               </button>
               [#-- Modal --]
@@ -139,7 +139,7 @@
                 
                 [#if isFromProject]<br /> <small>(From Project P${item.project.id})</small> [/#if]
                 [#-- OICR Contributions --][#--
-                [#if !expanded] <div class="pull-right">[@oicrContributions element=item tiny=true /] [/#if]</div>
+                [#if !expanded] <div class="float-right">[@oicrContributions element=item tiny=true /] [/#if]</div>
                 --]
                 [#if PMU]
                 <br />
@@ -152,7 +152,7 @@
                 [#-- OICR Contributions --]
                 [#if !expanded] [@oicrContributions element=item /] [/#if]
                 
-                <a href="${url}" target="_blank" class="pull-right">[@s.text name="${customLabel}.${name}.linkToOicr" /] <span class="glyphicon glyphicon-new-window"></span></a>
+                <a href="${url}" target="_blank" class="float-right">[@s.text name="${customLabel}.${name}.linkToOicr" /] <span class="glyphicon glyphicon-new-window"></span></a>
               </td>
               <td>[@utils.tableText value=(item.projectExpectedStudyInfo.repIndStageStudy.name)!"" /]</td>
               <td class="text-center">[@utils.tableText value=(item.projectExpectedStudyInfo.evidenceTag.name)!"" /]</td>

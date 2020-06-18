@@ -65,7 +65,7 @@
 [/#macro]
 
 [#macro tag label="" tooltip=""]
-  <span class="doc-badge pull-right" title="[@s.text name="${tooltip}" /]">
+  <span class="doc-badge float-right" title="[@s.text name="${tooltip}" /]">
     <img src="${baseUrlCdn}/global/images/icons/file-doc.png" style="width:18px;" alt=""> [@s.text name="${label}" /] 
   </span>
 [/#macro]

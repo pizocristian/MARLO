@@ -93,7 +93,7 @@
     <input class="id" type="hidden" name="${customName}.id" value="${(element.id)!}"/>
     [#-- Remove Button --]
     [#if editable && !hasRegions]
-      <span class="glyphicon glyphicon-remove pull-right remove-userItem" aria-hidden="true"></span>
+      <span class="glyphicon glyphicon-remove float-right remove-userItem" aria-hidden="true"></span>
     [/#if]
   </li>
 [/#macro]

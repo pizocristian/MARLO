@@ -46,7 +46,7 @@
         [@s.form action=actionName method="POST" enctype="multipart/form-data" cssClass=""]
           
           [#-- Back --]
-            <small class="pull-right">
+            <small class="float-right">
               <a href="[@s.url action='${centerSession}/deliverableList'][@s.param name="projectID" value=project.id /][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">
                 <span class="glyphicon glyphicon-circle-arrow-left"></span> Back to the deliverables list
               </a>

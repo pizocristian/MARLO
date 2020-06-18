@@ -52,7 +52,7 @@
         
 
         [#-- Back --]
-        <small class="pull-right">
+        <small class="float-right">
           <a href="[@s.url action='${crpSession}/highlights'][@s.param name="projectID" value=project.id /][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">
             <span class="glyphicon glyphicon-circle-arrow-left"></span> Back to the project highlights
           </a>

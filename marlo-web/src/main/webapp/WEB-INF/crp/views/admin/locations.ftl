@@ -44,7 +44,7 @@
             <li class="li-item defaultLocation">
               <input type="hidden" name="${customLocName}.locElementType.id" value="${elementType.locElementType.id}" />
               [#if action.canBeSelected(elementType.locElementType.id)]
-                <input type="checkbox" [#if action.canBeDeleted(elementType.locElementType.id,elementType.class.name)][#else]style="opacity:0.5; cursor: not-allowed;" onclick="return false;" onkeydown="e = e || window.event; if(e.keyCode !== 9) return false;"[/#if]  name="${customLocName}.check" value="${elementType.check?string}" [#if elementType.check]checked[/#if] id="${customLocName}"  class="elementTypeCheck pull-right" />  
+                <input type="checkbox" [#if action.canBeDeleted(elementType.locElementType.id,elementType.class.name)][#else]style="opacity:0.5; cursor: not-allowed;" onclick="return false;" onkeydown="e = e || window.event; if(e.keyCode !== 9) return false;"[/#if]  name="${customLocName}.check" value="${elementType.check?string}" [#if elementType.check]checked[/#if] id="${customLocName}"  class="elementTypeCheck float-right" />  
               [#else]
                 <input type="hidden" name="${customLocName}.check" value="${elementType.check?string}"/>
               [/#if]

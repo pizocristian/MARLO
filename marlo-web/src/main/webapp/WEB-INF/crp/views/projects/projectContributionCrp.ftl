@@ -48,7 +48,7 @@
         [@s.form action=actionName method="POST" enctype="multipart/form-data" cssClass=""]
           
           [#-- Back --]
-          <small class="pull-right">
+          <small class="float-right">
             <a href="[@s.url action='${crpSession}/contributionsCrpList'][@s.param name="projectID" value=project.id /][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">
               <span class="glyphicon glyphicon-circle-arrow-left"></span> Back to the project contributions
             </a>
@@ -180,7 +180,7 @@
             [#-- Select a milestone  --]
             [#if editable]
             <div class="milestonesYearSelect"> 
-              <div class="pull-left"> <span class="glyphicon glyphicon-plus"></span>  &nbsp</div>
+              <div class="float-left"> <span class="glyphicon glyphicon-plus"></span>  &nbsp</div>
               <span class="milestonesSelectedIds" style="display:none">[#if milestonesProject?has_content][#list milestonesProject as e]${(e.id)!}[#if e_has_next],[/#if][/#list][/#if]</span>
               [@customForm.select name="" label="" disabled=!canEdit i18nkey="projectContributionCrp.selectMilestone${reportingActive?string('.reporting', '')}"  listName="" keyFieldName="id" displayFieldName="title" className="" value="" /]
             </div>
@@ -302,7 +302,7 @@
     [#-- Milestone Title --]
     <div class="form-group grayBox">
       [#if showMilestoneValue]
-        <div class="form-group pull-right">
+        <div class="form-group float-right">
           <strong>Target Value:</strong> ${(element.value)!}
         </div>
       [/#if]

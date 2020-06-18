@@ -230,7 +230,7 @@
               
               [#-- OTHER LOCATIONS (MAP) --]   
               <div class="borderBox" style="display:${action.hasSpecificities('crp_other_locations')?string('block', 'none')}">
-                <div class="allLocationsButton btn btn-outline-secondary pull-right" data-toggle="modal" data-target=".allLocationsModal">
+                <div class="allLocationsButton btn btn-outline-secondary float-right" data-toggle="modal" data-target=".allLocationsModal">
                   <img src="${baseUrlCdn}/global/images/map.png" alt="" /> <span>[@s.text name="projectLocations.allLocationsMap" /]</span>
                 </div>
                 <h5 id="locations-list-title" class="sectionSubTitle">[@s.text name="projectLocations.locationsList" /]:</h5>
@@ -322,7 +322,7 @@
           </div>
           [#-- add Location Button --]
           <div class="addLocationButton-container">
-            <span id="addLocationButton" class=" addButton pull-right" style="display:none; margin-top:10px; border-radius:8px;">[@s.text name="projectLocations.addLocations" /]</span>
+            <span id="addLocationButton" class=" addButton float-right" style="display:none; margin-top:10px; border-radius:8px;">[@s.text name="projectLocations.addLocations" /]</span>
           </div>
           [#-- Successfully added alert --]
           <div>
@@ -554,7 +554,7 @@
   <div id="recommendedLocation-${template?string('template',index)}" class="col-md-4 recommended locElement [#if !editable]${((element.selected)?string('', 'hidden'))!}[/#if]" style="display:${template?string('none','block')}">
     <div class="locations col-md-12">
       [#-- Location Name --]
-      <div class="recommendedLocName pull-left">
+      <div class="recommendedLocName float-left">
         [#if element.locElement??]
           <input type="hidden" class="elementID" name="${customName}.locElement.id" value="${(element.locElement.id)!}"/>
           <input type="hidden" class="locScope" name="${customName}.scope" value="${(element.locElement.locElementType.scope?c)!}"/>
@@ -575,9 +575,9 @@
       [#-- Check Icon --]
       [#if element.locElement??]
         [#if editable]
-          <input type="checkbox" class="recommendedSelected pull-right" name="" [#if element.selected]checked[/#if]/>
+          <input type="checkbox" class="recommendedSelected float-right" name="" [#if element.selected]checked[/#if]/>
         [#else]
-          [#if element.selected]<span class="glyphicon glyphicon-ok text-success pull-right"></span>[/#if]
+          [#if element.selected]<span class="glyphicon glyphicon-ok text-success float-right"></span>[/#if]
         [/#if]
         <input class="recommended-location" type="hidden" name="${customName}.selected" value="${element.selected?string}" />
         [#if element.locElement.locElementType.id==2 ]
@@ -586,9 +586,9 @@
       [/#if]
       [#if element.locElementType??]
         [#if editable]
-        <input type="checkbox" class="recommendedSelected pull-right" name="" [#if element.selected]checked[/#if]/>
+        <input type="checkbox" class="recommendedSelected float-right" name="" [#if element.selected]checked[/#if]/>
         [#else]
-          [#if element.selected]<span class="glyphicon glyphicon-ok text-success pull-right"></span>[/#if]
+          [#if element.selected]<span class="glyphicon glyphicon-ok text-success float-right"></span>[/#if]
         [/#if]
         <input type="hidden" name="${customName}.selected" value="${element.selected?string}" />
       [/#if]

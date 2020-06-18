@@ -56,7 +56,7 @@
         [@s.form action=actionName enctype="multipart/form-data" ]
 
         [#-- Back --]
-        <div class="pull-right">
+        <div class="float-right">
           <a href="[@s.url action='${centerSession}/projectList'][@s.param name="programID" value=programID /][@s.param name="projectID" value=projectID /][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">
             <span class="glyphicon glyphicon-circle-arrow-left"></span> Back to the project list
           </a>
@@ -75,7 +75,7 @@
           [#-- Select a organization/institution  --]
           [#if editable]
           <div class="partnerSelect"> 
-            <div class="pull-left"> <span class="glyphicon glyphicon-plus"></span>  &nbsp</div>
+            <div class="float-left"> <span class="glyphicon glyphicon-plus"></span>  &nbsp</div>
             [@customForm.select name="" label="" disabled=!canEdit i18nkey="output.selectInstitution"  listName="institutions" keyFieldName="id" displayFieldName="composedName" className="" value="" /]
           </div>
           [/#if] 
@@ -155,7 +155,7 @@
     <input class="id" type="hidden" name="${customName}.id" value="${(element.id)!}"/>
     [#-- Remove Button --]
     [#if editable]
-      <span class="glyphicon glyphicon-remove pull-right remove-userItem" aria-hidden="true"></span>
+      <span class="glyphicon glyphicon-remove float-right remove-userItem" aria-hidden="true"></span>
     [/#if]
   </li>
 [/#macro]

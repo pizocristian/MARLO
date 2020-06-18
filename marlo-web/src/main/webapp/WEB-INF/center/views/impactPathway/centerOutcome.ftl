@@ -52,7 +52,7 @@
         </div>
         
         [#-- Back --]
-        <h5 class="pull-right">
+        <h5 class="float-right">
           <a href="[@s.url action='${centerSession}/centerOutcomesList'][@s.param name="crpProgramID" value=programID /][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">
             <span class="glyphicon glyphicon-circle-arrow-left"></span> Back to the outcomes list
           </a>

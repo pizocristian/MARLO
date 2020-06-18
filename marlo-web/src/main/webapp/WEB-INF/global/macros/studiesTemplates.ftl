@@ -16,7 +16,7 @@
     
       <div class="form-group">
         [#assign guideSheetURL = "https://drive.google.com/file/d/1sMmE8RK4mpDmJYl_S-bHy5CVK_ahCHr0/view" /]
-        <small class="pull-right"><a href="${guideSheetURL}" target="_blank"> <img src="${baseUrlCdn}/global/images/icon-file.png" alt="" /> Outcome Impact Case Report  -  Guideline </a> </small>
+        <small class="float-right"><a href="${guideSheetURL}" target="_blank"> <img src="${baseUrlCdn}/global/images/icon-file.png" alt="" /> Outcome Impact Case Report  -  Guideline </a> </small>
       </div>
       <br />
     
@@ -97,7 +97,7 @@
             [/#list]
           </div>
           [#if editable]
-          <div class="addButtonLink button-green pull-right"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Add Link </div>
+          <div class="addButtonLink button-green float-right"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Add Link </div>
           <div class="clearfix"></div>
           [/#if]
         </div>
@@ -157,7 +157,7 @@
           [#-- Note --]
           <div class="note">[@s.text name="study.policies.note"][@s.param] <a href="[@s.url namespace="/projects" action='${crpSession}/policies'][@s.param name='projectID']${(projectID)!}[/@s.param][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">clicking here</a>[/@][/@]</div>
           [#local policiesGuideSheetURL = "https://drive.google.com/file/d/1GYLsseeZOOXF9zXNtpUtE1xeh2gx3Vw2/view" /]
-          <small class="pull-right"><a href="${policiesGuideSheetURL}" target="_blank"> <img src="${baseUrlCdn}/global/images/icon-file.png" alt="" /> #I1 Policies -  Guideline </a> </small>
+          <small class="float-right"><a href="${policiesGuideSheetURL}" target="_blank"> <img src="${baseUrlCdn}/global/images/icon-file.png" alt="" /> #I1 Policies -  Guideline </a> </small>
           <br>
         </div>
       </div>
@@ -365,7 +365,7 @@
       [#if isOutcomeCaseStudy]
       <div class="form-group">
         [#assign ccGuideSheetURL = "https://drive.google.com/file/d/1oXb5UHABZIbyUUczZ8eqnDsgdzwABXPk/view?usp=sharing" /]
-        <small class="pull-right"><a href="${ccGuideSheetURL}" target="_blank"> <img src="${baseUrlCdn}/global/images/icon-file.png" alt="" />Cross-Cutting Markers  -  Guideline </a> </small>
+        <small class="float-right"><a href="${ccGuideSheetURL}" target="_blank"> <img src="${baseUrlCdn}/global/images/icon-file.png" alt="" />Cross-Cutting Markers  -  Guideline </a> </small>
       </div>
       <div class="form-group">
         [@tag name="Indicator #3" /]
@@ -530,15 +530,15 @@
 [/#macro]
 
 [#macro tag name=""]
-  [#-- <span class="badge badge-info pull-right"> <i class="fas fa-tag"></i> ${name} </span> --]
+  [#-- <span class="badge badge-info float-right"> <i class="fas fa-tag"></i> ${name} </span> --]
 [/#macro]
 
 [#macro studyLink name element index=-1 template=false]
   [#local customName = "${template?string('_TEMPLATE_', '')}${name}[${index}]"]
   <div id="studyLink-${(template?string('template', ''))}" class="studyLink form-group grayBox">
     <input type="hidden" name="${customName}.id" value="${(element.id)!}" />
-    <span class="pull-left" style="width:4%"><strong><span class="indexTag">${index + 1}</span>.</strong></span>
-    <span class="pull-left" style="width:90%">[@customForm.input name="${customName}.link" placeholder="global.webSiteLink.placeholder" showTitle=false i18nkey="" className="" editable=editable /]</span>
+    <span class="float-left" style="width:4%"><strong><span class="indexTag">${index + 1}</span>.</strong></span>
+    <span class="float-left" style="width:90%">[@customForm.input name="${customName}.link" placeholder="global.webSiteLink.placeholder" showTitle=false i18nkey="" className="" editable=editable /]</span>
     [#if editable]<div class="removeElement sm removeIcon removeLink" title="Remove"></div>[/#if]
     <div class="clearfix"></div>
   </div>

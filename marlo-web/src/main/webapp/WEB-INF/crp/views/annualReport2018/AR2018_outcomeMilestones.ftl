@@ -56,7 +56,7 @@
               [#if PMU]
                 <div class="borderBox">
                 
-                  <div class="form-group btn-group btn-group-sm pull-right" role="group" aria-label="...">
+                  <div class="form-group btn-group btn-group-sm float-right" role="group" aria-label="...">
                     <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#modal-evidenceC"><span class="glyphicon glyphicon-fullscreen"></span> AR Evidence C</button>
                     <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#modal-table5"><span class="glyphicon glyphicon-fullscreen"></span> See Full Table 5</button>
                     [#-- Missing fields in FPs --]
@@ -213,7 +213,7 @@
                 [/#if]
                 [#-- Milestone --]
                 [#if milestone.isActive()]
-                  <td> ${milestone.composedName} [#if allowPopups] <div class="pull-right">[@milestoneContributions element=milestone tiny=true /] [/#if]</div></td>
+                  <td> ${milestone.composedName} [#if allowPopups] <div class="float-right">[@milestoneContributions element=milestone tiny=true /] [/#if]</div></td>
                   [#-- Milestone Status --]
                   <td class="text-center"> 
                     [#local reportedMilestone= (action.getMilestone((reportedOutcome.id)!-1 , milestone.id))! ]
@@ -355,7 +355,7 @@
     
     [#-- Title --]
     <div class="form-group grayBox">
-      <div class="pull-right">[@milestoneContributions element=element /]</div>
+      <div class="float-right">[@milestoneContributions element=element /]</div>
       <p class="text-justify"><strong>[#if (element.milestonesStatus.id == 4)!false ]Milestone of ${element.year} extended to ${actualPhase.year}[#else]Milestone for ${actualPhase.year}[/#if]</strong> - ${(element.title)!} </p>
     </div>
     
@@ -451,7 +451,7 @@
     <div class="form-group grayBox">
       [#if (element.primary)!false]
        <div>
-        <span class="pull-left label label-info primaryTag">Primary</span>
+        <span class="float-left label label-info primaryTag">Primary</span>
        </div>
       [/#if]
       <div>
@@ -512,7 +512,7 @@
                         <i class="text-center" style="opacity:0.5">[@s.text name="global.prefilledWhenAvailable"/]</i>
                       [/#if]
                       
-                      <a href="${poURL}" target="_blank" class="pull-right"><span class="glyphicon glyphicon-new-window"></span></a>
+                      <a href="${poURL}" target="_blank" class="float-right"><span class="glyphicon glyphicon-new-window"></span></a>
                     </td>
                      
                   </tr>
@@ -538,7 +538,7 @@
                         <td> <a href="${ppURL}" target="_blank"> P${policy.projectOutcome.project.id} </a> </td>
                         <td> 
                           ${policy.projectOutcome.project.projectInfo.title} 
-                          <a href="${ppoURL}" target="_blank" class="pull-right"><span class="glyphicon glyphicon-new-window"></span></a>
+                          <a href="${ppoURL}" target="_blank" class="float-right"><span class="glyphicon glyphicon-new-window"></span></a>
                         </td>                       
                       </tr>
                     [/#list]
@@ -566,7 +566,7 @@
                         <td> <a href="${ocURL}" target="_blank"> P${outcomeCase.projectOutcome.project.id} </a> </td>
                         <td> 
                           ${outcomeCase.projectOutcome.project.projectInfo.title}  
-                          <a href="${ocoURL}" target="_blank" class="pull-right"><span class="glyphicon glyphicon-new-window"></span></a>
+                          <a href="${ocoURL}" target="_blank" class="float-right"><span class="glyphicon glyphicon-new-window"></span></a>
                         </td>
                       </tr>
                     [/#list]
@@ -594,7 +594,7 @@
                         <td> <a href="${piURL}" target="_blank"> P${innovation.projectOutcome.project.id} </a> </td>
                         <td> 
                           ${innovation.projectOutcome.project.projectInfo.title}
-                          <a href="${pioURL}" target="_blank" class="pull-right"><span class="glyphicon glyphicon-new-window"></span></a>
+                          <a href="${pioURL}" target="_blank" class="float-right"><span class="glyphicon glyphicon-new-window"></span></a>
                         </td>
                       </tr>
                     [/#list]

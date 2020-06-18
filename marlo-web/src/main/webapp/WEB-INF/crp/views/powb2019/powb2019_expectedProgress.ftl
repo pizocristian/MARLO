@@ -60,7 +60,7 @@
           
           [#-- Table 2A: Planned Milestones  --]
           [@utilities.tag label="powb.docBadge" tooltip="powb.docBadge.tooltip"/]
-          <button type="button" class="pull-right btn btn-link btn-sm" data-toggle="modal" data-target="#tableA-bigger"> 
+          <button type="button" class="float-right btn btn-link btn-sm" data-toggle="modal" data-target="#tableA-bigger"> 
               <span class="glyphicon glyphicon-fullscreen"></span> See Full Table 2A
             </button>
           <div id="tableA-bigger" class="modal fade bs-example-modal-lg " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
@@ -179,7 +179,7 @@
                   <td rowspan="${outcomesSize}" class="milestonesSize-${outcomesSize}"> ${(outcome.composedName)!}</td>
                 [/#if]
                 [#-- Milestone --]
-                <td>  ${(m.composedName)!}   [#if allowPopups]<div class="pull-right">[@milestoneContributions element=m tiny=true /][/#if]  </div></td>
+                <td>  ${(m.composedName)!}   [#if allowPopups]<div class="float-right">[@milestoneContributions element=m tiny=true /][/#if]  </div></td>
                 [#-- Indicate of the following --]
                 [#if includeAllColumns]
                   <td> [#if (m.powbIndFollowingMilestone.name?has_content)!false]${m.powbIndFollowingMilestone.name}[#else] [@utils.prefilledTag /] [/#if] </td>

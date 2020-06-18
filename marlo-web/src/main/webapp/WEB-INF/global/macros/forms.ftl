@@ -40,7 +40,7 @@
         [#--  Help Text --]
         [@helpLabel name="${help}" paramText="${paramText}" showIcon=helpIcon editable=editable/]
         [#if powbInclude]
-          <span class="powb-doc badge pull-right" title="[@s.text name="powb.includedField.title" /]">[@s.text name="powb.includedField" /] <span class="glyphicon glyphicon-save-file"></span></span>
+          <span class="powb-doc badge float-right" title="[@s.text name="powb.includedField.title" /]">[@s.text name="powb.includedField" /] <span class="glyphicon glyphicon-save-file"></span></span>
         [/#if]
       </label>
     [/#if]

@@ -176,6 +176,6 @@
     <input class="user" type="hidden" name="${customName}.user.id" value="${(element.user.id)!}"/>
     <input class="id" type="hidden" name="${customName}.id" value="${(element.id)!}"/>
     [#-- Remove Button --]
-    <span class="glyphicon glyphicon-remove pull-right removeUserItem" aria-hidden="true"></span>
+    <span class="glyphicon glyphicon-remove float-right removeUserItem" aria-hidden="true"></span>
   </li>
 [/#macro]

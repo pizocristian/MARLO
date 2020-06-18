@@ -209,7 +209,7 @@
                       <input class="id" type="hidden" name="project.clusterActivities[${element_index}].crpClusterOfActivity.id" value="${element.crpClusterOfActivity.id}" />
                       <input class="cid" type="hidden" name="project.clusterActivities[${element_index}].id" value="${(element.id)!}" />
                       <input class="identifier" type="hidden" name="project.clusterActivities[${element_index}].crpClusterOfActivity.identifier" value="${(element.crpClusterOfActivity.identifier)!}" />
-                      [#if editable && !reportingActive && action.hasPermission("activities") ]<span class="listButton remove popUpValidation pull-right">[@s.text name="form.buttons.remove" /]</span>[/#if] 
+                      [#if editable && !reportingActive && action.hasPermission("activities") ]<span class="listButton remove popUpValidation float-right">[@s.text name="form.buttons.remove" /]</span>[/#if] 
                       <span class="name">${(element.crpClusterOfActivity.composedName)!'null'}</span>
                       <div class="clearfix"></div>
                       <ul class="leaders">
@@ -302,7 +302,7 @@
 [#-- Cluster of activity list template --]
 <ul style="display:none">
   <li id="cpListTemplate" class="clusterActivity clearfix">
-    <span class="listButton remove pull-right">[@s.text name="form.buttons.remove" /]</span>
+    <span class="listButton remove float-right">[@s.text name="form.buttons.remove" /]</span>
     <input class="id" type="hidden" name="project.clusterActivities[-1].crpClusterOfActivity.id" value="" />
     <input class="cid" type="hidden" name="project.clusterActivities[-1].id" value="" />
     <span class="name"></span>
@@ -314,7 +314,7 @@
 [#-- project scope template --]
 <ul style="display:none">
   <li id="projecScope-template" class="projecScope clearfix">
-    <span class="listButton remove pull-right">[@s.text name="form.buttons.remove" /]</span>
+    <span class="listButton remove float-right">[@s.text name="form.buttons.remove" /]</span>
     <input class="id" type="hidden" name="project.scopes[-1].locElementType.id" value="" />
     <input class="cid" type="hidden" name="project.scopes[-1].id" value="" />
     <span class="name"></span>

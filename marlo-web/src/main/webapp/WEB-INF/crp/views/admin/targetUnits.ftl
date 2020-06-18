@@ -85,7 +85,7 @@
       [@customForm.input name="newTargetUnit" i18nkey="Write the new target unit" className="newTargetUnit" required=true editable=true /]
     </div>
     <div class="row form-group">
-      <div class="col-md-5 form-group text-center pull-right">
+      <div class="col-md-5 form-group text-center float-right">
         [@s.submit type="button" name="sendRequest"] <span class="glyphicon glyphicon-send"></span>  [@s.text name="Send" /][/@s.submit]
       </div>
     </div>
@@ -102,7 +102,7 @@
     <input type="hidden" class="id" name="${customName}.targetUnit.id" value="${(element.targetUnit.id)!}" />
     <input type="hidden" class="name" name="${customName}.targetUnit.name" value="${(element.targetUnit.name)!}" />
     [#-- Check Input --]
-    <span class=" pull-right" > 
+    <span class=" float-right" > 
      [#if editable]
       <input [#if element?? && element.targetUnit?? && action.canBeDeletedCrptargetUnit((element.targetUnit.id)!, (element.targetUnit.class.name)!)!][#else]style="opacity:0.5; cursor: not-allowed;" onclick="return false;" onkeydown="e = e || window.event; if(e.keyCode !== 9) return false;"[/#if] type="checkbox" value="true" name="${customName}.check" id="" [#if element.check?? && element.check]checked[/#if] />  
      [#else]

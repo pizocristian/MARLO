@@ -55,7 +55,7 @@
                 <input type="hidden" name="${customName}.next.id" value="${(phase.next.id)!}" />
                 <input type="hidden" name="${customName}.crp.id" value="${phase.crp.id}" />
                 
-                <div class="pull-right">
+                <div class="float-right">
                   [@customForm.radioFlat id="defaultPhaseID-${phase.id}" name="defaultPhaseID" label="Set as default landing" disabled=false editable=editable value="${phase.id}" checked=(defaultPhaseID == phase.id)!false cssClass="" cssClassLabel="text-bold" inline=false /]
                 </div>
                 

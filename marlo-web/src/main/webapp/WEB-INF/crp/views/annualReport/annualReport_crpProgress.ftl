@@ -86,7 +86,7 @@
                 </div>
                 [#if editable]
                 <div class="dottedBox">
-                  <div class="pull-left"> <span class="glyphicon glyphicon-plus"></span>  &nbsp</div>
+                  <div class="float-left"> <span class="glyphicon glyphicon-plus"></span>  &nbsp</div>
                   [@customForm.select name="" className="setSelect2 addSloTarget" i18nkey="${customLabel}.selectSLOTarget" listName="sloTargets" keyFieldName="id"  displayFieldName="composedName" required=true /]
                 </div>
                 [/#if]

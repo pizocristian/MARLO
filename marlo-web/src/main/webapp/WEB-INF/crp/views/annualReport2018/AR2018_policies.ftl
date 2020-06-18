@@ -52,7 +52,7 @@
             [#-- Table 2: Condensed list of policy contributions --]
             <div class="form-group">
               [#assign guideSheetURL = "https://drive.google.com/file/d/1GYLsseeZOOXF9zXNtpUtE1xeh2gx3Vw2/view" /]
-              <small class="pull-right"><a href="${guideSheetURL}" target="_blank"> <img src="${baseUrlCdn}/global/images/icon-file.png" alt="" /> #I1 Policies  -  Guideline </a> </small>
+              <small class="float-right"><a href="${guideSheetURL}" target="_blank"> <img src="${baseUrlCdn}/global/images/icon-file.png" alt="" /> #I1 Policies  -  Guideline </a> </small>
             </div>
             <br />
             <div class="form-group row">
@@ -139,7 +139,7 @@
               [#if PMU][@utilities.tag label="annualReport.docBadge" tooltip="annualReport.docBadge.tooltip"/][/#if]
               
               [#-- Button --]
-              <button type="button" class="btn btn-outline-secondary btn-xs pull-right" data-toggle="modal" data-target="#modal-policies">
+              <button type="button" class="btn btn-outline-secondary btn-xs float-right" data-toggle="modal" data-target="#modal-policies">
                  <span class="glyphicon glyphicon-fullscreen"></span> See Full table 2
               </button>
               [#-- Modal --]
@@ -239,7 +239,7 @@
             </div>
             [/#if]
             [#if !expanded] [@oicrPopup element=item /] [/#if]
-            <a href="${url}" target="_blank" class="pull-right mt-1">[@s.text name="${customLabel}.table2.linkToPolicy" /] <span class="glyphicon glyphicon-new-window"></span></a>
+            <a href="${url}" target="_blank" class="float-right mt-1">[@s.text name="${customLabel}.table2.linkToPolicy" /] <span class="glyphicon glyphicon-new-window"></span></a>
           </td>
           [#-- Description --]
           <td class="text-center">[@utils.tableText value=(item.projectPolicyInfo.description)!"" /]</td>         

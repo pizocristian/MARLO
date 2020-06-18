@@ -43,7 +43,7 @@
     <br />
         
     <div class="">
-      <div class="pull-right">
+      <div class="float-right">
         [#if projectID > 0]
           <a class="" href="[@s.url namespace='/monitoring' action='${centerSession}/projectCapdev'] [@s.param name='projectID']${projectID?c}[/@s.param][@s.param name='edit' value="true" /] [/@s.url] "><span class="glyphicon glyphicon-circle-arrow-left"></span>[@s.text name="capdev.gotoBackProjects" /]</a>
         [#else]

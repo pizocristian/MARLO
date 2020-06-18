@@ -61,7 +61,7 @@
               [@utilities.tag label="annualReport.docBadge" tooltip="annualReport.docBadge.tooltip"/]
               [#if PMU]
                 [#-- Modal Large --]
-                <button type="button" class="pull-right btn btn-outline-secondary" data-toggle="modal" data-target="#tableA-bigger"> 
+                <button type="button" class="float-right btn btn-outline-secondary" data-toggle="modal" data-target="#tableA-bigger"> 
                   <span class="glyphicon glyphicon-fullscreen"></span> See Full Table B
                 </button>
                 <div id="tableA-bigger" class="modal fade bs-example-modal-lg " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
@@ -134,7 +134,7 @@
                 [#-- Outcomes --]
                 [#if isOutcomeRow && !allowPopups]<td rowspan="${outcomesSize}" class="milestonesSize-${outcomesSize}"> ${outcome.composedName}</td>[/#if]
                 [#-- Milestone --]
-                <td> ${milestone.composedName} [#if allowPopups] <div class="pull-right">[@milestoneContributions element=milestone tiny=true /] [/#if]</div></td>
+                <td> ${milestone.composedName} [#if allowPopups] <div class="float-right">[@milestoneContributions element=milestone tiny=true /] [/#if]</div></td>
                 [#-- Milestone status --]
                 <td>[#if (milestoneProgress.milestonesStatus?has_content)!false]${milestoneProgress.statusName}[#else]<i style="opacity:0.5">[@s.text name="global.prefilledWhenAvailable"/]</i>[/#if]</td>
                 [#-- Explanation --]
@@ -178,7 +178,7 @@
     
     [#-- Title --]
     <div class="form-group">
-      <div class="pull-right">[@milestoneContributions element=element /]</div>
+      <div class="float-right">[@milestoneContributions element=element /]</div>
       <p class="text-justify"><strong>Milestone for ${actualPhase.year}</strong> - ${(element.title)!} </p>
     </div>
     

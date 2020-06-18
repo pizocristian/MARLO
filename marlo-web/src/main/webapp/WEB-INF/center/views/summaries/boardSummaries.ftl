@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Summaries Section" /]
 [#assign currentSectionString = "${actionName?replace('/','-')}-phase-${(actualPhase.id)!}" /]
-[#assign pageLibs = ["select2","font-awesome","jsUri"] /]
+[#assign pageLibs = ["select2","jsUri"] /]
 
 
 [#assign customJS = ["${baseUrlCdn}/global/js/utils.js", 
@@ -52,8 +52,8 @@
             <div class="extraOptions col-md-12" style="display:none"> 
               <span class="hidden fileTypes excelType">leadProjectInstitutionsSummary-leadProjectInstitutionsSummary</span>
               [@customForm.select name="programID" header=false   label=""  i18nkey="Select a Research Program"  listName="programs"  keyFieldName="id"  displayFieldName="composedName" className="allPrograms"   multiple=false required=true   editable=true/]
-              <div class="pull-right">
-                <a style="display:none;" target="_blank" class="generateReport addButton pull-right" href="#">[@s.text name="form.buttons.generate" /]</a>
+              <div class="float-right">
+                <a style="display:none;" target="_blank" class="generateReport addButton float-right" href="#">[@s.text name="form.buttons.generate" /]</a>
               </div>
             </div>
           </div>
@@ -68,8 +68,8 @@
             <div class="extraOptions col-md-12" style="display:none"> 
               <span class="hidden fileTypes excelType">leadProjectInstitutionsSummary-leadProjectInstitutionsSummary</span>
               [@customForm.select name="programID" header=false   label=""  i18nkey="Select a Research Program"  listName="programs"  keyFieldName="id"  displayFieldName="composedName" className="allPrograms"   multiple=false required=true   editable=true/]
-              <div class="pull-right">
-                <a style="display:none;" target="_blank" class="generateReport addButton pull-right" href="#">[@s.text name="form.buttons.generate" /]</a>
+              <div class="float-right">
+                <a style="display:none;" target="_blank" class="generateReport addButton float-right" href="#">[@s.text name="form.buttons.generate" /]</a>
               </div>
             </div>
           </div>
@@ -88,8 +88,8 @@
             <span class="description col-md-12">[@s.text name="summaries.board.report.project.description" /]</span>
             <div class="extraOptions col-md-12" style="display:none"> 
               [@customForm.select name="projectID" header=true   label=""  i18nkey="Select a Project"  listName="allProjects"  keyFieldName="id"  displayFieldName="composedName" className="allPrograms"   multiple=false required=true   editable=true/]
-              <div class="pull-right">
-                <a style="display:none;" target="_blank" class="generateReport addButton pull-right" href="#">[@s.text name="form.buttons.generate" /]</a>
+              <div class="float-right">
+                <a style="display:none;" target="_blank" class="generateReport addButton float-right" href="#">[@s.text name="form.buttons.generate" /]</a>
               </div>
             </div>
           </div>
@@ -103,8 +103,8 @@
             <span class="description col-md-12">[@s.text name="summaries.board.report.deliverable.description" /]</span>
             <div class="extraOptions col-md-12" style="display:none"> 
               [@customForm.select name="programID" header=false   label=""  i18nkey="Select a Research Program"  listName="programs"  keyFieldName="id"  displayFieldName="composedName" className="allPrograms"   multiple=false required=true   editable=true/]
-              <div class="pull-right">
-                <a style="display:none;" target="_blank" class="generateReport addButton pull-right" href="#">[@s.text name="form.buttons.generate" /]</a>
+              <div class="float-right">
+                <a style="display:none;" target="_blank" class="generateReport addButton float-right" href="#">[@s.text name="form.buttons.generate" /]</a>
               </div>
             </div>
           </div>
@@ -125,8 +125,8 @@
             <div class="extraOptions col-md-12" style="display:none"> 
               <span class="hidden fileTypes excelType">leadProjectInstitutionsSummary-leadProjectInstitutionsSummary</span>
               [@customForm.select name="programID" header=false   label=""  i18nkey="Select a Research Program"  listName="programs"  keyFieldName="id"  displayFieldName="composedName" className="allPrograms"   multiple=false required=true   editable=true/]
-              <div class="pull-right">
-                <a style="display:none;" target="_blank" class="generateReport addButton pull-right" href="#">[@s.text name="form.buttons.generate" /]</a>
+              <div class="float-right">
+                <a style="display:none;" target="_blank" class="generateReport addButton float-right" href="#">[@s.text name="form.buttons.generate" /]</a>
               </div>
             </div>
           </div>
@@ -141,8 +141,8 @@
             <div class="extraOptions col-md-12" style="display:none"> 
               <span class="hidden fileTypes excelType">leadProjectInstitutionsSummary-leadProjectInstitutionsSummary</span>
               [@customForm.select name="programID" header=false   label=""  i18nkey="Select a Research Program"  listName="programs"  keyFieldName="id"  displayFieldName="composedName" className="allPrograms"   multiple=false required=true   editable=true/]
-              <div class="pull-right">
-                <a style="display:none;" target="_blank" class="generateReport addButton pull-right" href="#">[@s.text name="form.buttons.generate" /]</a>
+              <div class="float-right">
+                <a style="display:none;" target="_blank" class="generateReport addButton float-right" href="#">[@s.text name="form.buttons.generate" /]</a>
               </div>
             </div>
           </div>
@@ -175,8 +175,8 @@
                 [@customForm.select name="" header=false   label=""  i18nkey="Select a Year"  listName=""  keyFieldName=""  displayFieldName="" className="yearArea"   multiple=false required=true   editable=true/]
               </div>
               
-              <div class="pull-right">
-                <a id="generarReportCapdevByArea" target="_blank" class=" addButton pull-right  generarReportCapdev" href="#">[@s.text name="form.buttons.generate" /]</a>
+              <div class="float-right">
+                <a id="generarReportCapdevByArea" target="_blank" class=" addButton float-right  generarReportCapdev" href="#">[@s.text name="form.buttons.generate" /]</a>
               </div>
             </div>
             
@@ -198,8 +198,8 @@
                 [@customForm.select name="" header=false   label=""  i18nkey="Select a Year"  listName=""  keyFieldName=""  displayFieldName="" className="yearProgram"   multiple=false required=true   editable=true/]
               </div>
               
-              <div class="pull-right">
-                <a id="generarReportCapdevByProgram" target="_blank" class=" addButton pull-right  generarReportCapdev" href="#">[@s.text name="form.buttons.generate" /]</a>
+              <div class="float-right">
+                <a id="generarReportCapdevByProgram" target="_blank" class=" addButton float-right  generarReportCapdev" href="#">[@s.text name="form.buttons.generate" /]</a>
               </div>
             </div>
             

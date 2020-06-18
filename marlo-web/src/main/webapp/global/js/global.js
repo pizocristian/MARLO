@@ -536,7 +536,7 @@ function formatRepo(repo) {
   markup += "<div class='select2-result-repository clearfix'>";
 
   // Is PPA
-  markup += "<small class='pull-right'>";
+  markup += "<small class='float-right'>";
   if(repo.isPPA) {
     markup += "<span class='label label-warning'>Managing / PPA Partner</span>"
   } else {

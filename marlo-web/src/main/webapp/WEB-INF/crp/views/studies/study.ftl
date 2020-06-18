@@ -34,7 +34,7 @@
     [#include "/WEB-INF/crp/views/publications/messages-publications.ftl" /]
     
     [#-- Back --]
-    <small class="pull-right">
+    <small class="float-right">
       <a href="[@s.url action='${crpSession}/studiesList'][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">
         <span class="glyphicon glyphicon-circle-arrow-left"></span> Back to Studies list
       </a>

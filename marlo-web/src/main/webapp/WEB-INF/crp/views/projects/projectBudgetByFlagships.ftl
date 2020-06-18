@@ -189,7 +189,7 @@
                     <input type="hidden" name="${customName}.amount" value="${(budgetObject.amount)!0}"/>
                   [/#if]
                   [#-- Label Amount 
-                  <span class="labelAmount pull-right type-${budgetType.id}"><small><i>$US 0.00</i></small></span>--]
+                  <span class="labelAmount float-right type-${budgetType.id}"><small><i>$US 0.00</i></small></span>--]
                 </td>
               [/#if]
             [/#list]

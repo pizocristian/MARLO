@@ -43,7 +43,7 @@
     <br />
 
     <div class="col-md-12">
-      <div class="pull-right">
+      <div class="float-right">
         <a class="" href="[@s.url action='${centerSession}/supportingDocs'] [@s.param name='capdevID']${capdevID}[/@s.param] [@s.param name='projectID']${projectID}[/@s.param] [@s.param name='edit' value="true" /][/@s.url]"><span class="glyphicon glyphicon-circle-arrow-left"></span>[@s.text name="capdev.supportingDocs.goBack" /]</a> 
       </div>
     </div>
@@ -150,7 +150,7 @@
               [/#if]
             </div>
             [#if editable]
-              <div class="pull-right"><div class="button-green addCapdevsupportDocument"><span class="glyphicon glyphicon-plus-sign"></span>[@s.text name="Add  document" /]</div></div>
+              <div class="float-right"><div class="button-green addCapdevsupportDocument"><span class="glyphicon glyphicon-plus-sign"></span>[@s.text name="Add  document" /]</div></div>
             [/#if]
           </div>
         </div>

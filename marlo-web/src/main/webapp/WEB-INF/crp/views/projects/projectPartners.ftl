@@ -282,9 +282,9 @@
       <span class="${customForm.changedField('${name}.id')}"> <span class="index_number">${index+1}</span>. <span class="partnerTitle">${(element.institution.composedName)!'Project Partner'}</span> </span>
       
       [#-- Tags --]
-      <div class="partnerTags pull-right">
+      <div class="partnerTags float-right">
         <span class="badge badge-success type-leader" style="display:${(isLeader?string('inline','none'))!'none'}">Leader</span>
-        <span class="badge badge-default type-coordinator" style="display:${(isCoordinator?string('inline','none'))!'none'}">Coordinator</span>
+        <span class="badge badge-secondary type-coordinator" style="display:${(isCoordinator?string('inline','none'))!'none'}">Coordinator</span>
         <span class="index ${isPPA?string('ppa','')}">${isPPA?string('Managing / PPA Partner','Partner')} </span>
       </div>
       
@@ -409,7 +409,7 @@
     
     [#-- Deliverables --]
     [#if !isTemplate] 
-    <div class="pull-right">
+    <div class="float-right">
       [@popUps.relationsMacro element=element /]
     </div>
     [/#if]
@@ -440,7 +440,7 @@
     [/#if]
     
     [#if customForm.changedField('${name}.id') != '']
-      <span class="badge badge-info pull-right">Added/Updated</span> 
+      <span class="badge badge-info float-right">Added/Updated</span> 
     [/#if]
     <div class="">
     	<div class="form-group row">

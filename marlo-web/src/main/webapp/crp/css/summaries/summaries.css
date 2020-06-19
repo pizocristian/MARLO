@@ -29,6 +29,7 @@
 
 #generateProject {
   /* margin-top: 20px; */
+  
 }
 
 .choose {
@@ -50,7 +51,7 @@
   margin-bottom: 0.5em;
   border: 1px solid #ccc;
   border-radius: 2px;
-  box-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
   /* text-align: center; */
 }
 
@@ -88,6 +89,7 @@
 
 .summariesOptions {
   /* margin: 8px 0; */
+  
 }
 
 .summariesOption {
@@ -104,6 +106,7 @@
 }
 
 .summariesOption label {
+  
 }
 
 .summariesOption label span {
@@ -116,6 +119,7 @@
 .extraOptions {
   /* padding-top: 70px; */
   /* margin: 5px 16px; */
+  
 }
 
 /* Summaries Section icons*/
@@ -193,6 +197,7 @@
   /* color: red; */
   /* font-size: 1.2em; */
   /* margin: 5px 0 0 0px; */
+  
 }
 
 .title-file {
@@ -217,25 +222,25 @@
   border-color: #d2d1d1;
 }
 
-.summariesFiles .tags .label {
+.summariesFiles .tags .badge {
   font-size: 0.72em;
   margin-right: 2px;
   opacity: 0.7;
 }
 
-.summariesFiles .tags .label.type-excel {
+.summariesFiles .tags .badge.type-excel {
   background: #2a8851;
 }
 
-.summariesFiles .tags .label.type-pdf {
+.summariesFiles .tags .badge.type-pdf {
   background: #F44336;
 }
 
-.summariesFiles .tags .label.type-reporting {
+.summariesFiles .tags .badge.type-reporting {
   background: #777777;
 }
 
-.summariesFiles .tags .label.type-planning {
+.summariesFiles .tags .badge.type-planning {
   background: #337ab7;
 }
 
@@ -244,6 +249,7 @@
   /* color: #3c763d; */
   /* font-size: 1.2em; */
   /* margin: 5px 0 0 4px; */
+  
 }
 
 .info-file {
@@ -322,14 +328,13 @@
   border-radius: 6px;
 }
 
-
-
 ul.tag-editor {
   line-height: 25px;
   min-height: 60px;
 }
 
-.tag-editor li  {
+.tag-editor li {
+  
 }
 
 .tag-editor .tag-editor-tag {

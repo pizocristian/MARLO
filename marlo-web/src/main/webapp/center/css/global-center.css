@@ -4666,7 +4666,7 @@ aside[id*="-control"] .slidr-control:after {
   padding: 2px 5px;
 }
 
-.activityInformation .label{
+.activityInformation .badge{
   padding: 2px 5px;
   font-weight: bold;
 }

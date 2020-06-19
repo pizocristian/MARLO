@@ -52,7 +52,7 @@
           
           [#if reportingActive]
             [#--  FAIR LEGEND --]
-            <div class="form-group col-md-12 legendContent">
+            <div class="form-group row legendContent">
               <div class="col-md-12 fairDiagram" >[@s.text name="project.deliverableList.fairExplanation" /] </div>
               <div class="col-md-6 explanation">
                 <div class="col-md-12 form-group "><b>[@s.text name="project.deliverableList.fairExplanation.fair" /]:</b></div>
@@ -73,7 +73,7 @@
             </div>
           [/#if]
           [#--  Status LEGEND --]
-          <div class="form-group col-md-12 legendContent">
+          <div class="form-group row legendContent">
             <div class="col-md-6 colors">
               <div class="col-md-12 form-group "><b>[@s.text name="project.deliverableList.deliverableStatus" /]:</b></div>
               <div class="form-group col-md-6 fair"><span id="" class="legend-color status-indicator Complete"></span>[@s.text name="project.deliverableList.deliverableStatus.complete" /]</div>

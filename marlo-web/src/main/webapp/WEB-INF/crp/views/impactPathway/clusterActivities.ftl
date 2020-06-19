@@ -224,9 +224,9 @@
         <div class="removeElement disable" title="[@s.text name='global.CrpClusterKeyOutput' /] can not be deleted "></div>
     [/#if]
     [#-- Partner Title --]
-    <div class="blockTitle closed">
-       <span title="${(element.keyOutput)!}" class="koTitle col-md-9">[#if element.keyOutput?has_content][@utils.wordCutter string=(element.keyOutput) maxPos=70 substr=" "/][#else]New Key output[/#if]</span>
-      <span class="float-right koContribution-title"><span><b>Contribution:</b></span> <span class="koContribution-percentage">${(element.contribution?string["0.##"])!}%</span></span>
+    <div class="blockTitle closed row">
+       <span title="${(element.keyOutput)!}" class="koTitle col-lg-9">[#if element.keyOutput?has_content][@utils.wordCutter string=(element.keyOutput) maxPos=70 substr=" "/][#else]New Key output[/#if]</span>
+      <span class="float-right koContribution-title col-lg-3 pl-0 pl-lg-3"><span><b>Contribution:</b></span> <span class="koContribution-percentage">${(element.contribution?string["0.##"])!}%</span></span>
     <div class="clearfix"></div>
     </div>
     

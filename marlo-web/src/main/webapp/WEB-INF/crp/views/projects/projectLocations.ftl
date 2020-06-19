@@ -75,7 +75,7 @@
                   [#-- REGIONS SELECT --]
                   <div class="">
                     [#if action.hasSpecificities('crp_other_locations')]
-                    <div class="regionsBox form-group col-md-12" style="display:${(project.projectInfo.locationRegional?string("block","none"))!"none"};">
+                    <div class="regionsBox form-group row" style="display:${(project.projectInfo.locationRegional?string("block","none"))!"none"};">
                       <div class="panel tertiary col-md-12">
                         <div class="panel-head">
                           <label for=""> [@customForm.text name="projectCofunded.selectRegions" readText=!editable /]:[@customForm.req required=editable /]</label><br />
@@ -83,7 +83,7 @@
                         </div>
                         
                         <div id="regionList" class="panel-body" listname="project.projectRegions"> 
-                          <ul class="list">
+                          <ul class="list row">
                           [#if project.projectRegions?has_content]
                             [#list project.projectRegions as region]
                               <li id="" class="region clearfix col-md-3">
@@ -200,7 +200,7 @@
                       [#-- SUGGESTED REGIONS LIST --]
                       [#if project.regionFS?has_content]
                         <h5 class="sectionSubTitle text-gray">[@s.text name="projectLocations.suggestedRegions" /]:</h5>
-                        <div class="row regionsContent" style="display:${(project.projectInfo.locationRegional?string("block","none"))!"none"};">
+                        <div class="row regionsContent" style="display:${(project.projectInfo.locationRegional?string("flex","none"))!"none"};">
                           [#list project.regionFS as location]
                             [@recommendedLocation element=location name="project.regionFS" index=location_index template=false /]
                           [/#list]
@@ -429,8 +429,8 @@
                 </div>
               </div>
               [#-- Countries from suggested locations list --]
-              <div class="row suggestedCountriesList" style="display:none">
-                <div class="col-sm-12">
+              <div class="col-sm-12 suggestedCountriesList" style="display:none">
+                <div class="row">
                 [#if template]
                   <hr class="suggestedLocations-separator" />
                   <div class="row suggestedLocations-separator">
@@ -445,7 +445,7 @@
                   [#if element.name == 'Country']
                     [#if project.countryFS?has_content]
                       <hr class="suggestedLocations-separator" />
-                      <div class="row suggestedLocations-separator">
+                      <div class="col-sm-12 suggestedLocations-separator">
                         <div class="col-sm-4 col-md-4">
                           <div class="suggestedLocations-label">
                             [@s.text name="projectLocations.suggestedCountriesSeparator" /]:
@@ -486,7 +486,7 @@
   [#assign countID = countID+1/]
   [#-- Content collapsible--]
   <div id="location-${template?string('template',countID)}" class="col-md-4 locElement" style="display:${template?string('none','block')}" data-locId="${element.id!}">
-    <div class="locations col-md-12">
+    <div class="locations">
       <div class="locationName">
         <span class="lName">${(element.name)!}</span> 
         [#if element.locGeoposition?? && element.locGeoposition.latitude?? && element.locGeoposition.longitude?? && element.locGeoposition.latitude!=0 && element.locGeoposition.longitude!=0]

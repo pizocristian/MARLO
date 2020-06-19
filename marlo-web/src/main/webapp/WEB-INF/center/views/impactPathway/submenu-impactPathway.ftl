@@ -6,10 +6,10 @@
     [#list researchAreas as area]
     [#assign isActive = (area.id == areaID)/]
     [#assign link = "#area-${area.id}" /]
-      <li role="areas" class="${isActive?string('active','')}">
+      <li role="areas" class="nav-item ${isActive?string('active','')}">
         [#-- Getting first program --]
         [#list area.researchPrograms as program][#if program_index == 0][#assign link][@s.url][@s.param name="crpProgramID" value=program.id /][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url][/#assign][/#if][/#list]
-        <a href="${link}" aria-controls="home" role="tab" [#-- data-toggle="tab" --]>${area.acronym}</a>
+        <a href="${link}"  class="nav-link" aria-controls="home" role="tab" [#-- data-toggle="tab" --]>${area.acronym}</a>
       </li>
     [/#list]
   </ul>

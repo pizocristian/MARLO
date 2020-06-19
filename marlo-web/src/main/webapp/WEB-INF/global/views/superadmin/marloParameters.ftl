@@ -70,7 +70,7 @@
         [#-- Roles(1, "Roles"), Specificities(2, "Specificities"), Settings(3, "Settings"); --]
         <ul class="nav nav-tabs" role="tablist">
         [#list parametersTypes as type]
-          <li class="${type?is_first?string('active','')}"><a href="#type-${type_index}-${element.id}" role="tab" data-toggle="tab">${type.format}</a></li>
+          <li class="nav-item" ><a href="#type-${type_index}-${element.id}" class="nav-link ${type?is_first?string('active','')}" role="tab" data-toggle="tab">${type.format}</a></li>
         [/#list]
         </ul>
         <div class="tab-content">

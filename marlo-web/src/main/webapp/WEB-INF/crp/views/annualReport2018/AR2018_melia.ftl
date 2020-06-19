@@ -50,8 +50,8 @@
             <div class="bootstrapTabs">
               [#-- Tabs --] 
               <ul class="nav nav-tabs" role="tablist"> 
-                <li role="presentation" class="active"><a index="0" href="#tab-table10" aria-controls="info" role="tab" data-toggle="tab"> Table 10: MELIA </a></li>
-                <li role="presentation" class=""><a index="1" href="#tab-table11" aria-controls="info" role="tab" data-toggle="tab"> Table 11: Update on Actions Taken </a></li>
+                <li role="presentation" class="nav-item"><a index="0" href="#tab-table10" class="nav-link active" aria-controls="info" role="tab" data-toggle="tab"> Table 10: MELIA </a></li>
+                <li role="presentation" class="nav-item"><a index="1" href="#tab-table11" class="nav-link" aria-controls="info" role="tab" data-toggle="tab"> Table 11: Update on Actions Taken </a></li>
               </ul>
               
               [#-- Content --] 

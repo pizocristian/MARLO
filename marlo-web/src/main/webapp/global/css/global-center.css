@@ -67,7 +67,7 @@ ul.horizontalSubMenu li.active {
   border-color: #7b9074;
 }
 
-.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+.nav-tabs>li>a.active, .nav-tabs>li>a.active:focus, .nav-tabs>li>a.active:hover {
   border-top: 4px solid #7b9074 !important;
   color: #8ea786 !important;
 }

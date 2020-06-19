@@ -55,10 +55,10 @@
             <div class="bootstrapTabs">
               [#-- Tabs --] 
               <ul class="nav nav-tabs" role="tablist"> 
-                <li role="presentation" class="active"><a index="0" href="#tab-gender" aria-controls="info" role="tab" data-toggle="tab">1.3.1 Gender</a></li>
-                <li role="presentation" class=""><a index="1" href="#tab-youth" aria-controls="info" role="tab" data-toggle="tab">1.3.2 Youth</a></li>
-                <li role="presentation" class=""><a index="2" href="#tab-capdev" aria-controls="info" role="tab" data-toggle="tab">1.3.3 Capacity Development</small> </a></li>
-                <li role="presentation" class=""><a index="3" href="#tab-climateChange" aria-controls="info" role="tab" data-toggle="tab">1.3.4 Climate Change</a></li>
+                <li role="presentation" class="nav-item"><a index="0" href="#tab-gender" class="nav-link active" aria-controls="info" role="tab" data-toggle="tab">1.3.1 Gender</a></li>
+                <li role="presentation" class="nav-item"><a index="1" href="#tab-youth" aria-controls="info" class="nav-link" role="tab" data-toggle="tab">1.3.2 Youth</a></li>
+                <li role="presentation" class="nav-item"><a index="2" href="#tab-capdev" aria-controls="info" class="nav-link" role="tab" data-toggle="tab">1.3.3 Capacity Development</small> </a></li>
+                <li role="presentation" class="nav-item"><a index="3" href="#tab-climateChange" class="nav-link" aria-controls="info" role="tab" data-toggle="tab">1.3.4 Climate Change</a></li>
               </ul>
               [#-- Content --] 
               <div class="tab-content ">

@@ -409,8 +409,8 @@ li#menu-oicr {
   border-bottom: 1px solid #dedede;
 }
 
-.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
-  border-top: 4px solid #1882aa;
+.nav-tabs>li>a.active, .nav-tabs>li>a.active:focus, .nav-tabs>li>a.active:hover {
+  border-top: 4px solid #1882aa !important;
   border-bottom-color: transparent;
   font-weight: bold;
   /* color: #0377a3; */

@@ -54,8 +54,8 @@
             <div class="bootstrapTabs">
               [#-- Tabs --] 
               <ul class="nav nav-tabs" role="tablist"> 
-                <li role="presentation" class="active"><a index="0" href="#tab-keyPartnerships" aria-controls="info" role="tab" data-toggle="tab">2.2.1 Highlights of External Partnerships </a></li>
-                <li role="presentation" class=""><a index="1" href="#tab-crossPartnerships" aria-controls="info" role="tab" data-toggle="tab">2.2.2 Cross-CGIAR Partnerships</a></li>
+                <li role="presentation" class="nav-item"><a index="0" href="#tab-keyPartnerships" class="nav-link active" aria-controls="info" role="tab" data-toggle="tab">2.2.1 Highlights of External Partnerships </a></li>
+                <li role="presentation" class="nav-item"><a index="1" href="#tab-crossPartnerships" class="nav-link" aria-controls="info" role="tab" data-toggle="tab">2.2.2 Cross-CGIAR Partnerships</a></li>
               </ul>
               
               [#-- Content --] 

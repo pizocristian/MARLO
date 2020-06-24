@@ -445,21 +445,21 @@
     <input type="hidden"  name="${customName}.phase.id" value="${(element.phase.id)!}"/>
     
     [#-- Project Fund --]
-    <div class="row form-group w3bilateralFund">
-      <div class="col-md-4">
-        <div class="row col-md-6"> <strong>Type:</strong> </div>
-        <div class="row col-md-8">
+    <div class="form-row w3bilateralFund">
+      <div class="form-group col-md-4">
+        <div class=""> <strong>Type:</strong> </div>
+        <div class="">
           <span class="budgetTypeName">${(element.fundingSource.fundingSourceInfo.budgetType.name)!} 
             [#if action.hasSpecificities('crp_fs_w1w2_cofinancing')] ${(element.fundingSource.fundingSourceInfo.w1w2?string('<small class="text-primary">(Co-Financing)</small>',''))!} [/#if]
           </span> 
           <input type="hidden" class="budgetTypeId" name="${customName}.budgetType.id" value="${(element.fundingSource.fundingSourceInfo.budgetType.id)!}" />
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="row col-md-5">
-          <div class="row ml-0"><strong>Amount:</strong></div>
+      <div class="form-group col-md-4 col-lg-3 offset-lg-1">
+        <div class="">
+          <div class=""><strong>Amount:</strong></div>
         </div>
-        <div class="row col-md-9">
+        <div class="">
           [#-- TODO: Allow to add funding sources when there is no aggregate (problem with permissions)  --]
           [#-- Added action.canSearchFunding to allow to modify gender depending on institution  --]
           [#if (editable && isYearEditable(selectedYear) && (action.canEditFunding(((element.fundingSource.fundingSourceInfo.budgetType.id)!-1),(element.institution.id)!-1) ))|| isTemplate]
@@ -472,10 +472,10 @@
           [/#if]
         </div>
       </div>
-      <div class="col-md-4">
+      <div class="form-group col-md-4 col-lg-3 offset-lg-1">
         [#if ((project.projectInfo.projectEditLeader)!false) && action.hasSpecificities('crp_budget_gender')]
-          <div class="row col-md-6"> <div class="row ml-0"><strong>Gender %:</strong></div> </div>
-          <div class="row col-md-7">
+          <div class=""> <div class="row ml-0"><strong>Gender %:</strong></div> </div>
+          <div class="">
             [#-- TODO: Allow to add funding sources when there is no aggregate (problem with permissions)  --]
             [#-- Added action.canSearchFunding to allow to modify gender depending on institution  --]
             [#if (editable && isYearEditable(selectedYear) && action.canSearchFunding(element.institution.id) && action.canEditGender()) || isTemplate]

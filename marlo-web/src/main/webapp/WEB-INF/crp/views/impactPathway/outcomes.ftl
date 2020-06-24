@@ -482,20 +482,22 @@
       [@customForm.radioFlat id="${subIDOCustomName}.primary" name="${subIDOCustomName}.primary" label="Set this Sub-IDO as primary" disabled=false editable=editable value="true" checked=(subIdo.primary)!false cssClass="setPrimaryRadio" cssClassLabel="radio-label-yes" inline=false /]
     </div>
     [#-- Sub IDO --]
-    <div class="form-group">
-      <div class="subIdoBlock" >
-        <label for="">[@s.text name="outcome.subIDOs.inputSubIDO.label"/]:[#if editable]<span class="red">*</span>[/#if]</label>
-        <div id="" class="${subIDOCustomID} subIdoSelected">
-          [@utils.letterCutter string="${(subIdo.srfSubIdo.description)!'<i>No Sub-IDO Selected</i>'}" maxPos=65 /]
+    <div class="row">
+      <div class="form-row col-md-9">
+        <div class="col-8" >
+          <label for="">[@s.text name="outcome.subIDOs.inputSubIDO.label"/]:[#if editable]<span class="red">*</span>[/#if]</label>
+          <div id="" class="${subIDOCustomID} subIdoSelected">
+            [@utils.letterCutter string="${(subIdo.srfSubIdo.description)!'<i>No Sub-IDO Selected</i>'}" maxPos=65 /]
+          </div>
+          <input type="hidden" class="subIdoId" name="${subIDOCustomName}.srfSubIdo.id" value="${(subIdo.srfSubIdo.id)!}" />
         </div>
-        <input type="hidden" class="subIdoId" name="${subIDOCustomName}.srfSubIdo.id" value="${(subIdo.srfSubIdo.id)!}" />
+        
+          [#if editable]
+            <div class="buttonSubIdo-content col-4"><br> <div class="button-blue selectSubIDO" ><span class=""></span> Select a Sub-IDO</div></div>
+          [/#if]
+        
       </div>
-      <div class="buttonSubIdo-block" >
-        [#if editable]
-          <div class="buttonSubIdo-content"><br> <div class="button-blue selectSubIDO" ><span class=""></span> Select a Sub-IDO</div></div>
-        [/#if]
-      </div>
-      <div class="contributionBlock">[@customForm.input name="${subIDOCustomName}.contribution" type="text" i18nkey="outcome.subIDOs.inputContribution.label" placeholder="% of contribution" className="contribution" required=true editable=editable /]</div>
+      <div class="contributionBlock form-group col-md-3">[@customForm.input name="${subIDOCustomName}.contribution" type="text" i18nkey="outcome.subIDOs.inputContribution.label" placeholder="% of contribution" className="contribution" required=true editable=editable /]</div>
       <div class="clearfix"></div>
     </div>
     <hr /> 

@@ -504,10 +504,9 @@
       [#local isPublic = (element.projectExpectedStudyInfo.isPublic)!true /]
       [@customForm.radioFlat id="optionPublic-yes"  name="${customName}.projectExpectedStudyInfo.isPublic" i18nkey="Yes"  value="true"  checked=isPublic  cssClass="radioType-optionPublic" cssClassLabel="font-normal radio-label-yes" editable=editable /] 
       [@customForm.radioFlat id="optionPublic-no"   name="${customName}.projectExpectedStudyInfo.isPublic" i18nkey="No"   value="false" checked=!isPublic cssClass="radioType-optionPublic" cssClassLabel="font-normal radio-label-no"  editable=editable /] 
-      
+      <br />
       <div class="optionPublicComponent form-group" style="display:${isPublic?string('block', 'none')}">         
-        <br />
-        <div class="input-group">
+        <div class="">
           <span class="input-group-btn">
             <button class="btn btn-outline-secondary btn-sm copyButton" type="button"> <span class="glyphicon glyphicon-link"></span> Copy URL </button>
           </span>

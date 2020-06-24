@@ -17,7 +17,7 @@
   </div>
   [#-- Glossary --]
   <div class="col-md-4 glossary text-right">
-    [@s.text name="footer.glossary"][@s.param]<a target="_blank" href="[@s.url namespace="/" action='glossary'][/@s.url]">[@s.text name="global.clickHere" /][/@s.param][/@s.text] <span class="fa fa-hand-point-left"></span> </a>
+    [@s.text name="footer.glossary"][@s.param]<a target="_blank" href="[@s.url namespace="/" action='glossary'][/@s.url]">[@s.text name="global.clickHere" /][/@s.param][/@s.text] <span class="fas fa-hand-point-left"></span> </a>
   </div>
 </div>
 
@@ -31,6 +31,6 @@
 [#-- MARLO Blog --]
 <div class="newsButton">
   <a href="https://marlo-news.blogspot.com" target="__blank">
-     <b> [@s.text name="footer.checkBlog" /] </b> <span class="fa fa-external-link-square-alt"></span>
+     <b> [@s.text name="footer.checkBlog" /] </b> <span class="fas fa-external-link-square-alt"></span>
   </a>
 </div>

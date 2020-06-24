@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Summaries Section" /]
 [#assign currentSectionString = "${actionName?replace('/','-')}-phase-${(actualPhase.id)!}" /]
-[#assign pageLibs = ["select2","font-awesome","jsUri", "caret", "jquery-tag-editor"] /]
+[#assign pageLibs = ["select2""jsUri", "caret", "jquery-tag-editor"] /]
 [#assign customJS = [
   "${baseUrlCdn}/global/js/utils.js", 
   "${baseUrlMedia}/js/summaries/boardSummaries_v2.js"
@@ -380,11 +380,11 @@
   <div class="loading" style="display:none"></div>
   <div class="form-group" style="opacity:${report.available?string('1','0.5')}">
     [#-- Tags --]
-    <div class="tags pull-right">
-      [#list report.cycles![] as tag ]<span class="badge badge-default type-${tag?lower_case}">${tag}</span>[/#list]
+    <div class="tags float-right">
+      [#list report.cycles![] as tag ]<span class="badge badge-secondary type-${tag?lower_case}">${tag}</span>[/#list]
       
       [#list report.formats as icon ]
-      <span class="badge badge-default type-${icon?lower_case}"><span class="fa fa-file-${icon?lower_case}-o ${icon?lower_case}Icon file"></span> ${icon}</span>
+      <span class="badge badge-secondary type-${icon?lower_case}"><span class="fa fa-file-${icon?lower_case}-o ${icon?lower_case}Icon file"></span> ${icon}</span>
       [/#list] 
     </div>
     [#-- Title --]
@@ -487,7 +487,7 @@
       [/#if]
       
       [#-- Generate Button--]
-      <button type="submit" class="btn btn-info pull-right"><span class="glyphicon glyphicon-download-alt"></span> Generate</button> <div class="clearfix"></div>
+      <button type="submit" class="btn btn-info float-right"><span class="glyphicon glyphicon-download-alt"></span> Generate</button> <div class="clearfix"></div>
     [/@s.form]
   </div>
   [/#if]

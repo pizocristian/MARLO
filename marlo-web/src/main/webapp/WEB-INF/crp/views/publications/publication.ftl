@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "MARLO Publication" /]
 [#assign currentSectionString = "${actionName?replace('/','-')}-${(deliverable.id)!}-phase-${(actualPhase.id)!}" /]
-[#assign pageLibs = ["select2","font-awesome","blueimp-file-upload","jsUri", "flag-icon-css", "pickadate"] /]
+[#assign pageLibs = ["select2","blueimp-file-upload","jsUri", "flag-icon-css", "pickadate"] /]
 [#assign customJS = [
   "${baseUrlMedia}/js/publications/publication.js?20190228",
   "${baseUrlMedia}/js/projects/deliverables/deliverableQualityCheck.js?20190228", 
@@ -33,7 +33,7 @@
     [#include "/WEB-INF/crp/views/publications/messages-publications.ftl" /]
     
     [#-- Back --]
-    <small class="pull-left">
+    <small class="float-left">
       <a href="[@s.url action='${crpSession}/publicationsList'][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">
         <span class="glyphicon glyphicon-circle-arrow-left"></span> Back to publications
       </a>
@@ -41,7 +41,7 @@
     
     [#-- FAIR Compliant Mini --]
     <div class="fairComplian-block" style="">
-      <div class="pull-right">
+      <div class="float-right">
         [#-- Findable --] 
         <div class="fairCompliant mini findable [#attempt][#if action.isF(deliverable.id)??][#if action.isF(deliverable.id)] achieved [#else] not-achieved [/#if][/#if][#recover][/#attempt]"><div class="sign">F</div></div>
         [#-- Accessible --] 

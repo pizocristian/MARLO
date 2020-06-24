@@ -2,7 +2,7 @@
 [#assign title = "Innovations" /]
 [#assign currentSectionString = "project-${actionName?replace('/','-')}-${innovationID}-phase-${(actualPhase.id)!}" /]
 [#-- TODO: Remove unused pageLibs--]
-[#assign pageLibs = ["select2","font-awesome", "flag-icon-css"] /]
+[#assign pageLibs = ["select2", "flag-icon-css"] /]
 [#assign customJS = [
   "${baseUrlMedia}/js/projects/projectInnovations.js",
   "${baseUrlCdn}/global/js/autoSave.js", 
@@ -38,7 +38,7 @@
       [#include "/WEB-INF/crp/views/projects/messages-innovation.ftl" /]
 
       [#-- Back --]
-      <small class="pull-right">
+      <small class="float-right">
         <a href="[@s.url action='${crpSession}/innovationsList'][@s.param name="projectID" value=project.id /][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">
           <span class="glyphicon glyphicon-circle-arrow-left"></span> [@s.text name="projectInnovations.back" /]
         </a>
@@ -60,7 +60,7 @@
             </div>
             <div class="col-md-8">
               [#assign guideSheetURL = "https://drive.google.com/file/d/1JvceA0bdvqS5Een056ctL7zJr3hidToe/view" /]
-              <small class="pull-right"><a href="${guideSheetURL}" target="_blank"> <img src="${baseUrlCdn}/global/images/icon-file.png" alt="" /> #C1 Innovations  -  Guideline </a> </small>
+              <small class="float-right"><a href="${guideSheetURL}" target="_blank"> <img src="${baseUrlCdn}/global/images/icon-file.png" alt="" /> #C1 Innovations  -  Guideline </a> </small>
             </div>
           </div>
           <hr />

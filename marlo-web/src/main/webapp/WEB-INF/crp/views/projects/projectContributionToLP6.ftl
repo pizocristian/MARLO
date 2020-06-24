@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Project Contributions to LP6" /]
 [#assign currentSectionString = "project-${actionName?replace('/','-')}-${projectID}-phase-${(actualPhase.id)!}" /]
-[#assign pageLibs = ["select2", "font-awesome", "flag-icon-css"] /]
+[#assign pageLibs = ["select2", "flag-icon-css"] /]
 [#assign customJS = [
   "${baseUrlMedia}/js/projects/projectContributionsToLP6.js",
   "${baseUrlCdn}/global/js/autoSave.js",
@@ -23,8 +23,8 @@
       <div class="col-md-3">
         [#include "/WEB-INF/crp/views/projects/menu-projects.ftl" /]
       </div>
-        [@s.form action=actionName method="POST" enctype="multipart/form-data" cssClass=""]
-        <div class="col-md-9">
+        [@s.form action=actionName method="POST" enctype="multipart/form-data" cssClass="col-md-9"]
+        <div class="">
           <h3 class="headTitle">[@s.text name="projects.LP6Contribution.contributionTitle" /]</h3>  
           <div id="projectContributionToLP6" class="borderBox">
           

@@ -1,7 +1,7 @@
 [#ftl]
 [#assign title = "Deliverable information" /]
 [#assign currentSectionString = "project-${actionName?replace('/','-')}-${deliverableID}-phase-${(actualPhase.id)!}" /]
-[#assign pageLibs = ["select2","font-awesome","dropzone","blueimp-file-upload","jsUri", "flag-icon-css", "pickadate"] /]
+[#assign pageLibs = ["select2","dropzone","blueimp-file-upload","jsUri", "flag-icon-css", "pickadate"] /]
 [#assign customJS = [
   "${baseUrlMedia}/js/projects/deliverables/deliverableInfo.js?20200511",
   "${baseUrlMedia}/js/projects/deliverables/deliverableDissemination.js?20200511", 
@@ -64,7 +64,7 @@
 
             [#-- FAIR Compliant Mini --]
             <div class="fairComplian-block" style="display:${deliverable.deliverableInfo.requeriedFair()?string('block','none')}">
-              <div class="pull-right">
+              <div class="float-right">
                 [#-- Findable --] 
                 <div class="fairCompliant mini findable [#attempt][#if action.isF(deliverable.id)??][#if action.isF(deliverable.id)] achieved [#else] not-achieved [/#if][/#if][#recover][/#attempt]"><div class="sign">F</div></div>
                 [#-- Accessible --] 
@@ -87,13 +87,13 @@
           <div class="deliverableTabs">
             [#--  Deliverable Menu  --] 
             <ul class="nav nav-tabs" role="tablist"> 
-                <li role="presentation" class="[#if indexTab==1 || indexTab==0]active[/#if]"><a index="1" href="#deliverable-mainInformation" aria-controls="info" role="tab" data-toggle="tab">[@s.text name="project.deliverable.generalInformation.titleTab" /]</a></li>
+                <li role="presentation" class="nav-item"><a index="1" href="#deliverable-mainInformation" class="[#if indexTab==1 || indexTab==0]active[/#if]"   aria-controls="info" role="tab" data-toggle="tab">[@s.text name="project.deliverable.generalInformation.titleTab" /]</a></li>
                 
                 [#if (reportingActive || actualPhase.upkeep) && action.hasSpecificities("crp_has_disemination") ]
-                <li role="presentation" class="[#if indexTab==2]active[/#if]"><a index="2" href="#deliverable-disseminationMetadata" aria-controls="metadata" role="tab" data-toggle="tab">Dissemination & Metadata</a></li>
+                <li role="presentation" class="nav-item"><a index="2" href="#deliverable-disseminationMetadata" class="[#if indexTab==2]active[/#if]" aria-controls="metadata" role="tab" data-toggle="tab">Dissemination & Metadata</a></li>
                 
                 [#assign isRequiredQuality = deliverable.deliverableInfo.requeriedFair() || ((action.hasDeliverableRule(deliverable.deliverableInfo, deliverableComplianceCheck))!false) /]
-                <li role="presentation" class="[#if indexTab==3]active[/#if]" style="display:${isRequiredQuality?string('block','none')};"><a index="3" href="#deliverable-qualityCheck" aria-controls="quality" role="tab" data-toggle="tab">Quality check</a></li>
+                <li role="presentation" class="nav-item" style="display:${isRequiredQuality?string('block','none')};"><a index="3" href="#deliverable-qualityCheck" class="[#if indexTab==3]active[/#if]" aria-controls="quality" role="tab" data-toggle="tab">Quality check</a></li>
                 
                 [#--  
                 [#assign isRequiredDataSharing = (deliverable.dissemination.alreadyDisseminated)!false /]

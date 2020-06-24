@@ -28,63 +28,66 @@
 [#include "/WEB-INF/global/pages/header.ftl" /]
 [#include "/WEB-INF/global/pages/main-menu.ftl" /]
 
-<div class="container"> 
-	<div class="row">
-		<div class="helpMessage infoText col-md-12 capdevinfo">
-			<img class="col-md-2" src="${baseUrlCdn}/global/images/icon-help.png" />
+<div class="container">
+  <div class="row"> 	
+		<div class="helpMessage infoText d-inline-flex capdevinfo">
+		  <div>
+			 <img  src="${baseUrlCdn}/global/images/icon-help.png" />
+			</div>
+			<div>
    			[@s.text name="capdev.help.detail"][/@s.text] 
+   		</div>	
 		</div>
-	</div> 
-
-	<div class="col-md-3 capDevMenu">
-		[#include "/WEB-INF/center/views/capDev/menu-capdev.ftl" /]
-	</div>
-	
-	<div class="col-md-9 ">
-    [#-- Section Messages --]
-    [#include "/WEB-INF/center/views/capDev/messages-capdev.ftl" /]
-    <br />
-
-    <div class="float-right">
-      [#if projectID > 0]
-      	<a class="" href="[@s.url namespace='/monitoring' action='${centerSession}/projectCapdev'] [@s.param name='projectID']${projectID?c}[/@s.param][@s.param name='edit' value="true" /] [/@s.url] "><span class="glyphicon glyphicon-circle-arrow-left"></span>[@s.text name="capdev.gotoBackProjects" /]</a>
-      [#else]
-      	<a class="" href="[@s.url action='${centerSession}/capdev' ][@s.param name='edit' value="true" /] [/@s.url] "><span class="glyphicon glyphicon-circle-arrow-left"></span>[@s.text name="capdev.gotoBack" /]</a>
-      [/#if]
-    </div>
-    [@s.form action=actionName method="POST" enctype="multipart/form-data" cssClass=""]
-      [#-- Intervencion Information --]
-      <h4 class="form-group headTitle" >[@s.text name="capdev.interventionTitle" /]</h4>
-      <div  class="fullForm borderBox" >
-        [@interventionInfo /]
-      </div>
-      
-      [#-- Participant(s) --]
-      <h4 class="form-group headTitle newCapdevField grupsParticipantsForm" >Participant(s) Information</h4>
-      <div  class="fullForm borderBox" >
-        [#if ((capdev.category == 2)!false)]
-          [#-- Groups --]
-          [@groupsParticipants /]
-        [#elseif ((capdev.category == 1)!false)]
-          [#-- Induvidual--]
-          [@induvidualParticipant /]
+  
+  	<div class="col-md-3 capDevMenu">
+  		[#include "/WEB-INF/center/views/capDev/menu-capdev.ftl" /]
+  	</div>
+  	
+  	<div class="col-md-9 ">
+      [#-- Section Messages --]
+      [#include "/WEB-INF/center/views/capDev/messages-capdev.ftl" /]
+      <br />
+  
+      <div class="float-right">
+        [#if projectID > 0]
+        	<a class="" href="[@s.url namespace='/monitoring' action='${centerSession}/projectCapdev'] [@s.param name='projectID']${projectID?c}[/@s.param][@s.param name='edit' value="true" /] [/@s.url] "><span class="glyphicon glyphicon-circle-arrow-left"></span>[@s.text name="capdev.gotoBackProjects" /]</a>
+        [#else]
+        	<a class="" href="[@s.url action='${centerSession}/capdev' ][@s.param name='edit' value="true" /] [/@s.url] "><span class="glyphicon glyphicon-circle-arrow-left"></span>[@s.text name="capdev.gotoBack" /]</a>
         [/#if]
       </div>
-      
-      [#-- Regions and countries lists  --]
-      [#if ((capdev.category == 2)!false)]
-      <h4 class="headTitle newCapdevField">Reach</h4>
-      <div class="borderBox">
-        [@reachLocation /]
-      </div>
-      [/#if]
-      
-      [#-- Buttons --]
-      [#include "/WEB-INF/center/views/capDev/buttons-capdev.ftl" /]
-    [/@s.form]
-
-  </div>
+      [@s.form action=actionName method="POST" enctype="multipart/form-data" cssClass=""]
+        [#-- Intervencion Information --]
+        <h4 class="form-group headTitle" >[@s.text name="capdev.interventionTitle" /]</h4>
+        <div  class="fullForm borderBox" >
+          [@interventionInfo /]
+        </div>
+        
+        [#-- Participant(s) --]
+        <h4 class="form-group headTitle newCapdevField grupsParticipantsForm" >Participant(s) Information</h4>
+        <div  class="fullForm borderBox" >
+          [#if ((capdev.category == 2)!false)]
+            [#-- Groups --]
+            [@groupsParticipants /]
+          [#elseif ((capdev.category == 1)!false)]
+            [#-- Induvidual--]
+            [@induvidualParticipant /]
+          [/#if]
+        </div>
+        
+        [#-- Regions and countries lists  --]
+        [#if ((capdev.category == 2)!false)]
+        <h4 class="headTitle newCapdevField">Reach</h4>
+        <div class="borderBox">
+          [@reachLocation /]
+        </div>
+        [/#if]
+        
+        [#-- Buttons --]
+        [#include "/WEB-INF/center/views/capDev/buttons-capdev.ftl" /]
+      [/@s.form]
   
+    </div>
+  </div>  
 </div>
 
 [#-- Search users Interface --]
@@ -138,12 +141,14 @@
         [@customForm.select name="capdev.capdevType.id" listName="capdevTypes" keyFieldName="id" displayFieldName="name" help="capdev.help.type" i18nkey="capdev.form.type"  placeholder="capdev.select" required=true editable=editable disabled=!editable/]
       </div>
       [#-- Contact person --]
-      <div class="col-md-6 contactField userField" style="display:${((capdev.category == 2)!false)?string('block','none')};">
-        [@customForm.input name="contact" value="${(capdev.ctFirstName)!} ${(capdev.ctLastName)!}" className='userName' type="text" disabled=!canEdit i18nkey="capdev.form.contactPerson" required=true readOnly=true editable=editable /]
-        <input class="userId"     type="hidden" name="capdev.user.id"     value="${(capdev.user.id)!}" />   
-        <input class="ctFirsName" type="hidden" name="capdev.ctFirstName" value="${(capdev.ctFirstName)!}" /> 
-        <input class="ctLastName" type="hidden" name="capdev.ctLastName"  value="${(capdev.ctLastName)!}" /> 
-        <input class="ctEmail"    type="hidden" name="capdev.ctEmail"     value="${(capdev.ctEmail)!}" />
+      <div class="col-md-6 contactField userField form-row" style="display:${((capdev.category == 2)!false)?string('block','none')};">
+        <div class="">
+          [@customForm.input name="contact" value="${(capdev.ctFirstName)!} ${(capdev.ctLastName)!}" className='userName' type="text" disabled=!canEdit i18nkey="capdev.form.contactPerson" required=true readOnly=true editable=editable /]
+          <input class="userId"     type="hidden" name="capdev.user.id"     value="${(capdev.user.id)!}" />   
+          <input class="ctFirsName" type="hidden" name="capdev.ctFirstName" value="${(capdev.ctFirstName)!}" /> 
+          <input class="ctLastName" type="hidden" name="capdev.ctLastName"  value="${(capdev.ctLastName)!}" /> 
+          <input class="ctEmail"    type="hidden" name="capdev.ctEmail"     value="${(capdev.ctEmail)!}" />
+        </div>
         [#if editable]<div class="searchUser button-blue button-float">[@s.text name="form.buttons.searchUser" /]</div>[/#if]
       </div>
   </div>
@@ -202,7 +207,7 @@
 [/#macro]
 
 [#macro groupsParticipants]
-<div class="form-group row" >
+<div class="form-group" >
   [#if capdev.capdevParticipant?has_content && capdev.capdevParticipant?size > 1] 
     <div class="capdevParticipantsTable">
       <div class="capdev-participantslist-title">List of participants</div>
@@ -239,14 +244,14 @@
   [#else]
     [#if editable]
       <div class="form-group col-md-12 newCapdevField participantsheader">
-        <div class="float-right">
+        <div class="d-flex justify-content-end">
           <button type="button" class="capdevButtons" aria-label="Left Align" title="Download template to upload the list of participants">
             <a class="downloadButton" href="[@s.url action='${centerSession}/downloadFile' /] ">[@s.text name="capdev.downloadTemplate" /]</a>
           </button>
         </div>
       </div>
-      <div class="form-group row ">
-        <div class="col-md-12  participantsBox " listname="capdev.uploadFile">
+      <div class="form-group row">
+        <div class="participantsBox " listname="capdev.uploadFile">
           <!-- [@s.fielderror fieldName="upload_File" class="fileError" /] -->
           <div class="col-md-12">
             [@s.file id="uploadFile" name="uploadFile" label="Select a File to upload" size="40" class="uploadParticipants" editable=editable/]
@@ -283,8 +288,8 @@
   [/#if]
 
   [#-- num participants, num men and num women --]
-  <div class="form-group row">
-    <div class="col-md-12 ">
+  <div class="form-group col-md-12">
+    <div class="row">
       <div class="col-md-4 group individual">
         [@customForm.input name="capdev.numParticipants" i18nkey="capdev.form.numParticipants" type="text" help="capdev.help.numParticipants"  editable=editable className="numParticipants" /]
       </div>
@@ -298,7 +303,7 @@
         [@customForm.input name="capdev.numOther" i18nkey="capdev.form.numOther" help="capdev.help.numOther" type="text" className="numOhter" editable=editable/]
       </div>
      </div>
-     <div class="col-md-12 ">
+     <div class="row">
       <div class="col-md-4 group individual">
         <label>Is estimate <input type="checkbox" name="capdev.estimate" value="true" [#if (capdev.estimate)!false ]checked="checked"[/#if]></label>
       </div>

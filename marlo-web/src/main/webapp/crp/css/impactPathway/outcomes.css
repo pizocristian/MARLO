@@ -101,7 +101,7 @@ p.contributioRem {
 .subIdoSelected {
     border: 1.5px solid #f1f1f1;
     line-height: 23px;
-    height: 28px;
+    /* height: 28px; */
     border-radius: 3px;
     font-size: 0.9em;
     color: #4a4a4a;

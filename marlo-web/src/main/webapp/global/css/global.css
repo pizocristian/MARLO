@@ -1206,7 +1206,7 @@ select#partnerSave_activityPartner_partner_type_id {
 }
 
 .panel-body .list span.name {
-  width: 90%;
+  width: 80%;
   display: block;
   float: left;
 }
@@ -1216,7 +1216,7 @@ select#partnerSave_activityPartner_partner_type_id {
 }
 
 .panel span.listButton, .budget span.listButton {
-  /* float:right; */
+  float:right;
   padding: 0px 8px;
   cursor: pointer;
   position: relative;
@@ -1567,7 +1567,7 @@ a#userLogOut {
   color: #FFFFFF;
   position: relative;
   display: inline-block;
-  font-size: 0.93em;
+  font-size: 0.8em;
 }
 
 #mainMenu .menuContent ul li:hover {
@@ -4774,7 +4774,7 @@ aside[id*="-control"] .slidr-control:after {
   padding: 2px 5px;
 }
 
-.activityInformation .label {
+.activityInformation .badge {
   padding: 2px 5px;
   font-weight: bold;
 }
@@ -7080,4 +7080,16 @@ hr{
 
 ul.pagination {
   justify-content: flex-end;
+}
+
+.btn-outline-secondary{
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
+}
+
+.btn-outline-secondary:hover{
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
 }

@@ -227,7 +227,7 @@ a button.downloadButtonHome:hover{
 .capdevinfo{
 	border-radius: 5px;
 	background-color: #d9ead3;
-	height: 60px;
+	/* height: 60px; */
 }
 
 .list > li{

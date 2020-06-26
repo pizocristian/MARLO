@@ -73,7 +73,7 @@
 
 [#-- POPUP TO REQUEST A NEW TARGET --]
 <div id="popUp"  style="display:none;" >
-  <span class="glyphicon glyphicon-remove-circle close-dialog"></span>
+  <span class="fas fa-times-circle close-dialog"></span>
   <h4 style="text-align:center;">Request a new Target Unit</h4>
   <hr />
   <div class="col-md-12">
@@ -86,7 +86,7 @@
     </div>
     <div class="row form-group">
       <div class="col-md-5 form-group text-center float-right">
-        [@s.submit type="button" name="sendRequest"] <span class="glyphicon glyphicon-send"></span>  [@s.text name="Send" /][/@s.submit]
+        [@s.submit type="button" name="sendRequest"] <span class="fas fa-paper-plane"></span>  [@s.text name="Send" /][/@s.submit]
       </div>
     </div>
 </div>

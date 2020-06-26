@@ -53,7 +53,7 @@
           
           [#-- Add Impact Button --]
           [#if editable]
-            <div class="addImpact bigAddButton text-center"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>[@s.text name="form.buttons.addImpact"/]</div>
+            <div class="addImpact bigAddButton text-center"><span class="fas fa-plus" aria-hidden="true"></span>[@s.text name="form.buttons.addImpact"/]</div>
           [/#if]
           
           [#-- Section Buttons--]
@@ -79,12 +79,12 @@
     [#if editable]
     [#if element.id?has_content]
       [#if template || action.centerCanBeDeleted(element.id, element.class.name)!false]
-        <span class="glyphicon glyphicon-remove float-right removeProgramImpact" style="color:#FF0000" aria-hidden="true"></span>
+        <span class="fas fa-times float-right removeProgramImpact" style="color:#FF0000" aria-hidden="true"></span>
       [#else]
-        <span class="glyphicon glyphicon-remove float-right" style="color:#ccc" aria-hidden="true" title="Can not be deleted"></span>
+        <span class="fas fa-times float-right" style="color:#ccc" aria-hidden="true" title="Can not be deleted"></span>
       [/#if]
     [#else]
-        <span class="glyphicon glyphicon-remove float-right removeProgramImpact" style="color:#FF0000" aria-hidden="true"></span>
+        <span class="fas fa-times float-right removeProgramImpact" style="color:#FF0000" aria-hidden="true"></span>
     [/#if]  
     [/#if]
     
@@ -136,7 +136,7 @@
     
     [#-- Beneficiaries--]
     <h5 class="sectionSubTitle">[@s.text name="Intended beneficiaries: "/]</h5>
-    <div class="alert alert-info" role="alert"><span class="glyphicon glyphicon-info-sign"></span> Please list intended beneficiaries. </div>
+    <div class="alert alert-info" role="alert"><span class="fas fa-info-circle"></span> Please list intended beneficiaries. </div>
     <div class="form-group simpleBox beneficiaries-list" listname="${customName}.beneficiaries">
       [#if element.beneficiaries?has_content]
         [#list element.beneficiaries as beneficiary]
@@ -149,7 +149,7 @@
     </div>
     [#if editable] 
     <div class="text-right">
-      <div class="addBeneficiary button-blue text-right"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> [@s.text name="Add beneficiary"/]</div>
+      <div class="addBeneficiary button-blue text-right"><span class="fas fa-plus-circle" aria-hidden="true"></span> [@s.text name="Add beneficiary"/]</div>
     </div>
     [/#if]
     

@@ -1,6 +1,6 @@
 [#ftl]
 <div id="draggable-button" class="hidden-print" style="display:none">
-  <p><span class="glyphicon glyphicon-comment"></span> Chat </p> <span class="status"></span>
+  <p><span class="fas fa-comment-alt"></span> Chat </p> <span class="status"></span>
 </div>
 
 <script type="text/javascript">

@@ -48,7 +48,7 @@
               [#else]
                 <input type="hidden" name="${customLocName}.check" value="${elementType.check?string}"/>
               [/#if]
-              <label for="${customLocName}"><span class="glyphicon glyphicon-map-marker"></span> <span>${elementType.locElementType.name}</span></label>
+              <label for="${customLocName}"><span class="fas fa-map-marker-alt"></span> <span>${elementType.locElementType.name}</span></label>
               [#-- CRPs that allow this location --]
               <div class="crps" style="color: #9c9c9c; margin-left: 0px; font-size: 0.75em;" title="CRPs ">
                 [#if elementType.locElementType?? && elementType.locElementType.crpLocElementTypes?has_content]
@@ -75,7 +75,7 @@
           </div>
           [#-- Add Location Level Button --]
           [#if editable]
-            <div class="addLocationLevel type-location bigAddButton text-center"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>[@s.text name="form.buttons.addLocationLevel"/]</div>
+            <div class="addLocationLevel type-location bigAddButton text-center"><span class="fas fa-plus" aria-hidden="true"></span>[@s.text name="form.buttons.addLocationLevel"/]</div>
           [/#if]
         </div>
         
@@ -103,7 +103,7 @@
           </div>
           [#-- Add Location Level Button --]
           [#if editable]
-            <div class="addLocationLevel type-scope bigAddButton text-center"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>[@s.text name="form.buttons.addScopeLevel"/]</div>
+            <div class="addLocationLevel type-scope bigAddButton text-center"><span class="fas fa-plus" aria-hidden="true"></span>[@s.text name="form.buttons.addScopeLevel"/]</div>
           [/#if]
         </div>
         <div class="clearfix"></div>
@@ -155,7 +155,7 @@
         [#-- Does this location level have specific coordinates?   --]
         [@customForm.yesNoInput name="${customName}.hasCoordinates" label="location.question" editable=editable inverse=false value="${((locLevel.hasCoordinates)!false)?string}" cssClass="text-left" /]
         <div class="infoContent" >
-          <div class="info-icon"><span class="glyphicon glyphicon-info-sign"></span></div>
+          <div class="info-icon"><span class="fas fa-info-circle"></span></div>
           <div class="info-text"><span>If so, the locations added below will prefill a dropdown menu for Project Leader to pick from. Otherwise, Project Leaders will define by themselves.</span></div>
         </div>
       [#else]
@@ -164,7 +164,7 @@
       <div class="clearfix"></div>
       [#-- confirm popup --]
       <div id="dialog-confirm"  style="display:none;">
-        <p><span class="glyphicon glyphicon-warning-sign" style="float:left; margin:0 7px 20px 0;"></span> If you want to proceed with this action, <span class="locElements"></span> locations elements will be removed by the system.  </p>
+        <p><span class="fas fa-exclamation-triangle" style="float:left; margin:0 7px 20px 0;"></span> If you want to proceed with this action, <span class="locElements"></span> locations elements will be removed by the system.  </p>
       </div>
       [#-- Locations List --]
       <div class="aditional-hasCoordinates" style="display:${(((locLevel.hasCoordinates)!false) || !locationType)?string('block','none')}">
@@ -187,7 +187,7 @@
               <div class="latitudeBlock">[@customForm.input name="" type="text"  placeholder="location.inputLatitude.placeholder" showTitle=false className="locationLatitude-input" /]</div>
               <div class="longitudeBlock">[@customForm.input name="" type="text"  placeholder="location.inputLongitude.placeholder" showTitle=false className="locationLongitude-input" /]</div>
               <div class="nameBlock">[@customForm.input name="" type="text"  placeholder="location.inputLocationName.placeholder" showTitle=false className="locationName-input" /]</div>
-              <div class="buttonBlock text-right"><div class="addLocElement button-blue"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> [@s.text name="form.buttons.addLocation"/]</div></div>
+              <div class="buttonBlock text-right"><div class="addLocElement button-blue"><span class="fas fa-plus" aria-hidden="true"></span> [@s.text name="form.buttons.addLocation"/]</div></div>
               <div class="clearfix"></div>
             [#else]
               [@customForm.select name=""  i18nkey="location.select.country" listName="countriesList" header=true keyFieldName="isoAlpha2" displayFieldName="name" value="id" className="countriesList"/]
@@ -210,7 +210,7 @@
     
     [#-- Location Name --]
     [#if locationType]
-      <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> <span class="name">${(element.name)!'{name}'}</span><br />
+      <span class="fas fa-map-marker-alt" aria-hidden="true"></span> <span class="name">${(element.name)!'{name}'}</span><br />
       <span class="coordinates" title="${(element.locElement.name)!'Undefined'}"> [@utilities.wordCutter string=(element.locElement.name)!'Undefined' maxPos=15 /] (${(element.locGeoposition.latitude)!}, ${(element.locGeoposition.longitude)!})</span>
     [#else]
       <span class="flag-icon-container"><i class="flag-icon flag-icon-${(element.locElement.isoAlpha2?lower_case)!}"></i></span> <span class="name">${(element.name)!'{name}'}</span><br />

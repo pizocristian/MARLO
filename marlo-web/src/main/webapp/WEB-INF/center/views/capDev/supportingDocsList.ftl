@@ -39,9 +39,9 @@
       <div class="col-md-12">
         <div class="float-right">
           [#if projectID > 0]
-            <a class="" href="[@s.url namespace='/monitoring' action='${centerSession}/projectCapdev'] [@s.param name='projectID']${projectID?c}[/@s.param][@s.param name='edit' value="true" /] [/@s.url] "><span class="glyphicon glyphicon-circle-arrow-left"></span>[@s.text name="capdev.gotoBackProjects" /]</a>
+            <a class="" href="[@s.url namespace='/monitoring' action='${centerSession}/projectCapdev'] [@s.param name='projectID']${projectID?c}[/@s.param][@s.param name='edit' value="true" /] [/@s.url] "><span class="fas fa-arrow-alt-circle-left"></span>[@s.text name="capdev.gotoBackProjects" /]</a>
           [#else]
-            <a class="" href="[@s.url action='${centerSession}/capdev' /] "><span class="glyphicon glyphicon-circle-arrow-left"></span>[@s.text name="capdev.gotoBack" /]</a>
+            <a class="" href="[@s.url action='${centerSession}/capdev' /] "><span class="fas fa-arrow-alt-circle-left"></span>[@s.text name="capdev.gotoBack" /]</a>
           [/#if]
         </div>
       </div>

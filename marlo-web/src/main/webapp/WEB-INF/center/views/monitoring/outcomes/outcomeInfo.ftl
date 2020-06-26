@@ -42,7 +42,7 @@
       [#-- Back --]
       <div class="float-right">
         <a href="[@s.url action='${centerSession}/monitoringOutcomesList'][@s.param name="programID" value=selectedProgram.id /][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">
-          <span class="glyphicon glyphicon-circle-arrow-left"></span> Back to the outcome list
+          <span class="fas fa-arrow-alt-circle-left"></span> Back to the outcome list
         </a>
       </div>  
       
@@ -70,7 +70,7 @@
       </div> 
       [#-- View Porjects contributions 
       <button type="button" class="btn btn-default btn-xs float-right outcomeProjects-${outcome.id}" data-toggle="modal" data-target="#outcomeProjectsModal">
-        <span class="glyphicon glyphicon-pushpin"></span> View Project Contributions
+        <span class="fas fa-thumbtack"></span> View Project Contributions
       </button>
       --]
     <div class="">
@@ -128,7 +128,7 @@
             If you want to report on milestones that were not previously defined in the Impact Pathway, please click on the button below:
             </div>
             <div class="text-center">
-              <div class="button-green addMilestone"><span class="glyphicon glyphicon-plus-sign"></span>[@s.text name="Add a milestone" /]</div>
+              <div class="button-green addMilestone"><span class="fas fa-plus-circle"></span>[@s.text name="Add a milestone" /]</div>
             </div>
             [/#if]
           </div>
@@ -149,7 +149,7 @@
               </div>
               [#if editable]
               <div class="text-center">
-                <div class="button-green addEvidence"><span class="glyphicon glyphicon-plus-sign"></span>[@s.text name="Add Evidence" /]</div>
+                <div class="button-green addEvidence"><span class="fas fa-plus-circle"></span>[@s.text name="Add Evidence" /]</div>
               </div>
               [/#if]
             </div>

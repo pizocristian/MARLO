@@ -36,7 +36,7 @@
     [#-- Back --]
     <small class="float-right">
       <a href="[@s.url action='${crpSession}/studiesList'][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">
-        <span class="glyphicon glyphicon-circle-arrow-left"></span> Back to Studies list
+        <span class="fas fa-arrow-alt-circle-left"></span> Back to Studies list
       </a>
     </small>
     <br />

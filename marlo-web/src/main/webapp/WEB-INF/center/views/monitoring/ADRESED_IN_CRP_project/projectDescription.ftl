@@ -52,7 +52,7 @@
           [#-- Back --]
         <div class="float-right">
           <a href="[@s.url action='${centerSession}/projectList'][@s.param name="programID" value=programID /][@s.param name="projectID" value=projectID /][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">
-            <span class="glyphicon glyphicon-circle-arrow-left"></span> Back to the project list
+            <span class="fas fa-arrow-alt-circle-left"></span> Back to the project list
           </a>
         </div>
             
@@ -125,7 +125,7 @@
               </div>
               [#-- Add contribution Button --]
               [#if editable]
-                <div class="text-center"><div class="addFundingSource bigAddButton"><span class="glyphicon glyphicon-plus-sign"></span>[@s.text name="Add Contribution" /]</div></div>
+                <div class="text-center"><div class="addFundingSource bigAddButton"><span class="fas fa-plus-circle"></span>[@s.text name="Add Contribution" /]</div></div>
               [/#if]
             </div>  
             
@@ -327,7 +327,7 @@
         
         <div class="messageBlock" style="display:none">
           <div class="notyMessage">
-            <h1 class="text-center brand-success"><span class="glyphicon glyphicon-ok-sign"></span></h1>
+            <h1 class="text-center brand-success"><span class="fas fa-check-circle"></span></h1>
             <p  class="text-center col-md-12">
               [@s.text name="output.request.message" /]
             </p>
@@ -340,7 +340,7 @@
         </div>
       </div>
       <div class="modal-footer"> 
-        <button type="button" class="requestButton btn btn-primary"> <span class="glyphicon glyphicon-send"></span> Request</button>
+        <button type="button" class="requestButton btn btn-primary"> <span class="fas fa-paper-plane"></span> Request</button>
       </div>
     </div>
   </div>

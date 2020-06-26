@@ -75,7 +75,7 @@
           
           <div class="buttons">
             <div class="buttons-content">
-              [@s.submit type="button" name="save" cssClass="button-save disabled"]<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add User [/@s.submit]
+              [@s.submit type="button" name="save" cssClass="button-save disabled"]<span class="fas fa-plus" aria-hidden="true"></span> Add User [/@s.submit]
             </div>
           </div>
           [/@s.form]

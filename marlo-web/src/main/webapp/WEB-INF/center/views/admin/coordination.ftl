@@ -40,7 +40,7 @@
         [#-- if editable--]
         <div class="text-center">
           <div class="searchUser button-green">
-            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> [@s.text name="form.buttons.addPerson" /]
+            <span class="fas fa-plus-circle" aria-hidden="true"></span> [@s.text name="form.buttons.addPerson" /]
           </div>
         </div>
         [#--if--]
@@ -50,11 +50,11 @@
         <div class="buttons">
           <div class="buttons-content">
           [#if editable]
-            <a href="[@s.url][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]" class="form-button button-edit"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> [@s.text name="form.buttons.back" /]</a>
-            [@s.submit type="button" name="save" cssClass="button-save"]<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> [@s.text name="form.buttons.save" /][/@s.submit]
+            <a href="[@s.url][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]" class="form-button button-edit"><span class="far fa-eye" aria-hidden="true"></span> [@s.text name="form.buttons.back" /]</a>
+            [@s.submit type="button" name="save" cssClass="button-save"]<span class="fas fa-save" aria-hidden="true"></span> [@s.text name="form.buttons.save" /][/@s.submit]
           [#else]
             [#if canEdit]
-              <a href="[@s.url][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]" class="form-button button-edit"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> [@s.text name="form.buttons.edit" /]</a>
+              <a href="[@s.url][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]" class="form-button button-edit"><span class="fas fa-edit" aria-hidden="true"></span> [@s.text name="form.buttons.edit" /]</a>
             [/#if]
           [/#if]
           </div>
@@ -77,13 +77,13 @@
 [#macro programCoordinator element name index template=false]
   [#local customName = "${name}[${index}]" /]
   <li id="user-${template?string('template',index)}" class="user userItem" style="display:${template?string('none','block')}">
-    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+    <span class="fas fa-user" aria-hidden="true"></span>
     <span class="name"> ${(element.user.getComposedName()?html)!'Unknown user'}</span>
     <input class="user" type="hidden" name="${customName}.user.id" value="${(element.user.id)!}"/>
     <input class="id" type="hidden" name="${customName}.id" value="${(element.id)!}"/>
     [#-- Remove Button --]
     [#if editable]
-      <span class="glyphicon glyphicon-remove float-right remove-userItem" aria-hidden="true"></span>
+      <span class="fas fa-times float-right remove-userItem" aria-hidden="true"></span>
     [/#if]
   </li>
 [/#macro]

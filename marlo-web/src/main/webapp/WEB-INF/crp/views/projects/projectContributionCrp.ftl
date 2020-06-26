@@ -50,7 +50,7 @@
           [#-- Back --]
           <small class="float-right">
             <a href="[@s.url action='${crpSession}/contributionsCrpList'][@s.param name="projectID" value=project.id /][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">
-              <span class="glyphicon glyphicon-circle-arrow-left"></span> Back to the project contributions
+              <span class="fas fa-arrow-alt-circle-left"></span> Back to the project contributions
             </a>
           </small>
           
@@ -180,7 +180,7 @@
             [#-- Select a milestone  --]
             [#if editable]
             <div class="milestonesYearSelect"> 
-              <div class="float-left"> <span class="glyphicon glyphicon-plus"></span>  &nbsp</div>
+              <div class="float-left"> <span class="fas fa-plus"></span>  &nbsp</div>
               <span class="milestonesSelectedIds" style="display:none">[#if milestonesProject?has_content][#list milestonesProject as e]${(e.id)!}[#if e_has_next],[/#if][/#list][/#if]</span>
               [@customForm.select name="" label="" disabled=!canEdit i18nkey="projectContributionCrp.selectMilestone${reportingActive?string('.reporting', '')}"  listName="" keyFieldName="id" displayFieldName="title" className="" value="" /]
             </div>
@@ -221,7 +221,7 @@
               [/#if]
             </div>
             [#if editable && !reportingActive]
-              <div class="addNextUser bigAddButton text-center"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>[@s.text name="form.buttons.addNextUser"/]</div>
+              <div class="addNextUser bigAddButton text-center"><span class="fas fa-plus" aria-hidden="true"></span>[@s.text name="form.buttons.addNextUser"/]</div>
             [/#if]
           </div>
           [/#if]

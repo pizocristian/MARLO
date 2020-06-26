@@ -121,8 +121,8 @@
             
 
               <div class="form-group btn-group btn-group-sm float-right" role="group" aria-label="...">
-                <button type="button" class="btn btn-outline-secondary evidenceD-export" data-toggle="modal" data-target="#modal-evidenceC"><span class="glyphicon glyphicon-fullscreen"></span> Export Evidence D</button>
-                <button type="button" class="btn btn-outline-secondary btn-xs float-right" data-toggle="modal" data-target="#modal-publications"><span class="glyphicon glyphicon-fullscreen"></span> See Full Evidence D</button>
+                <button type="button" class="btn btn-outline-secondary evidenceD-export" data-toggle="modal" data-target="#modal-evidenceC"><span class="fas fa-expand-arrows-alt"></span> Export Evidence D</button>
+                <button type="button" class="btn btn-outline-secondary btn-xs float-right" data-toggle="modal" data-target="#modal-publications"><span class="fas fa-expand-arrows-alt"></span> See Full Evidence D</button>
               </div>
               
               
@@ -278,7 +278,7 @@
                 </div>
                 [/#if]
                 
-                <a href="${url}" target="_blank" class="float-right">[@s.text name="${customLabel}.${name}.linkToPublication" /] <span class="glyphicon glyphicon-new-window"></span></a>
+                <a href="${url}" target="_blank" class="float-right">[@s.text name="${customLabel}.${name}.linkToPublication" /] <span class="fas fa-external-link-alt"></span></a>
                 
               </td>
               [#if !allowPopups]
@@ -325,12 +325,12 @@
                 [/#if]
                 
                 [#if doi?has_content && doi?contains("http") && !(doi?contains(";"))]
-                <a target="_blank" href="${doi}"><span class="glyphicon glyphicon-link"></span></a>
+                <a target="_blank" href="${doi}"><span class="fas fa-link"></span></a>
                 [#else]
                   [#if !(doi?has_content) ]
-                   <span class="glyphicon glyphicon-link" title="Not defined"></span>
+                   <span class="fas fa-link" title="Not defined"></span>
                   [#else]
-                   <span class="glyphicon glyphicon-link" title="${doi}"></span>
+                   <span class="fas fa-link" title="${doi}"></span>
                   [/#if]
                 [/#if]              
                 
@@ -341,9 +341,9 @@
                 <td class="text-center">
                 [#assign isPublicationComplete = action.isPublicationComplete(item.id, actualPhase.id)!false /]
                  [#if isPublicationComplete]
-                    <span class="glyphicon glyphicon-ok-sign mf-icon check" title="Complete"></span> 
+                    <span class="fas fa-check-circle mf-icon check" title="Complete"></span> 
                     [#else]
-                      <span class="glyphicon glyphicon-exclamation-sign mf-icon" title="Incomplete"></span> 
+                      <span class="fas fa-exclamation-circle mf-icon" title="Incomplete"></span> 
                   [/#if]   
                 </td>
                 [#-- Check --]

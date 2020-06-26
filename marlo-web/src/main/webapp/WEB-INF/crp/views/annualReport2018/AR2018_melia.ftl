@@ -71,13 +71,13 @@
                     
                     [#-- Button --]
                     <button type="button" class="btn btn-outline-secondary btn-xs float-right" data-toggle="modal" data-target="#modal-policies">
-                       <span class="glyphicon glyphicon-fullscreen"></span> See Full table 10
+                       <span class="fas fa-expand-arrows-alt"></span> See Full table 10
                     </button>
                     [#-- Missing fields in FPs --] [#--
                     [#if listOfFlagships?has_content]
                       </br>
                       <div class="missingFieldFp">
-                        <div><span class="glyphicon glyphicon-exclamation-sign mffp-icon" title="Incomplete"></span> Missing fields in
+                        <div><span class="fas fa-exclamation-circle mffp-icon" title="Incomplete"></span> Missing fields in
                         [#list listOfFlagships as fp]
                          ${fp}[#if fp?index !=(listOfFlagships?size-1) ],[/#if]
                         [/#list]
@@ -130,7 +130,7 @@
                       </div>
                       [#if canEdit && editable]
                       <div class="text-right">
-                        <div class="addEvaluation bigAddButton text-center"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> [@s.text name="form.buttons.addEvaluation"/]</div>
+                        <div class="addEvaluation bigAddButton text-center"><span class="fas fa-plus" aria-hidden="true"></span> [@s.text name="form.buttons.addEvaluation"/]</div>
                       </div> 
                       [/#if]
                     </div>
@@ -205,7 +205,7 @@
                   [/#list]
                 </div>
                 [/#if]
-                <a href="${url}" target="_blank" class="float-right"><span class="glyphicon glyphicon-new-window"></span></a>
+                <a href="${url}" target="_blank" class="float-right"><span class="fas fa-external-link-alt"></span></a>
               </td>
               <td class="text-center">
                 [@utils.tableText value=(item.projectExpectedStudyInfo.status.name)!"" /]
@@ -227,9 +227,9 @@
               <td class="text-center">
                [#assign isStudyComplete = action.isStudyComplete(item.id, actualPhase.id) /]
                 [#if isStudyComplete]
-                    <span class="glyphicon glyphicon-ok-sign mf-icon check" title="Complete"></span> 
+                    <span class="fas fa-check-circle mf-icon check" title="Complete"></span> 
                   [#else]
-                    <span class="glyphicon glyphicon-exclamation-sign mf-icon" title="Incomplete"></span>
+                    <span class="fas fa-exclamation-circle mf-icon" title="Incomplete"></span>
                 [/#if]   
                </td>
                             
@@ -298,7 +298,7 @@
       
       [#if editable]
         <div class="text-right">
-          <div class="addEvaluationAction button-blue text-right"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> [@s.text name="form.buttons.addAction"/]</div>
+          <div class="addEvaluationAction button-blue text-right"><span class="fas fa-plus-circle" aria-hidden="true"></span> [@s.text name="form.buttons.addAction"/]</div>
         </div>
       [/#if]
     </div>

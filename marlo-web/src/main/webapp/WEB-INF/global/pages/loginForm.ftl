@@ -51,7 +51,7 @@
               <div class="col-sm-10 welcome-message-container hidden" >
                 <span class="login-input-container welcome-message">[@s.text name="login.welcome"/]:</span>
                 <br>
-                <span class="login-input-container username"><i class="glyphicon glyphicon-triangle-left"></i><span></span></span>
+                <span class="login-input-container username"><i class="fas fa-caret-left"></i><span></span></span>
               </div>
             </div>
           </div>
@@ -84,7 +84,7 @@
           <div class="col-sm-12">
             <div class="login-button-container">
               [#-- This one to jump to second form and validate user data --]
-              [@s.submit key="Next" name="next" cssClass="login-form-button" role="button" disabled=false /]
+              [@s.submit key="Next" name="next" cssClass="login-form-button login-button-alt" role="button" disabled=false /]
               [#-- and This one to send login form --]
               [@s.submit name="formSubmit" cssClass="d-none" role="button "/]
             </div>

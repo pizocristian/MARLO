@@ -33,7 +33,7 @@ $(document).ready(function() {
               var item = "<li>";
               item += "<p> P" + project.id + " - " + project.name + "";
               item += "<a href='" + projectLink + "' class='float-right' target='_blank'>";
-              item += "<span class='glyphicon glyphicon-new-window'></span></a> ";
+              item += "<span class='fas fa-external-link-alt'></span></a> ";
               item += "</a>";
               item += "</p>";
               item += "<ul>";

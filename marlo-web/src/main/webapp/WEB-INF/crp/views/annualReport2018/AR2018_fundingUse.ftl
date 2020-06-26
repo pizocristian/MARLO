@@ -73,7 +73,7 @@
               </div>
               [#if canEdit && editable && PMU]
                 <div class="text-right">
-                  <div class="addExample bigAddButton text-center"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> [@s.text name="annualReport2018.fundingUse.addExpenditure"/]</div>
+                  <div class="addExample bigAddButton text-center"><span class="fas fa-plus" aria-hidden="true"></span> [@s.text name="annualReport2018.fundingUse.addExpenditure"/]</div>
                 </div> 
               [/#if]
             </div>

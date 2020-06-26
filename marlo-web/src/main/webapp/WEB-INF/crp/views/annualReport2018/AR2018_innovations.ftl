@@ -120,7 +120,7 @@
               
               [#-- Buttons --]
               <div class="form-group btn-group btn-group-sm float-right" role="group" aria-label="...">
-                <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#modal-innovations"><span class="glyphicon glyphicon-fullscreen"></span> See Full Table 4</button>
+                <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#modal-innovations"><span class="fas fa-expand-arrows-alt"></span> See Full Table 4</button>
               </div>
     
               [#-- Modal --]
@@ -211,7 +211,7 @@
                 <span>[@s.text name="${customLabel}.${name}.linkToOicr" /] <a href="${oicrUrl}" target="_blank">${(item.projectInnovationInfo.projectExpectedStudy.composedName)!'Untitled'}</span></a>
               [/#if]
               [#-- [#if !expanded] [@oicrPopup element=item isStageFour=true /] [/#if] --]
-              <a href="${url}" target="_blank" class="float-right">[@s.text name="${customLabel}.${name}.linkToInnovation" /] <span class="glyphicon glyphicon-new-window"></span></a>
+              <a href="${url}" target="_blank" class="float-right">[@s.text name="${customLabel}.${name}.linkToInnovation" /] <span class="fas fa-external-link-alt"></span></a>
             </td>
             [#-- 3. Description of Innovation  --]
             [#if expanded]
@@ -253,9 +253,9 @@
                 [#else]                
                   [#local innovationEvidence = (item.projectInnovationInfo.evidenceLink)!""/]
                   [#if innovationEvidence?has_content]
-                    <a target="_blank" href="${innovationEvidence}"><span class="glyphicon glyphicon-link"></span></a>
+                    <a target="_blank" href="${innovationEvidence}"><span class="fas fa-link"></span></a>
                   [#else]
-                    <span class="glyphicon glyphicon-link" title="Not defined"></span>
+                    <span class="fas fa-link" title="Not defined"></span>
                   [/#if]
                 [/#if]
               </td>
@@ -269,9 +269,9 @@
               <td class="text-center">
               [#assign isInnovationComplete = action.isInnovationComplete(item.id, actualPhase.id)!false /]
               [#if  isInnovationComplete]
-                <span class="glyphicon glyphicon-ok-sign mf-icon check" title="Complete"></span> 
+                <span class="fas fa-check-circle mf-icon check" title="Complete"></span> 
                 [#else]
-                  <span class="glyphicon glyphicon-exclamation-sign mf-icon" title="Incomplete"></span> 
+                  <span class="fas fa-exclamation-circle mf-icon" title="Incomplete"></span> 
               [/#if]   
               </td>
               <td class="text-center">

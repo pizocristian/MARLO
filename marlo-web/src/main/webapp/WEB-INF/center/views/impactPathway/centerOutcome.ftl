@@ -47,14 +47,14 @@
         
         [#-- Impact pathway sub menu --]
         <div class="form-group borderBox">
-            <h4>${(selectedProgram.researchArea.acronym)!} <span class="glyphicon glyphicon-chevron-right"></span> ${(selectedProgram.composedName)!}</h4>
+            <h4>${(selectedProgram.researchArea.acronym)!} <span class="fas fa-chevron-right"></span> ${(selectedProgram.composedName)!}</h4>
             <p> <strong>Research Topic:  </strong>${selectedResearchTopic.researchTopic}</p>
         </div>
         
         [#-- Back --]
         <h5 class="float-right">
           <a href="[@s.url action='${centerSession}/centerOutcomesList'][@s.param name="crpProgramID" value=programID /][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">
-            <span class="glyphicon glyphicon-circle-arrow-left"></span> Back to the outcomes list
+            <span class="fas fa-arrow-alt-circle-left"></span> Back to the outcomes list
           </a>
         </h5>
         <div class="clearfix"></div>
@@ -118,7 +118,7 @@
           [#-- Add Milestone Button --]
           [#if editable]
           <div class="text-right">
-            <div class="addMilestone button-blue"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> [@s.text name="form.buttons.addMilestone"/]</div>
+            <div class="addMilestone button-blue"><span class="fas fa-plus-circle" aria-hidden="true"></span> [@s.text name="form.buttons.addMilestone"/]</div>
           </div>
           [/#if]
           

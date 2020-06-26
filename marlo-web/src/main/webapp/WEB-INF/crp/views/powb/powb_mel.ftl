@@ -73,7 +73,7 @@
             
             [#if canEdit && editable]
             <div class="text-right">
-              <div class="addExpectedStudy bigAddButton text-center"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> [@s.text name="form.buttons.addPlannedStudyExercise"/]</div>
+              <div class="addExpectedStudy bigAddButton text-center"><span class="fas fa-plus" aria-hidden="true"></span> [@s.text name="form.buttons.addPlannedStudyExercise"/]</div>
             </div> 
             [/#if]
           </div>

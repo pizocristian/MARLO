@@ -260,7 +260,7 @@
                   [#if editable && action.hasSpecificities('crp_other_locations')]
                     <div class="clearfix"></div>
                     <div id="addNewLocation-button" class="bigAddButton text-center loc-button" data-toggle="modal" data-target=".addLocationModal"> 
-                      <span class="glyphicon glyphicon-plus"></span>[@s.text name="Add new location" /] 
+                      <span class="fas fa-plus"></span>[@s.text name="Add new location" /] 
                     </div>
                   [/#if]
                 </div>
@@ -383,7 +383,7 @@
     [#if element.locElements?has_content]
       [#list element.locElements as location]
         <li id="${location.id!}" name="${location.name!}" class="marker-map">
-          <span class="glyphicon glyphicon-map-marker"></span>
+          <span class="fas fa-map-marker-alt"></span>
           <span class="item-name">${location.name!}</span>
           <br />
           [#if list!=true]<span class="coordinates" data-lat="${(location.locGeoposition.latitude)!}" data-lon="${(location.locGeoposition.longitude)!}">(${(location.locGeoposition.latitude)!}, ${(location.locGeoposition.longitude)!})</span>[/#if]
@@ -396,7 +396,7 @@
           [#list project.countryFS as suggestedCountry]
             [#if suggestedCountry.selected]
               <li id="${suggestedCountry.locElement.id!}" name="${suggestedCountry.locElement.name!}" class="marker-map">
-                <span class="glyphicon glyphicon-map-marker"></span>
+                <span class="fas fa-map-marker-alt"></span>
                 <span class="item-name">${(suggestedCountry.locElement.name)!}</span>
                 <br />
               </li>
@@ -538,7 +538,7 @@
   <h4 name="" class="loc-level"></h4>
   <ul id="" name="">
     <li id="itemList-template" name="" class="marker-map">
-      <span class="glyphicon glyphicon-map-marker"></span>
+      <span class="fas fa-map-marker-alt"></span>
       <span class="item-name"></span>
       <br />
       <span class="coordinates" data-lat="" data-lon="" style="display:none"></span>
@@ -577,7 +577,7 @@
         [#if editable]
           <input type="checkbox" class="recommendedSelected float-right" name="" [#if element.selected]checked[/#if]/>
         [#else]
-          [#if element.selected]<span class="glyphicon glyphicon-ok text-success float-right"></span>[/#if]
+          [#if element.selected]<span class="fas fa-check text-success float-right"></span>[/#if]
         [/#if]
         <input class="recommended-location" type="hidden" name="${customName}.selected" value="${element.selected?string}" />
         [#if element.locElement.locElementType.id==2 ]
@@ -588,7 +588,7 @@
         [#if editable]
         <input type="checkbox" class="recommendedSelected float-right" name="" [#if element.selected]checked[/#if]/>
         [#else]
-          [#if element.selected]<span class="glyphicon glyphicon-ok text-success float-right"></span>[/#if]
+          [#if element.selected]<span class="fas fa-check text-success float-right"></span>[/#if]
         [/#if]
         <input type="hidden" name="${customName}.selected" value="${element.selected?string}" />
       [/#if]

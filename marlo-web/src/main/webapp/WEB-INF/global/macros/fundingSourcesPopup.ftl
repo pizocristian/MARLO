@@ -7,7 +7,7 @@
     <form id="fundingSourceForm" enctype="multipart/form-data" class="pure-form">
       [#--  Search a Funding Source  --]
       <div id="search-users">
-        <span class="glyphicon glyphicon-remove-circle close-dialog"></span>
+        <span class="fas fa-times-circle close-dialog"></span>
         <h4 class="text-center"> Search a Funding Source
         <br />
         <small class="cgiarCenter"> {CGIAR Center}  </small>
@@ -36,7 +36,7 @@
       
       [#-- Create Funding Sources Form
       <div id="create-user" class="accordion  text-center">
-        <span class="glyphicon glyphicon-plus"></span> <span class="title"> Create Funding Source </span> 
+        <span class="fas fa-plus"></span> <span class="title"> Create Funding Source </span> 
       </div>
        --]
        
@@ -156,14 +156,14 @@
             FS<span class="contactId">{userId}</span>
           </div>
           <div class="col-md-9">
-            <small><span class="red noBudgetMessage float-left glyphicon glyphicon-exclamation-sign" style="display:none" title="Insufficient funds for {year}"></span></small>
+            <small><span class="red noBudgetMessage float-left fas fa-exclamation-circle" style="display:none" title="Insufficient funds for {year}"></span></small>
             <span class="contact name">{composedName}</span>
             <span class="currentBudget">{budget}</span>
             <span class="financeCode"></span>
           </div>
           <div class="col-md-2">
             <span class="listButton select">[@s.text name="form.buttons.select" /]</span>
-            <span class="glyphicon glyphicon-new-window linkIcon"></span>
+            <span class="fas fa-external-link-alt linkIcon"></span>
           </div>
           [#-- Hidden parameters --]
           <span style="display:none" class="budget">{budget}</span>

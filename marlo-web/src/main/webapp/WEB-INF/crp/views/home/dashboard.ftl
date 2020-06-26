@@ -170,7 +170,7 @@
             </div>
             <div id="contentGraph">
               [#-- Download button--]
-              [#--  <span id="buttonShowAll"><span class="glyphicon glyphicon-download-alt"></span></span>--]
+              [#--  <span id="buttonShowAll"><span class="fas fa-download"></span></span>--]
               <div id="impactGraphic" ></div>
               [#-- Download button--]
               <span title="View full graph" id="fullscreen" class="fa fa-fullscreen"></span>
@@ -193,13 +193,13 @@
   
   [#-- Controls --]
   <div id="controls" class="">
-    <span id="zoomIn" class="glyphicon glyphicon-zoom-in tool"></span>
-    <span id="zoomOut" class="glyphicon glyphicon-zoom-out tool "></span>
-    <span id="panRight" class="glyphicon glyphicon-arrow-right tool "></span>
-    <span id="panDown" class="glyphicon glyphicon-arrow-down tool "></span>
-    <span id="panLeft" class="glyphicon glyphicon-arrow-left tool "></span>
-    <span id="panUp" class="glyphicon glyphicon-arrow-up tool "></span>
-    <span id="resize" class="glyphicon glyphicon-resize-full  tool"></span>
+    <span id="zoomIn" class="fas fa-search-plus tool"></span>
+    <span id="zoomOut" class="fas fa-search-minus tool "></span>
+    <span id="panRight" class="fas fa-long-arrow-alt-right tool "></span>
+    <span id="panDown" class="fas fa-long-arrow-alt-down tool "></span>
+    <span id="panLeft" class="fas fa-long-arrow-alt-left tool "></span>
+    <span id="panUp" class="fas fa-long-arrow-alt-up tool"></span>
+    <span id="resize" class="fas fa-expand-arrows-alt  tool"></span>
   </div>
   
   [#-- Download button--]

@@ -103,7 +103,7 @@
                  --]
               [/#if] 
               [#if (editable && canEdit)]
-                <div class="addProjectPartner bigAddButton text-center"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> [@s.text name="projectPartners.addProjectPartner" /]</div>
+                <div class="addProjectPartner bigAddButton text-center"><span class="fas fa-plus" aria-hidden="true"></span> [@s.text name="projectPartners.addProjectPartner" /]</div>
               [/#if]
             </div> 
             
@@ -221,7 +221,7 @@
         
         <div class="messageBlock" style="display:none">
           <div class="notyMessage">
-            <h1 class="text-center brand-success"><span class="glyphicon glyphicon-ok-sign"></span></h1>
+            <h1 class="text-center brand-success"><span class="fas fa-check-circle"></span></h1>
             <p  class="text-center col-md-12">
               Your request was sent to the MARLO Support team <br />
               You will receive a confirmation message as soon as it has been processed.
@@ -235,7 +235,7 @@
         </div>
       </div>
       <div class="modal-footer"> 
-        <button type="button" class="requestButton btn btn-primary"> <span class="glyphicon glyphicon-send"></span> Request</button>
+        <button type="button" class="requestButton btn btn-primary"> <span class="fas fa-paper-plane"></span> Request</button>
       </div>
     </div>
   </div>

@@ -15,7 +15,7 @@
           [#if item.visible]
           <li id="${item.slug}" class="[#if currentSection?? && currentSection == item.slug ]currentSection[/#if] ${(item.active)?string('enabled','disabled')}">
             <a href="[@s.url namespace=item.namespace action=item.action ][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]" onclick="return ${item.active?string}">
-              [#if item.icon?has_content]<span class="glyphicon glyphicon-${item.icon}"></span> [/#if][@s.text name=item.name ][@s.param]${(crpSession)!'CRP'}[/@s.param] [/@s.text]
+              [#if item.icon?has_content]<span class="fas fa-${item.icon}"></span> [/#if][@s.text name=item.name ][@s.param]${(crpSession)!'CRP'}[/@s.param] [/@s.text]
             </a>
           </li>
           [/#if]
@@ -25,7 +25,7 @@
         [#-- Global units --]
         <li class="[#if currentSection?? && currentSection != 'superadmin' ]currentSection[/#if]">
           <a href="[@s.url namespace="/" action="${(crpSession)!}/crpDashboard" ][@s.param name="edit" value="true"/][/@s.url]">
-            <span class="glyphicon glyphicon-chevron-down"></span> ${(currentGlobalUnit.acronym)!'null'}
+            <span class="fas fa-chevron-down"></span> ${(currentGlobalUnit.acronym)!'null'}
           </a>
           <ul class="subMenu">
            

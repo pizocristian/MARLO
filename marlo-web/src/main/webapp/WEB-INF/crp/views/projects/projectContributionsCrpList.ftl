@@ -97,7 +97,7 @@
                 </div>
                 <div class="addOutcomeBlock">
                   <a href="${baseUrl}/projects/${crpSession}/addNewProjectOuctome.do?projectID=${projectID}&outcomeId=-1&phaseID=${(actualPhase.id)!}">
-                    <div class="button-blue"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> [@s.text name="form.buttons.addOutcome"/]</div>
+                    <div class="button-blue"><span class="fas fa-plus" aria-hidden="true"></span> [@s.text name="form.buttons.addOutcome"/]</div>
                   </a>
                 </div>
               </div>
@@ -143,7 +143,7 @@
         
         [#-- Report --]
         [#if reportingActive && !isThisComplete]
-          <span class="badge badge-primary" title="Required for reporting"><span class="glyphicon glyphicon-flash" ></span> Report</span>
+          <span class="badge badge-primary" title="Required for reporting"><span class="fas fa-bolt" ></span> Report</span>
         [/#if]
         
         <a href="${projectOutcomeUrl}">

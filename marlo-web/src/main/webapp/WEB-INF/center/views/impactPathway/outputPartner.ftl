@@ -54,7 +54,7 @@
         [#-- Back --]
         <small class="float-right">
           <a href="[@s.url action='${centerSession}/outputsList'][@s.param name="crpProgramID" value=programID /][@s.param name="outcomeID" value=outcomeID /][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">
-            <span class="glyphicon glyphicon-circle-arrow-left"></span> Back to the outputs list
+            <span class="fas fa-arrow-alt-circle-left"></span> Back to the outputs list
           </a>
         </small>
         
@@ -80,7 +80,7 @@
           [#-- Select a organization/institution  --]
           [#if editable]
           <div class="partnerSelect"> 
-            <div class="float-left"> <span class="glyphicon glyphicon-plus"></span>  &nbsp</div>
+            <div class="float-left"> <span class="fas fa-plus"></span>  &nbsp</div>
             [@customForm.select name="" label="" disabled=!canEdit i18nkey="output.selectInstitution"  listName="institutions" keyFieldName="id" displayFieldName="composedName" className="" value="" /]
           </div>
           [/#if] 
@@ -145,7 +145,7 @@
       [#if editable]
       <div class="text-center">
         <div class="searchUser button-green">
-          <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> [@s.text name="form.buttons.addPerson" /]
+          <span class="fas fa-plus-circle" aria-hidden="true"></span> [@s.text name="form.buttons.addPerson" /]
         </div>
       </div>
       [/#if]
@@ -157,13 +157,13 @@
 [#macro userItem element name index template=false]
   [#local customName = "${name}[${index}]" /]
   <li id="user-${template?string('template',index)}" class="user userItem" style="display:${template?string('none','block')}">
-    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+    <span class="fas fa-user" aria-hidden="true"></span>
     <span class="name"> ${(element.user.getComposedName()?html)!'Unknown user'}</span>
     <input class="user" type="hidden" name="${customName}.user.id" value="${(element.user.id)!}"/>
     <input class="id" type="hidden" name="${customName}.id" value="${(element.id)!}"/>
     [#-- Remove Button --]
     [#if editable]
-      <span class="glyphicon glyphicon-remove float-right remove-userItem" aria-hidden="true"></span>
+      <span class="fas fa-times float-right remove-userItem" aria-hidden="true"></span>
     [/#if]
   </li>
 [/#macro]

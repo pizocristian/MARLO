@@ -29,7 +29,7 @@
   
   [#-- Concurrence Message --]
   <div id="concurrenceMessage" class="text-center" style="display:none">
-    <p><span class="glyphicon glyphicon-flash"></span> 
+    <p><span class="fas fa-bolt"></span> 
     [@s.text name="deliverable.message.sectionSaved"]
       [@s.param]<span class="person"></span>[/@s.param]
       [@s.param] <a href="#" onclick="location.reload()">click here</a> [/@s.param]
@@ -42,7 +42,7 @@
   <div id="concurrenceBlock" class="text-center" style="display:none">
     <div class="layer"></div>
     <div class="content">
-      <span class="glyphicon glyphicon-lock"></span>
+      <span class="fas fa-lock"></span>
       <p>[@s.text name="deliverable.message.concurrence" /] [@s.text name="deliverable.message.concurrenceNotEditing"][@s.param] <a href="[@s.url][@s.param name="deliverableID" value=deliverableID /][/@s.url]">click here</a> [/@s.param][/@s.text]</p>
       
       [#if action.canAccessSuperAdmin()]<i><small> Only for superadmins: <a href="#" class="removeConcurrenceBlock">[CLOSE]</a></small></i>[/#if]

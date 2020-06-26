@@ -54,7 +54,7 @@
       [#if canEdit] 
       <div class="text-right">
         <a class="button-blue" href="[@s.url action='${crpSession}/addPolicy'][@s.param name="projectID"]${projectID}[/@s.param][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">
-          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>  [@s.text name="form.buttons.addPolicy" /]
+          <span class="fas fa-plus" aria-hidden="true"></span>  [@s.text name="form.buttons.addPolicy" /]
         </a>
       </div>
       [/#if]

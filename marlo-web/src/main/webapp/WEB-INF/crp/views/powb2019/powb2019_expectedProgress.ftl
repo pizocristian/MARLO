@@ -61,7 +61,7 @@
           [#-- Table 2A: Planned Milestones  --]
           [@utilities.tag label="powb.docBadge" tooltip="powb.docBadge.tooltip"/]
           <button type="button" class="float-right btn btn-link btn-sm" data-toggle="modal" data-target="#tableA-bigger"> 
-              <span class="glyphicon glyphicon-fullscreen"></span> See Full Table 2A
+              <span class="fas fa-expand-arrows-alt"></span> See Full Table 2A
             </button>
           <div id="tableA-bigger" class="modal fade bs-example-modal-lg " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
             <div class="modal-dialog modal-lg bigger" role="document">
@@ -273,7 +273,7 @@
                   </td>
                   [/#if]
                   <td> ${contribution.narrativeTarget?replace('\n', '<br>')} </td>
-                  <td> <a href="${poURL}" target="_blank"><span class="glyphicon glyphicon-new-window"></span></a>  </td>
+                  <td> <a href="${poURL}" target="_blank"><span class="fas fa-external-link-alt"></span></a>  </td>
                 </tr>
               [/#list]
             </tbody>

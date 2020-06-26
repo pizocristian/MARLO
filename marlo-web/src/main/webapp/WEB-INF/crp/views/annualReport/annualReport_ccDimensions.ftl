@@ -224,7 +224,7 @@
             <td rowspan="3" class="text-center"> 
               <h3 class="animated flipInX">
                 <a class="btn btn-outline-secondary btn-lg" data-toggle="modal" data-target="#overallOutputsMacro">
-                  <span class="glyphicon glyphicon-fullscreen" style="color:#b3b3b3"></span> ${tableC.total}
+                  <span class="fas fa-expand-arrows-alt" style="color:#b3b3b3"></span> ${tableC.total}
                 </a>
               </h3>
             </td> 
@@ -316,7 +316,7 @@
             </td>
             <td>
               [#local dURL][@s.url namespace="/projects" action="${(crpSession)!}/deliverable"][@s.param name='deliverableID']${dInfo.deliverable.id}[/@s.param][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url][/#local]
-              <a href="${dURL}" target="_blank"><span class="glyphicon glyphicon-new-window"></span></a>
+              <a href="${dURL}" target="_blank"><span class="fas fa-external-link-alt"></span></a>
             </td>
           </tr>
           [/#list]

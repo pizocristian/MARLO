@@ -55,7 +55,7 @@
             
               [#-- Button --]
               <button type="button" class="btn btn-outline-secondary btn-xs float-right" data-toggle="modal" data-target="#modal-oicr">
-                 <span class="glyphicon glyphicon-fullscreen"></span> See Full table 3
+                 <span class="fas fa-expand-arrows-alt"></span> See Full table 3
               </button>
               [#-- Modal --]
               <div class="modal fade" id="modal-oicr" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -152,7 +152,7 @@
                 [#-- OICR Contributions --]
                 [#if !expanded] [@oicrContributions element=item /] [/#if]
                 
-                <a href="${url}" target="_blank" class="float-right">[@s.text name="${customLabel}.${name}.linkToOicr" /] <span class="glyphicon glyphicon-new-window"></span></a>
+                <a href="${url}" target="_blank" class="float-right">[@s.text name="${customLabel}.${name}.linkToOicr" /] <span class="fas fa-external-link-alt"></span></a>
               </td>
               <td>[@utils.tableText value=(item.projectExpectedStudyInfo.repIndStageStudy.name)!"" /]</td>
               <td class="text-center">[@utils.tableText value=(item.projectExpectedStudyInfo.evidenceTag.name)!"" /]</td>
@@ -165,9 +165,9 @@
                <td class="text-center">
                [#assign isStudyComplete  = action.isStudyComplete(item.id, actualPhase.id)!false /]
                [#if isStudyComplete ]
-                  <span class="glyphicon glyphicon-ok-sign mf-icon check" title="Complete"></span> 
+                  <span class="fas fa-check-circle mf-icon check" title="Complete"></span> 
                 [#else]
-                  <span class="glyphicon glyphicon-exclamation-sign mf-icon" title="Incomplete"></span> 
+                  <span class="fas fa-exclamation-circle mf-icon" title="Incomplete"></span> 
               [/#if] 
              [/#if]  
               </td>
@@ -230,7 +230,7 @@
                           <th scope="row" class="">${policy.id}</th>
                           <td>${(policy.projectPolicyInfo.title)!'Untitled'}</td>
                            [#--<td>${(p.projectPolicyInfo.policyType.name?capitalize)!'none'}</td>--]
-                          <td class="text-center"> <a href="${policyUrl}" target="_blank"><span class="glyphicon glyphicon-new-window"></span></a>  </td>
+                          <td class="text-center"> <a href="${policyUrl}" target="_blank"><span class="fas fa-external-link-alt"></span></a>  </td>
                         </tr>
                         [/#list]
                     </tbody>
@@ -258,7 +258,7 @@
                         <td>${(innovation.projectInnovationInfo.title)!'Untitled'}</td>
                         [#--<td>${(i.innovationInfo.innovationType.name?capitalize)!'none'}</td>
                         <td class="col-md-6">${(i.projectInnovationInfo.title)!'Untitled'}</td>--]
-                        <td class="text-center"> <a href="${innovationUrl}" target="_blank"><span class="glyphicon glyphicon-new-window"></span></a>  </td>
+                        <td class="text-center"> <a href="${innovationUrl}" target="_blank"><span class="fas fa-external-link-alt"></span></a>  </td>
                       </tr>
                       [/#list]
                   </tbody>

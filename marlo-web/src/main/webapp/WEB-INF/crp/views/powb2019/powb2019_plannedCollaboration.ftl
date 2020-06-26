@@ -74,7 +74,7 @@
             </div>
             [#if canEdit && editable]
             <div class="text-right">
-              <div class="addProgramCollaboration bigAddButton text-center"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> [@s.text name="form.buttons.addProgramCollaborationOrNonCgiar"/]</div>
+              <div class="addProgramCollaboration bigAddButton text-center"><span class="fas fa-plus" aria-hidden="true"></span> [@s.text name="form.buttons.addProgramCollaborationOrNonCgiar"/]</div>
             </div> 
             [/#if]
             

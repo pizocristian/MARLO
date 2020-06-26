@@ -70,7 +70,7 @@
         </div>
       </div>
       [#-- Add Assumption Button --]
-      [#if editable]<div class="addAssumption button-green"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> [@s.text name="form.buttons.addAssumption"/]</div>[/#if]
+      [#if editable]<div class="addAssumption button-green"><span class="fas fa-plus-circle" aria-hidden="true"></span> [@s.text name="form.buttons.addAssumption"/]</div>[/#if]
     </div>
   </div>
 [/#macro]

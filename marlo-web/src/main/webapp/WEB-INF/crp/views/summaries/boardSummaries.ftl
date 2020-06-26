@@ -487,7 +487,7 @@
       [/#if]
       
       [#-- Generate Button--]
-      <button type="submit" class="btn btn-info float-right"><span class="glyphicon glyphicon-download-alt"></span> Generate</button> <div class="clearfix"></div>
+      <button type="submit" class="btn btn-info float-right"><span class="fas fa-download"></span> Generate</button> <div class="clearfix"></div>
     [/@s.form]
   </div>
   [/#if]

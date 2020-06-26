@@ -38,7 +38,7 @@
 
 [#-- Impact Pathway Menu--]
 <nav id="secondaryMenu" class="hidden-print">
-  <p>[@s.text name="impactPathway.menu.title"/] <span class="selectedProgram">(${(selectedProgram.acronym)!}) <span class="glyphicon glyphicon-chevron-down"></span></span></p>
+  <p>[@s.text name="impactPathway.menu.title"/] <span class="selectedProgram">(${(selectedProgram.acronym)!}) <span class="fas fa-chevron-down"></span></span></p>
   <div class="menuList">
   [#if centerGlobalUnit]
     [#if researchAreas??]
@@ -82,9 +82,9 @@
                 <a href="[@s.url action="${crpSession}/${item.action}"][@s.param name="crpProgramID" value=crpProgramID /][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]" onclick="return ${item.active?string}" class="action-${crpSession}/${item.action}">
                   [#-- Name --]
                   [#if item.action == "centerOutcomesList"]
-                      <span class="glyphicon glyphicon-chevron-right"></span>
+                      <span class="fas fa-chevron-right"></span>
                   [#elseif item.action == "outputsList"]
-                      &nbsp; <span class="glyphicon glyphicon-chevron-right"></span>
+                      &nbsp; <span class="fas fa-chevron-right"></span>
                   [/#if]
                   [@s.text name=item.name/]
                   
@@ -182,13 +182,13 @@
     
     [#-- Controls --]
     <div id="controls" class="">
-      <span id="zoomIn" class="glyphicon glyphicon-zoom-in tool"></span>
-      <span id="zoomOut" class="glyphicon glyphicon-zoom-out tool "></span>
-      <span id="panRight" class="glyphicon glyphicon-arrow-right tool "></span>
-      <span id="panDown" class="glyphicon glyphicon-arrow-down tool "></span>
-      <span id="panLeft" class="glyphicon glyphicon-arrow-left tool "></span>
-      <span id="panUp" class="glyphicon glyphicon-arrow-up tool "></span>
-      <span id="resize" class="glyphicon glyphicon-resize-full  tool"></span>
+      <span id="zoomIn" class="fas fa-search-plus tool"></span>
+      <span id="zoomOut" class="fas fa-search-minus tool "></span>
+      <span id="panRight" class="fas fa-long-arrow-alt-right tool "></span>
+      <span id="panDown" class="fas fa-long-arrow-alt-down tool "></span>
+      <span id="panLeft" class="fas fa-long-arrow-alt-left tool "></span>
+      <span id="panUp" class="fas fa-long-arrow-alt-up tool "></span>
+      <span id="resize" class="fas fa-expand-arrows-alt  tool"></span>
     </div>
     
     [#-- Change to full or current graph --]
@@ -197,7 +197,7 @@
     </div>
     
     [#-- Download button--]
-    <a class="download" href=""><span title="download" id="buttonDownload"><span class="glyphicon glyphicon-download-alt"></span></span></a>
+    <a class="download" href=""><span title="download" id="buttonDownload"><span class="fas fa-download"></span></span></a>
     
     <div id="impactGraphic"></div>
   </div>

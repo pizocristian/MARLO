@@ -58,7 +58,7 @@
           [#-- Add Regions--]
           [#if editable]
           <div class="text-center">
-            <div class="addProgram bigAddButton"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>[@s.text name="form.buttons.addRegionProgram"/]</div>
+            <div class="addProgram bigAddButton"><span class="fas fa-plus" aria-hidden="true"></span>[@s.text name="form.buttons.addRegionProgram"/]</div>
             <span class="type-input" style="display:none">2</span>
             <span class="inputName-input" style="display:none">regionsPrograms</span>
           </div>
@@ -92,7 +92,7 @@
   [#assign userCustomName = "${name}[${index}]" /]
   <li id="user-${template?string('template',index)}" class="user userItem" style="display:${template?string('none','block')}">
     [#-- User Name --]
-    <span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span class="name"> ${(element.user.getComposedName()?html)!'Unknown user'}</span>
+    <span class="fas fa-user" aria-hidden="true"></span> <span class="name"> ${(element.user.getComposedName()?html)!'Unknown user'}</span>
     [#-- Hidden inputs --]
     <input class="user" type="hidden" name="${userCustomName}.user.id" value="${(element.user.id)!}"/>
     <input class="role" type="hidden" name="${userCustomName}.role.id" value="${userRole}"/>
@@ -100,9 +100,9 @@
     [#-- Remove Button --]
     [#if editable]
       [#if template || action.canBeDeleted(element.id, element.class.name)!false]
-        <span class="glyphicon glyphicon-remove float-right remove-userItem" aria-hidden="true"></span>
+        <span class="fas fa-times float-right remove-userItem" aria-hidden="true"></span>
       [#else]
-        <span class="glyphicon glyphicon-remove float-right" style="color:#ccc" aria-hidden="true" title="Can not be deleted"></span>
+        <span class="fas fa-times float-right" style="color:#ccc" aria-hidden="true" title="Can not be deleted"></span>
       [/#if]
     [/#if]
   </li>
@@ -162,7 +162,7 @@
       [#-- Add person Button --]
       [#if editable]
       <div class="text-center">
-        <div class="searchUser button-green"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> [@s.text name="form.buttons.addPerson" /]</div>
+        <div class="searchUser button-green"><span class="fas fa-plus-circle" aria-hidden="true"></span> [@s.text name="form.buttons.addPerson" /]</div>
       </div>
       [/#if]
       [#-- Hidden Parameters --]
@@ -187,7 +187,7 @@
       [#-- Add person Button --]
       [#if editable]
       <div class="text-center">
-        <div class="searchUser button-green"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> [@s.text name="form.buttons.addPerson" /]</div>
+        <div class="searchUser button-green"><span class="fas fa-plus-circle" aria-hidden="true"></span> [@s.text name="form.buttons.addPerson" /]</div>
       </div>
       [/#if]
       [#-- Hidden Parameters --]

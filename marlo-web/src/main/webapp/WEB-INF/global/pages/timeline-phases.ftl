@@ -7,8 +7,8 @@
         [#-- Timeline Scroll --]
         <div id="timelineScroll" class="example pagespan">
           <div class="loading timeline-loader" style="display:none"></div>
-          <button class="backward"><span class="glyphicon glyphicon-chevron-left"></span></button>
-          <button class="forward"><span class="glyphicon glyphicon-chevron-right"></span></button>
+          <button class="backward"><span class="fas fa-chevron-left"></span></button>
+          <button class="forward"><span class="fas fa-chevron-right"></span></button>
           <div class="frame">
             <ul>
               [#list phases as phase]

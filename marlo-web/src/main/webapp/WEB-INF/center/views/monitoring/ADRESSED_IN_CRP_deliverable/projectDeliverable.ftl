@@ -48,7 +48,7 @@
           [#-- Back --]
             <small class="float-right">
               <a href="[@s.url action='${centerSession}/deliverableList'][@s.param name="projectID" value=project.id /][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">
-                <span class="glyphicon glyphicon-circle-arrow-left"></span> Back to the deliverables list
+                <span class="fas fa-arrow-alt-circle-left"></span> Back to the deliverables list
               </a>
             </small>  
           <h3 class="headTitle">${selectedProgram.name} - [@s.text name="Key deliverable information" /]</h3>
@@ -154,7 +154,7 @@
             <p class="text-center inf" style="display:${(deliverable.documents?has_content)?string('none','block')}">[@s.text name="There are not document(s) added yet." /]</p>
           </div>
           <div class="text-right">
-            <div class="button-green addDocument"><span class="glyphicon glyphicon-plus-sign"></span>[@s.text name="Add a support document" /]</div>
+            <div class="button-green addDocument"><span class="fas fa-plus-circle"></span>[@s.text name="Add a support document" /]</div>
           </div>
 
           <div class="borderBox">

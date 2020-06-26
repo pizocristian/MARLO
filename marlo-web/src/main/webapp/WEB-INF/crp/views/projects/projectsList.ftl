@@ -43,13 +43,13 @@
         <ul class="nav nav-tabs" role="tablist">
           <li role="presentation">
             <a href="#active-tab" class="active" aria-controls="home" role="tab" data-toggle="tab">
-              <strong><span class="glyphicon glyphicon-flag"></span>  [@s.text name="projectsList.active"/] </strong> <br /><small>([@s.text name="projectsList.active${reportingActive?string('Reporting', 'Planning')}.help"/])</small>
+              <strong><span class="fas fa-flag"></span>  [@s.text name="projectsList.active"/] </strong> <br /><small>([@s.text name="projectsList.active${reportingActive?string('Reporting', 'Planning')}.help"/])</small>
             </a>
           </li>
           [#if !reportingActive]
           <li role="presentation">
             <a href="#archived-tab" aria-controls="profile" role="tab" data-toggle="tab">
-              <strong><span class="glyphicon glyphicon-inbox"></span> [@s.text name="projectsList.archived"/] </strong> <br /><small>([@s.text name="projectsList.archived.help"/])</small>
+              <strong><span class="fas fa-inbox"></span> [@s.text name="projectsList.archived"/] </strong> <br /><small>([@s.text name="projectsList.archived.help"/])</small>
             </a>
           </li>
           [/#if]

@@ -40,7 +40,7 @@
         [#--  Help Text --]
         [@helpLabel name="${help}" paramText="${paramText}" showIcon=helpIcon editable=editable/]
         [#if powbInclude]
-          <span class="powb-doc badge float-right" title="[@s.text name="powb.includedField.title" /]">[@s.text name="powb.includedField" /] <span class="glyphicon glyphicon-save-file"></span></span>
+          <span class="powb-doc badge float-right" title="[@s.text name="powb.includedField.title" /]">[@s.text name="powb.includedField" /] <span class="fas fa-file-download"></span></span>
         [/#if]
       </label>
     [/#if]
@@ -535,7 +535,7 @@
     [#-- Uploaded File --]
     <p class="fileUploaded textMessage" style="display:${hasFile?string('block','none')}">
       [#if path?has_content]<a href="${path}/${(fileDB.fileName)!('fileNotFound')}" target="_blank">[/#if]
-      <span class="glyphicon glyphicon-file"></span> <span class="contentResult">${(fileDB.fileName)!('No file name')}</span> 
+      <span class="fas fa-file"></span> <span class="contentResult">${(fileDB.fileName)!('No file name')}</span> 
       [#if path?has_content]</a>[/#if]
       [#if isEditable]<span class="removeIcon"> </span>[/#if]
     </p>
@@ -706,7 +706,7 @@
             [@radioFlat id="${customName}.primary" name="${customName}.primary" value="true" cssClassLabel="radio-label-yes" editable=editable checked=(primaryValue)!false /]
             [#else]
               [#if primaryValue==true]
-                <span class="primary-element glyphicon glyphicon-ok-sign"></span>
+                <span class="primary-element fas fa-check-circle"></span>
               [/#if]
           [/#if]
           </div>

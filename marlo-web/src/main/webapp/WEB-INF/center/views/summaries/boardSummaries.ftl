@@ -219,7 +219,7 @@
 
 [#-- POPUP TO OPTIONS --]
 <div id="optionsPopUp"  style="display:none;" >
-<span class="glyphicon glyphicon-remove-circle close-dialog"></span>
+<span class="fas fa-times-circle close-dialog"></span>
   <h4 style="text-align:center;">Generate the report</h4>
   <hr />
   <div class="row">
@@ -267,7 +267,7 @@
 
 [#--  terms template--]
 <div id="term" class="terms" style="display:none;">
-  <span class="text"></span><span class="removeTerm glyphicon glyphicon-remove"></span>
+  <span class="text"></span><span class="removeTerm fas fa-times"></span>
 </div>
 
 [#include "/WEB-INF/global/pages/footer.ftl"]

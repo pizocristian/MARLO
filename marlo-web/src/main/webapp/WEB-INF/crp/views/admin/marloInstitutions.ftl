@@ -33,7 +33,7 @@
         <br />
         <div class="text-right">
           <a class="btn btn-outline-secondary" data-toggle="modal" data-target="#allInstitutions">
-            <span class="glyphicon glyphicon-list-alt"></span>  All Institutions & location offices
+            <span class="far fa-list-alt"></span>  All Institutions & location offices
           </a>
         </div>
       

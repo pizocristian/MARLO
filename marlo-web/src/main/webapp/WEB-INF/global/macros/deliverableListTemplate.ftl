@@ -45,7 +45,7 @@
             [#-- Draft Tag --]
             [#if hasDraft]<strong class="text-info">[DRAFT]</strong>[/#if]
             [#-- Report --]
-            [#if toReport]<span class="badge badge-primary" title="Required for this cycle"><span class="glyphicon glyphicon-flash" ></span> Report</span>[/#if]
+            [#if toReport]<span class="badge badge-primary" title="Required for this cycle"><span class="fas fa-bolt" ></span> Report</span>[/#if]
             [#-- New Tag --]
             [#if isDeliverableNew]<span class="badge badge-info">New</span>[/#if]
             
@@ -119,10 +119,10 @@
               [#-- Remove icon --]
               [#if isDeliverableNew]
                 <a id="removeDeliverable-${deliverable.id}" class="removeDeliverable" href="${baseUrl}/projects/${crpSession}/deleteDeliverable.do?deliverableID=${deliverable.id}&phaseID=${(actualPhase.id)!}" title="Remove deliverable">
-                  <div class="icon-container"><span class="trash-icon glyphicon glyphicon-trash"></span><div>
+                  <div class="icon-container"><span class="trash-icon fas fa-trash-alt"></span><div>
                 </a>
               [#else]
-                 <div class="icon-container remove-disabled"><span class="trash-icon glyphicon glyphicon-trash" title="This deliverable cannot be deleted"></span><div>
+                 <div class="icon-container remove-disabled"><span class="trash-icon fas fa-trash-alt" title="This deliverable cannot be deleted"></span><div>
               [/#if]
               </td>
           [/#if]
@@ -175,7 +175,7 @@
             [#-- Draft Tag --]
             [#if hasDraft]<strong class="text-info">[DRAFT]</strong>[/#if]
             [#-- To report --]
-            [#if toReport]<span class="badge badge-primary" title="Required for this cycle"><span class="glyphicon glyphicon-flash" ></span> Report</span>[/#if]
+            [#if toReport]<span class="badge badge-primary" title="Required for this cycle"><span class="fas fa-bolt" ></span> Report</span>[/#if]
             
             [#if deliverable.deliverableInfo.title?has_content]
                 <a href="[@s.url namespace=namespace action=defaultAction] [@s.param name='deliverableID']${deliverable.id?c}[/@s.param][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">

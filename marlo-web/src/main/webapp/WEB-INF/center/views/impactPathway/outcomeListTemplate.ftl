@@ -112,7 +112,7 @@
           </td>
           <td class="text-center">
             <button type="button" class="btn btn-outline-secondary btn-xs disabled outcomeProjects-${outcome.id}" data-toggle="modal" data-target="#outcomeProjectsModal">
-              <span class="glyphicon glyphicon-pushpin"></span> Projects
+              <span class="fas fa-thumbtack"></span> Projects
             </button> 
           </td>
         </tr>  

@@ -29,7 +29,7 @@
 
 <div class="container helpText viewMore-block">
   <div class="helpMessage infoText">
-    [#-- <div  class="removeHelp"><span class="glyphicon glyphicon-remove"></span></div> --]
+    [#-- <div  class="removeHelp"><span class="fas fa-times"></span></div> --]
     <img class="col-md-2" src="${baseUrlCdn}/global/images/icon-help.jpg" />
     <p class="col-md-10"> 
       [#if (project.projectInfo.isProjectEditLeader())!false]
@@ -371,7 +371,7 @@
                   <td>${(oc.description)!'None'}</td> 
                   <td>${(oc.value)!} ${(oc.srfTargetUnit.name)!'None'}</td>
                   <td>${(oc.year)!'None'}</td>
-                  <td> <a href="${projectUrl}" target="_blank"><span class="glyphicon glyphicon-new-window"></span></a> </td>
+                  <td> <a href="${projectUrl}" target="_blank"><span class="fas fa-external-link-alt"></span></a> </td>
                 </tr>
               [/#list]
             </tbody>

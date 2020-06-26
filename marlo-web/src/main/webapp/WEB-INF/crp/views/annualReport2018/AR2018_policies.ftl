@@ -140,7 +140,7 @@
               
               [#-- Button --]
               <button type="button" class="btn btn-outline-secondary btn-xs float-right" data-toggle="modal" data-target="#modal-policies">
-                 <span class="glyphicon glyphicon-fullscreen"></span> See Full table 2
+                 <span class="fas fa-expand-arrows-alt"></span> See Full table 2
               </button>
               [#-- Modal --]
               <div class="modal fade" id="modal-policies" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -239,7 +239,7 @@
             </div>
             [/#if]
             [#if !expanded] [@oicrPopup element=item /] [/#if]
-            <a href="${url}" target="_blank" class="float-right mt-1">[@s.text name="${customLabel}.table2.linkToPolicy" /] <span class="glyphicon glyphicon-new-window"></span></a>
+            <a href="${url}" target="_blank" class="float-right mt-1">[@s.text name="${customLabel}.table2.linkToPolicy" /] <span class="fas fa-external-link-alt"></span></a>
           </td>
           [#-- Description --]
           <td class="text-center">[@utils.tableText value=(item.projectPolicyInfo.description)!"" /]</td>         
@@ -305,9 +305,9 @@
           [#-- Is Complete --]
           [#assign isPolicyComplete = action.isPolicyComplete(item.id, actualPhase.id)!false /]
            [#if isPolicyComplete]
-              <span class="glyphicon glyphicon-ok-sign mf-icon check" title="Complete"></span> 
+              <span class="fas fa-check-circle mf-icon check" title="Complete"></span> 
               [#else]
-                <span class="glyphicon glyphicon-exclamation-sign mf-icon" title="Incomplete"></span> 
+                <span class="fas fa-exclamation-circle mf-icon" title="Incomplete"></span> 
             [/#if]   
           </td>
           <td class="text-center">
@@ -373,7 +373,7 @@
                         <th scope="row" class="col-md-1">${oicr.projectExpectedStudy.id}</th>
                         <td>${(oicr.projectExpectedStudy.composedName)!'Untitled'}</td>
                         <td>${(oicr.projectExpectedStudy.projectExpectedStudyInfo.repIndStageStudy.name)!'Undefined'}</td>
-                        <td class="col-md-2 text-center"> <a href="${oicrUrl}" target="_blank"><span class="glyphicon glyphicon-new-window"></span></a>  </td>
+                        <td class="col-md-2 text-center"> <a href="${oicrUrl}" target="_blank"><span class="fas fa-external-link-alt"></span></a>  </td>
                       </tr>
                       [/#list]
                   </tbody>

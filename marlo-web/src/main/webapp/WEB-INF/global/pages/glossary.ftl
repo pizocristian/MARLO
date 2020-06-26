@@ -45,11 +45,11 @@
     
     <div id="searchInput" class="float-right form-group search-word has-feedback">
       <input type="text" class="form-control" name="search" id="search" placeholder="search" autocomplete="off">
-      <span class="glyphicon glyphicon-search form-control-feedback"></span>
+      <span class="fas fa-search form-control-feedback"></span>
     </div>
     <hr />
     [#list words as word] 
-      <span id="" class="tag">${word}</span>
+      <span id="" class="tag d-flex align-items-center justify-content-center">${word}</span>
     [/#list]
     
       <div id="content">  

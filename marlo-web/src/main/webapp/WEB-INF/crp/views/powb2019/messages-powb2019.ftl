@@ -4,7 +4,7 @@
 
 [#if (currentMenuItem.onlyFlagship)!false || (currentMenuItem.onlyPMU)!false]
 <p class="bg-success text-center" style="padding: 18px;">
-  <span class="glyphicon glyphicon-flash"></span>
+  <span class="fas fa-bolt"></span>
   [#if (currentMenuItem.onlyFlagship)!false ]
     [@s.text name="powb.messages.infoOnly"][@s.param][@s.text name="global.pmu"/][/@s.param][/@s.text]
   [/#if]
@@ -62,7 +62,7 @@
   [#-- Concurrence Message --]
   [#if !(isListSection??)]
     <div id="concurrenceMessage" class="text-center" style="display:none">
-      <p><span class="glyphicon glyphicon-flash"></span> 
+      <p><span class="fas fa-bolt"></span> 
       [@s.text name="project.message.sectionSaved"]
         [@s.param]<span class="person"></span>[/@s.param]
         [@s.param] <a href="#" onclick="location.reload()">click here</a> [/@s.param]
@@ -75,7 +75,7 @@
     <div id="concurrenceBlock" class="text-center" style="display:none">
       <div class="layer"></div>
       <div class="content">
-        <span class="glyphicon glyphicon-lock"></span>
+        <span class="fas fa-lock"></span>
         <p>[@s.text name="project.message.concurrence" /] [@s.text name="project.message.concurrenceNotEditing"][@s.param] <a href="[@s.url][@s.param name="liaisonInstitutionID" value=liaisonInstitutionID /][/@s.url]">click here</a> [/@s.param][/@s.text]</p>
       
         [#if action.canAccessSuperAdmin()]<i><small> Only for superadmins: <a href="#" class="removeConcurrenceBlock">[CLOSE]</a></small></i>[/#if]

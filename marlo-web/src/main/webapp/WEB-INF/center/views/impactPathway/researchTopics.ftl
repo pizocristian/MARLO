@@ -57,7 +57,7 @@
           <div class="clearfix"></div>
           [#-- Add Research Impact Button --]
           [#if editable]
-            <div class="addResearchTopic bigAddButton text-center"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>[@s.text name="form.buttons.addResearchTopic"/]</div>
+            <div class="addResearchTopic bigAddButton text-center"><span class="fas fa-plus" aria-hidden="true"></span>[@s.text name="form.buttons.addResearchTopic"/]</div>
           [/#if]
         
           
@@ -87,12 +87,12 @@
     [#if editable]
     [#if element.id?has_content]
       [#if template || action.centerCanBeDeleted(element.id, element.class.name)!false]
-        <span class="glyphicon glyphicon-remove float-right removeResearchTopic" style="color:#FF0000" aria-hidden="true"></span>
+        <span class="fas fa-times float-right removeResearchTopic" style="color:#FF0000" aria-hidden="true"></span>
       [#else]
-        <span class="glyphicon glyphicon-remove float-right" style="color:#ccc" aria-hidden="true" title="Can not be deleted"></span>
+        <span class="fas fa-times float-right" style="color:#ccc" aria-hidden="true" title="Can not be deleted"></span>
       [/#if]
     [#else]  
-      <span class="glyphicon glyphicon-remove float-right removeResearchTopic" style="color:#FF0000" aria-hidden="true"></span>
+      <span class="fas fa-times float-right removeResearchTopic" style="color:#FF0000" aria-hidden="true"></span>
     [/#if] 
     [/#if]
     

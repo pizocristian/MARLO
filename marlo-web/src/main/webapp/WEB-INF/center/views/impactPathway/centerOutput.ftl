@@ -51,7 +51,7 @@
         [#-- Back --]
         <h5 class="float-right">
           <a href="[@s.url action='${centerSession}/outputsList'][@s.param name="crpProgramID" value=programID /][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">
-            <span class="glyphicon glyphicon-circle-arrow-left"></span> Back to the outputs list
+            <span class="fas fa-arrow-alt-circle-left"></span> Back to the outputs list
           </a>
         </h5>
         
@@ -114,7 +114,7 @@
             </div>
             [#if editable] 
             <div class="text-right">
-              <div class="addNextUser button-blue text-right"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> [@s.text name="Add a new Next User"/]</div>
+              <div class="addNextUser button-blue text-right"><span class="fas fa-plus-circle" aria-hidden="true"></span> [@s.text name="Add a new Next User"/]</div>
             </div>
             [/#if]
           </div>

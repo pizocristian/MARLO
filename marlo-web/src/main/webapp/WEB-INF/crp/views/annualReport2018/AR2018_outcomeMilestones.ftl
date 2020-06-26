@@ -57,13 +57,13 @@
                 <div class="borderBox">
                 
                   <div class="form-group btn-group btn-group-sm float-right" role="group" aria-label="...">
-                    <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#modal-evidenceC"><span class="glyphicon glyphicon-fullscreen"></span> AR Evidence C</button>
-                    <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#modal-table5"><span class="glyphicon glyphicon-fullscreen"></span> See Full Table 5</button>
+                    <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#modal-evidenceC"><span class="fas fa-expand-arrows-alt"></span> AR Evidence C</button>
+                    <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#modal-table5"><span class="fas fa-expand-arrows-alt"></span> See Full Table 5</button>
                     [#-- Missing fields in FPs --]
                     [#if listOfFlagships?has_content]
                       </br>
                       <div class="missingFieldFp">
-                        <div><span class="glyphicon glyphicon-exclamation-sign mffp-icon" title="Incomplete"></span> Missing fields in
+                        <div><span class="fas fa-exclamation-circle mffp-icon" title="Incomplete"></span> Missing fields in
                         [#list listOfFlagships as fp]
                          ${fp}[#if fp?index !=(listOfFlagships?size-1) ],[/#if]
                         [/#list]
@@ -512,7 +512,7 @@
                         <i class="text-center" style="opacity:0.5">[@s.text name="global.prefilledWhenAvailable"/]</i>
                       [/#if]
                       
-                      <a href="${poURL}" target="_blank" class="float-right"><span class="glyphicon glyphicon-new-window"></span></a>
+                      <a href="${poURL}" target="_blank" class="float-right"><span class="fas fa-external-link-alt"></span></a>
                     </td>
                      
                   </tr>
@@ -538,7 +538,7 @@
                         <td> <a href="${ppURL}" target="_blank"> P${policy.projectOutcome.project.id} </a> </td>
                         <td> 
                           ${policy.projectOutcome.project.projectInfo.title} 
-                          <a href="${ppoURL}" target="_blank" class="float-right"><span class="glyphicon glyphicon-new-window"></span></a>
+                          <a href="${ppoURL}" target="_blank" class="float-right"><span class="fas fa-external-link-alt"></span></a>
                         </td>                       
                       </tr>
                     [/#list]
@@ -566,7 +566,7 @@
                         <td> <a href="${ocURL}" target="_blank"> P${outcomeCase.projectOutcome.project.id} </a> </td>
                         <td> 
                           ${outcomeCase.projectOutcome.project.projectInfo.title}  
-                          <a href="${ocoURL}" target="_blank" class="float-right"><span class="glyphicon glyphicon-new-window"></span></a>
+                          <a href="${ocoURL}" target="_blank" class="float-right"><span class="fas fa-external-link-alt"></span></a>
                         </td>
                       </tr>
                     [/#list]
@@ -594,7 +594,7 @@
                         <td> <a href="${piURL}" target="_blank"> P${innovation.projectOutcome.project.id} </a> </td>
                         <td> 
                           ${innovation.projectOutcome.project.projectInfo.title}
-                          <a href="${pioURL}" target="_blank" class="float-right"><span class="glyphicon glyphicon-new-window"></span></a>
+                          <a href="${pioURL}" target="_blank" class="float-right"><span class="fas fa-external-link-alt"></span></a>
                         </td>
                       </tr>
                     [/#list]

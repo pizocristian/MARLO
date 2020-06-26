@@ -74,7 +74,7 @@
             </div>
             [#-- Add other main program planned budget outside FPs  --]
             [#if editable && PMU]
-              <div class="addExpenditureArea bigAddButton text-center"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>[@s.text name="form.buttons.addExpenditureArea"/]</div>
+              <div class="addExpenditureArea bigAddButton text-center"><span class="fas fa-plus" aria-hidden="true"></span>[@s.text name="form.buttons.addExpenditureArea"/]</div>
             [/#if]
           </div>
              [#if PMU][@utilities.tag label="powb.docBadge" tooltip="powb.docBadge.tooltip"/]
@@ -234,7 +234,7 @@
     [/#if]
     [#if projects?size > 0]
     <a class="btn btn-outline-secondary btn-xs" data-toggle="modal" style="border-color: #00BCD4;color: #057584;" data-target="#projectBudgets-${type}-${(element.id)!}">
-       <span class="glyphicon glyphicon-fullscreen" style="color:#b3b3b3"></span>  
+       <span class="fas fa-expand-arrows-alt" style="color:#b3b3b3"></span>  
        <nobr>US$ <span >${((totalValue)!0)?number?string(",##0.00")}</span></nobr>
     </a>
     

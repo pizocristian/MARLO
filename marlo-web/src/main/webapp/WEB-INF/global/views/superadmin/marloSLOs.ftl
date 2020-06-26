@@ -39,12 +39,12 @@
         [/#if]
         </div>
         [#-- Add Outcome Button --]
-        <div class="addSlo bigAddButton text-center"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> [@s.text name="form.buttons.addSlo"/]</div>
+        <div class="addSlo bigAddButton text-center"><span class="fas fa-plus" aria-hidden="true"></span> [@s.text name="form.buttons.addSlo"/]</div>
         
         [#-- Section Buttons--]
         <div class="buttons">
           <div class="buttons-content">
-            [@s.submit type="button" name="save" cssClass="button-save"]<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> [@s.text name="form.buttons.save" /][/@s.submit]
+            [@s.submit type="button" name="save" cssClass="button-save"]<span class="fas fa-save" aria-hidden="true"></span> [@s.text name="form.buttons.save" /][/@s.submit]
           </div>
         </div>
         
@@ -105,7 +105,7 @@
         </div>
         [#-- Add Indicator Button --]
         <div class="text-right">
-          <div class="addIndicator button-blue"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> [@s.text name="form.buttons.addIndicator"/]</div>
+          <div class="addIndicator button-blue"><span class="fas fa-plus-circle" aria-hidden="true"></span> [@s.text name="form.buttons.addIndicator"/]</div>
         </div>
       </div>
     
@@ -165,7 +165,7 @@
     [/#if]    
     </div>
     <div class="text-right">
-      <div class="addTargets button-green"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Add a target</div>
+      <div class="addTargets button-green"><span class="fas fa-plus-circle" aria-hidden="true"></span> Add a target</div>
     </div>
     <div class="clearfix"></div>
     
@@ -182,7 +182,7 @@
         <input type="text" class="targetUnit form-control  input-sm" value="${(element.unit)!}"/>
         <h6>Target value: </h6>
         <input type="text" class="targetValue form-control  input-sm" value="${(element.value)!}"/>
-        <span class="targetRemove remove-element glyphicon glyphicon-remove red"></span>
+        <span class="targetRemove remove-element fas fa-times red"></span>
       </div>      
     <div class="clearfix"></div>
   </div>

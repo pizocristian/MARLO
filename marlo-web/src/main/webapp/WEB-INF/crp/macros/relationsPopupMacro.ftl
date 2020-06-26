@@ -59,7 +59,7 @@
                       <th scope="row">P${p.id}</th>
                       <td>${(p.projectInfo.title)!'Untitled'}</td>
                       <td class="">[#if p.getLeader(action.getActualPhase())?has_content]${(p.getLeader(action.getActualPhase()).institution.acronym)!p.getLeader(action.getActualPhase()).institution.name}[#else][@s.text name="projectsList.title.none" /][/#if]</td>
-                      <td> <a href="${projectUrl}" target="_blank"><span class="glyphicon glyphicon-new-window"></span></a>  </td>
+                      <td> <a href="${projectUrl}" target="_blank"><span class="fas fa-external-link-alt"></span></a>  </td>
                     </tr>
                   [/#list]
                 </tbody>
@@ -115,7 +115,7 @@
                       <th scope="row">D${d.id}</th>
                       <td class="col-md-6">${(d.deliverableInfo.title)!'Untitled'}</td>
                       <td>${(d.deliverableInfo.deliverableType.name?capitalize)!'none'}</td>
-                      <td> <a href="${deliverableUrl}" target="_blank"><span class="glyphicon glyphicon-new-window"></span></a>  </td>
+                      <td> <a href="${deliverableUrl}" target="_blank"><span class="fas fa-external-link-alt"></span></a>  </td>
                     </tr>
                     [/#list]
                 </tbody>
@@ -172,7 +172,7 @@
                       <th scope="row">${p.id}</th>
                       <td class="col-md-6">${(p.projectPolicyInfo.title)!'Untitled'}</td>
                        [#--<td>${(p.projectPolicyInfo.policyType.name?capitalize)!'none'}</td>--]
-                      <td> <a href="${policyUrl}" target="_blank"><span class="glyphicon glyphicon-new-window"></span></a>  </td>
+                      <td> <a href="${policyUrl}" target="_blank"><span class="fas fa-external-link-alt"></span></a>  </td>
                     </tr>
                     [/#list]
                 </tbody>
@@ -231,7 +231,7 @@
                       <td class="col-md-6">${(i.projectInnovationInfo.title)!'Untitled'}</td>
                       [#--<td>${(i.innovationInfo.innovationType.name?capitalize)!'none'}</td>
                       <td class="col-md-6">${(i.projectInnovationInfo.title)!'Untitled'}</td>--]
-                      <td> <a href="${innovationUrl}" target="_blank"><span class="glyphicon glyphicon-new-window"></span></a>  </td>
+                      <td> <a href="${innovationUrl}" target="_blank"><span class="fas fa-external-link-alt"></span></a>  </td>
                     </tr>
                     [/#list]
                 </tbody>
@@ -288,7 +288,7 @@
                       <th scope="row">${e.id}</th>
                       <td class="col-md-6">${(e.projectExpectedStudyInfo.title)!'Untitled'}</td>
                       [#--<td>${(e.studyInfo.studyType.name?capitalize)!'none'}</td>--]
-                      <td> <a href="${evidenceUrl}" target="_blank"><span class="glyphicon glyphicon-new-window"></span></a>  </td>
+                      <td> <a href="${evidenceUrl}" target="_blank"><span class="fas fa-external-link-alt"></span></a>  </td>
                     </tr>
                     [/#list]
                 </tbody>

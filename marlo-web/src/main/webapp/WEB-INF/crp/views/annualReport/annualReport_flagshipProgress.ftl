@@ -62,7 +62,7 @@
               [#if PMU]
                 [#-- Modal Large --]
                 <button type="button" class="float-right btn btn-outline-secondary" data-toggle="modal" data-target="#tableA-bigger"> 
-                  <span class="glyphicon glyphicon-fullscreen"></span> See Full Table B
+                  <span class="fas fa-expand-arrows-alt"></span> See Full Table B
                 </button>
                 <div id="tableA-bigger" class="modal fade bs-example-modal-lg " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
                   <div class="modal-dialog modal-lg bigger" role="document">
@@ -252,7 +252,7 @@
                         <i class="text-center" style="opacity:0.5">[@s.text name="global.prefilledWhenAvailable"/]</i>
                       [/#if]
                     </td>                  
-                    <td> <a href="${poURL}" target="_blank"><span class="glyphicon glyphicon-new-window"></span></a>  </td>
+                    <td> <a href="${poURL}" target="_blank"><span class="fas fa-external-link-alt"></span></a>  </td>
                   </tr>
                 [/#list]
               </tbody>

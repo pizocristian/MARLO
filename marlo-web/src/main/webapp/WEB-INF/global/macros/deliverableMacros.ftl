@@ -205,7 +205,7 @@
       </div>
     </div>
      <div class="note left">
-      <a href="#modal-typeOfActivity" data-toggle="modal"> <span class="glyphicon glyphicon-info-sign"></span> [@s.text name="deliverable.typeOfActivity.help" /]</a>
+      <a href="#modal-typeOfActivity" data-toggle="modal"> <span class="fas fa-info-circle"></span> [@s.text name="deliverable.typeOfActivity.help" /]</a>
      </div>
      <br />
 
@@ -472,7 +472,7 @@
       <div class="float-left" style="width:25%"><input class="form-control input-sm fName"  placeholder="First Name" type="text" /> </div>
       <div class="float-left" style="width:36%"><input class="form-control input-sm oId"    placeholder="ORCID (e.g. orcid.org/0000-0002-6066...)" type="text" title="ORCID is a nonprofit helping create a world in which all who participate in research, scholarship and innovation are uniquely identified and connected to their contributions and affiliations, across disciplines, borders, and time."/> </div>
       <div class="float-right" style="width:14%">
-        <div id="" class="addAuthor text-right"><div class="button-blue"><span class="glyphicon glyphicon-plus-sign"></span> [@s.text name="project.deliverable.dissemination.addAuthor" /]</div></div>
+        <div id="" class="addAuthor text-right"><div class="button-blue"><span class="fas fa-plus-circle"></span> [@s.text name="project.deliverable.dissemination.addAuthor" /]</div></div>
       </div>
     </div>
     <div class="clearfix"></div>

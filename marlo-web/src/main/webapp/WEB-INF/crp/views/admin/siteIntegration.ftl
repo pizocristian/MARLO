@@ -86,14 +86,14 @@
   
   [#assign customName = "${name}[${index}]" /]
   <li id="user-${template?string('template',index)}" class="user userItem" style="display:${template?string('none','block')}">
-    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+    <span class="fas fa-user" aria-hidden="true"></span>
     <span class="name"> ${(element.user.getComposedName()?html)!'Unknown user'}</span>
     <input class="user" type="hidden" name="${customName}.user.id" value="${(element.user.id)!}"/>
     <input class="role" type="hidden" name="${customName}.role.id" value="${(slRole.id)!}"/>
     <input class="id" type="hidden" name="${customName}.id" value="${(element.id)!}"/>
     [#-- Remove Button --]
     [#if editable && !hasRegions]
-      <span class="glyphicon glyphicon-remove float-right remove-userItem" aria-hidden="true"></span>
+      <span class="fas fa-times float-right remove-userItem" aria-hidden="true"></span>
     [/#if]
   </li>
 [/#macro]
@@ -120,7 +120,7 @@
       </div>
       <div class="text-center">
         <div class="searchUser button-green">
-          <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>[@s.text name="form.buttons.addPerson" /]
+          <span class="fas fa-plus-circle" aria-hidden="true"></span>[@s.text name="form.buttons.addPerson" /]
           <span class="inputName-input" style="display:none">${customNameCountry}</span>
         </div>
       </div>

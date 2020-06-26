@@ -7,7 +7,7 @@
     <form id="fundingSourceForm" enctype="multipart/form-data" class="pure-form">
       [#--  Search a Funding Source  --]
       <div id="search-users">
-        <span class="glyphicon glyphicon-remove-circle close-dialog"></span>
+        <span class="fas fa-times-circle close-dialog"></span>
         <h4 class="text-center"> Create a milestone
         <br />
         </h4>

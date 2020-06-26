@@ -44,14 +44,14 @@
           [#-- Add target unit --]
           <div class="row ">
             <div class="col-md-9">[@customForm.input name="" type="text" showTitle=false placeholder="Target Unit Name" className="name-input" required=true editable=true /]</div>
-            <div class="col-md-3 text-right"><div class="addTargetUnit button-blue"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> [@s.text name="form.buttons.addTarget" /]</div></div>
+            <div class="col-md-3 text-right"><div class="addTargetUnit button-blue"><span class="fas fa-plus" aria-hidden="true"></span> [@s.text name="form.buttons.addTarget" /]</div></div>
           </div>
         </div>
         
         [#-- Section Buttons--]
         <div class="buttons">
           <div class="buttons-content">
-            [@s.submit type="button" name="save" cssClass="button-save"]<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> [@s.text name="form.buttons.save" /][/@s.submit]
+            [@s.submit type="button" name="save" cssClass="button-save"]<span class="fas fa-save" aria-hidden="true"></span> [@s.text name="form.buttons.save" /][/@s.submit]
           </div>
         </div>
         
@@ -89,9 +89,9 @@
     </span>
     [#-- Remove Button --]
     [#if canDelete || (element?? && action.canBeDeleted((element.id)!, (element.class.name)!)!)]
-      <span class="glyphicon glyphicon-remove float-right remove-targetUnit" aria-hidden="true"></span>
+      <span class="fas fa-times float-right remove-targetUnit" aria-hidden="true"></span>
     [#else]
-      <span class="glyphicon glyphicon-remove float-right " style="color:#ccc" aria-hidden="true" title="Can not be deleted"></span>
+      <span class="fas fa-times float-right " style="color:#ccc" aria-hidden="true" title="Can not be deleted"></span>
     [/#if]   
   </li>
 [/#macro]

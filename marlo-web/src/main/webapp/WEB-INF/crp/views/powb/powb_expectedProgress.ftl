@@ -55,7 +55,7 @@
           
             [#-- Modal Large --]
             <button type="button" class="float-right btn btn-outline-secondary" data-toggle="modal" data-target="#tableA-bigger"> 
-              <span class="glyphicon glyphicon-fullscreen"></span> See Full Table A
+              <span class="fas fa-expand-arrows-alt"></span> See Full Table A
             </button>
             <div id="tableA-bigger" class="modal fade bs-example-modal-lg " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
               <div class="modal-dialog modal-lg bigger" role="document">
@@ -69,7 +69,7 @@
             </div>
             
             <h4 class="subTitle headTitle powb-table">[@s.text name="expectedProgress.tableA.title" /]</h4>
-            <span class="powb-doc badge label-powb-table" title="[@s.text name="powb.includedField.title" /]">[@s.text name="powb.includedField" /] <span class="glyphicon glyphicon-save-file"></span></span>
+            <span class="powb-doc badge label-powb-table" title="[@s.text name="powb.includedField.title" /]">[@s.text name="powb.includedField" /] <span class="fas fa-file-download"></span></span>
             [@tableAMacro  /]
           </div>
           [/#if]
@@ -257,7 +257,7 @@
                   </td>
                   [/#if]
                   <td> ${contribution.narrativeTarget?replace('\n', '<br>')} </td>
-                  <td> <a href="${poURL}" target="_blank"><span class="glyphicon glyphicon-new-window"></span></a>  </td>
+                  <td> <a href="${poURL}" target="_blank"><span class="fas fa-external-link-alt"></span></a>  </td>
                 </tr>
               [/#list]
             </tbody>

@@ -60,7 +60,7 @@
           </div>
           [#if editable && canEdit]
             <div id="addPartnerBlock" class="addPerson text-right">
-              <div class="button-blue  addActivity"><span class="glyphicon glyphicon-plus-sign"></span> [@s.text name="form.buttons.addActivity" /]</div>
+              <div class="button-blue  addActivity"><span class="fas fa-plus-circle"></span> [@s.text name="form.buttons.addActivity" /]</div>
             </div>
           [/#if]
           

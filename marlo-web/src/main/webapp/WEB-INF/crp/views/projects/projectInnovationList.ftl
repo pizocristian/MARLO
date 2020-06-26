@@ -47,7 +47,7 @@
         <div class="buttons">
           <div class="buttons-content">
             <div class="addInnovation button-blue"><a  href="[@s.url namespace="/${currentSection}" action='${(crpSession)!}/addNewInnovation'][@s.param name="projectID"]${projectID}[/@s.param][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">
-              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> [@s.text name="form.buttons.addInnovation" /]
+              <span class="fas fa-plus" aria-hidden="true"></span> [@s.text name="form.buttons.addInnovation" /]
             </a></div>
             <div class="clearfix"></div>
           </div>

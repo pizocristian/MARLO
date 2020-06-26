@@ -28,6 +28,6 @@
 
 [#if powb2019]
   <div class="alert alert-warning text-center" role="alert"> 
-    <strong> <span class="glyphicon glyphicon-warning-sign"></span> <a href="[@s.url namespace='/powb${powb2019?string("2019", "")}' action="${(crpSession)!}/adjustmentsChanges"][@s.param name ="liaisonInstitutionID"]${(liaisonInstitutionID)!}[/@s.param][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]" class="alert-link"> Go to POWB ${actualPhase.year} Version </a> </strong>
+    <strong> <span class="fas fa-exclamation-triangle"></span> <a href="[@s.url namespace='/powb${powb2019?string("2019", "")}' action="${(crpSession)!}/adjustmentsChanges"][@s.param name ="liaisonInstitutionID"]${(liaisonInstitutionID)!}[/@s.param][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]" class="alert-link"> Go to POWB ${actualPhase.year} Version </a> </strong>
   </div>
 [/#if]

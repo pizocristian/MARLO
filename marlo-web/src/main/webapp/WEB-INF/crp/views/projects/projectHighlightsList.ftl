@@ -59,7 +59,7 @@
           [#if canEdit] 
           <div class="text-right"> 
             <a class="button-blue" href="[@s.url action='${crpSession}/addNewHighlight'] [@s.param name="projectID"]${projectID}[/@s.param][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">
-              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>  [@s.text name="form.buttons.addHighlight" /]
+              <span class="fas fa-plus" aria-hidden="true"></span>  [@s.text name="form.buttons.addHighlight" /]
             </a>
           </div>
           [/#if]
@@ -98,7 +98,7 @@
             <td class="id" ><a href="${dlurl}">${hl.id}</a></td> 
             <td class="name">
               [#if reportingActive && ((hl.projectHighlightInfo.year == currentCycleYear)!false)]
-                <span class="badge badge-primary" title="Required for this cycle"><span class="glyphicon glyphicon-flash" ></span> Report</span>
+                <span class="badge badge-primary" title="Required for this cycle"><span class="fas fa-bolt" ></span> Report</span>
               [/#if]
               <a href="${dlurl}">[#if hl.projectHighlightInfo.title?trim?has_content]${hl.projectHighlightInfo.title}[#else]Untitled[/#if]</a>
             </td>

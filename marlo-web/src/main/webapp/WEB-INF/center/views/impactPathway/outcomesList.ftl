@@ -91,7 +91,7 @@
               [#if selectedResearchTopic?has_content] 
               <div class="text-right">
               <div class="addOutcome button-blue"><a  href="[@s.url namespace="/${currentSection}" action='${(centerSession)!}/addNewCenterOutcome'] [@s.param name="crpProgramID"]${selectedProgram.id}[/@s.param] [@s.param name="topicID"]${selectedResearchTopic.id}[/@s.param][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">
-                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> [@s.text name="form.buttons.addOutcome" /]
+                <span class="fas fa-plus-circle" aria-hidden="true"></span> [@s.text name="form.buttons.addOutcome" /]
               </a></div>
               </div>
               [#else]
@@ -103,7 +103,7 @@
               [#if selectedResearchTopic?has_content] 
                 <div class="text-center">
                 <div class="addOutcome button-blue"><a  href="[@s.url namespace="/${currentSection}" action='${(centerSession)!}/addNewCenterOutcome'] [@s.param name="crpProgramID"]${selectedProgram.id}[/@s.param] [@s.param name="topicID"]${selectedResearchTopic.id}[/@s.param][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">
-                  <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> [@s.text name="form.buttons.addOutcome" /]
+                  <span class="fas fa-plus-circle" aria-hidden="true"></span> [@s.text name="form.buttons.addOutcome" /]
                 </a></div>
                 </div>
               [#else]

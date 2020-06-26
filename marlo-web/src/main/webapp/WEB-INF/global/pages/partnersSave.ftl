@@ -76,7 +76,7 @@
         <div class="clearfix"></div>
         <br />
         <div class="form-group text-center">
-          [@s.submit type="button" name="save"] <span class="glyphicon glyphicon-send"></span> [@s.text name="form.buttons.savePartner.request" /][/@s.submit]
+          [@s.submit type="button" name="save"] <span class="fas fa-paper-plane"></span> [@s.text name="form.buttons.savePartner.request" /][/@s.submit]
         </div> 
       </div>
       [/@s.form]
@@ -85,7 +85,7 @@
       
         <div class="col-md-12">
           [#-- Message --]
-          <h1 class="text-center brand-success"><span class="glyphicon glyphicon-ok-sign"></span></h1>
+          <h1 class="text-center brand-success"><span class="fas fa-check-circle"></span></h1>
           <p  class="text-center col-md-12"> 
             The new partner request was sent succesfully. <br />
             You will receive a confirmation message as soon as it has been processed.

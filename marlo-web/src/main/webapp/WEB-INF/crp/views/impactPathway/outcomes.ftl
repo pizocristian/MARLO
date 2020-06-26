@@ -78,7 +78,7 @@
             </div>
             [#-- Add Outcome Button --]
             [#if editable]
-              <div class="addOutcome bigAddButton text-center"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>[@s.text name="form.buttons.addOutcome"/]</div>
+              <div class="addOutcome bigAddButton text-center"><span class="fas fa-plus" aria-hidden="true"></span>[@s.text name="form.buttons.addOutcome"/]</div>
             [/#if]
           [#else]
             <p>Please select a [@s.text name="global.flagship" /]</p>
@@ -241,7 +241,7 @@
         [#-- Add Sub-IDO Button --]
         [#if editable]
         <div class="text-right">
-          <div class="addSubIdo button-blue text-right"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> [@s.text name="form.buttons.addSubIDO"/]</div>
+          <div class="addSubIdo button-blue text-right"><span class="fas fa-plus-circle" aria-hidden="true"></span> [@s.text name="form.buttons.addSubIDO"/]</div>
         </div>
         [/#if]
       </div>
@@ -289,7 +289,7 @@
         [#-- Add Baseline Indicator Button --]
         [#if editable]
         <div class="text-right">
-          <div class="addBaselineIndicator button-green"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> [@s.text name="form.buttons.addBaselineIndicator"/]</div>
+          <div class="addBaselineIndicator button-green"><span class="fas fa-plus-circle" aria-hidden="true"></span> [@s.text name="form.buttons.addBaselineIndicator"/]</div>
         </div>
         [/#if]
       </div>
@@ -310,7 +310,7 @@
         [#-- Add Milestone Button --]
         [#if editable]
         <div class="">
-          <div class="addMilestone bigAddButton text-center form-group"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> [@s.text name="form.buttons.addMilestone"/]</div>
+          <div class="addMilestone bigAddButton text-center form-group"><span class="fas fa-plus-circle" aria-hidden="true"></span> [@s.text name="form.buttons.addMilestone"/]</div>
         </div>
         [/#if]
         [#if editable]<div class="form-group note"><small>[@s.text name = "outcomes.addNewTargetUnit" /]</small></div>[/#if]
@@ -517,7 +517,7 @@
         </div>
       </div>
       [#-- Add Assumption Button --]
-      [#if editable]<div class="addAssumption button-green d-flex align-items-end"><div class="mb-4"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> [@s.text name="form.buttons.addAssumption"/]</div></div>[/#if]
+      [#if editable]<div class="addAssumption button-green d-flex align-items-end"><div class="mb-4"><span class="fas fa-plus-circle" aria-hidden="true"></span> [@s.text name="form.buttons.addAssumption"/]</div></div>[/#if]
     </div>
   </div>
 [/#macro]

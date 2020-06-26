@@ -58,7 +58,7 @@
               [#-- Missing fields in FPs --]
               [#if listOfFlagships?has_content]
                 <div class="missingFieldFp">
-                  <div><span class="glyphicon glyphicon-exclamation-sign mffp-icon" title="Incomplete"></span> Missing fields in
+                  <div><span class="fas fa-exclamation-circle mffp-icon" title="Incomplete"></span> Missing fields in
                   [#list listOfFlagships as fp]
                    ${fp}[#if fp?index !=(listOfFlagships?size-1) ],[/#if]
                   [/#list]

@@ -52,15 +52,15 @@
           <div class="btn-group float-right" role="group" aria-label="..."">
             [#-- Edit --]
             <a class="btn btn-outline-secondary btn-sm editRequest" href="#">
-              <span class="glyphicon glyphicon-pencil"></span> Edit Request
+              <span class="fas fa-pencil-alt"></span> Edit Request
             </a>
             [#-- Accept --]
             <a class="btn btn-success btn-sm" onclick="return confirm('[@s.text name="marloRequestInstitution.confirmAccept" /]');" href="[@s.url namespace="" action="superadmin/addPartner"][@s.param name='requestID']${partner.id?c}[/@s.param][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">
-              <span class="glyphicon glyphicon-ok"></span> Accept
+              <span class="fas fa-check"></span> Accept
             </a>
             [#-- Reject --]
             <a class="btn btn-danger btn-sm rejectRequest partnerRequestId-${partner.id}" href="#">
-               <span class="glyphicon glyphicon-remove"></span> Reject
+               <span class="fas fa-times"></span> Reject
             </a>
           </div>
           
@@ -142,11 +142,11 @@
             <div class="btn-group float-right" role="group" aria-label="..."">
               [#-- Accept --]
               <a class="btn btn-success btn-sm acceptOfficesRequest institutionOfficeRequestId-${partner.institution.id}" href="#">
-                <span class="glyphicon glyphicon-ok"></span> Accept selected
+                <span class="fas fa-check"></span> Accept selected
               </a>
               [#-- Reject --]
               <a class="btn btn-danger btn-sm openRejectOfficeRequest institutionOfficeRequestId-${partner.institution.id}" >
-                <span class="glyphicon glyphicon-remove"></span>  Reject selected
+                <span class="fas fa-times"></span>  Reject selected
               </a>
             </div>
             

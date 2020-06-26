@@ -57,10 +57,10 @@
           [#if canEdit] 
           <div class="text-right">
             <a class="button-blue" href="[@s.url action='${crpSession}/addNewStudy'][@s.param name="projectID"]${projectID}[/@s.param][@s.param name="studyTypeID" value="1" /][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">
-              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>  [@s.text name="form.buttons.addOutcomeCaseStudy" /]
+              <span class="fas fa-plus" aria-hidden="true"></span>  [@s.text name="form.buttons.addOutcomeCaseStudy" /]
             </a>
             <a class="button-blue" href="[@s.url action='${crpSession}/addNewStudy'][@s.param name="projectID"]${projectID}[/@s.param][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">
-              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>  [@s.text name="form.buttons.addStudy" /]
+              <span class="fas fa-plus" aria-hidden="true"></span>  [@s.text name="form.buttons.addStudy" /]
             </a>
           </div>
           [/#if]
@@ -131,7 +131,7 @@
             <td class="name">
               [#-- Report Tag --]
               [#if isNew] <span class="badge badge-info">[@s.text name="global.new" /]</span> [/#if]
-              [#if reportingActive && !oldFormat && (item.projectExpectedStudyInfo.year == actualPhase.year) && isOwner && !isThisComplete]<span class="badge badge-primary" title="Required for this cycle"><span class="glyphicon glyphicon-flash" ></span> Report</span>[/#if]
+              [#if reportingActive && !oldFormat && (item.projectExpectedStudyInfo.year == actualPhase.year) && isOwner && !isThisComplete]<span class="badge badge-primary" title="Required for this cycle"><span class="fas fa-bolt" ></span> Report</span>[/#if]
               [#if !oldFormat]<a href="${dlurl}" ${isOwner?string('','target="blank"')}>[/#if]
                 [#if oldFormat] <span class="badge badge-info">Old Format</span> [/#if]
                 [@utils.tableText value=(item.projectExpectedStudyInfo.title)!"" /]

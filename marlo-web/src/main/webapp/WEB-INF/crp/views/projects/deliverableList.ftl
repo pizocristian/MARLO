@@ -96,7 +96,7 @@
           <div class="">
             <h3 class="subTitle headTitle">Deliverables</h3>
             [#if reportingActive]
-             <p class="note">[@s.text name="project.deliverableList.focusDeliverablesMessage"][@s.param]${currentCycleYear}[/@s.param][@s.param]<span class="badge badge-primary" title="Required for this cycle"><span class="glyphicon glyphicon-flash" ></span> Report</span>[/@s.param][/@s.text]</p>
+             <p class="note">[@s.text name="project.deliverableList.focusDeliverablesMessage"][@s.param]${currentCycleYear}[/@s.param][@s.param]<span class="badge badge-primary" title="Required for this cycle"><span class="fas fa-bolt" ></span> Report</span>[/@s.param][/@s.text]</p>
             [/#if]
             <hr /> 
             [@deliverableList.deliverablesList deliverables=(project.getCurrentDeliverables(actualPhase))![] canValidate=true canEdit=candit  isReportingActive=reportingActive namespace="/projects" defaultAction="${(crpSession)!}/deliverable"/]
@@ -107,7 +107,7 @@
           <div class="buttons">
             <div class="buttons-content">
               <div class="addDeliverable button-blue"><a  href="[@s.url namespace="/${currentSection}" action='${(crpSession)!}/addNewDeliverable'][@s.param name="projectID"]${projectID}[/@s.param][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">
-                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> [@s.text name="form.buttons.addDeliverable" /]
+                <span class="fas fa-plus-circle" aria-hidden="true"></span> [@s.text name="form.buttons.addDeliverable" /]
               </a></div>
             </div>
           </div>

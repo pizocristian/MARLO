@@ -72,7 +72,7 @@
           </div>
           [#-- Add CoA Button --]
           [#if editable]
-            <div class="bigAddButton text-center addCluster"><span class="glyphicon glyphicon-plus"></span> Add a Cluster</div>
+            <div class="bigAddButton text-center addCluster"><span class="fas fa-plus"></span> Add a Cluster</div>
           [/#if]
   
           [#-- Section Buttons--]
@@ -168,7 +168,7 @@
       [#-- Add CoA Leader --]
       [#if editable]
       <div class="addPerson text-center">
-        <div class="button-green searchUser"><span class="glyphicon glyphicon-plus-sign"></span>[@s.text name="form.buttons.addClusterLeader" /]</div>
+        <div class="button-green searchUser"><span class="fas fa-plus-circle"></span>[@s.text name="form.buttons.addClusterLeader" /]</div>
       </div>
       [/#if]
       
@@ -186,7 +186,7 @@
       [#-- Add Key output --]
       [#if editable]
       <div class="addPerson text-center">
-        <div class="button-green addKeyOutput"><span class="glyphicon glyphicon-plus-sign"></span>Add key output</div>
+        <div class="button-green addKeyOutput"><span class="fas fa-plus-circle"></span>Add key output</div>
       </div>
       [/#if]
     </div>    
@@ -200,14 +200,14 @@
   [#local customName = "${name}[${index}]" /]
   <li id="user-${template?string('template',index)}" class="user userItem"  style="list-style-type:none; display:${template?string('none','block')}">
     [#-- User Name --]
-    <span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="name"> ${(element.user.getComposedName()?html)!'Unknown user'}</span>
+    <span class="fas fa-user" aria-hidden="true"></span><span class="name"> ${(element.user.getComposedName()?html)!'Unknown user'}</span>
     [#-- Hidden inputs --]
     <input class="user" type="hidden" name="${customName}.user.id" value="${(element.user.id)!}"/>
     <input class="role" type="hidden" name="${customName}.role.id" value="${userRole}"/>
     <input class="id" type="hidden" name="${customName}.id" value="${(element.id)!}"/>
     [#-- Remove Button --]
     [#if editable]
-      <span class="glyphicon glyphicon-remove float-right remove-userItem" aria-hidden="true"></span>
+      <span class="fas fa-times float-right remove-userItem" aria-hidden="true"></span>
     [/#if]
   </li>
 [/#macro]

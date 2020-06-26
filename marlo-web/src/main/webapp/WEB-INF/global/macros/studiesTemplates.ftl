@@ -97,7 +97,7 @@
             [/#list]
           </div>
           [#if editable]
-          <div class="addButtonLink button-green float-right"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Add Link </div>
+          <div class="addButtonLink button-green float-right"><span class="fas fa-plus-circle" aria-hidden="true"></span> Add Link </div>
           <div class="clearfix"></div>
           [/#if]
         </div>
@@ -350,7 +350,7 @@
           [/#list]
           </div>
           [#if editable]
-            <div class="addStudyQualification bigAddButton text-center"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>[@s.text name="form.buttons.addStudyQualification"/]</div>
+            <div class="addStudyQualification bigAddButton text-center"><span class="fas fa-plus" aria-hidden="true"></span>[@s.text name="form.buttons.addStudyQualification"/]</div>
           [/#if]
         </div>
         [#-- Element item Template --]
@@ -508,7 +508,7 @@
       <div class="optionPublicComponent form-group" style="display:${isPublic?string('block', 'none')}">         
         <div class="">
           <span class="input-group-btn">
-            <button class="btn btn-outline-secondary btn-sm copyButton" type="button"> <span class="glyphicon glyphicon-link"></span> Copy URL </button>
+            <button class="btn btn-outline-secondary btn-sm copyButton" type="button"> <span class="fas fa-link"></span> Copy URL </button>
           </span>
           [#local summaryPDF = "${baseUrl}/projects/${crpSession}/studySummary.do?studyID=${(element.id)!}&cycle=Reporting&year=${(actualPhase.year)!}"]
           <input type="text" class="form-control input-sm urlInput" value="${summaryPDF}" readonly>

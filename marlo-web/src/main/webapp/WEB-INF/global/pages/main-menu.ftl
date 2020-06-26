@@ -30,9 +30,9 @@
   [#-- HOME - Logged --]
   { 'slug': 'home',           'name': 'menu.home',          'namespace': '/',               'action': '${(crpSession)!}/crpDashboard',    'icon': 'home',     'visible': logged, 'active': true },
   [#-- IMPACT PATHWAY - CRP --]
-  { 'slug': 'impactPathway',  'name': 'menu.impactPathway', 'namespace': '/impactPathway',  'action': '${(crpSession)!}/outcomes',        'visible': logged && !centerGlobalUnit, 'active': false, "development": true },
+  { 'slug': 'impactPathway',  'name': 'menu.impactPathway', 'namespace': '/impactPathway',  'action': '${(crpSession)!}/outcomes',        'visible': logged && !centerGlobalUnit, 'active': true, "development": false },
   [#-- IMPACT PATHWAY - CENTER --]
-  { 'slug': 'impactPathway',  'name': 'menu.impactPathway', 'namespace': '/impactPathway',  'action': '${(crpSession)!}/programimpacts',  'visible': logged && centerGlobalUnit, 'active': false, "development": true },
+  { 'slug': 'impactPathway',  'name': 'menu.impactPathway', 'namespace': '/impactPathway',  'action': '${(crpSession)!}/programimpacts',  'visible': logged && centerGlobalUnit, 'active': true, "development": false },
   [#-- MONITORING OUTCOMES - CENTER --]
   { 'slug': 'outcomes',       'name': 'menu.outcomes',      'namespace': '/monitoring',       'action': '${(crpSession)!}/monitoringOutcomesList',                      'visible': logged && centerGlobalUnit, 'active': true },
   [#-- PROJECTS - ALL --]
@@ -79,7 +79,7 @@
         [#assign url]#[/#assign]
       [/#if]
       <a href="${url}" onclick="return ${item.active?string}" class="action-${item.action}" title="[#if item.help?? && item.help][@s.text name="${item.name}.help" /][/#if]">
-        [#if item.icon?has_content]<span class="glyphicon glyphicon-${item.icon}"></span> [/#if]
+        [#if item.icon?has_content]<span class="fa fa-${item.icon}"></span> [/#if]
         [@s.text name=item.name ][@s.param]${(crpSession?upper_case)!'CRP'}[/@s.param] [/@s.text]
         [#if (item.development)!false][@utils.underConstruction title="global.underConstruction" width="18px" height="18px" /][/#if]
       </a>
@@ -94,7 +94,7 @@
                 [#assign url]#[/#assign]
               [/#if]
               <a href="${url}" onclick="return ${subItem.active?string};" class="action-${subItem.action}">
-                [#if subItem.icon?has_content]<span class="glyphicon glyphicon-${subItem.icon}"></span> [/#if]
+                [#if subItem.icon?has_content]<span class="fa fa-${subItem.icon}"></span> [/#if]
                 [@s.text name=subItem.name ][/@s.text]
                 [#if (subItem.development)!false][@utils.underConstruction title="global.underConstruction" width="18px" height="18px" /][/#if]
               </a>
@@ -112,7 +112,7 @@
 <div class="menuContent">
 	<div class="container">
 	  <ul class="d-md-none">
-	   <li> <span class="glyphicon glyphicon-menu-hamburger"></span> Main menu
+	   <li> <span class="fas fa-bars"></span> Main menu
 	     <ul class="subMenu">
 	       [@mainMenuList /]
 	     </ul>
@@ -126,7 +126,7 @@
       <div id="userInfo">
         <a id="userLogOut" href="[@s.url action="logout" namespace="/" /]">[@s.text name="header.logout" /]</a>
         <p class="userId" style="display:none">${(currentUser.id)!}</p> 
-        <p class="name"><span class="glyphicon glyphicon-user"></span> ${(currentUser.composedCompleteName)!}</p>  
+        <p class="name"><span class="fas fa-user"></span> ${(currentUser.composedCompleteName)!}</p>  
         <p class="institution">${(currentUser.email)!}</p>
         <p class="roles"> [${(roles)!}${(roles?has_content && liasons?has_content)?string(',','')}${(liasons)!}]</p>
       </div>

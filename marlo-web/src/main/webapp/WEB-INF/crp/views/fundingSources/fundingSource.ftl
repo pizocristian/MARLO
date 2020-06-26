@@ -222,7 +222,7 @@
           [#if (editable || editStatus)]
             <input id="fundingSource.fundingSourceInfo.extensionDate" type="hidden" name="fundingSource.fundingSourceInfo.extensionDate" value="${extensionValue}" class="form-control input-sm metadataValue extensionDateInput">
             <p class="dateLabel btn btn-outline-secondaryc ${isSynced?string('disabled','')}">${(fundingSource.fundingSourceInfo.extensionDate?string["MMMM yyyy"])!}</p>    
-            <small class="float-right clearDate syncVisibles" style="display:${isSynced?string('none', 'block')}"> <span class="glyphicon glyphicon-remove"></span> Clear</small>
+            <small class="float-right clearDate syncVisibles" style="display:${isSynced?string('none', 'block')}"> <span class="fas fa-times"></span> Clear</small>
           [#else]
             <input type="hidden" class="extensionDateInput" name="fundingSource.fundingSourceInfo.extensionDate" value="${(fundingSource.fundingSourceInfo.extensionDate?string["yyyy-MM-dd"])!}" />
             <div class="input"><p>${(fundingSource.fundingSourceInfo.extensionDate?string["MMMM yyyy"])!}</p></div>

@@ -33,9 +33,9 @@ error
           <li id="menu-${item.action}" class="[#if item.slug == currentStage]currentSection[/#if] [#if canEdit]${submitStatus?string('submitted','toSubmit')}[/#if] ${(item.active)?string('enabled','disabled')}">
             <a href="[@s.url action="${centerSession}/${item.action}"][@s.param name="programID" value=programID /][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]" onclick="return ${item.active?string}">
               [#if item.slug == "outcomes"]
-                  <span class="glyphicon glyphicon-chevron-right"></span>
+                  <span class="fas fa-chevron-right"></span>
               [#elseif item.slug == "outputs"]
-                  &nbsp; <span class="glyphicon glyphicon-chevron-right"></span>
+                  &nbsp; <span class="fas fa-chevron-right"></span>
               [/#if]
               [@s.text name=item.name/]
             </a>
@@ -100,13 +100,13 @@ error
   
   [#-- Controls --]
   <div id="controls" class="">
-    <span id="zoomIn" class="glyphicon glyphicon-zoom-in tool"></span>
-    <span id="zoomOut" class="glyphicon glyphicon-zoom-out tool "></span>
-    <span id="panRight" class="glyphicon glyphicon-arrow-right tool "></span>
-    <span id="panDown" class="glyphicon glyphicon-arrow-down tool "></span>
-    <span id="panLeft" class="glyphicon glyphicon-arrow-left tool "></span>
-    <span id="panUp" class="glyphicon glyphicon-arrow-up tool "></span>
-    <span id="resize" class="glyphicon glyphicon-resize-full  tool"></span>
+    <span id="zoomIn" class="fas fa-search-plus tool"></span>
+    <span id="zoomOut" class="fas fa-search-minus tool"></span>
+    <span id="panRight" class="fas fa-long-arrow-alt-right tool"></span>
+    <span id="panDown" class="fas fa-long-arrow-alt-down tool"></span>
+    <span id="panLeft" class="fas fa-long-arrow-alt-left tool"></span>
+    <span id="panUp" class="fas fa-long-arrow-alt-up tool"></span>
+    <span id="resize" class="fas fa-expand-arrows-alt  tool"></span>
   </div>
   
   [#-- Change to full or current graph --]
@@ -125,7 +125,7 @@ error
 </div>
   
   [#-- Download button--]
-  <a class="download" href=""><span title="download" id="buttonDownload"><span class="glyphicon glyphicon-download-alt"></span></span></a>
+  <a class="download" href=""><span title="download" id="buttonDownload"><span class="fas fa-download"></span></span></a>
   
   <div id="impactGraphic"></div>
 </div>

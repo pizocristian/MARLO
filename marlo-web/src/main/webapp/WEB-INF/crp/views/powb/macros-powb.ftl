@@ -11,7 +11,7 @@
     [/#if]
     [#if projects?size > 0]
     <a class=" btn btn-outline-secondary btn-xs" data-toggle="modal" style="border-color: #00BCD4;color: #057584;" data-target="#projectBudgets-${type}-${(element.id)!}">
-       [#-- <span class="glyphicon glyphicon-fullscreen" style="color:#b3b3b3"></span>  --]
+       [#-- <span class="fas fa-expand-arrows-alt" style="color:#b3b3b3"></span>  --]
        <span >${((totalValue)!0)?number?string(",##0.00")}</span>
     </a>
     

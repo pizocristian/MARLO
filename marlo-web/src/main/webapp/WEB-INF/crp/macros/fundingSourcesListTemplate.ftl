@@ -63,7 +63,7 @@
             [#if project.fundingSourceInfo.financeCode?has_content]
               [#assign isSynced = (project.fundingSourceInfo.synced)!false ]
               [#-- Icon --]
-              [#if isSynced]<span title="Synced on ${(project.fundingSourceInfo.syncedDate)!''}" class="glyphicon glyphicon-retweet" style="color: #2aa4c9;"></span>[/#if]
+              [#if isSynced]<span title="Synced on ${(project.fundingSourceInfo.syncedDate)!''}" class="fas fa-retweet" style="color: #2aa4c9;"></span>[/#if]
               [#-- Code --]
               <span [#if isSynced]style="color: #2aa4c9;"[/#if]>${project.fundingSourceInfo.financeCode}</span>
             [#else]

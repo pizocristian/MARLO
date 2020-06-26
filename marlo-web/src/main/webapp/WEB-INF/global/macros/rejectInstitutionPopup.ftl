@@ -29,7 +29,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-danger rejectButton"> <span class="glyphicon glyphicon-remove"></span> Reject</button>
+        <button type="button" class="btn btn-danger rejectButton"> <span class="fas fa-times"></span> Reject</button>
       </div>
     </div>
   </div>
@@ -63,7 +63,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button> 
         <a class="btn btn-danger btn-sm rejectOfficesRequest" href="#">
-          <span class="glyphicon glyphicon-remove"></span> Reject selected
+          <span class="fas fa-times"></span> Reject selected
         </a>
         
       </div>

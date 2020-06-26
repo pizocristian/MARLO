@@ -29,7 +29,7 @@
           <td class="view text-center">
             [#if (!isSelected) && ((log.available)!false)]
             <a href="[@s.url][@s.param name=itemName value=itemId /][@s.param name="transactionId"]${log.transactionId}[/@s.param][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">
-             <span class="glyphicon glyphicon-eye-open"></span> View 
+             <span class="far fa-eye"></span> View 
             </a>
             [/#if]
           </td>

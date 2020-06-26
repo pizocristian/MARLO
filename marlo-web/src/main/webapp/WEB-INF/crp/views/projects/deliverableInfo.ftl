@@ -43,7 +43,7 @@
 
     <div class="note left">
       <div id="popup" class="helpMessage3">
-        <p><a id="opener"> <span class="glyphicon glyphicon-info-sign"></span> [@s.text name="project.deliverable.generalInformation.deliverableType" /]</a></p>
+        <p><a id="opener"> <span class="fas fa-info-circle"></span> [@s.text name="project.deliverable.generalInformation.deliverableType" /]</a></p>
       </div>
     </div>
     <div class="clearfix"></div>
@@ -234,7 +234,7 @@
   
   [#if editable && canEdit]
     <div class="text-right">
-      <div class="button-blue addPartnerItem"><span class="glyphicon glyphicon-plus-sign"></span> [@s.text name="form.buttons.addPartner" /]</div>
+      <div class="button-blue addPartnerItem"><span class="fas fa-plus-circle"></span> [@s.text name="form.buttons.addPartner" /]</div>
     </div>
   [/#if]
   

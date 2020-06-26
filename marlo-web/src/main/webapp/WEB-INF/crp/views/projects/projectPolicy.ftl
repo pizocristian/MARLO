@@ -43,7 +43,7 @@
           [#-- Back --]
           <small class="float-right">
             <a href="[@s.url action='${crpSession}/policies'][@s.param name="projectID" value=project.id /][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">
-              <span class="glyphicon glyphicon-circle-arrow-left"></span> [@s.text name="projectPolicies.backProjectPolicies" /]
+              <span class="fas fa-arrow-alt-circle-left"></span> [@s.text name="projectPolicies.backProjectPolicies" /]
             </a>
           </small>
           

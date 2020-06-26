@@ -6,7 +6,7 @@
       <form class="pure-form">
         [#-- Search Users Form  --]
         <div id="search-users">
-          <span class="glyphicon glyphicon-remove-circle close-dialog"></span>
+          <span class="fas fa-times-circle close-dialog"></span>
           <h4 class="text-center"> Select a Person
           <br />
           <small> [@s.text name="users.searchUsers" /]  </small>
@@ -36,7 +36,7 @@
         
         [#-- Create User Form --]    
         <div id="create-user" class="accordion  text-center">
-          <span class="glyphicon glyphicon-plus"></span> <span class="title">[@s.text name="users.createUser" /]</span> 
+          <span class="fas fa-plus"></span> <span class="title">[@s.text name="users.createUser" /]</span> 
         </div>
         <div class="accordion-block create-user clearfix" style="display:none">
           <div class="create-user-block">

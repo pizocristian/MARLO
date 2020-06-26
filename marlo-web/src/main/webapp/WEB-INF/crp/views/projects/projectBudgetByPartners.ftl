@@ -267,8 +267,8 @@
       [#assign expandedProjectFundingSource = !(projectFundingSources?size > 0) ]
       [#if projectFundingSources?size > 0]
       <a class="btn btn-outline-secondary btn-xs float-right toggleProjectFundingSource"> 
-        <span class="project-fs-expandible-true" style="display:${expandedProjectFundingSource?string('none', 'block')}"><span class="glyphicon glyphicon-resize-full"></span> Expand</span>
-        <span class="project-fs-expandible-false" style="display:${expandedProjectFundingSource?string('block', 'none')}"><span class="glyphicon glyphicon-resize-small"></span> Collapse all</span>
+        <span class="project-fs-expandible-true" style="display:${expandedProjectFundingSource?string('none', 'block')}"><span class="fas fa-expand-arrows-alt"></span> Expand</span>
+        <span class="project-fs-expandible-false" style="display:${expandedProjectFundingSource?string('block', 'none')}"><span class="fas fa-compress-arrows-alt"></span> Collapse all</span>
       </a>
       [/#if]
       <h5 class="sectionSubTitle">Funding Sources: </h5>
@@ -292,7 +292,7 @@
         [#-- Search project bilateral co-funded --]
         [#if editable  && isYearEditable(selectedYear) && action.canSearchFunding(element.institution.id)]
         <div class="text-right">
-          <div class="searchProject button-blue ${action.canAddFunding(element.institution.id)?string('canAddFunding','')}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> [@s.text name="form.buttons.selectProject" /]</div>
+          <div class="searchProject button-blue ${action.canAddFunding(element.institution.id)?string('canAddFunding','')}"><span class="fas fa-search" aria-hidden="true"></span> [@s.text name="form.buttons.selectProject" /]</div>
         </div>
         [/#if]
       </div>

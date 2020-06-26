@@ -88,7 +88,7 @@
 
                       [#if true]
                       <div class="form-group btn-group btn-group-sm float-right" role="group" aria-label="...">
-                        <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#modal-evidenceF"><span class="glyphicon glyphicon-fullscreen"></span> AR Evidence F</button>
+                        <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#modal-evidenceF"><span class="fas fa-expand-arrows-alt"></span> AR Evidence F</button>
                       </div>
                       [#-- Evidence F: Full List of Current External Partners --]
                       <div class="modal fade" id="modal-evidenceF" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -157,7 +157,7 @@
                       </div>
                       [#if canEdit && editable]
                         <div class="text-right">
-                          <div class="addKeyPartnership bigAddButton text-center"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> [@s.text name="annualReport2018.externalPartnerships.addPartnershipButton"/]</div>
+                          <div class="addKeyPartnership bigAddButton text-center"><span class="fas fa-plus" aria-hidden="true"></span> [@s.text name="annualReport2018.externalPartnerships.addPartnershipButton"/]</div>
                         </div> 
                       [/#if]
                       <br />
@@ -240,7 +240,7 @@
                     </div>
                     [#if canEdit && editable]
                       <div class="text-right">
-                        <div class="addCrossPartnership bigAddButton text-center"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> [@s.text name="annualReport2018.externalPartnerships.addPlatformCollaborationButton"/]</div>
+                        <div class="addCrossPartnership bigAddButton text-center"><span class="fas fa-plus" aria-hidden="true"></span> [@s.text name="annualReport2018.externalPartnerships.addPlatformCollaborationButton"/]</div>
                       </div> 
                     [/#if]
                   </div>

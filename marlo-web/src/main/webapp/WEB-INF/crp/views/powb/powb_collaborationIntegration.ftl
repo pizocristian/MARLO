@@ -94,7 +94,7 @@
           [#if flagship]
             <div class="form-group">
               <h4 class="subTitle headTitle powb-table">[@s.text name="collaborationIntegration.listCollaborations.title"][@s.param]${(actualPhase.year)!}[/@s.param][/@s.text]</h4>
-              <span class="powb-doc badge label-powb-table" title="[@s.text name="powb.includedField.title" /]">[@s.text name="powb.includedField" /] <span class="glyphicon glyphicon-save-file"></span></span>
+              <span class="powb-doc badge label-powb-table" title="[@s.text name="powb.includedField.title" /]">[@s.text name="powb.includedField" /] <span class="fas fa-file-download"></span></span>
               <div class="listProgramCollaborations">
                [#if powbSynthesis.powbCollaborationGlobalUnitsList?has_content]
                 [#list powbSynthesis.powbCollaborationGlobalUnitsList as collaboration]
@@ -104,7 +104,7 @@
               </div>
               [#if canEdit && editable]
               <div class="text-right">
-                <div class="addProgramCollaboration bigAddButton text-center"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> [@s.text name="form.buttons.addProgramCollaboration"/]</div>
+                <div class="addProgramCollaboration bigAddButton text-center"><span class="fas fa-plus" aria-hidden="true"></span> [@s.text name="form.buttons.addProgramCollaboration"/]</div>
               </div> 
               [/#if]
               

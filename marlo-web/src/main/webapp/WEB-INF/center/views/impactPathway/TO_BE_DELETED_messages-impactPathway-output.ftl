@@ -49,7 +49,7 @@
 
 [#-- Concurrence Message --]
 <div id="concurrenceMessage" class="text-center" style="display:none">
-  <p><span class="glyphicon glyphicon-flash"></span> 
+  <p><span class="fas fa-bolt"></span> 
   [@s.text name="message.sectionSaved"]
     [@s.param]<span class="person"></span>[/@s.param]
     [@s.param] <a href="#" onclick="location.reload()">click here</a> [/@s.param]
@@ -61,7 +61,7 @@
 <div id="concurrenceBlock" class="text-center" style="display:none">
   <div class="layer"></div>
   <div class="content">
-    <span class="glyphicon glyphicon-lock"></span>
+    <span class="fas fa-lock"></span>
     <p>[@s.text name="message.concurrence" /] [@s.text name="message.concurrenceNotEditing"][@s.param] <a href="[@s.url][@s.param name=nameParameter value=parameterID /][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url]">click here</a> [/@s.param][/@s.text]</p>
   </div> 
 </div>

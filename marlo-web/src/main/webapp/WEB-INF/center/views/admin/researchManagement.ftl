@@ -36,7 +36,7 @@
             </div>
             [#-- Add Research Area Button --]
             <div class="text-center">
-              <div class="addResearchArea bigAddButton"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> [@s.text name="researchManagement.addResearchArea"/]</div>
+              <div class="addResearchArea bigAddButton"><span class="fas fa-plus-circle" aria-hidden="true"></span> [@s.text name="researchManagement.addResearchArea"/]</div>
             </div>
           </div>
           
@@ -100,7 +100,7 @@
           [/#if]
         </ul>
         <div class="text-center">
-          <div class="searchUser button-green clone-userItemAreaLeader"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> [@s.text name="form.buttons.addPerson" /]</div>
+          <div class="searchUser button-green clone-userItemAreaLeader"><span class="fas fa-plus-circle" aria-hidden="true"></span> [@s.text name="form.buttons.addPerson" /]</div>
         </div>
       </div>
     </div>
@@ -118,7 +118,7 @@
       </div>
       [#-- Add Research Program --]
       <div class="text-right">
-        <div class="addResearchProgram button-blue"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> [@s.text name="researchManagement.addResearchProgram"/]</div>
+        <div class="addResearchProgram button-blue"><span class="fas fa-plus-circle" aria-hidden="true"></span> [@s.text name="researchManagement.addResearchProgram"/]</div>
       </div>
     </div>
      
@@ -160,7 +160,7 @@
           [/#if]
         </ul>
         <div class="text-center">
-          <div class="searchUser button-green clone-userItemProgramLeader"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> [@s.text name="form.buttons.addPerson" /]</div>
+          <div class="searchUser button-green clone-userItemProgramLeader"><span class="fas fa-plus-circle" aria-hidden="true"></span> [@s.text name="form.buttons.addPerson" /]</div>
         </div>
       </div>
     </div>
@@ -171,11 +171,11 @@
 [#macro userItemMacro element name index id="userItem" template=false]
   [#local customName = "${name}[${index}]" /]
   <li id="${id}-${template?string('template',index)}" class="user userItem ${id}" style="display:${template?string('none','block')}">
-    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+    <span class="fas fa-user" aria-hidden="true"></span>
     <span class="name"> ${(element.user.getComposedName()?html)!'Unknown user'}</span>
     <input class="user" type="hidden" name="${customName}.user.id" value="${(element.user.id)!}"/>
     <input class="id" type="hidden" name="${customName}.id" value="${(element.id)!}"/>
     [#-- Remove Button --]
-    <span class="glyphicon glyphicon-remove float-right removeUserItem" aria-hidden="true"></span>
+    <span class="fas fa-times float-right removeUserItem" aria-hidden="true"></span>
   </li>
 [/#macro]

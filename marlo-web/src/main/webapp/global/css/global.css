@@ -1567,7 +1567,7 @@ a#userLogOut {
   color: #FFFFFF;
   position: relative;
   display: inline-block;
-  font-size: 0.8em;
+  font-size: 0.75em;
 }
 
 #mainMenu .menuContent ul li:hover {
@@ -5944,7 +5944,7 @@ h4.testEnvironment {
 
 span#usersOnline {
   width: 90px;
-  font-size: 0.9em;
+  font-size: 0.85em;
   line-height: 1em;
   display: block;
   font-style: italic;

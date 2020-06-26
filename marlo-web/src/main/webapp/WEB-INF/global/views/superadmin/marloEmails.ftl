@@ -31,14 +31,13 @@
         [#include "/WEB-INF/global/views/superadmin/menu-superadmin.ftl" /]
       </div>
       <div class="col-md-9">
-      
         <h4 class="sectionTitle">Emails on track</h4>
-         <ul class="nav nav-tabs" role="tablist">
-         <li> Emails dont send
-      </li>
+        <ul class="nav nav-tabs" role="tablist">
+          <li> Emails dont send</li>
+        </ul>
         <div id="" class="borderBox ">
          <div class="loading" style="display:none"></div>
-         <table id="marloEmailsTable" class="display table table-striped table-hover" width="100%">
+         <table id="marloEmailsTable" class="table-striped table-hover">
             <thead>
               <tr>
               [#--  
@@ -72,19 +71,18 @@
                   <td>
                     <a href="#" class="" data-toggle="modal" data-target="#emailPopup-${email.id}">${email.error}</a>
                   </td>
-                  <td>${email.date}</td>
+                  <td>${email.date!}</td>
                   <td>${(email.messageID)!}</td>
                 </tr>
               [/#list]
               [/#if]
             </tbody>
-          </table>
+         </table>
          <br />
          <div class="form-group">
             <button type="button" class="sendEmails btn btn-primary">Re-[@s.text name="form.buttons.sendEmails" /]</button>
          </div>
         </div>
-</ul>
       </div>
     </div>
   </div>

@@ -229,10 +229,10 @@
 }
 
 .terms-container{
-  z-index: 100;
+  /* z-index: 100; */
   margin-left: 5px;
   margin-top: 8px;
-  position: absolute;
+  /* position: absolute; */
 }
 
 .terms-container #terms{
@@ -245,6 +245,10 @@
   width: 100%;
   font-size: 20px;
   height: 30px;
+}
+
+.login-button-alt{
+  top:0px !important;
 }
 
 /* Hack for IE 8 to 10*/

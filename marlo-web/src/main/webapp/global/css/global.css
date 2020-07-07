@@ -1349,6 +1349,12 @@ header {
   box-shadow: inset 0px 0px 2px rgba(0, 0, 0, 0.1);
 }
 
+@media screen and (max-width: 1200px) {
+  #userInfo {
+    font-size: 0.8em;
+  }
+}
+
 a#userLogOut {
   color: #FFF;
   text-decoration: none;
@@ -1510,6 +1516,10 @@ a#userLogOut {
   position: relative;
 }
 
+#mainMenu .menuContent.positionFixedTop .container, #mainMenu .menuContent.positionFixedTop .container > ul, #mainMenu .menuContent.positionFixedTop .container > ul > li {
+  height: 100%;
+}
+
 #mainMenu .menuContent.positionFixedTop {
   z-index: 1001;
   position: fixed;
@@ -1568,6 +1578,12 @@ a#userLogOut {
   position: relative;
   display: inline-block;
   font-size: 0.75em;
+}
+
+@media screen and (min-width: 990px) and (max-width: 1200px) {
+  #mainMenu .menuContent ul li {
+    font-size: 0.64em;
+  } 
 }
 
 #mainMenu .menuContent ul li:hover {

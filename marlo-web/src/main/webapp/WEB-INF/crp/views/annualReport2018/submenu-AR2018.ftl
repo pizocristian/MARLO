@@ -14,9 +14,9 @@
       
       [#assign hasPermission = false/]
       [#assign itemURL][@s.url][@s.param name ="liaisonInstitutionID"]${institution.id}[/@s.param][#include "/WEB-INF/global/pages/urlGlobalParams.ftl" /][/@s.url][/#assign]
-      <a class="powb-submenuItem  ${isActive?string('active','')} ${isCompleted?string('completed','')}" style="width:${(itemSizePercentage)}%;" href="${itemURL}">
+      <a class="powb-submenuItem  ${isActive?string('active','')} ${isCompleted?string('completed','')} customSize_FPMenu" style="width:${(itemSizePercentage)}%;" href="${itemURL}">
         [#assign itemName="${(institution.crpProgram.acronym)!institution.acronym}: ${(institution.crpProgram.name)!institution.name}" /]
-        <p title="${itemName}">[@utilities.letterCutter string=itemName maxPos=(140)/liaisonInstitutions?size /]</p>
+        <p title="${itemName}" class="mb-0">[@utilities.letterCutter string=itemName maxPos=(120)/liaisonInstitutions?size /]</p>
         [#if isCompleted]<img class="check" src="${baseUrlCdn}/global/images/icon-check-tiny${isActive?string('-white','')}.png" />[/#if]
       </a>
     [/#list]

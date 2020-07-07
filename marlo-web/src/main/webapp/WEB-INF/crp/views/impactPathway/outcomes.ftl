@@ -484,7 +484,7 @@
     [#-- Sub IDO --]
     <div class="row">
       <div class="form-row col-md-9">
-        <div class="col-8" >
+        <div class="[#if editable]col-8[#else]col-auto[/#if]" >
           <label for="">[@s.text name="outcome.subIDOs.inputSubIDO.label"/]:[#if editable]<span class="red">*</span>[/#if]</label>
           <div id="" class="${subIDOCustomID} subIdoSelected">
             [@utils.letterCutter string="${(subIdo.srfSubIdo.description)!'<i>No Sub-IDO Selected</i>'}" maxPos=65 /]

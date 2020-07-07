@@ -69,7 +69,7 @@
 ]/]
 
 
-[#macro mainMenuList]
+[#macro mainMenuList vertical=false]
   [#list mainMenu as item]
    [#if item.visible]
     <li id="${item.slug}" class="[#if currentSection?? && currentSection == item.slug ]currentSection[/#if] ${(item.active)?string('enabled','disabled')}">
@@ -84,7 +84,7 @@
         [#if (item.development)!false][@utils.underConstruction title="global.underConstruction" width="18px" height="18px" /][/#if]
       </a>
       [#if item.subItems?has_content]
-        <ul class="subMenuItems subMenu">
+        <ul class="subMenuItems[#if !vertical] subMenu[/#if]">
           [#list item.subItems as subItem]
             [#if subItem.visible]
             <li id="${subItem.slug}" class="[#if currentStage?? && currentStage == subItem.slug ]currentSection[/#if] ${(subItem.active)?string('enabled','disabled')}">
@@ -111,14 +111,14 @@
 <nav id="mainMenu"> 
 <div class="menuContent">
 	<div class="container">
-	  <ul class="d-md-none">
+	  <ul class="d-lg-none">
 	   <li> <span class="fas fa-bars"></span> Main menu
 	     <ul class="subMenu">
-	       [@mainMenuList /]
+	       [@mainMenuList vertical=true/]
 	     </ul>
 	   </li>
 	  </ul>
-	  <ul class="d-none d-md-block">
+	  <ul class="d-none d-lg-block">
 	    [@mainMenuList /]
 	  </ul>
 	  

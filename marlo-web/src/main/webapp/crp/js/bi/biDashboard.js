@@ -130,19 +130,9 @@ function embedPBI(embedToken, embededURL, dashboardId, contentId) {
 }
 
 //Function to set a value for the acronym filter, value is an array
-function filterAcronym(value) {
-  // Build the filter you want to use. For more information, See Constructing
+function filter(filterName, value) {
+  // For more information, See Constructing
   // Filters in https://github.com/Microsoft/PowerBI-JavaScript/wiki/Filters.
-  const filter = {
-    $schema: "http://powerbi.com/product/schema#basic",
-    target: {
-      table: "project_submission",
-      hierarchy: "acronym Hierarchy",
-      hierarchyLevel: "acronym"
-    },
-    operator: "In",
-    values: value
-  };
 
   // Get a reference to the embedded report HTML element
   var currentID = $("div[class$='current']").attr("id");
@@ -151,15 +141,24 @@ function filterAcronym(value) {
   // Get a reference to the embedded report.
   report = powerbi.get(embedContainer);
 
-  // Set the filter for the report.
-  // Pay attention that setFilters receives an array.
-  report.setFilters([filter])
-    .then(function () {
-      console.log("Report filter was set.");
-    })
-    .catch(function (errors) {
-      console.log(errors);
+  report.getFilters().then(function (allTargetFilters) {
+    allTargetFilters.forEach(function (currentFilter){
+      if(currentFilter.target.hierarchyLevel == filterName || currentFilter.target.column == filterName){
+        currentFilter.operator ='IN';
+        currentFilter.values = value;
+      }
     });
+
+    // Set the filter for the report.
+    // Pay attention that setFilters receives an array.
+    report.setFilters(allTargetFilters)
+      .then(function () {
+        console.log("Report filter was set.");
+      })
+      .catch(function (errors) {
+        console.log(errors);
+      });
+  });
 }
 
 //Function to remove the filter panel
@@ -171,7 +170,7 @@ function removeFilterPanel(contentId){
         }
       }
   };
-//Get a reference to the embedded report HTML element
+  //Get a reference to the embedded report HTML element
   //var currentID = $("div[class$='current']").attr("id");
   var embedContainer = $("#"+contentId+'-contentOptions').children().first()[0];
 

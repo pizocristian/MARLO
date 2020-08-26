@@ -3,7 +3,17 @@
 .mce-widget.mce-tooltip {
   display: none !important;
 }
-
+.backward:focus , .forward:focus{
+  outline: none !important;
+  -webkit-box-shadow: none!important;
+  box-shadow: none!important;
+}
+.phaseBox >h5{
+  margin: 0rem;
+}
+.custom-select{
+  padding: 0;
+}
 table {
   width: 100%;
 }

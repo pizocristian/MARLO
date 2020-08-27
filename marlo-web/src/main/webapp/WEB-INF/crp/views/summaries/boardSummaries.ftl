@@ -384,7 +384,9 @@
       [#list report.cycles![] as tag ]<span class="badge badge-secondary type-${tag?lower_case}">${tag}</span>[/#list]
       
       [#list report.formats as icon ]
-      <span class="badge badge-secondary type-${icon?lower_case}"><span class="fa fa-file-${icon?lower_case}-o ${icon?lower_case}Icon file"></span> ${icon}</span>
+      <span class="badge badge-secondary type-${icon?lower_case}">
+      <i class="far fa-file-${icon?lower_case}"></i>
+      ${icon}</span>
       [/#list] 
     </div>
     [#-- Title --]

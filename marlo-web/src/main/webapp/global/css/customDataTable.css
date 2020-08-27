@@ -1,6 +1,7 @@
 /* paginate_button colors */
 .paginate_button > a{
   color: #337ab7!important;
+  transition: all .4s ease;
 }
 
 .paginate_button > a:hover{

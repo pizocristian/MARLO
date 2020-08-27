@@ -2,6 +2,9 @@
   padding-left: 117px;
   margin-top: 29px;
 }
+.summariesButtons > div{
+  transition: all .3s ease;
+}
 
 .blockButton {
   margin-top: -3px;

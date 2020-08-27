@@ -3,6 +3,25 @@
 .mce-widget.mce-tooltip {
   display: none !important;
 }
+
+
+/*changes 2020 MZ*/
+/* .summariesButtons > div{
+  transition: all .3s ease;
+} */
+
+
+
+/* .summariesButtons > div > a:hover .summariesButtons > div > span:hover{
+  background-color: #2BA6CB;
+  color: white !important;
+} */
+span.badge{
+  padding: 5px;
+}
+.container{
+  max-width: 1200px !important;
+}
 .backward:focus , .forward:focus{
   outline: none !important;
   -webkit-box-shadow: none!important;
@@ -11,9 +30,35 @@
 .phaseBox >h5{
   margin: 0rem;
 }
-.custom-select{
-  padding: 0;
+.phaseBox.phaseNoSelected, .phaseBox.phaseSelected{
+  transition: all .2s ease;
 }
+.phaseBox.phaseNoSelected:hover{
+  background-color: rgb(233, 230, 230) !important;
+}
+.phaseBox.phaseSelected:hover{
+  background-color: #4990ce !important;
+}
+.dataTables_length>label>.custom-select{
+  padding-top: 0;
+  text-decoration: none;
+
+}
+.badge-danger{
+  background-color: #d9534f !important;
+  border-radius: 2px;
+}
+
+.phaseBox  > h5 > small > .badge.badge-danger{
+  font-size: 10px;
+  padding: 5px;
+}
+body{
+  font-size: 14px !important;
+}
+/* end changes 2020 MZ*/
+
+
 table {
   width: 100%;
 }
@@ -55,9 +100,9 @@ select.input-sm {
   /* width: 1100px; */
 }
 
-a:hover {
+/* a:hover {
   color: #A9A9A9;
-}
+} */
 
 a.disabled {
   background: #ffffff !important;
@@ -109,9 +154,9 @@ a#btn-revokeChoice {
   display: inline-block;
 }
 
-.button:hover {
+/* .button:hover {
   background: #E0E0E0;
-}
+} */
 
 .bigAddButton {
   border-style: dashed;
@@ -1440,7 +1485,7 @@ a#userLogOut {
 }
 
 #userInfo .institution {
-  font-size: 0.7em;
+  font-size: 0.6em;
   padding-top: 0px;
   min-width: 153px;
   color: #E7E7E7;
@@ -1468,7 +1513,7 @@ a#userLogOut {
 }
 
 #marlo-logo {
-  padding: 10px 0px;
+  padding: 10px 0px 0px 0px;
   font-weight: lighter;
   float: left;
   width: 66%;
@@ -1587,7 +1632,7 @@ a#userLogOut {
   color: #FFFFFF;
   position: relative;
   display: inline-block;
-  font-size: 0.75em;
+  font-size: 0.93em;
 }
 
 @media screen and (min-width: 990px) and (max-width: 1200px) {
@@ -5690,6 +5735,13 @@ span.select2-selection.select2-selection--multiple {
 
 h4.testEnvironment {
   margin-top: 0;
+  font-size: 1.2em;
+ 
+}
+.badge.badge-danger.text-left{
+  padding: 6px;
+  font-size: .85em;
+  border-radius: 3px;
 }
 
 .button-save {
@@ -6910,6 +6962,14 @@ div.radioFlat {
     opacity: 0;
   }
 }
+.d-none > li {
+  transition: all .35s ease;
+}
+
+.d-none > li:hover {
+  background-color: #286499;
+}
+
 
 /* Datatables button*/
 .dt-buttons{
@@ -6918,11 +6978,19 @@ height: 33px;
 }
 
 a.dt-button {
-  padding: 0px 10px;
+  padding: 10px;
   border: 1px solid #ccc;
   border-radius: 2px;
   margin-right: 3px;
-  background: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: all .3s ease;
+}
+
+a.dt-button:hover {
+  background-color: #337ab7;
+  color: white;
+ 
 }
 
 a.dt-button.exportCSV {
@@ -7078,9 +7146,20 @@ li.currentSection#bi::before{
   clear: both;
 }
 
-.tab-content>.active {
+/* #mainInformation > div > div > .tab-content>.tab-pane.active {
   display: block;
+  background-color: #f5f5f5;
+  padding: 1rem;
+
+} */
+
+.tab-content>.tab-pane.active {
+  display: block;
+  background-color: #f5f5f5;
+  padding: 1rem;
+
 }
+
 
 .breadcrumb>.active {
   color: #777;
@@ -7119,3 +7198,4 @@ ul.pagination {
   background-color: #e6e6e6;
   border-color: #adadad;
 }
+

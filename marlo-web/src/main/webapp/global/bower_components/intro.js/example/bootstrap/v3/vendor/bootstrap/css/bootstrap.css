@@ -4907,7 +4907,7 @@ a.label:focus {
 }
 .label-danger[href]:hover,
 .label-danger[href]:focus {
-  background-color: #c9302c;
+  background-color: #c9302c !important;
 }
 .badge {
   display: inline-block;

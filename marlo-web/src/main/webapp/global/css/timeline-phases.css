@@ -187,6 +187,7 @@ div#tl-adnyds {
   background-color: #777;
   color: #fff;
   border: none;
+  
 }
 
 .example .frame ul li h4 {
@@ -203,8 +204,12 @@ div#tl-adnyds {
 .example .scrollbar .handle {
   width: 100px;
   height: 100%;
-  background: #eee;
+  background-color: #4990ce !important;
   cursor: pointer;
+  border-radius: 3px;
+
+
+  
 }
 
 .example .scrollbar .handle .mousearea {

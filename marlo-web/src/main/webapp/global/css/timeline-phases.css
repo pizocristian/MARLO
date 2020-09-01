@@ -1,3 +1,20 @@
+
+
+
+
+.paginate_button.active > a ,.page-item.active .page-link{
+  background-color: #337ab7 ;
+  color: white !important;
+  border: none;
+}
+
+.paginate_button > a:focus{
+    outline: none !important;
+    -webkit-box-shadow: none!important;
+    box-shadow: none!important;
+    border: none !important;
+}
+
 .tl-slidenav-previous {
   top: 5px !important;
   display: none !important;

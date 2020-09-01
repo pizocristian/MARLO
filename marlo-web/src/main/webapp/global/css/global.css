@@ -3,7 +3,20 @@
 .mce-widget.mce-tooltip {
   display: none !important;
 }
- 
+   
+.paginate_button.disabled > a{
+  background-color: rgb(235, 231, 231) !important;
+  color: gray !important;
+}
+.paginate_button > a:hover{
+  background-color: rgb(240, 240, 240) !important;
+   color: #337ab7 !important;
+}
+
+.paginate_button > a{
+  color: #337ab7 !important;
+  transition: all .4s ease;
+}
 
 /*changes 2020 MZ*/
 /* .summariesButtons > div{
@@ -2770,7 +2783,7 @@ input.userName {
   width: 41%;
   position: absolute;
   top: 33%;
-    left: 29%;
+  left: 29%;
 }
 
 #newProject, #newImpactPathway {

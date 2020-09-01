@@ -1,3 +1,26 @@
+.paginate_button > a{
+  color: #179457 !important;
+  transition: all .4s ease;
+}
+
+.paginate_button > a:hover{
+  background-color: rgb(240, 240, 240) !important;
+   color: #2cbd77 !important;
+}
+
+
+.paginate_button.active > a{
+  background-color: #179457 !important;
+  color: white !important;
+}
+
+.paginate_button > a:focus{
+    outline: none !important;
+    -webkit-box-shadow: none!important;
+    box-shadow: none!important;
+    border: none !important;
+}
+
 a {
   color: #909090;
   text-decoration: none;
@@ -136,10 +159,10 @@ ul.horizontalSubMenu li.active {
   background-color: #8ea786;
 }
 
-.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {
+/* .pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {
   background-color: #8ea786;
   border-color: #8ea786;
-}
+} */
 
 .example .frame ul li.planning.phaseSelected {
   background-color: #35ad75 !important;

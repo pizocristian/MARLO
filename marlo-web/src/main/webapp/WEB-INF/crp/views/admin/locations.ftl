@@ -80,7 +80,7 @@
         </div>
         
         <h4 class="sectionTitle">[@s.text name="crpLocations.customizeScopes"] [@s.param]${(crpSession?upper_case)!}[/@s.param] [/@s.text]</h4>
-        <div class="simpleBox col-md-12 col-sm-12">
+        <div class="simpleBox row col-md-12 col-sm-12">
         [#list regions as region]
           <span class="col-lg-3 col-md-4 col-sm-4" style="padding:5px 3px; cursor:pointer;" title="${(region.name)!}">
           <img src="${baseUrlCdn}/global/images/icon-check.png" alt="" />

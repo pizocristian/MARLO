@@ -84,7 +84,7 @@
                   [#if item.action == "centerOutcomesList"]
                       <span class="fas fa-chevron-right"></span>
                   [#elseif item.action == "outputsList"]
-                      &nbsp; <span class="fas fa-chevron-right"></span>
+                      <span class="fas fa-chevron-right"></span>
                   [/#if]
                   [@s.text name=item.name/]
                   

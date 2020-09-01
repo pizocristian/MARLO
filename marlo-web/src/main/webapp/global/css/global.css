@@ -17,6 +17,11 @@
   color: #337ab7 !important;
   transition: all .4s ease;
 }
+/* 
+#menu-outputsList a span{
+  position: relative;
+  left: -6.55px;
+} */
 
 /*changes 2020 MZ*/
 /* .summariesButtons > div{
@@ -2079,16 +2084,34 @@ a.currentReportingSection li, a.currentSection li {
   /* border-left: 5px solid; */
 }
 
+.horizontalSubMenu li:hover {
+  transition: all .5s ease;
+  background-color: #F7F7F7;
+  color: white !important;
+  cursor: pointer;
+}
+#submitProject-87{
+  transition: all .5s ease;
+}
+#submitProject-87:hover {
+  transition: all .5s ease;
+  border-radius: 30px;
+  text-decoration: none;
+
+}
+
 #secondaryMenu ul li > ul li ul li a {
   padding: 6px 20px 6px 10px !important;
 }
 
 #secondaryMenu ul li  > ul li:hover {
+  transition: all .5s ease;
   background-color: #F7F7F7;
 }
 
 #secondaryMenu ul li  > ul li:hover a {
   color: #000;
+  transition: all .5s ease;
 }
 
 #secondaryMenu ul li  > ul {

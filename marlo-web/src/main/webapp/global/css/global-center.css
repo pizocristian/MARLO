@@ -227,6 +227,19 @@ span.errorTag {
   position: relative;
 }
 
+
+.nav-tabs .nav-item:hover  {
+  transition: all .5s ease;
+  background-color: #F7F7F7;
+  position: relative;
+}
+
+.sectionSubMenu .tab-content .tab-pane ul li a:hover{
+  transition: all .5s ease;
+  color: #389767 !important;
+  text-decoration: none;
+}
+
 .sectionSubMenu .nav-tabs>li.active:after, .sectionSubMenu .nav-tabs>li.active:before {
   top: 92%;
   left: 50%;

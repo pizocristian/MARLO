@@ -2090,12 +2090,12 @@ a.currentReportingSection li, a.currentSection li {
   color: white !important;
   cursor: pointer;
 }
-#submitProject-87{
-  transition: all .5s ease;
+#submitProject-87,.projectValidateButton{
+  transition: all .4s ease;
 }
-#submitProject-87:hover {
-  transition: all .5s ease;
-  border-radius: 30px;
+#submitProject-87:hover ,.projectValidateButton:hover{
+  transition: all .4s ease;
+  border-radius: 20px !important;
   text-decoration: none;
 
 }

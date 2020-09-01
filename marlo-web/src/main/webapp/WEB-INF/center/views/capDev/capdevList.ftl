@@ -58,7 +58,8 @@
 
 
   <div class="row form-group conventionContainer">
-    <div class="itemName">
+  
+    <div class="row itemName">
       <div class="col-md-1"> Annexes:</div>
       <div class="col-md-2">
         <span class="icon-20 outcomesCont"></span> List of participants

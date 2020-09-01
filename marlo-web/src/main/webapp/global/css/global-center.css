@@ -223,6 +223,9 @@ span.errorTag {
   padding: 3px;
   z-index: 99;
 }
+.nav-tabs .nav-item {
+  position: relative;
+}
 
 .sectionSubMenu .nav-tabs>li.active:after, .sectionSubMenu .nav-tabs>li.active:before {
   top: 92%;

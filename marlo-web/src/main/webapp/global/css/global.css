@@ -2769,6 +2769,8 @@ input.userName {
   text-align: center;
   width: 41%;
   position: absolute;
+  top: 33%;
+    left: 29%;
 }
 
 #newProject, #newImpactPathway {

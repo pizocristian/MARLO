@@ -38,7 +38,7 @@
         [@s.form action=actionName enctype="multipart/form-data" ]
         
         <h4 class="sectionTitle">Phases</h4>
-        <div class="borderBox row ">
+        <div class="borderBox">
           [#if phases??]
             [#list phasesAction as phase]
               [#assign customName = "phasesAction[${phase_index}]"]

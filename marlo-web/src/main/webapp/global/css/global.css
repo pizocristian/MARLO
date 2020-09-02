@@ -29,7 +29,9 @@
 } */
 h3{
   font-size: 1.7em !important;
-}
+}h4{
+  font-size: 1.3em;
+  }
 
 body{
   overflow:overlay;
@@ -1018,7 +1020,14 @@ ul.horizontalSubMenu li {
 
 ul.horizontalSubMenu li a {
   text-decoration: none;
-  color: #B3B2B2;
+  color: #B3B2B2; 
+  transition: all .3s ease;
+}
+
+ul.horizontalSubMenu li a:hover {
+  text-decoration: none;
+  color: #0277a2;
+  transition: all .3s ease;
 }
 
 ul.horizontalSubMenu li.active {
@@ -2080,14 +2089,15 @@ a.currentReportingSection li, a.currentSection li {
   display: block;
   text-decoration: none;
   color: #5E5E5E;
-  padding: 5px 19px 5px 10px !important;
+  padding: 5px 25px 5px 10px !important;
   /* border-left: 5px solid; */
 }
 
 .horizontalSubMenu li:hover {
-  transition: all .5s ease;
-  background-color: #F7F7F7;
-  color: white !important;
+  text-decoration: none;
+color: #1da5ce !important;
+transition: all .3s ease;
+border-color: #1da5ce ;
   cursor: pointer;
 }
 #submitProject-87,.projectValidateButton{

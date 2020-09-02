@@ -273,6 +273,16 @@ tfoot {
   color: #a9a9a9;
   text-decoration: none;
   position: relative;
+  transition: all .3s ease;
+  
+}
+
+.powb-submenuItem:hover {
+/* background-color: #eee; */
+text-decoration: none;
+color: #1da5ce;
+transition: all .3s ease;
+border-color: #1da5ce ;
 }
 
 .customSize_FPMenu{

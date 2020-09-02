@@ -102,6 +102,7 @@
               [#if usersList?has_content]
                 <div role="tabpanel" class="tab-pane [#if role?is_first]active[/#if]" id="role-${role.id}">
                   <h4 class="sectionSubTitle ">${role.description}</h4>
+                  <br/>
                   <table class="display table table-striped table-hover usersTable" width="100%">
                     <thead>
                       <tr>

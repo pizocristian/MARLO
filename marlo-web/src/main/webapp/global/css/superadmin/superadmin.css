@@ -133,6 +133,7 @@ table#marloUsersTable tr {
 
 .locElementType {
   width: 49%;
+  height: 50px;
   margin-left: 1%;
   float: left;
 }

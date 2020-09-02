@@ -113,14 +113,14 @@
         <strong>${(element.parameter.key)!} </strong> <br /> <small><i>(${(element.parameter.description?replace('\n', '<br>'))!})</i></small>
       [/#if]
     </td>
-    <td class="col-md-3 text-center">
+    <td class=" text-center">
       [#--  Boolean(1, "Boolean"), Date(2, "Date"), Int(3, "Int"), Text(4, "Text"); --]
       [#if (element.parameter.format == 1)!false]
-        <div class="radioFlat radio-inline">
+        <div class="radioFlat form-check-inline">
           <input id="yes-${(element.id)!}" type="radio" name="${customName}.value" value="true" [#if (element.value == "true")!false]checked[/#if] />
           <label for="yes-${(element.id)!}" class="radio-label radio-label-yes"> Yes</label>
         </div>
-        <div class="radioFlat radio-inline">
+        <div class="radioFlat form-check-inline">
           <input id="no-${(element.id)!}" type="radio" name="${customName}.value" value="false"  [#if (element.value == "false")!false]checked[/#if]/>
           <label for="no-${(element.id)!}" class="radio-label radio-label-no"> No</label>
         </div>

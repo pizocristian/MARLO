@@ -17,6 +17,11 @@
   color: #337ab7 !important;
   transition: all .4s ease;
 }
+
+.tab-content .tab-pane .table.table-striped.table-condensed tbody tr.parameter{
+  display: grid !important;
+  grid-template-columns: 70% 30%;
+}
 /* 
 #menu-outputsList a span{
   position: relative;

@@ -80,6 +80,7 @@ li.targetUnit {
 .targetsContent h6 {
   display: inline-block;
   margin-top: 11px;
+  font-size: .8em;
 }
 
 .targetsList {

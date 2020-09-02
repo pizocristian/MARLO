@@ -92,7 +92,7 @@
             [#-- Filter --]
             <div class="controls-block row form-group" style="">
               <div class="col-md-7">
-                <div class="input-group">
+                <div class="input-group-prepend">
                   <input type="text" id="filterText" class="form-control" placeholder="Filter by IDs...">
                   <span class="input-group-btn">
                     <button id="filterButton" class="btn btn-outline-secondary" type="button">Go!</button>

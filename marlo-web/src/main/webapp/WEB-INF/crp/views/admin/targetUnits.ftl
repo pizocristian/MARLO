@@ -109,7 +109,8 @@
       [#if element.check?? && element.check]checked[/#if]
      [/#if] </span>
     [#-- Icon --]
-    <span class="glyphicon glyphicon-scale"></span>  
+   <!-- <span class="glyphicon glyphicon-scale"></span> -->
+   <i class="fas fa-weight"></i> 
     [#-- Name --]
     <span class="composedName"> ${(element.targetUnit.name)!}</span> <br />
     [#-- CRPs that allow this target --]

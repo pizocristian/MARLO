@@ -24,8 +24,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 
 @Named
 public class ReportSynthesisFlagshipProgressMilestoneMySQLDAO
@@ -80,7 +80,7 @@ public class ReportSynthesisFlagshipProgressMilestoneMySQLDAO
       "select distinct pp from ReportSynthesisFlagshipProgressMilestone as pp inner join pp.reportSynthesisFlagshipProgress.reportSynthesis as reportSynthesis "
         + " inner join reportSynthesis.liaisonInstitution liai" + " where liai.crpProgram.id = :crpProgramID ";
 
-    Query createQuery = this.getSessionFactory().getCurrentSession().createQuery(query);
+    Query<ReportSynthesisFlagshipProgressMilestone> createQuery = this.getSessionFactory().getCurrentSession().createQuery(query);
     createQuery.setParameter("crpProgramID", crpProgramID);
     List<ReportSynthesisFlagshipProgressMilestone> flagshipProgressMilestones = createQuery.list();
     return flagshipProgressMilestones;

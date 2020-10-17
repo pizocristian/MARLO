@@ -24,8 +24,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 
 @Named
 public class PowbExpectedCrpProgressMySQLDAO extends AbstractMarloDAO<PowbExpectedCrpProgress, Long>
@@ -76,7 +76,7 @@ public class PowbExpectedCrpProgressMySQLDAO extends AbstractMarloDAO<PowbExpect
     String query = "select distinct pp from PowbExpectedCrpProgress as pp inner join pp.powbSynthesis as powbSynthesis "
       + " inner join powbSynthesis.liaisonInstitution liai" + " where liai.crpProgram.id = :crpProgramID ";
 
-    Query createQuery = this.getSessionFactory().getCurrentSession().createQuery(query);
+    Query<PowbExpectedCrpProgress> createQuery = this.getSessionFactory().getCurrentSession().createQuery(query);
     createQuery.setParameter("crpProgramID", crpProgramID);
     List<PowbExpectedCrpProgress> powbExpectedCrpProgresses = createQuery.list();
     return powbExpectedCrpProgresses;

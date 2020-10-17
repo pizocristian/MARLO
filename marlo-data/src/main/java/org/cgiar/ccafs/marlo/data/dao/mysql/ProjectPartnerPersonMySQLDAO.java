@@ -25,8 +25,8 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 
 @Named
 public class ProjectPartnerPersonMySQLDAO extends AbstractMarloDAO<ProjectPartnerPerson, Long>
@@ -78,7 +78,7 @@ public class ProjectPartnerPersonMySQLDAO extends AbstractMarloDAO<ProjectPartne
       + "inner join projectPartnerPerson.projectPartner as projectPartner "
       + "where projectPartnerPerson.active is true " + "and projectPartner.id = :projectPartnerId";
 
-    Query createQuery = this.getSessionFactory().getCurrentSession().createQuery(query);
+    Query<ProjectPartnerPerson> createQuery = this.getSessionFactory().getCurrentSession().createQuery(query);
     createQuery.setParameter("projectPartnerId", projectPartnerId);
 
     List<ProjectPartnerPerson> projectPartnerPersons = createQuery.list();
@@ -96,7 +96,7 @@ public class ProjectPartnerPersonMySQLDAO extends AbstractMarloDAO<ProjectPartne
       + "and deliverablePartnership.partnerType = 'Other' " + "and deliverable.id = :deliverableId "
       + "and projectPartner.id = :partnerId";
 
-    Query createQuery = this.getSessionFactory().getCurrentSession().createQuery(query);
+    Query<ProjectPartnerPerson> createQuery = this.getSessionFactory().getCurrentSession().createQuery(query);
     createQuery.setParameter("deliverableId", deliverableId);
     createQuery.setParameter("partnerId", partnerId);
 
@@ -112,7 +112,7 @@ public class ProjectPartnerPersonMySQLDAO extends AbstractMarloDAO<ProjectPartne
       + "inner join projectPartnerPerson.projectPartner as projectPartner "
       + "where projectPartner.id = :projectPartnerId";
 
-    Query createQuery = this.getSessionFactory().getCurrentSession().createQuery(query);
+    Query<ProjectPartnerPerson> createQuery = this.getSessionFactory().getCurrentSession().createQuery(query);
     createQuery.setParameter("projectPartnerId", projectPartnerId);
 
     List<ProjectPartnerPerson> projectPartnerPersons = createQuery.list();

@@ -23,8 +23,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 
 @Named
 public class GlobalUnitMySQLDAO extends AbstractMarloDAO<GlobalUnit, Long> implements GlobalUnitDAO {
@@ -39,7 +39,7 @@ public class GlobalUnitMySQLDAO extends AbstractMarloDAO<GlobalUnit, Long> imple
 
 		String query = "select distinct cp from GlobalUnit cp inner join fetch cp.crpUsers cpUser   "
 				+ "where (cpUser.user.email = :emai  or cpUser.user.username =:emai ) and cpUser.active=1 ";
-		Query createQuery = this.getSessionFactory().getCurrentSession().createQuery(query);
+		Query<GlobalUnit> createQuery = this.getSessionFactory().getCurrentSession().createQuery(query);
 		createQuery.setParameter("emai", emai);
 		List<GlobalUnit> crps = super.findAll(createQuery);
 		return crps;

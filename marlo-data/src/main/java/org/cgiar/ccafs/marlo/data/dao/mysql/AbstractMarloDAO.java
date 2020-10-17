@@ -24,8 +24,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.FlushMode;
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.NativeQuery;
+import org.hibernate.query.Query;
 // import org.hibernate.Transaction;
 import org.hibernate.transform.AliasToEntityMapResultTransformer;
 import org.slf4j.Logger;
@@ -81,10 +82,10 @@ public abstract class AbstractMarloDAO<T, ID extends Serializable> {
    * @param sqlQuery is a string representing an SQL query.
    */
   public List<Map<String, Object>> excuteStoreProcedure(String storeProcedure, String sqlQuery) {
-    Query queryProcd = this.sessionFactory.getCurrentSession().createSQLQuery(storeProcedure);
+    NativeQuery<Map<String, Object>> queryProcd = this.sessionFactory.getCurrentSession().createSQLQuery(storeProcedure);
     queryProcd.setFlushMode(FlushMode.COMMIT);
     queryProcd.executeUpdate();
-    Query query = this.sessionFactory.getCurrentSession().createSQLQuery(sqlQuery);
+    NativeQuery<Map<String, Object>> query = this.sessionFactory.getCurrentSession().createSQLQuery(sqlQuery);
     query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
     query.setFlushMode(FlushMode.COMMIT);
 
@@ -109,7 +110,7 @@ public abstract class AbstractMarloDAO<T, ID extends Serializable> {
    */
   public void executeUpdateQuery(String sqlQuery) {
 
-    Query query = this.sessionFactory.getCurrentSession().createSQLQuery(sqlQuery);
+    NativeQuery query = this.sessionFactory.getCurrentSession().createSQLQuery(sqlQuery);
     query.setFlushMode(FlushMode.COMMIT);
     query.executeUpdate();
   }
@@ -146,8 +147,8 @@ public abstract class AbstractMarloDAO<T, ID extends Serializable> {
   }
 
 
-  protected List<T> findAll(Query hibernateQuery) {
-    hibernateQuery.setFlushMode(FlushMode.COMMIT);
+  protected List<T> findAll(Query<T> hibernateQuery) {
+    hibernateQuery.setHibernateFlushMode(FlushMode.COMMIT);
     @SuppressWarnings("unchecked")
     List<T> list = hibernateQuery.list();
     return list;
@@ -166,7 +167,7 @@ public abstract class AbstractMarloDAO<T, ID extends Serializable> {
    * @return a list of <T> objects.
    */
   protected List<T> findAll(String hibernateQuery) {
-    Query query = sessionFactory.getCurrentSession().createQuery(hibernateQuery);
+    Query<T> query = sessionFactory.getCurrentSession().createQuery(hibernateQuery);
     return this.findAll(query);
   }
 
@@ -176,7 +177,7 @@ public abstract class AbstractMarloDAO<T, ID extends Serializable> {
    * @param sqlQuery is a string representing an HQL query.
    */
   public List<Map<String, Object>> findCustomQuery(String sqlQuery) {
-    Query query = sessionFactory.getCurrentSession().createSQLQuery(sqlQuery);
+    NativeQuery<Map<String, Object>> query = sessionFactory.getCurrentSession().createSQLQuery(sqlQuery);
     query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
     query.setFlushMode(FlushMode.COMMIT);
     List<Map<String, Object>> result = query.list();
@@ -186,8 +187,8 @@ public abstract class AbstractMarloDAO<T, ID extends Serializable> {
   }
 
   protected List<T> findEveryone(Class<T> clazz) {
-    Query query = sessionFactory.getCurrentSession().createQuery("from " + clazz.getName());
-    query.setFlushMode(FlushMode.COMMIT);
+    Query<T> query = sessionFactory.getCurrentSession().createQuery("from " + clazz.getName());
+    query.setHibernateFlushMode(FlushMode.COMMIT);
 
     @SuppressWarnings("unchecked")
     List<T> list = query.list();
@@ -203,8 +204,8 @@ public abstract class AbstractMarloDAO<T, ID extends Serializable> {
    * @param hibernateQuery
    * @return
    */
-  protected T findSingleResult(Class<T> clazz, Query hibernateQuery) {
-    hibernateQuery.setFlushMode(FlushMode.COMMIT);
+  protected T findSingleResult(Class<T> clazz, Query<T> hibernateQuery) {
+    hibernateQuery.setHibernateFlushMode(FlushMode.COMMIT);
     T object = clazz.cast(hibernateQuery.uniqueResult());
     return object;
   }
@@ -218,8 +219,8 @@ public abstract class AbstractMarloDAO<T, ID extends Serializable> {
    * @return a Object of <T>
    */
   protected T findSingleResult(Class<T> clazz, String hibernateQuery) {
-    Query query = sessionFactory.getCurrentSession().createQuery(hibernateQuery);
-    query.setFlushMode(FlushMode.COMMIT);
+    Query<T> query = sessionFactory.getCurrentSession().createQuery(hibernateQuery);
+    query.setHibernateFlushMode(FlushMode.COMMIT);
     return this.findSingleResult(clazz, query);
   }
 

@@ -24,8 +24,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 
 @Named
 public class DeliverableTypeRuleMySQLDAO extends AbstractMarloDAO<DeliverableTypeRule, Long>
@@ -76,7 +76,7 @@ public class DeliverableTypeRuleMySQLDAO extends AbstractMarloDAO<DeliverableTyp
       "select distinct dtr from DeliverableTypeRule as dtr inner join dtr.deliverableRule as deliverableRule "
         + "where deliverableRule.name = :rule ";
 
-    Query createQuery = this.getSessionFactory().getCurrentSession().createQuery(query);
+    Query<DeliverableTypeRule> createQuery = this.getSessionFactory().getCurrentSession().createQuery(query);
     createQuery.setParameter("rule", rule);
     List<DeliverableTypeRule> deliverableTypeRules = createQuery.list();
     return deliverableTypeRules;

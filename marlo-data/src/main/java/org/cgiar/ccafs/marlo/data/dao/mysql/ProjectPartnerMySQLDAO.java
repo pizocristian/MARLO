@@ -30,8 +30,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 
 @Named
 public class ProjectPartnerMySQLDAO extends AbstractMarloDAO<ProjectPartner, Long> implements ProjectPartnerDAO {
@@ -89,7 +89,7 @@ public class ProjectPartnerMySQLDAO extends AbstractMarloDAO<ProjectPartner, Lon
   public ProjectPartner getPartnerPhase(Phase phase, Project project, Institution institution) {
     String query = "select distinct pp from ProjectPartner pp "
       + " where project.id = :projectId and institution.id= :institutionId and phase.id= :phaseId and active=true";
-    Query createQuery = this.getSessionFactory().getCurrentSession().createQuery(query);
+    Query<ProjectPartner> createQuery = this.getSessionFactory().getCurrentSession().createQuery(query);
     createQuery.setParameter("projectId", project.getId());
     createQuery.setParameter("institutionId", institution.getId());
     createQuery.setParameter("phaseId", phase.getId());
@@ -106,7 +106,7 @@ public class ProjectPartnerMySQLDAO extends AbstractMarloDAO<ProjectPartner, Lon
   public ProjectPartner getProjectPartnerByIdAndEagerFetchLocations(long projectPartnerID) {
     String query = "select distinct pp from ProjectPartner pp left join fetch pp.projectPartnerLocations ppl "
       + "where pp.id = :projectPartnerID";
-    Query createQuery = this.getSessionFactory().getCurrentSession().createQuery(query);
+    Query<ProjectPartner> createQuery = this.getSessionFactory().getCurrentSession().createQuery(query);
     createQuery.setParameter("projectPartnerID", projectPartnerID);
 
     Object findSingleResult = super.findSingleResult(ProjectPartner.class, createQuery);
@@ -124,7 +124,7 @@ public class ProjectPartnerMySQLDAO extends AbstractMarloDAO<ProjectPartner, Lon
       + "left join fetch pp.projectPartnerPersons as ppp where project.id = :projectId "
       + "and ppp.active = true and pp.active=true";
 
-    Query createQuery = this.getSessionFactory().getCurrentSession().createQuery(query);
+    Query<ProjectPartner> createQuery = this.getSessionFactory().getCurrentSession().createQuery(query);
     createQuery.setParameter("projectId", projectId);
     List<ProjectPartner> projectPartners = createQuery.list();
     return projectPartners;

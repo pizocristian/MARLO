@@ -32,8 +32,8 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 @Named
@@ -314,7 +314,7 @@ public class FundingSourceMySQLDAO extends AbstractMarloDAO<FundingSource, Long>
     q.append("GROUP BY sub.id, sub.name, sub.type, sub.typeId, sub.financeCode, sub.w1w2, sub.budget ");
     q.append("ORDER BY sub.id, sub.name");
 
-    Query query = this.getSessionFactory().getCurrentSession().createSQLQuery(q.toString());
+    NativeQuery<FundingSourceSearchSummary> query = this.getSessionFactory().getCurrentSession().createSQLQuery(q.toString());
     query.setResultTransformer(new AliasToBeanResultTransformer(FundingSourceSearchSummary.class));
     List<FundingSourceSearchSummary> result = query.list();
 
@@ -357,7 +357,7 @@ public class FundingSourceMySQLDAO extends AbstractMarloDAO<FundingSource, Long>
     q.append("GROUP BY sub.id, sub.name, sub.type, sub.typeId, sub.financeCode, sub.w1w2, sub.budget ");
     q.append("ORDER BY sub.id, sub.name");
 
-    Query query = this.getSessionFactory().getCurrentSession().createSQLQuery(q.toString());
+    NativeQuery<FundingSourceSearchSummary> query = this.getSessionFactory().getCurrentSession().createSQLQuery(q.toString());
     query.setResultTransformer(new AliasToBeanResultTransformer(FundingSourceSearchSummary.class));
     List<FundingSourceSearchSummary> result = query.list();
 
@@ -481,7 +481,7 @@ public class FundingSourceMySQLDAO extends AbstractMarloDAO<FundingSource, Long>
     q.append("GROUP BY sub.id, sub.name, sub.type, sub.typeId, sub.financeCode, sub.w1w2, sub.budget ");
     q.append("ORDER BY sub.id, sub.name");
 
-    Query query = this.getSessionFactory().getCurrentSession().createSQLQuery(q.toString());
+    NativeQuery<FundingSourceSearchSummary> query = this.getSessionFactory().getCurrentSession().createSQLQuery(q.toString());
     query.setResultTransformer(new AliasToBeanResultTransformer(FundingSourceSearchSummary.class));
     List<FundingSourceSearchSummary> result = query.list();
 

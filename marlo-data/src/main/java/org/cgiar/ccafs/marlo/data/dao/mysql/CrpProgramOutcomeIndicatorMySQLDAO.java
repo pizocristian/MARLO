@@ -25,8 +25,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 
 @Named
 
@@ -78,7 +78,7 @@ public class CrpProgramOutcomeIndicatorMySQLDAO extends AbstractMarloDAO<CrpProg
     CrpProgramOutcome crpProgramOutcome) {
     String query = "select distinct pp from CrpProgramOutcomeIndicator  pp "
       + "where composeID=:id and crpProgramOutcome.id=:crpProgramOutcomeID and active=true";
-    Query createQuery = this.getSessionFactory().getCurrentSession().createQuery(query);
+    Query<CrpProgramOutcomeIndicator> createQuery = this.getSessionFactory().getCurrentSession().createQuery(query);
     createQuery.setParameter("id", composedId);
     createQuery.setParameter("crpProgramOutcomeID", crpProgramOutcome.getId());
     Object findSingleResult = super.findSingleResult(CrpProgramOutcomeIndicator.class, createQuery);

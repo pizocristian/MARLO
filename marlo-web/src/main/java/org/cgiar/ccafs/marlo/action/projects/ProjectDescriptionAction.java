@@ -529,7 +529,7 @@ public class ProjectDescriptionAction extends BaseAction {
 
           }
         }
-        // load scope info
+        // load scope infoen
         if (project.getScopes() != null) {
           for (ProjectScope projectScope : project.getScopes()) {
             projectScope
@@ -879,10 +879,9 @@ public class ProjectDescriptionAction extends BaseAction {
 
 
       // no liaison institution selected
-      if (project.getProjectInfo().getLiaisonInstitution() != null) {
-        if (project.getProjectInfo().getLiaisonInstitution().getId() == -1) {
-          project.getProjectInfo().setLiaisonInstitution(null);
-        }
+      if (project.getProjectInfo().getLiaisonInstitution() != null
+        && project.getProjectInfo().getLiaisonInstitution().getId() == -1) {
+        project.getProjectInfo().setLiaisonInstitution(null);
       }
 
       // Saving the flaghsips
@@ -910,7 +909,8 @@ public class ProjectDescriptionAction extends BaseAction {
             projectFocus.setPhase(this.getActualPhase());
             if (projectDB.getProjectFocuses().stream()
               .filter(c -> c.isActive() && c.getCrpProgram().getId().longValue() == program.getId().longValue()
-                && c.getPhase().equals(this.getActualPhase()))
+                && this.getActualPhase() != null && c.getPhase() != null
+                && c.getPhase().getId().equals(this.getActualPhase().getId()))
               .collect(Collectors.toList()).isEmpty()) {
               projectFocus.setPhase(this.getActualPhase());
               projectFocusManager.saveProjectFocus(projectFocus);
@@ -1092,12 +1092,7 @@ public class ProjectDescriptionAction extends BaseAction {
 
       project.getProjectInfo().setModifiedBy(this.getCurrentUser());
 
-      /*
-       * Validate Previous Project Id field information
-       */
-      if (project.getProjectInfo().getPreviousProjectId() != null) {
-        projectInfoManagerManager.saveProjectInfo(project.getProjectInfo());
-      }
+      projectInfoManagerManager.saveProjectInfo(project.getProjectInfo());
 
       Path path = this.getAutoSaveFilePath();
       // if is auto-save, load relations to generate auditlog correctly

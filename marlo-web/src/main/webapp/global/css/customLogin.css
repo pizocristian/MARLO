@@ -2,6 +2,9 @@
 /* .glyphicon .icon-show-password{
   position: absolute !important;
 } */
+.user-password{
+  width: 91% !important;
+}
 .icon-show-password {
   position: absolute !important;
   top: unset;

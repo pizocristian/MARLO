@@ -38,6 +38,7 @@ import org.cgiar.ccafs.marlo.data.model.ProjectSectionStatusEnum;
 import org.cgiar.ccafs.marlo.data.model.ProjectStatusEnum;
 import org.cgiar.ccafs.marlo.data.model.RepIndTypeActivity;
 import org.cgiar.ccafs.marlo.utils.InvalidFieldsMessages;
+import org.cgiar.ccafs.marlo.utils.doi.DOIService;
 import org.cgiar.ccafs.marlo.validation.BaseValidator;
 
 import java.nio.file.Path;
@@ -251,7 +252,17 @@ public class DeliverableValidator extends BaseValidator {
 
           // Deliverable Meta-data Elements
           if (deliverable.getMetadataElements() != null) {
-            // this.validateMetadata(deliverable.getMetadataElements());
+            boolean isPRP = false;
+            // type 63 = Peer-reviewed publication (PRP). doi should only be mandatory for PRPs
+            if (action.getActualPhase() != null && deliverable.getDeliverableInfo(action.getActualPhase()) != null
+              && deliverable.getDeliverableInfo(action.getActualPhase()).getDeliverableType() != null
+              && deliverable.getDeliverableInfo(action.getActualPhase()).getDeliverableType().getId() != null
+              && deliverable.getDeliverableInfo(action.getActualPhase()).getDeliverableType().getId()
+                .longValue() == 63L) {
+              isPRP = true;
+            }
+
+            this.validateMetadata(deliverable.getMetadataElements(), action, isPRP);
           } else {
             action.addMessage(action.getText("project.deliverable.v.metadata"));
             action.getInvalidFields().put("input-deliverable.deliverableInfo.dissemination.isOpenAccess",
@@ -728,30 +739,48 @@ public class DeliverableValidator extends BaseValidator {
      */
   }
 
-  public void validateMetadata(List<DeliverableMetadataElement> elements, BaseAction action) {
+  public void validateMetadata(List<DeliverableMetadataElement> elements, BaseAction action, boolean isPRP) {
 
-    boolean description = false;
+    // boolean description = false;
 
 
     for (DeliverableMetadataElement deliverableMetadataElement : elements) {
       if (deliverableMetadataElement != null) {
         if (deliverableMetadataElement.getMetadataElement().getId() != null) {
-          if (8L == deliverableMetadataElement.getMetadataElement().getId().longValue()) {
-            if ((this.isValidString(deliverableMetadataElement.getElementValue())
-              && this.wordCount(deliverableMetadataElement.getElementValue()) <= 100)) {
-              description = true;
+          /*
+           * if (8L == deliverableMetadataElement.getMetadataElement().getId().longValue()) {
+           * if ((this.isValidString(deliverableMetadataElement.getElementValue())
+           * && this.wordCount(deliverableMetadataElement.getElementValue()) <= 100)) {
+           * description = description || true;
+           * }
+           * // break;
+           * }
+           */
+          // DOI validation only mandatory for PRPs
+          if (isPRP && deliverableMetadataElement.getMetadataElement().getId() != null
+            && 36L == deliverableMetadataElement.getMetadataElement().getId()) {
+            if (deliverableMetadataElement.getElementValue() != null
+              && !deliverableMetadataElement.getElementValue().isEmpty()) {
+              String cleanDoi = DOIService.tryGetDoiName(deliverableMetadataElement.getElementValue());
+              if (cleanDoi.isEmpty()) {
+                action.addMessage(action.getText("metadata.doi"));
+                action.getInvalidFields().put("doi-bridge", InvalidFieldsMessages.EMPTYFIELD);
+              }
+            } else {
+              action.addMessage(action.getText("metadata.doi"));
+              action.getInvalidFields().put("doi-bridge", InvalidFieldsMessages.EMPTYFIELD);
             }
-            break;
-
           }
         }
       }
     }
-    if (!description) {
-      action.addMessage(action.getText("project.deliverable.metadata.v.description"));
-      action.getInvalidFields().put("input-deliverable.deliverableInfo.metadataElements[7].elementValue",
-        InvalidFieldsMessages.EMPTYFIELD);
-    }
+    /*
+     * if (!description) {
+     * action.addMessage(action.getText("project.deliverable.metadata.v.description"));
+     * action.getInvalidFields().put("input-deliverable.deliverableInfo.metadataElements[7].elementValue",
+     * InvalidFieldsMessages.EMPTYFIELD);
+     * }
+     */
 
 
   }
@@ -764,14 +793,18 @@ public class DeliverableValidator extends BaseValidator {
         && deliverablePublicationMetadata.getId().intValue() != -1) {
 
         if (action.hasDeliverableRule(deliverableInfo, APConstants.DELIVERABLE_RULE_JORNAL_ARTICLES)) {
-          // Validation of Volume or Issue or Pages
-          if (!this.isValidString(deliverablePublicationMetadata.getVolume())
-            && !this.isValidString(deliverablePublicationMetadata.getIssue())
-            && !this.isValidString(deliverablePublicationMetadata.getPages())) {
+          // Validation Volume, Issue and Pages
+          if (!this.isValidString(deliverablePublicationMetadata.getVolume())) {
             action.addMessage(action.getText("project.deliverable.publication.v.volume"));
             action.getInvalidFields().put("input-deliverable.publication.volume", InvalidFieldsMessages.EMPTYFIELD);
+          }
+
+          if (!this.isValidString(deliverablePublicationMetadata.getIssue())) {
             action.addMessage(action.getText("project.deliverable.publication.v.issue"));
             action.getInvalidFields().put("input-deliverable.publication.issue", InvalidFieldsMessages.EMPTYFIELD);
+          }
+
+          if (!this.isValidString(deliverablePublicationMetadata.getPages())) {
             action.addMessage(action.getText("project.deliverable.publication.v.pages"));
             action.getInvalidFields().put("input-deliverable.publication.pages", InvalidFieldsMessages.EMPTYFIELD);
           }

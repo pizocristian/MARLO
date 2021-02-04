@@ -1,8 +1,52 @@
 var $statuses, $statusDescription;
 
 $(document).ready(init);
+function hideOrShowCheckBoxIsOtherUrl(value){
+  if (value) {
+    $('.isOtherUrlTohide').show('slow');
+  }else{
+    $('input.isOtherUrl').prop('checked', false);
+    $('.other-url').hide('slow');
+    $('.isOtherUrlFiel').val(false);
 
-function init() {
+  }
+}
+function checkDOI() { 
+  setTimeout(() => {
+    // activeByNoDOIProvidedCheckbox();
+    // console.log("DOI; value "+$('#doi-bridge').val());
+    if ($('.deliverableDisseminationUrl ').prop('readonly') || $('.disseminationChannel').val() == 'other' ) {
+      if ($('#doi-bridge').val()) {
+        console.log("*** hideOrShowCheckBoxIsOtherUrl(false) ***");
+        $('.isOtherUrlTohide').hide('slow');
+  
+        hideOrShowCheckBoxIsOtherUrl(false);
+        
+      }else{
+        hideOrShowCheckBoxIsOtherUrl(true);
+        console.log("*** hideOrShowCheckBoxIsOtherUrl(true) ***");
+      }
+    }
+
+    var result = /^10.\d{4,9}[-._;()/:A-Z0-9]+$/i.test($('#doi-bridge').val());
+   
+      if ( result ) {
+        $('#doi-bridge').css("border", "1px solid #ccc");
+        $('.invalidDOI').hide('slow');
+        $('.validDOI').show('slow');
+      } else {
+        $('#doi-bridge').css("border", "red solid 1px");
+        $('.invalidDOI').show('slow');
+        $('.validDOI').hide('slow');
+        
+      }
+    
+
+  }, 50);
+
+}
+
+function init() { 
 
   $statuses = $('select.status');
   isDeliverableNew = $statuses.classParam('isNew') == "true";
@@ -24,6 +68,18 @@ function init() {
   });
 
   validateDeliverableStatus();
+  
+
+  $('#doi-bridge').keydown(checkDOI);
+  $('#doi-bridge').change(checkDOI);
+  $('#doi-bridge').bind("paste",checkDOI);
+  document.getElementById("doi-bridge").addEventListener("paste", checkDOI);
+
+  $('input.isOtherUrl').on("click", activeByNoDOIProvidedCheckbox);
+
+
+ 
+  // $('#doi-bridge').addEventListener("paste",checkDOI);
 
   // justificationByStatus($statuses.val());
   // validateCurrentDate();
@@ -162,8 +218,28 @@ function init() {
     setGeographicScope(this);
   });
   setGeographicScope($('form select.elementType-repIndGeographicScope')[0]);
-
+    // valiate checkbox "No DOI provided" value
+ 
   deliverablePartnersModule.init();
+}
+
+function activeByNoDOIProvidedCheckbox(){
+    // console.log($(this).val());
+    if ($('input.isOtherUrl').is(":checked")) {
+      console.log("checked");
+      // $('.computerLicense input').prop("checked", true);
+      // $(this).val(true)
+      // $("#doi-bridge").prop('readonly', true);
+      $('.isOtherUrlFiel').val(true);
+    }else{
+      console.log("No checked");
+      // $('.computerLicense input').prop("checked", false);
+      // $(this).val(false)
+      $('.isOtherUrlFiel').val(false);
+      // $("#doi-bridge").prop('readonly', false);
+
+    }
+  
 }
 
 function openDialog() {
@@ -374,10 +450,15 @@ function justificationByStatus(statusId) {
         console.log("else");
         if(statusId==4) {
           showNewExpectedComponent(true);
-          $('.expectedDisabled').hide();
+          $('.expectedDisabled').hide("slow");
         } else if(statusId==3){
-          showNewExpectedComponent(true);
-          $('.expectedDisabled').show();
+          
+          if (($('.yearNewExpected').val() != '-1') && ($('.yearNewExpected').val() != $('.yearExpected').val())) {  
+            showNewExpectedComponent(true);
+          } else {
+            showNewExpectedComponent(false);
+          }
+          $('.expectedDisabled').show("slow");
         } else {
           showNewExpectedComponent(false);
         }

@@ -1,4 +1,4 @@
-
+let WOSInstitutions='';
 $(document).ready(init);
 $(document).ready(function () {
   validateSubCategorySelector();
@@ -14,6 +14,9 @@ function init() {
   $('#doi-bridge').change(function () {
     $('.metadataElement-doi .input input').val($(this).val())
   })
+  $('.typeSelect').change(validateRequiredTagToCategory);
+  $('.subTypeSelect').change(validateRequiredTagToCategory)
+  // $('.typeSelect ').on("click",   validateRequiredTagToCategory);
   // Setting ID to Date-picker input
   $(".dateMetadata").attr("id", "deliverableMetadataDate");
   $(".restrictionDate").attr("id", "restrictionDate");
@@ -36,6 +39,33 @@ function init() {
   // if ($('.deliverableDisseminationUrl ').prop('readonly')) {
   //   getWOSInfo();
   // }
+  // $('.typeSelect').val() == 49 && $('.subTypeSelect ').val() ==63 
+
+  validateRequiredTagToCategory();
+}
+
+function validateRequiredTagToCategory(){
+  if ( $('.typeSelect').val() == 49 && $('.subTypeSelect ').val() ==63 ) {
+    console.log('%cIt is Articles and Books and Journal Article (peer reviewed)','background: #222; color: #37ff73');
+    $('.conditionalRequire ').find('.requiredTag').show('slow');
+    $('.isOtherUrlTohide').show('slow');
+
+  }else{
+    console.log('%cIt is no Articles and Books and Journal Article (peer reviewed)','background: #222; color: #37ff73');
+    $('.conditionalRequire').find('.requiredTag').hide('slow');
+    $('.isOtherUrlTohide').hide('slow');
+    $('.other-url').hide('slow');
+    $('.isOtherUrlFiel').val(false);
+    $('input.isOtherUrl').prop('checked', false);
+    $('.other-url').find('input').val('');
+   
+
+    // if ($('.isOtherUrlFiel').val() == 'true') {
+    //   $('.conditionalRequire').find('.requiredTag').hide('slow');
+    // }else{
+    //   $('.conditionalRequire').find('.requiredTag').show('slow');
+    // }
+  } 
   
 }
 
@@ -43,12 +73,8 @@ function getWOSInfo(){
 setTimeout(() => {
 
   const queryString = window.location.search;
-  console.log(queryString);
   const urlParams = new URLSearchParams(queryString);
   const product = urlParams.get('deliverableID')
- console.log(product);
-
-
   let makeRequest = true;
 
   link = $('#doi-bridge').val();
@@ -68,12 +94,9 @@ setTimeout(() => {
     makeRequest = false;
   }
   
-  console.log("make a request?: "+makeRequest);
-  
  // '10.1016/j.jclepro.2020.122854'
   // link = '10.1016/j.agee.2016.12.042';
  if (makeRequest) {
-   console.log("link: "+link);
   $.ajax({
     url: baseURL + '/metadataByWOS.do',
     data: {
@@ -88,39 +111,54 @@ setTimeout(() => {
       $('.loading-WOS-container').show('slow');
       $('#WOSModalBtn').hide("slow");  
       $('#output-wos').hide("slow");  
+      $('#A4NH_deliverable_save').prop('disabled', true);
+      $('#A4NH_deliverable_save').css("background-color", "#b6b6b6");
+      $('#A4NH_deliverable_save').css("border-bottom", "3px solid #acacac");
+     
       
     },
     success: function(data) {
-      console.log(data);
-    console.log("succes");
-    console.log(data.response);
-    updateWOSFields(data.response);
-    $('#WOSModalBtn').show('slow');  
-    $('#output-wos').html('Found metadata successfully in Web of Science.')
+      console.log("data",data);
+      if (data.jsonStringResponse !=undefined && data.jsonStringResponse !="null" ) {
+        // console.log('%cUpdate','background: #222; color: #37ff73');
+        // console.log("data.jsonStringResponse",data.jsonStringResponse);
+        updateWOSFields(data.response);
+        $('#WOSModalBtn').show('slow');  
+        $('#output-wos').html('Found metadata successfully in Web of Science.')
+      }else{
+        errorRequestH();
+      }
+    
+
     },
     error: function(e) {
-     $('#WOSModalBtn').hide("slow");  
-      console.log(e);
-      console.log("Problem with the request");
-      $('#output-wos').html('The peer-reviewed publication was not found in Web of Science.')
+      errorRequestH();
     },
     complete: function() {
       // console.log("complete"); 
       $('#output-wos').show('slow');   
       $('#output-wos').show('slow');  
       $('.loading-WOS-container').hide("slow");
+      $('#A4NH_deliverable_save').prop('disabled', false);
+      $('#A4NH_deliverable_save').css("background-color", "");
+      $('#A4NH_deliverable_save').css("border-bottom", "");
     }
  });
  }
 
 }, 1500);
 }
+
+function errorRequestH(){
+  $('#WOSModalBtn').hide("slow");  
+  $('#output-wos').html('The peer-reviewed publication was not found in Web of Science.')
+}
 function nullDataPipe(data){
-  if (data === false) {
+  if (data == false || data == 'false') {
     return 'No'
-  }else if (data === false) {
+  }else if (data == true || data == 'true') {
     return 'Yes'
-  }else if (data === 0) {
+  }else if (data == 0 || data == '0') {
     return 'No'
   }else if (data != undefined) {
     return data;    
@@ -132,9 +170,7 @@ function nullDataPipe(data){
 function JsonAuthorsToOrder(data){
   if (data != 'Not Available') {
     let auxData='';
-    console.log(data);
     data.forEach(element => {
-     console.log(element.fullName);
      auxData +='<p>'+element.fullName+'</p></hr>';
    });
     return auxData;
@@ -143,28 +179,34 @@ function JsonAuthorsToOrder(data){
   }
 }
 
-function JsoninstitutionsToOrder(data){
-  if (data != 'Not Available') {
-    let auxData='';
-    let name='';
-    console.log(data);
-    data.forEach(element => {
-     console.log(element.fullName);
-     if (parseInt(element.clarisaMatchConfidence) <= 75) {
-      name=element.clarisaId;
-     }else{
-      name=element.fullName;
-     }
-     auxData +='<p>'+name+'</p></hr>';
-   });
-    return auxData;
-  }else{
-    return data;
-  }
-}
+
 
 function loadingAnimation(){
   $('.loading-WOS').hide;
+}
+function addZero(i) {
+  if (i < 10) {
+    i = "0" + i;
+  }
+  return i;
+}
+
+function getCurrentDate() {
+
+
+  // var today = new Date();
+  // var h = addZero(today.getHours());
+  // var m = addZero(today.getMinutes());
+  // //  var s = addZero(d.getSeconds());
+  // var dd = String(today.getDate()).padStart(2, '0');
+  // var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  // var yyyy = today.getFullYear();
+  // var hours = today.getHours();
+  // var ampm = hours >= 12 ? 'pm' : 'am';
+
+  // return h + ":" + m+' '+ampm+' - '+ mm + '/' + dd + '/' + yyyy;
+  return new Date().toUTCString()
+  
 }
 function updateWOSFields(data){
   let {
@@ -189,9 +231,31 @@ function updateWOSFields(data){
   //    console.log(element);
   //    $('#td-WOS-URL').append(url);
   //   });
-     
+     if (nullDataPipe(isOpenAccess) == 'Yes') {
+      $('#WOS_tag_IOA_yes').show('slow');
+      $('#WOS_tag_IOA_no').hide('slow');
+     }else{
+      $('#WOS_tag_IOA_yes').hide('slow');
+      $('#WOS_tag_IOA_no').show('slow');
+
+     }
+
+     if (nullDataPipe(isISI) == 'Yes') {
+      $('#WOS_tag_ISI_yes').show('slow');
+      $('#WOS_tag_ISI__no').hide('slow');
+     }else{
+      $('#WOS_tag_ISI_yes').hide('slow');
+      $('#WOS_tag_ISI__no').show('slow');
+
+     }
+  
+  today = getCurrentDate();
 
 
+
+  $('.currentDate').html(today);
+
+  $('.WOS_tag').show('slow');
 
   $('#td-WOS-URL').html(nullDataPipe(url));
   $('#td-WOS-DOI').html(nullDataPipe(doi));
@@ -206,15 +270,61 @@ function updateWOSFields(data){
   // $('#td-WOS-Issue').html(nullDataPipe(issue));
   $('#td-WOS-Pages').html(nullDataPipe(pages));
   $('#td-WOS-Authors').html(JsonAuthorsToOrder(nullDataPipe(authors)));
-  $('#td-WOS-Institutions').html(JsoninstitutionsToOrder(nullDataPipe(institutions)));
 
-  
+  getWosInstitutions(institutions);
+}
+
+function getWosInstitutions(institutions) {
+
+  console.log(institutions);
+  institutions.forEach((element, index) => {
+
+    if (parseInt(element.clarisaMatchConfidence) < Number($('#acceptationPercentageValue').val())) {
+      element.finalName = element.fullName;
+    } else {
+      $.ajax({
+        url: baseURL + '/institutionById.do',
+        data: {
+          institutionID: element.clarisaId
+        },
+        beforeSend: function () {
+
+
+        },
+        success: function (data) {
+          element.finalName = data.institution.institutionName;
+        },
+        error: function (e) {
+          console.log(e);
+        },
+        complete: function () {
+          $('#td-WOS-Institutions').html(JsoninstitutionsToOrder(nullDataPipe(institutions)));
+        }
+      });
+    }
+  });
+
+}
+
+function JsoninstitutionsToOrder(data){
+  if (data != 'Not Available') {
+    let auxData='';
+    let name='';
+    data.forEach(element => {
+     name=element.finalName;
+     auxData +='<p>'+name+'</p></hr>';
+   });
+    return auxData;
+  }else{
+    return data;
+  }
 }
 
 function updateReadOnly() {
   console.log("update only");
   $('#WOSModalBtn').hide("slow"); 
   let channel = $(".disseminationChannel").val();
+  // if is sync
   if ($('.deliverableDisseminationUrl ').prop('readonly')) {
     $('.isOtherUrlTohide').show("slow"); 
     console.log("solo lectura");
@@ -224,11 +334,14 @@ function updateReadOnly() {
     if ($('.deliverableDisseminationUrl ').prop('readonly')) {
       getWOSInfo();
     }
+    //if not
   } else {
+    
+    $('.WOS_tag').hide("slow");  
     console.log("editable");
    
     $('#output-dissemination').hide("slow");  
-    
+    // if not and different changel to other
     if ($('.disseminationChannel').val() != 'other') {
       $('#output-wos').hide("slow");  
       $('#WOSModalBtn').hide("slow");  
@@ -238,11 +351,25 @@ function updateReadOnly() {
       $('.isOtherUrlTohide').hide("slow"); 
       hideOrShowCheckBoxIsOtherUrl(false);
     } else {
+      setTimeout(() => {
+        let result =  /^((https?:\/\/)?(www\.)?[a-zA-Z0-9.-]+\.+[a-zA-Z0-9.-]+\/10\.\d{4,9}\/[-._;()/:A-Z0-9]+$|^10\.\d{4,9}\/[-._;()/:A-Z0-9]+$)/i.test($('#doi-bridge').val());
+        if (result) {
+          console.log('%cValid DOI','background: #222; color: #37ff73');
+          getWOSInfo();
+        }else{
+          console.log('%cInvalid DOI','background: #222; color: #fd8484');
+        }
+      }, 2000);
+
+
+      //if not and its equal chanel to other
       $('#WOSSyncBtn').show('slow'); 
       $(".ifIsReadOnly .metadataElement-handle .input input").prop('readonly', false);
       $(".ifIsReadOnly .metadataElement-doi .input input").prop('readonly', false);
       // $('.isOtherUrlTohide').show("slow"); 
-      hideOrShowCheckBoxIsOtherUrl(true);
+      if (($('.typeSelect').val() == 49 && $('.subTypeSelect ').val() ==63 )) {
+        hideOrShowCheckBoxIsOtherUrl(true);
+      }
     }
 
   }
@@ -511,14 +638,30 @@ function addDisseminationEvents() {
   //Display Other Url option for DOI
   $('input.isOtherUrl').on('change', function () {
     var selected = $('input.isOtherUrl').is(":checked");
+    console.log('%cType: '+$('.typeSelect').val()+ " - Subtype: "+$('.subTypeSelect ').val() ,'background: #222; color: #37ff73');
 
-    if (selected == true) {
-      $('.conditionalRequire .requiredTag').slideUp();
-      $('.other-url').css("display", "block");
-    } else {
-      $('.conditionalRequire .requiredTag').slideDown();
-      $('.other-url').css("display", "none");
-    }
+// if ( $('.typeSelect').val() == 49 && $('.subTypeSelect ').val() ==63 ) {
+//       $('.conditionalRequire ').find('.requiredTag').show('slow');
+//       $('.other-url').css("display", "block");
+
+      
+//   // $('.conditionalRequire .requiredTag').slideDown();
+// }else{
+  if (selected == true) {
+    console.log('%cMostar','background: #222; color: #fd8484');
+    $('.conditionalRequire .requiredTag').slideUp();
+    $('.other-url').css("display", "block");
+  } else {
+    console.log('%cOcultar','background: #222; color: #fd8484');
+    $('.conditionalRequire .requiredTag').slideDown();
+    $('.other-url').css("display", "none");
+  }
+// }
+
+
+
+
+
   });
   var crp = $('form').attr("name");
   $('#' + crp + '_deliverable_deliverableInfo_deliverableType_id').on('change', function () {
@@ -557,14 +700,16 @@ function displayExtraFieldUrl(display, showRequiredTag) {
     //console.log($('.conditionalRequire .requiredTag'));
   }
 
-  if (showRequiredTag) {
-    $('.conditionalRequire .requiredTag').slideDown();
-    // $('.isOtherUrlContentBox').css("display","block");
-  } else {
-    //$('.isOtherUrlContentBox').css("display","none");
-    $('.conditionalRequire .requiredTag').slideUp();
-    //console.log($('.conditionalRequire .requiredTag'));
-  }
+  // if (showRequiredTag) {
+  //   $('.conditionalRequire .requiredTag').slideDown();
+  //   console.log("slidedown");
+  //   // $('.isOtherUrlContentBox').css("display","block");
+  // } else {
+  //   //$('.isOtherUrlContentBox').css("display","none");
+  //   $('.conditionalRequire .requiredTag').slideUp();
+  //   //console.log($('.conditionalRequire .requiredTag'));
+  //   console.log("slideUp");
+  // }
 }
 
 function addFlagship(idCRPProgram, text) {

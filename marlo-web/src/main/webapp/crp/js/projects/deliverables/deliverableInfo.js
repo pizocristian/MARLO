@@ -13,34 +13,42 @@ function hideOrShowCheckBoxIsOtherUrl(value){
 }
 function checkDOI() { 
   setTimeout(() => {
-    // activeByNoDOIProvidedCheckbox();
-    // console.log("DOI; value "+$('#doi-bridge').val());
     if ($('.deliverableDisseminationUrl ').prop('readonly') || $('.disseminationChannel').val() == 'other' ) {
       if ($('#doi-bridge').val()) {
-        console.log("*** hideOrShowCheckBoxIsOtherUrl(false) ***");
         $('.isOtherUrlTohide').hide('slow');
-  
-        hideOrShowCheckBoxIsOtherUrl(false);
-        
+        hideOrShowCheckBoxIsOtherUrl(false);      
       }else{
-        hideOrShowCheckBoxIsOtherUrl(true);
-        console.log("*** hideOrShowCheckBoxIsOtherUrl(true) ***");
+        if (($('.typeSelect').val() == 49 && $('.subTypeSelect ').val() ==63 )) {
+          hideOrShowCheckBoxIsOtherUrl(true);
+        }
       }
     }
+    // ^((https?:\/\/)?(www\.)?[a-zA-Z0-9.-]+\.+[a-zA-Z0-9.-]+\/10\.\d{4,9}[-._;()/:A-Z0-9]+$|^(doi\:)?10.\d{4,9}[-._;()/:A-Z0-9]+$)
+    // ^((https?:\/\/)?(www\.)?[a-zA-Z0-9.-]+\.+[a-zA-Z0-9.-]+\/10\.\d{4,9}[-._;()/:A-Z0-9]+$|^10.\d{4,9}[-._;()/:A-Z0-9]+$)
+    //    /^10.\d{4,9}[-._;()/:A-Z0-9]+$/i           comienza
+    //    /10.\d{4,9}[-._;()/:A-Z0-9]+$/i            si lo contiene
 
-    var result = /^10.\d{4,9}[-._;()/:A-Z0-9]+$/i.test($('#doi-bridge').val());
+    // nuevo doi ^((https?:\/\/)?(www\.)?[a-zA-Z0-9.-]+\.+[a-zA-Z0-9.-]+\/10\.\d{4,9}\/[-._;():A-Z0-9]+$|^10\.\d{4,9}\/[-._;():A-Z0-9]+$)
+    var result = /^((https?:\/\/)?(www\.)?[a-zA-Z0-9.-]+\.+[a-zA-Z0-9.-]+\/10\.\d{4,9}\/[-._;()/:A-Z0-9]+$|^10\.\d{4,9}\/[-._;()/:A-Z0-9]+$)/i.test($('#doi-bridge').val());
    
-      if ( result ) {
+      if ( result  ) {
         $('#doi-bridge').css("border", "1px solid #ccc");
         $('.invalidDOI').hide('slow');
         $('.validDOI').show('slow');
-      } else {
+      }
+      if(!result && $('#doi-bridge').val())
+      {
         $('#doi-bridge').css("border", "red solid 1px");
         $('.invalidDOI').show('slow');
         $('.validDOI').hide('slow');
         
       }
-    
+      if ( !$('#doi-bridge').val()  ) {
+        $('#doi-bridge').css("border", "1px solid #ccc");
+        $('.invalidDOI').hide('slow');
+        $('.validDOI').hide('slow');
+      
+      }
 
   }, 50);
 
@@ -73,13 +81,12 @@ function init() {
   $('#doi-bridge').keydown(checkDOI);
   $('#doi-bridge').change(checkDOI);
   $('#doi-bridge').bind("paste",checkDOI);
-  document.getElementById("doi-bridge").addEventListener("paste", checkDOI);
+  if ($('#doi-bridge')[0]) {
+    document.getElementById("doi-bridge").addEventListener("paste", checkDOI);
+  }
+  
 
   $('input.isOtherUrl').on("click", activeByNoDOIProvidedCheckbox);
-
-
- 
-  // $('#doi-bridge').addEventListener("paste",checkDOI);
 
   // justificationByStatus($statuses.val());
   // validateCurrentDate();
@@ -224,19 +231,12 @@ function init() {
 }
 
 function activeByNoDOIProvidedCheckbox(){
-    // console.log($(this).val());
     if ($('input.isOtherUrl').is(":checked")) {
       console.log("checked");
-      // $('.computerLicense input').prop("checked", true);
-      // $(this).val(true)
-      // $("#doi-bridge").prop('readonly', true);
       $('.isOtherUrlFiel').val(true);
     }else{
       console.log("No checked");
-      // $('.computerLicense input').prop("checked", false);
-      // $(this).val(false)
       $('.isOtherUrlFiel').val(false);
-      // $("#doi-bridge").prop('readonly', false);
 
     }
   

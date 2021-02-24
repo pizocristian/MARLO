@@ -23,6 +23,7 @@ import org.cgiar.ccafs.marlo.data.manager.DeliverableManager;
 import org.cgiar.ccafs.marlo.data.manager.DeliverableMetadataExternalSourcesManager;
 import org.cgiar.ccafs.marlo.data.manager.ExternalSourceAuthorManager;
 import org.cgiar.ccafs.marlo.data.manager.InstitutionManager;
+import org.cgiar.ccafs.marlo.data.manager.PhaseManager;
 import org.cgiar.ccafs.marlo.data.model.Deliverable;
 import org.cgiar.ccafs.marlo.data.model.DeliverableAffiliation;
 import org.cgiar.ccafs.marlo.data.model.DeliverableAffiliationsNotMapped;
@@ -30,6 +31,7 @@ import org.cgiar.ccafs.marlo.data.model.DeliverableMetadataExternalSources;
 import org.cgiar.ccafs.marlo.data.model.ExternalSourceAuthor;
 import org.cgiar.ccafs.marlo.data.model.Institution;
 import org.cgiar.ccafs.marlo.data.model.Phase;
+import org.cgiar.ccafs.marlo.rest.services.deliverables.model.MetadataGardianModel;
 import org.cgiar.ccafs.marlo.rest.services.deliverables.model.MetadataWOSModel;
 import org.cgiar.ccafs.marlo.rest.services.deliverables.model.WOSAuthor;
 import org.cgiar.ccafs.marlo.rest.services.deliverables.model.WOSInstitution;
@@ -39,8 +41,8 @@ import org.cgiar.ccafs.marlo.utils.doi.DOIService;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -78,6 +80,7 @@ public class DeliverableMetadataByWOS extends BaseAction {
   private String jsonStringResponse;
   private MetadataWOSModel response;
   private Long deliverableId;
+  private Long phaseId;
 
   // Managers
   private DeliverableMetadataExternalSourcesManager deliverableMetadataExternalSourcesManager;
@@ -86,13 +89,14 @@ public class DeliverableMetadataByWOS extends BaseAction {
   private ExternalSourceAuthorManager externalSourceAuthorManager;
   private DeliverableManager deliverableManager;
   private InstitutionManager institutionManager;
+  private PhaseManager phaseManager;
 
   @Inject
   public DeliverableMetadataByWOS(APConfig config, DeliverableAffiliationManager deliverableAffiliationManager,
     DeliverableMetadataExternalSourcesManager deliverableMetadataExternalSourcesManager,
     DeliverableAffiliationsNotMappedManager deliverableAffiliationsNotMappedManager,
     ExternalSourceAuthorManager externalSourceAuthorManager, DeliverableManager deliverableManager,
-    InstitutionManager institutionManager) {
+    InstitutionManager institutionManager, PhaseManager phaseManager) {
     super(config);
     this.deliverableAffiliationManager = deliverableAffiliationManager;
     this.deliverableMetadataExternalSourcesManager = deliverableMetadataExternalSourcesManager;
@@ -100,17 +104,22 @@ public class DeliverableMetadataByWOS extends BaseAction {
     this.externalSourceAuthorManager = externalSourceAuthorManager;
     this.deliverableManager = deliverableManager;
     this.institutionManager = institutionManager;
+    this.phaseManager = phaseManager;
   }
 
   @Override
   public String execute() throws Exception {
-    if (this.jsonStringResponse == null) {
-      return NOT_FOUND;
+    /*
+     * if (this.jsonStringResponse == null || StringUtils.equalsIgnoreCase(this.jsonStringResponse, "null")) {
+     * return NOT_FOUND;
+     * }
+     */
+    if (this.jsonStringResponse != null && !StringUtils.equalsIgnoreCase(this.jsonStringResponse, "null")) {
+      this.response = new Gson().fromJson(jsonStringResponse, MetadataWOSModel.class);
+      this.phaseId = this.getActualPhase().getId();
+
+      this.saveInfo();
     }
-
-    this.response = new Gson().fromJson(jsonStringResponse, MetadataWOSModel.class);
-
-    this.saveInfo();
 
     return SUCCESS;
   }
@@ -123,6 +132,10 @@ public class DeliverableMetadataByWOS extends BaseAction {
     return link;
   }
 
+  public Long getPhaseId() {
+    return phaseId;
+  }
+
   public MetadataWOSModel getResponse() {
     return response;
   }
@@ -133,7 +146,8 @@ public class DeliverableMetadataByWOS extends BaseAction {
 
     // If there are parameters, take its values
     try {
-      this.link = StringUtils.stripToEmpty(parameters.get(APConstants.WOS_LINK).getMultipleValues()[0]);
+      String incomingUrl = StringUtils.stripToEmpty(parameters.get(APConstants.WOS_LINK).getMultipleValues()[0]);
+      this.link = DOIService.tryGetDoiName(incomingUrl);
       this.deliverableId = Long.valueOf(
         StringUtils.stripToEmpty(parameters.get(APConstants.PROJECT_DELIVERABLE_REQUEST_ID).getMultipleValues()[0]));
     } catch (Exception e) {
@@ -142,26 +156,27 @@ public class DeliverableMetadataByWOS extends BaseAction {
     }
 
     if (!this.link.isEmpty() && DOIService.REGEXP_PLAINDOI.matcher(this.link).lookingAt()) {
-      JsonElement response = this.readWOSDataFromClarisa(this.link);
+      JsonElement response = this.readWOSDataFromClarisa();
 
       this.jsonStringResponse = StringUtils.stripToNull(new GsonBuilder().serializeNulls().create().toJson(response));
     }
   }
 
-  private JsonElement readWOSDataFromClarisa(final String url) throws IOException {
-    URL clarisaUrl = new URL(config.getClarisaWOSLink().replace("{1}", url));
-
+  private JsonElement readWOSDataFromClarisa() throws IOException {
+    URL clarisaUrl = new URL(config.getClarisaWOSLink().replace("{1}", this.link));
     String loginData = config.getClarisaWOSUser() + ":" + config.getClarisaWOSPassword();
     String encoded = Base64.encodeBase64String(loginData.getBytes());
-    URLConnection conn = clarisaUrl.openConnection();
-    conn.setRequestProperty("Authorization", "Basic " + encoded);
 
+    HttpURLConnection conn = (HttpURLConnection) clarisaUrl.openConnection();
+    conn.setRequestProperty("Authorization", "Basic " + encoded);
     JsonElement element = null;
 
-    try (InputStreamReader reader = new InputStreamReader(conn.getInputStream())) {
-      element = new JsonParser().parse(reader);
-    } catch (FileNotFoundException fnfe) {
-      element = JsonNull.INSTANCE;
+    if (conn.getResponseCode() < 300) {
+      try (InputStreamReader reader = new InputStreamReader(conn.getInputStream())) {
+        element = new JsonParser().parse(reader);
+      } catch (FileNotFoundException fnfe) {
+        element = JsonNull.INSTANCE;
+      }
     }
 
     return element;
@@ -222,6 +237,7 @@ public class DeliverableMetadataByWOS extends BaseAction {
           newDeliverableAffiliation.setDeliverableMetadataExternalSources(externalSource);
           newDeliverableAffiliation.setInstitutionNameWebOfScience(incomingAffiliation.getFullName());
           newDeliverableAffiliation.setInstitutionMatchConfidence(incomingAffiliation.getClarisaMatchConfidence());
+          newDeliverableAffiliation.setActive(true);
 
           newDeliverableAffiliation =
             this.deliverableAffiliationManager.saveDeliverableAffiliation(newDeliverableAffiliation);
@@ -264,13 +280,15 @@ public class DeliverableMetadataByWOS extends BaseAction {
       for (WOSInstitution incomingAffiliation : incomingInstitutions) {
         if (incomingAffiliation.getClarisaMatchConfidence() < APConstants.ACCEPTATION_PERCENTAGE) {
           DeliverableAffiliationsNotMapped newDeliverableAffiliationNotMapped =
-            this.deliverableAffiliationsNotMappedManager.findAll().stream()
-              .filter(nda -> nda != null && nda.getDeliverableMetadataExternalSources() != null
-                && nda.getDeliverableMetadataExternalSources().getId() != null
-                && nda.getDeliverableMetadataExternalSources().getId().equals(externalSource.getId())
-                && nda.getPossibleInstitution() != null && nda.getPossibleInstitution().getId() != null
-                && nda.getPossibleInstitution().getId().equals(incomingAffiliation.getClarisaId()))
-              .findFirst().orElse(null);
+            this.deliverableAffiliationsNotMappedManager.findAll() != null
+              ? this.deliverableAffiliationsNotMappedManager.findAll().stream()
+                .filter(nda -> nda != null && nda.getDeliverableMetadataExternalSources() != null
+                  && nda.getDeliverableMetadataExternalSources().getId() != null
+                  && nda.getDeliverableMetadataExternalSources().getId().equals(externalSource.getId())
+                  && nda.getPossibleInstitution() != null && nda.getPossibleInstitution().getId() != null
+                  && nda.getPossibleInstitution().getId().equals(incomingAffiliation.getClarisaId()))
+                .findFirst().orElse(null)
+              : null;
           if (newDeliverableAffiliationNotMapped == null) {
             newDeliverableAffiliationNotMapped = new DeliverableAffiliationsNotMapped();
             newDeliverableAffiliationNotMapped.setDeliverableMetadataExternalSources(externalSource);
@@ -289,6 +307,7 @@ public class DeliverableMetadataByWOS extends BaseAction {
           newDeliverableAffiliationNotMapped.setFullAddress(incomingAffiliation.getFullAddress());
           newDeliverableAffiliationNotMapped
             .setInstitutionMatchConfidence(incomingAffiliation.getClarisaMatchConfidence());
+          newDeliverableAffiliationNotMapped.setActive(true);
 
           newDeliverableAffiliationNotMapped = this.deliverableAffiliationsNotMappedManager
             .saveDeliverableAffiliationsNotMapped(newDeliverableAffiliationNotMapped);
@@ -334,6 +353,8 @@ public class DeliverableMetadataByWOS extends BaseAction {
   private void saveExternalSources(Phase phase, Deliverable deliverable) {
     DeliverableMetadataExternalSources externalSource =
       this.deliverableMetadataExternalSourcesManager.findByPhaseAndDeliverable(phase, deliverable);
+    MetadataGardianModel gardianInfo = this.response.getGardianInfo();
+
     if (externalSource == null) {
       externalSource = new DeliverableMetadataExternalSources();
       externalSource.setPhase(phase);
@@ -356,6 +377,14 @@ public class DeliverableMetadataByWOS extends BaseAction {
     externalSource.setVolume(this.response.getVolume());
     externalSource.setPages(this.response.getPages());
 
+    if (gardianInfo != null) {
+      externalSource.setGardianFindability(gardianInfo.getFindability());
+      externalSource.setGardianAccessibility(gardianInfo.getAccessibility());
+      externalSource.setGardianInteroperability(gardianInfo.getInteroperability());
+      externalSource.setGardianReusability(gardianInfo.getReusability());
+      externalSource.setGardianTitle(gardianInfo.getTitle());
+    }
+
     externalSource =
       this.deliverableMetadataExternalSourcesManager.saveDeliverableMetadataExternalSources(externalSource);
 
@@ -363,12 +392,36 @@ public class DeliverableMetadataByWOS extends BaseAction {
   }
 
   private void saveInfo() {
-    Phase phase = this.getActualPhase();
     Deliverable deliverable = this.deliverableManager.getDeliverableById(this.deliverableId);
+    Phase phase = this.phaseManager.getPhaseById(this.phaseId);
 
     this.saveExternalSources(phase, deliverable);
     this.saveAffiliations(phase, deliverable);
     this.saveAffiliationsNotMapped(phase, deliverable);
     this.saveExternalSourceAuthors(phase, deliverable);
+  }
+
+  /**
+   * This method is created ONLY to be used for the deliverables bulk sync
+   * 
+   * @param phase the phase the sync info is going to be saved
+   * @param deliverableId the deliverableId
+   * @param link the DOI/URL link to be used for the metadata harvesting
+   * @return
+   * @throws IOException
+   */
+  public boolean saveInfo(Long phaseId, Long deliverableId, String link) throws IOException {
+    this.phaseId = phaseId;
+    this.deliverableId = deliverableId;
+    this.link = link;
+
+    this.response = new Gson().fromJson(this.readWOSDataFromClarisa(), MetadataWOSModel.class);
+
+    if (this.response != null) {
+      this.saveInfo();
+      return true;
+    }
+
+    return false;
   }
 }

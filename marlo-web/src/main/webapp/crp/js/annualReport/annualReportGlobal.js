@@ -1,5 +1,5 @@
 var $tableViewMore;
-var tableDatatableViewmore, tableDataProgressTableViewmore, tableDatatableTableGrey;
+var tableDatatableViewmore, tableDataProgressTableViewmore, tableDatatableTableGrey, tableInnovations, tablePolicies, tableOICRs;
 var pageName;
 var googleChartsLoaded = false;
 $(document).ready(function() {
@@ -37,6 +37,51 @@ $(document).ready(function() {
               ]
           }
         ]
+    });
+
+    $tableInnovationsHTML = $('.tableInnovations-block table');
+    tableInnovations = $tableInnovationsHTML.DataTable({
+      "paging": false,
+      "searching": true,
+      "info": true,
+      aoColumnDefs: [
+        {
+            sType: "natural",
+            aTargets: [
+              0
+            ]
+        }
+      ]
+    });
+
+    $tablePoliciesHTML = $('.tablePolicies-block table');
+    tablePolicies = $tablePoliciesHTML.DataTable({
+      "paging": false,
+      "searching": true,
+      "info": true,
+      aoColumnDefs: [
+        {
+            sType: "natural",
+            aTargets: [
+              0
+            ]
+        }
+      ]
+    });
+
+    $tableOICRsHTML = $('.tableOICRs-block table');
+    tableOICRs = $tableOICRsHTML.DataTable({
+      "paging": false,
+      "searching": true,
+      "info": true,
+      aoColumnDefs: [
+        {
+            sType: "natural",
+            aTargets: [
+              0
+            ]
+        }
+      ]
     });
 
     $TableGrey = $('.viewMoreSyntesisTableGrey-block table');
@@ -109,6 +154,7 @@ $(document).ready(function() {
   setStatusByBack();
   // updateAllIndexesContribution();
 });
+
 function setStatusByBack() {
   $(".sloTargetsList")
     .find(".sloTarget")
@@ -247,7 +293,7 @@ function createGoogleChart(chartID, type, options) {
 
 function updateAllIndexesContribution() {
   
-  setTimeout(() => {
+
 
     console.log('%cupdateAllIndexesContribution','background: #222; color: #84c3fd');
     console.log('%csloTargetsList: '+$('.sloTargetsList').find('.sloTarget').length,'background: #222; color: #fd8484');
@@ -259,36 +305,29 @@ function updateAllIndexesContribution() {
     console.log('%c ('+(i+1)+') evidenceList: '+$(sloTarget).find('.evidenceList').find('.slo-contribution-section').length,'background: #222; color: #37ff73');
 
     // console.log('evidenceList: ',$(sloTarget).find('.evidenceList').find('.slo-contribution-section').length);
-
-
+    $(sloTarget).attr('id', "outcome-"+(i+1));
+    $(sloTarget).setNameIndexes(1, i);
     
-    // $(sloTarget).attr('id', "outcome-"+(i+1));
+   
     // $(sloTarget).find('span.index').html(i + 1);
     // $(sloTarget).setNameIndexes(1, i);
 
     //  Update Milestones
      $(sloTarget).find('.evidenceList').find('.slo-contribution-section').each(function(i,evidence) {
       //  $(evidence).attr('id', "milestone-"+(i+1));
-       $(evidence).find('.indexSloContribution').text(i + 1);
-       setIndexesOfTheFieldsContribution(evidence,index1,i)
-      //  $(evidence).setNameIndexes(2, i);
+      //  $(evidence).find('.indexSloContribution').text(i + 1);
+   
+      $(evidence).attr('id', "milestone-"+(i+1));
+      $(evidence).setNameIndexes(2, i);
+
  
      });
 
-
+     
   });
 
 
-    
-
-
-
-
-
-
-
-
-  }, 500);
+  $(document).trigger('updateComponent');
 
 }
 
@@ -364,18 +403,19 @@ console.log('addEvidence');
   // $(this).parents(".simpleBox").find(".evidenceList").hide();;
 
   var $list =  $(this).parents(".simpleBox").find(".evidenceList");
-  var $item = $('.slo-contribution-template').clone(true).removeAttr("id");
+  var $item = $('.slo-contribution-template').clone(true)
   $($item).removeClass('slo-contribution-template');
   // $item.find('select').select2({
   // width: '100%'
   // });
   $list.append($item);
   // updateAllIndexes();
-  $item.show('slow');
-  $list=null;
-  $item=null;
-
   updateAllIndexesContribution();
+  $item.show('slow');
+  // $list=null;
+  // $item=null;
+
+  // updateAllIndexesContribution();
 }
 
 function removeEvidence(){
@@ -385,6 +425,6 @@ function removeEvidence(){
       $item.remove();
     });
 
-    updateAllIndexesContribution();
+    // updateAllIndexesContribution();
 } 
 

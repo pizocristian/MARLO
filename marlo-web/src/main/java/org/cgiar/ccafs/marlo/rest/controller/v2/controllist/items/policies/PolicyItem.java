@@ -105,6 +105,7 @@ import javax.inject.Named;
 import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.marlo.data.manager.RestApiAuditlogManager;
 import org.cgiar.ccafs.marlo.data.model.RestApiAuditlog;
+import org.cgiar.ccafs.marlo.rest.services.googleanalytics.ExternalPostUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -517,7 +518,7 @@ public class PolicyItem<T> {
                             projectPolicyInnovationManager.saveProjectPolicyInnovation(projectPolicyInnovation);
                         }
 
-                        // Log Action
+                        // Log Action Locally
                         try {
                             ObjectMapper mapper = new ObjectMapper();
                             String originalJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(newPolicyDTO);
@@ -527,6 +528,10 @@ public class PolicyItem<T> {
                         } catch (Throwable ex) {
                             Logger.getLogger(PolicyItem.class.getName()).log(Level.SEVERE, null, ex);
                         }
+
+                        // Log Action with Google Analytics
+                        ExternalPostUtils epu = new ExternalPostUtils();
+                        epu.sendToGoogleAnalytics("api_create_update_delete_policy");
                     }
                 }
             }
@@ -574,10 +579,14 @@ public class PolicyItem<T> {
 
             projectPolicyManager.deleteProjectPolicy(id);
 
-            // Log Action
+            // Log Action Locally
             RestApiAuditlog restApiAuditLog = new RestApiAuditlog("deletePolicy", "Deleted " + projectPolicy.getId(), new Date(), id, "class org.cgiar.ccafs.marlo.data.model.ProjectPolicy",
                     "N/A", user.getId(), null, "", phase.getId());
             restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+            // Log Action with Google Analytics
+            ExternalPostUtils epu = new ExternalPostUtils();
+            epu.sendToGoogleAnalytics("api_create_update_delete_policy");
         } else {
             fieldErrors.add(new FieldErrorDTO("deletePolicy", "Policies", id + " is an invalid policy Code"));
         }
@@ -640,11 +649,15 @@ public class PolicyItem<T> {
         policyList = projectPolicyList.stream().map(this.projectPolicyMapper::projectPolicyToProjectPolicyARDTO)
                 .collect(Collectors.toList());
 
-        // Log Action
+        // Log Action Locally
         try {
             RestApiAuditlog restApiAuditLog = new RestApiAuditlog("findPoliciesByGlobalUnit", "Searched CGIAR Entity Acronym" + CGIARentityAcronym + " Year:" + repoYear + " Phase: " + repoPhase, new Date(), 0L, "class org.cgiar.ccafs.marlo.data.model.ProjectPolicy",
                     "N/A", user.getId(), null, "", phase.getId());
             restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+            // Log Action with Google Analytics
+            ExternalPostUtils epu = new ExternalPostUtils();
+            epu.sendToGoogleAnalytics("api_find_policies");
         } catch (Throwable ex) {
             Logger.getLogger(PolicyItem.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -696,10 +709,14 @@ public class PolicyItem<T> {
                             .collect(Collectors.toList()));
         }
 
-        // Log Action
+        // Log Action Locally
         RestApiAuditlog restApiAuditLog = new RestApiAuditlog("findPolicyById", "Searched CGIAR Entity Acronym" + CGIARentityAcronym + " ID " + id + " Year:" + repoYear + " Phase: " + repoPhase, new Date(), 0L, "class org.cgiar.ccafs.marlo.data.model.ProjectPolicy",
                 "N/A", user.getId(), null, "", phase.getId());
         restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+        // Log Action with Google Analytics
+        ExternalPostUtils epu = new ExternalPostUtils();
+        epu.sendToGoogleAnalytics("api_find_policies");
 
         return Optional.ofNullable(projectPolicy).map(this.projectPolicyMapper::projectPolicyToProjectPolicyDTO)
                 .map(result -> new ResponseEntity<>(result, HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -1312,7 +1329,7 @@ public class PolicyItem<T> {
                             .collect(Collectors.toList()));
         } else {
             policyID = projectPolicy.getId();
-            // Log Action
+            // Log Action Locally
             try {
                 ObjectMapper mapper = new ObjectMapper();
                 String originalJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(newPolicyDTO);
@@ -1322,6 +1339,10 @@ public class PolicyItem<T> {
             } catch (Throwable ex) {
                 Logger.getLogger(PolicyItem.class.getName()).log(Level.SEVERE, null, ex);
             }
+
+            // Log Action with Google Analytics
+            ExternalPostUtils epu = new ExternalPostUtils();
+            epu.sendToGoogleAnalytics("api_create_update_delete_policy");
         }
         return policyID;
     }

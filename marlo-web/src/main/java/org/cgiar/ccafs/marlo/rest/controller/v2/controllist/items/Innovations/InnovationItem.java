@@ -95,6 +95,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import org.cgiar.ccafs.marlo.data.manager.RestApiAuditlogManager;
 import org.cgiar.ccafs.marlo.data.model.RestApiAuditlog;
+import org.cgiar.ccafs.marlo.rest.services.googleanalytics.ExternalPostUtils;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -529,13 +530,17 @@ public class InnovationItem<T> {
                     projectInnovationSubIdoManager.saveProjectInnovationSubIdo(projectInnovationSubIdo);
                 }
 
-                // Log Action
+                // Log Action Locally
                 try {
                     ObjectMapper mapper = new ObjectMapper();
                     String originalJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(newInnovationDTO);
-                    RestApiAuditlog restApiAuditLog = new RestApiAuditlog("createProjectInnovation", "Created CGIAR Entity Acronym " + entityAcronym + " ID " + projectInnovation.getId(), new Date(), projectInnovation.getId(), "class org.cgiar.ccafs.marlo.data.model.ProjectInnovation",
+                    RestApiAuditlog restApiAuditLog = new RestApiAuditlog("createInnovation", "Created CGIAR Entity Acronym " + entityAcronym + " ID " + projectInnovation.getId(), new Date(), projectInnovation.getId(), "class org.cgiar.ccafs.marlo.data.model.ProjectInnovation",
                             originalJson, user.getId(), null, "", phase.getId());
                     restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+                    // Log Action with Google Analytics
+                    ExternalPostUtils epu = new ExternalPostUtils();
+                    epu.sendToGoogleAnalytics("api_create_update_delete_innovation");
                 } catch (Throwable ex) {
                     Logger.getLogger(InnovationItem.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -601,10 +606,14 @@ public class InnovationItem<T> {
             }
             projectInnovationManager.deleteProjectInnovation(id);
 
-            // Log Action
+            // Log Action Locally
             RestApiAuditlog restApiAuditLog = new RestApiAuditlog("deleteInnovation", "Deleted CGIAR Entity Acronym " + CGIARentityAcronym + " ID " + id + " Year:" + repoYear + " Phase: " + repoPhase, new Date(), id, "class org.cgiar.ccafs.marlo.data.model.ProjectInnovation",
                     "N/A", user.getId(), null, "", phase.getId());
             restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+            // Log Action with Google Analytics
+            ExternalPostUtils epu = new ExternalPostUtils();
+            epu.sendToGoogleAnalytics("api_create_update_delete_innovation");
         } else {
             fieldErrors.add(new FieldErrorDTO("deleteInnovation", "Innovation", id + " is an invalid innovation Code"));
 
@@ -679,10 +688,14 @@ public class InnovationItem<T> {
                 .map(innovations -> this.innovationMapper.projectInnovationToInnovationARDTO(innovations))
                 .collect(Collectors.toList());
 
-        // Log Action
+        // Log Action Locally
         RestApiAuditlog restApiAuditLog = new RestApiAuditlog("findAllInnovationsByGlobalUnit", "Searched CGIAR Entity Acronym" + CGIARentityAcronym + " Year:" + repoYear + " Phase: " + repoPhase, new Date(), 0L, "class org.cgiar.ccafs.marlo.data.model.ProjectInnovation",
                 "N/A", user.getId(), null, "", phase.getId());
         restApiAuditlogManager.logApiCall(restApiAuditLog);
+                
+        // Log Action with Google Analytics
+        ExternalPostUtils epu = new ExternalPostUtils();
+        epu.sendToGoogleAnalytics("api_find_innovations");
 
         return innovationList;
     }
@@ -763,11 +776,16 @@ public class InnovationItem<T> {
                     projectExpectedStudyInnovationList.add(projectExpectedStudyInnovation);
                 }
                 innovation.setStudies(projectExpectedStudyInnovationList);
-                
-                // Log Action
+
+                // Log Action Locally
                 RestApiAuditlog restApiAuditLog = new RestApiAuditlog("findAllInnovationsById", "Searched CGIAR Entity Acronym" + CGIARentityAcronym + " ID " + id + " Year:" + repoYear + " Phase: " + repoPhase, new Date(), id, "class org.cgiar.ccafs.marlo.data.model.ProjectInnovation",
                         "N/A", user.getId(), null, "", phase.getId());
                 restApiAuditlogManager.logApiCall(restApiAuditLog);
+                
+                // Log Action with Google Analytics
+                ExternalPostUtils epu = new ExternalPostUtils();
+                epu.sendToGoogleAnalytics("api_find_innovations");
+
             }
         }
         // Validate all fields
@@ -1227,17 +1245,21 @@ public class InnovationItem<T> {
                                 }
                             }
 
-                            // Log Action
+                            // Log Action Locally
                             try {
                                 ObjectMapper mapper = new ObjectMapper();
                                 String originalJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(newInnovationDTO);
                                 RestApiAuditlog restApiAuditLog = new RestApiAuditlog("updateInnovation", "Updated " + innovation.getId(), new Date(), innovation.getId(), "class org.cgiar.ccafs.marlo.data.model.ProjectInnovation",
                                         originalJson, user.getId(), null, "", phase.getId());
                                 restApiAuditlogManager.logApiCall(restApiAuditLog);
+                
                             } catch (Throwable ex) {
                                 Logger.getLogger(InnovationItem.class.getName()).log(Level.SEVERE, null, ex);
                             }
-
+                
+                            // Log Action with Google Analytics
+                            ExternalPostUtils epu = new ExternalPostUtils();
+                            epu.sendToGoogleAnalytics("api_create_update_delete_innovation");
                         }
                     }
                 }

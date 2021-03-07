@@ -70,6 +70,7 @@ import javax.inject.Named;
 import org.apache.commons.lang.StringUtils;
 import org.cgiar.ccafs.marlo.data.manager.RestApiAuditlogManager;
 import org.cgiar.ccafs.marlo.data.model.RestApiAuditlog;
+import org.cgiar.ccafs.marlo.rest.services.googleanalytics.ExternalPostUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -331,7 +332,7 @@ public class KeyExternalPartnershipItem<T> {
                     }
                     // end keyPartnershipExternalMainArea
 
-                    // Log Action
+                    // Log Action Locally
                     try {
                         ObjectMapper mapper = new ObjectMapper();
                         String originalJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(newKeyExternalPartnershipDTO);
@@ -341,6 +342,10 @@ public class KeyExternalPartnershipItem<T> {
                     } catch (JsonProcessingException ex) {
                         java.util.logging.Logger.getLogger(KeyExternalPartnershipItem.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                     }
+                    
+                    // Log Action with Google Analytics
+                    ExternalPostUtils epu = new ExternalPostUtils();
+                    epu.sendToGoogleAnalytics("api_create_update_delete_key_external_partnership");
                 }
             }
         }
@@ -451,10 +456,14 @@ public class KeyExternalPartnershipItem<T> {
                                 keyPartnershipExternalManager
                                         .deleteReportSynthesisKeyPartnershipExternal(keyPartnershipExternal.getId());
 
-                                // Log Action
+                                // Log Action Locally
                                 RestApiAuditlog restApiAuditLog = new RestApiAuditlog("deleteKeyExternalPartnership", "Deleted CGIAR Entity Acronym " + CGIARentityAcronym + " ID " + id + " Year:" + repoYear + " Phase: " + repoPhase, new Date(), idKeyPartnershipExternal, "class org.cgiar.ccafs.marlo.data.model.ReportSynthesisKeyPartnershipExternal",
                                         "N/A", user.getId(), null, "", phase.getId());
                                 restApiAuditlogManager.logApiCall(restApiAuditLog);
+                    
+                                // Log Action with Google Analytics
+                                ExternalPostUtils epu = new ExternalPostUtils();
+                                epu.sendToGoogleAnalytics("api_create_update_delete_key_external_partnership");
                             }
                         }
                     }
@@ -524,10 +533,15 @@ public class KeyExternalPartnershipItem<T> {
                             .collect(Collectors.toList()));
         }
 
-        // Log Action
+        // Log Action Locally
         RestApiAuditlog restApiAuditLog = new RestApiAuditlog("findKeyExternalPartnershipByGlobalUnit", "Searched CGIAR Entity Acronym " + CGIARentityAcronym + " Year:" + repoYear + " Phase: " + repoPhase, new Date(), 0L, "class org.cgiar.ccafs.marlo.data.model.ReportSynthesisKeyPartnershipExternal",
                 "N/A", user.getId(), null, "", phase.getId());
         restApiAuditlogManager.logApiCall(restApiAuditLog);
+                    
+        // Log Action with Google Analytics
+        ExternalPostUtils epu = new ExternalPostUtils();
+        epu.sendToGoogleAnalytics("api_find_key_external_partnerships");
+        
         return keyExternalPartnerships;
     }
 
@@ -610,11 +624,15 @@ public class KeyExternalPartnershipItem<T> {
                             .collect(Collectors.toList()));
         }
 
-        // Log Action
+        // Log Action Locally
         RestApiAuditlog restApiAuditLog = new RestApiAuditlog("findKeyExternalPartnershipById", "Searched CGIAR Entity Acronym " + CGIARentityAcronym + " ID " + id + " Year:" + repoYear + " Phase: " + repoPhase, new Date(), id, "class org.cgiar.ccafs.marlo.data.model.ReportSynthesisKeyPartnershipExternal",
                 "N/A", user.getId(), null, "", phase.getId());
         restApiAuditlogManager.logApiCall(restApiAuditLog);
-
+                    
+        // Log Action with Google Analytics
+        ExternalPostUtils epu = new ExternalPostUtils();
+        epu.sendToGoogleAnalytics("api_find_key_external_partnerships");
+        
         return Optional.ofNullable(keyExternalPartnership)
                 .map(this.keyExternalPartnershipMapper::keyPartnershipExternalToKeyExternalPartnershipDTO)
                 .map(result -> new ResponseEntity<>(result, HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -839,7 +857,7 @@ public class KeyExternalPartnershipItem<T> {
                                 "There is no Report Synthesis Key Partnership linked to the Report Synthesis"));
                     } else {
                         keyPartnershipExternal.setReportSynthesisKeyPartnership(reportSynthesisKeyPartnership);
-                        // Log Action
+                        // Log Action Locally
                         try {
                             ObjectMapper mapper = new ObjectMapper();
                             String originalJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(newKeyExternalPartnershipDTO);
@@ -849,6 +867,10 @@ public class KeyExternalPartnershipItem<T> {
                         } catch (JsonProcessingException ex) {
                             java.util.logging.Logger.getLogger(KeyExternalPartnershipItem.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                         }
+                    
+                        // Log Action with Google Analytics
+                        ExternalPostUtils epu = new ExternalPostUtils();
+                        epu.sendToGoogleAnalytics("api_create_update_delete_key_external_partnership");
                     }
                 }
             }

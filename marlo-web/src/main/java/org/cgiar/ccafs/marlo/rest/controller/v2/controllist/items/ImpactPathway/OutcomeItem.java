@@ -37,6 +37,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.marlo.data.manager.RestApiAuditlogManager;
 import org.cgiar.ccafs.marlo.data.model.RestApiAuditlog;
 import org.cgiar.ccafs.marlo.data.model.User;
+import org.cgiar.ccafs.marlo.rest.services.googleanalytics.ExternalPostUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -84,10 +85,14 @@ public class OutcomeItem<T> {
             if (!crpProgramOutcome.getCrpProgram().getCrp().getAcronym().equalsIgnoreCase(CGIARentityAcronym)) {
                 crpProgramOutcome = null;
             } else {
-                // Log Action
+                // Log Action Locally
                 RestApiAuditlog restApiAuditLog = new RestApiAuditlog("findOutcomeById", "Searched CGIAR Entity Acronym " + CGIARentityAcronym + " ID " + id + " Year:" + year + " Phase: " + phase.getId(), new Date(), Long.parseLong(id), "class org.cgiar.ccafs.marlo.data.model.CrpProgramOutcome",
                         "N/A", user.getId(), null, "", phase.getId());
                 restApiAuditlogManager.logApiCall(restApiAuditLog);
+                
+                // Log Action with Google Analytics
+                ExternalPostUtils epu = new ExternalPostUtils();
+                epu.sendToGoogleAnalytics("api_find_outcomes");
             }
 
         }
@@ -131,9 +136,13 @@ public class OutcomeItem<T> {
 
         }
         
-        //Log Action
+        // Log Action Locally
         RestApiAuditlog restApiAuditLog = new RestApiAuditlog("List Outcomes", "LIST outcomes CGIAR Entity Acronym " + CGIARentityAcronym + " CRP Programe Code " + crpProgramCode + " Year:" + repoYear, new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.CrpProgramOutcome", "N/A", user.getId(), null, "", null);
         restApiAuditlogManager.logApiCall(restApiAuditLog);
+                
+        // Log Action with Google Analytics
+        ExternalPostUtils epu = new ExternalPostUtils();
+        epu.sendToGoogleAnalytics("api_find_outcomes");
 
         return outcomeDTOs;
         // Optional.ofNullable(outcomeDTOs).map(result -> new ResponseEntity<>(result, HttpStatus.OK)).orElse(new

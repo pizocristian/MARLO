@@ -1,4 +1,4 @@
-/*****************************************************************
+/** ***************************************************************
  * This file is part of Managing Agricultural Research for Learning &
  * Outcomes Platform (MARLO).
  * MARLO is free software: you can redistribute it and/or modify
@@ -11,8 +11,8 @@
  * GNU General Public License for more details.
  * You should have received a copy of the GNU General Public License
  * along with MARLO. If not, see <http://www.gnu.org/licenses/>.
- *****************************************************************/
-
+ * ***************************************************************
+ */
 package org.cgiar.ccafs.marlo.rest.controller.v2.controllist;
 
 import org.cgiar.ccafs.marlo.rest.controller.v2.controllist.items.generallists.FlagshipProgramItem;
@@ -41,6 +41,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import java.util.Date;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
@@ -48,6 +49,7 @@ import org.cgiar.ccafs.marlo.data.manager.RestApiAuditlogManager;
 import org.cgiar.ccafs.marlo.data.manager.UserManager;
 import org.cgiar.ccafs.marlo.data.model.RestApiAuditlog;
 import org.cgiar.ccafs.marlo.data.model.User;
+import org.cgiar.ccafs.marlo.rest.services.googleanalytics.ExternalPostUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,381 +71,480 @@ import org.springframework.web.bind.annotation.RestController;
 @Named
 public class GeneralLists {
 
+    private static final Logger LOG = LoggerFactory.getLogger(GeneralLists.class);
 
-  private static final Logger LOG = LoggerFactory.getLogger(GeneralLists.class);
+    private LocationItem<GeneralLists> locationItem;
+    private GeographicScopeItem<GeneralLists> geographicScopeItem;
+    private GlobalUnitItem<GeneralLists> globalUnitItem;
+    private GlobalUnitTypeItem<GeneralLists> globalUnitTypeItem;
+    private FlagshipProgramItem<GeneralLists> flagshipProgramItem;
+    private GeneralAcronymItem<GeneralLists> generalAcronymItem;
+    private RestApiAuditlogManager restApiAuditlogManager;
 
-  private LocationItem<GeneralLists> locationItem;
-  private GeographicScopeItem<GeneralLists> geographicScopeItem;
-  private GlobalUnitItem<GeneralLists> globalUnitItem;
-  private GlobalUnitTypeItem<GeneralLists> globalUnitTypeItem;
-  private FlagshipProgramItem<GeneralLists> flagshipProgramItem;
-  private GeneralAcronymItem<GeneralLists> generalAcronymItem;
-  private RestApiAuditlogManager restApiAuditlogManager;
+    @Autowired
+    private Environment env;
+    private final UserManager userManager;
 
-  @Autowired
-  private Environment env;
-  private final UserManager userManager;
-
-  @Inject
-  public GeneralLists(LocationItem<GeneralLists> countryItem, GeographicScopeItem<GeneralLists> geographicScopeItem,
-    GlobalUnitItem<GeneralLists> globalUnitItem, GlobalUnitTypeItem<GeneralLists> globalUnitTypeItem,
-    FlagshipProgramItem<GeneralLists> flagshipProgramItem, GeneralAcronymItem<GeneralLists> generalAcronymItem,
-    RestApiAuditlogManager restApiAuditlogManager, UserManager userManager) {
-    this.locationItem = countryItem;
-    this.geographicScopeItem = geographicScopeItem;
-    this.globalUnitItem = globalUnitItem;
-    this.globalUnitTypeItem = globalUnitTypeItem;
-    this.flagshipProgramItem = flagshipProgramItem;
-    this.generalAcronymItem = generalAcronymItem;
-    this.restApiAuditlogManager = restApiAuditlogManager;
-    this.userManager = userManager;
-  }
-
-  private User getCurrentUser() {
-    Subject subject = SecurityUtils.getSubject();
-    Long principal = (Long) subject.getPrincipal();
-    User user = this.userManager.getUser(principal);
-    return user;
-  }
-
-  /**
-   * find Acronyms by acronym *
-   * 
-   * @return a List of GeneralAcronymDTO with General Acronym Items founded.
-   */
-
-  @ApiOperation(value = "${GeneralLists.acronyms.acronym.value}", response = GeneralAcronymDTO.class,
-    responseContainer = "List")
-  @RequiresPermissions(Permission.FULL_READ_REST_API_PERMISSION)
-  @RequestMapping(value = "/acronyms/{acronym}", method = RequestMethod.GET,
-    produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<List<GeneralAcronymDTO>> findAcronymByAcronym(
-    @ApiParam(value = "${GeneralLists.acronyms.acronym.param.acronym}", required = true) @PathVariable String acronym) {
-    ResponseEntity<List<GeneralAcronymDTO>> response = this.generalAcronymItem.findGeneralAcronymByAcronym(acronym);
-    if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
-      throw new NotFoundException("404", this.env.getProperty("GeneralLists.acronyms.acronym.404"));
-    } else {
-        //Log Action
-        RestApiAuditlog restApiAuditLog = new RestApiAuditlog("General List acronyms", "LIST cgiar-entities, Acronym: " + acronym, new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.GeneralAcronym", "N/A", this.getCurrentUser().getId(), null, "", null);
-        restApiAuditlogManager.logApiCall(restApiAuditLog);
+    @Inject
+    public GeneralLists(LocationItem<GeneralLists> countryItem, GeographicScopeItem<GeneralLists> geographicScopeItem,
+            GlobalUnitItem<GeneralLists> globalUnitItem, GlobalUnitTypeItem<GeneralLists> globalUnitTypeItem,
+            FlagshipProgramItem<GeneralLists> flagshipProgramItem, GeneralAcronymItem<GeneralLists> generalAcronymItem,
+            RestApiAuditlogManager restApiAuditlogManager, UserManager userManager) {
+        this.locationItem = countryItem;
+        this.geographicScopeItem = geographicScopeItem;
+        this.globalUnitItem = globalUnitItem;
+        this.globalUnitTypeItem = globalUnitTypeItem;
+        this.flagshipProgramItem = flagshipProgramItem;
+        this.generalAcronymItem = generalAcronymItem;
+        this.restApiAuditlogManager = restApiAuditlogManager;
+        this.userManager = userManager;
     }
-    return response;
-  }
 
-
-  /**
-   * Find a country requesting numeric ISO Codeby id
-   * 
-   * @param numeric ISO Code
-   * @return a LocElementDTO with the country founded.
-   */
-
-  @ApiOperation(
-    tags = {"Table 2 - CRP Policies", "Table 3 - Outcome/ Impact Case Reports",
-      "Table 3 - Outcome/ Impact Case Reports", "Table 4 - CRP Innovations",
-      "Table 10 - Monitoring, Evaluation, Learning and Impact Assessment (MELIA)"},
-    value = "${GeneralLists.countries.code.value}", response = ContributionOfCrpDTO.class)
-  @RequiresPermissions(Permission.FULL_READ_REST_API_PERMISSION)
-  @RequestMapping(value = "/countries/{code}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<CountryDTO> findCountryByNumericISOCode(
-    @ApiParam(value = "${GeneralLists.countries.code.param.code}", required = true) @PathVariable String code) {
-    ResponseEntity<CountryDTO> response = this.locationItem.getContryByAlpha2ISOCode(code);
-    if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
-      throw new NotFoundException("404", this.env.getProperty("GeneralLists.countries.code.404"));
-    } else {
-        // Log Action
-        RestApiAuditlog restApiAuditLog = new RestApiAuditlog("General List countries", "LIST countries, Code: " + code, new Date(), response.getBody().getCode(), "class org.cgiar.ccafs.marlo.data.model.LocElement", "N/A", this.getCurrentUser().getId(), null, "", null);
-        restApiAuditlogManager.logApiCall(restApiAuditLog);
+    private User getCurrentUser() {
+        Subject subject = SecurityUtils.getSubject();
+        Long principal = (Long) subject.getPrincipal();
+        User user = this.userManager.getUser(principal);
+        return user;
     }
-    return response;
 
-  }
+    /**
+     * find Acronyms by acronym *
+     *
+     * @return a List of GeneralAcronymDTO with General Acronym Items founded.
+     */
+    @ApiOperation(value = "${GeneralLists.acronyms.acronym.value}", response = GeneralAcronymDTO.class,
+            responseContainer = "List")
+    @RequiresPermissions(Permission.FULL_READ_REST_API_PERMISSION)
+    @RequestMapping(value = "/acronyms/{acronym}", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<GeneralAcronymDTO>> findAcronymByAcronym(
+            @ApiParam(value = "${GeneralLists.acronyms.acronym.param.acronym}", required = true) @PathVariable String acronym) {
+        ResponseEntity<List<GeneralAcronymDTO>> response = this.generalAcronymItem.findGeneralAcronymByAcronym(acronym);
+        if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
+            throw new NotFoundException("404", this.env.getProperty("GeneralLists.acronyms.acronym.404"));
+        } else {
+            //Log Action Locally
+            RestApiAuditlog restApiAuditLog = new RestApiAuditlog("General List acronyms", "LIST cgiar-entities, Acronym: " + acronym, new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.GeneralAcronym", "N/A", this.getCurrentUser().getId(), null, "", null);
+            restApiAuditlogManager.logApiCall(restApiAuditLog);
 
-  /**
-   * Find a Flagship or Program by smo code
-   * 
-   * @param smo flagship/program code
-   * @return a FlagshipProgramDTO with Flagship or Program data.
-   */
-  @ApiOperation(
-    tags = {"Table 3 - Outcome/ Impact Case Reports", "Table 5 - Status of Planned Outcomes and Milestones",
-      "Table 8 - Key external partnerships", "Table 13 - CRP Financial Report"},
-    value = "${GeneralLists.flagships-modules.code.value}", response = FlagshipProgramDTO.class)
-  @RequiresPermissions(Permission.FULL_READ_REST_API_PERMISSION)
-  @RequestMapping(value = "/flagships-modules/{code}", method = RequestMethod.GET,
-    produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<FlagshipProgramDTO> findFlagshipProgramBySmoCode(
-    @ApiParam(value = "${GeneralLists.flagships-modules.code.param.code}", required = true) @PathVariable String code) {
-    ResponseEntity<FlagshipProgramDTO> response = this.flagshipProgramItem.findFlagshipProgramBySmoCode(code);
-    if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
-      throw new NotFoundException("404", this.env.getProperty("GeneralLists.flagships-modules.code.404"));
-    } else {
-        // Log Action
-        RestApiAuditlog restApiAuditLog = new RestApiAuditlog("General List flagships-modules", "LIST flagships-modules, Code: " + code, new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.CrpProgram", "N/A", this.getCurrentUser().getId(), null, "", null);
-        restApiAuditlogManager.logApiCall(restApiAuditLog);
+            // Log Action with Google Analytics
+            ExternalPostUtils epu = new ExternalPostUtils();
+            epu.sendToGoogleAnalytics("api_general_list_acronyms");
+        }
+        return response;
     }
-    return response;
-  }
 
-  /**
-   * Find a Geographic Scope by id
-   * 
-   * @param id
-   * @return a GeographicScopeDTO with the geo scope founded.
-   */
+    /**
+     * Find a country requesting numeric ISO Codeby id
+     *
+     * @param numeric ISO Code
+     * @return a LocElementDTO with the country founded.
+     */
+    @ApiOperation(
+            tags = {"Table 2 - CRP Policies", "Table 3 - Outcome/ Impact Case Reports",
+                "Table 3 - Outcome/ Impact Case Reports", "Table 4 - CRP Innovations",
+                "Table 10 - Monitoring, Evaluation, Learning and Impact Assessment (MELIA)"},
+            value = "${GeneralLists.countries.code.value}", response = ContributionOfCrpDTO.class)
+    @RequiresPermissions(Permission.FULL_READ_REST_API_PERMISSION)
+    @RequestMapping(value = "/countries/{code}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CountryDTO> findCountryByNumericISOCode(
+            @ApiParam(value = "${GeneralLists.countries.code.param.code}", required = true) @PathVariable String code) {
+        ResponseEntity<CountryDTO> response = this.locationItem.getContryByAlpha2ISOCode(code);
+        if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
+            throw new NotFoundException("404", this.env.getProperty("GeneralLists.countries.code.404"));
+        } else {
+            // Log Action Locally
+            RestApiAuditlog restApiAuditLog = new RestApiAuditlog("General List countries", "LIST countries, Code: " + code, new Date(), response.getBody().getCode(), "class org.cgiar.ccafs.marlo.data.model.LocElement", "N/A", this.getCurrentUser().getId(), null, "", null);
+            restApiAuditlogManager.logApiCall(restApiAuditLog);
 
-  @ApiOperation(
-    tags = {"Table 2 - CRP Policies", "Table 3 - Outcome/ Impact Case Reports", "Table 4 - CRP Innovations",
-      "Table 10 - Monitoring, Evaluation, Learning and Impact Assessment (MELIA)"},
-    value = "${GeneralLists.geographic-scopes.code.value}", response = ContributionOfCrpDTO.class)
-  @RequiresPermissions(Permission.FULL_READ_REST_API_PERMISSION)
-  @RequestMapping(value = "/geographic-scopes/{code}", method = RequestMethod.GET,
-    produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<GeographicScopeDTO> findGeographicScopeById(
-    @ApiParam(value = "${GeneralLists.geographic-scopes.code.param.code}", required = true) @PathVariable Long code) {
-    ResponseEntity<GeographicScopeDTO> response = this.geographicScopeItem.findGeographicScopesById(code);
-    if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
-      throw new NotFoundException("404", this.env.getProperty("GeneralLists.geographic-scopes.code.404"));
-    } else {
-        // Log Action
-        RestApiAuditlog restApiAuditLog = new RestApiAuditlog("General List geographic-scopes", "LIST geographic-scopes, Code: " + code, new Date(), response.getBody().getCode(), "class org.cgiar.ccafs.marlo.data.model.RepIndGeographicScope", "N/A", this.getCurrentUser().getId(), null, "", null);
-        restApiAuditlogManager.logApiCall(restApiAuditLog);
+            // Log Action with Google Analytics
+            try {
+                ExternalPostUtils epu = new ExternalPostUtils();
+                epu.sendToGoogleAnalytics("api_general_list_countries");
+            } catch (Throwable e) {
+                System.out.println(ExceptionUtils.getStackTrace(e));
+            }
+        }
+        return response;
+
     }
-    return response;
-  }
 
-  /**
-   * Find a global unit requesting by smo id
-   * 
-   * @param smo ID
-   * @return a GlobalUnit with the global unit founded.
-   */
-  @RequiresPermissions(Permission.CRPS_READ_REST_API_PERMISSION)
-  @ApiOperation(
-    tags = {"Table 1 - Progress towards SRF targets", "Table 2 - CRP Policies",
-      "Table 3 - Outcome/ Impact Case Reports", "Table 4 - CRP Innovations",
-      "Table 5 - Status of Planned Outcomes and Milestones", "Table 6 - Peer-reviewed publications",
-      "Table 7 - Participants in CapDev Activities", "Table 8 - Key external partnerships",
-      "Table 9 - Internal Cross-CGIAR Collaborations",
-      "Table 10 - Monitoring, Evaluation, Learning and Impact Assessment (MELIA)",
-      "Table 11 - Update on Actions Taken in Response to Relevant Evaluations", "Table 12 - Examples of W1/2 Use",
-      "Table 13 - CRP Financial Report"},
-    value = "${GeneralLists.cgiar-entities.code.value}", response = CGIAREntityDTO.class)
-  @RequestMapping(value = "/cgiar-entities/{code}", method = RequestMethod.GET,
-    produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<CGIAREntityDTO> findGlobalUnitByCGIARId(
-    @ApiParam(value = "${GeneralLists.cgiar-entities.code.param.code}", required = true) @PathVariable String code) {
-    ResponseEntity<CGIAREntityDTO> response = this.globalUnitItem.findGlobalUnitByCGIRARId(code);
-    if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
-      throw new NotFoundException("404", this.env.getProperty("GeneralLists.cgiar-entities.code.404"));
-    } else {
-        // Log Action
-        RestApiAuditlog restApiAuditLog = new RestApiAuditlog("General List cgiar-entities", "LIST cgiar-entities, Code: " + code, new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.GlobalUnit", "N/A", this.getCurrentUser().getId(), null, "", null);
-        restApiAuditlogManager.logApiCall(restApiAuditLog);
+    /**
+     * Find a Flagship or Program by smo code
+     *
+     * @param smo flagship/program code
+     * @return a FlagshipProgramDTO with Flagship or Program data.
+     */
+    @ApiOperation(
+            tags = {"Table 3 - Outcome/ Impact Case Reports", "Table 5 - Status of Planned Outcomes and Milestones",
+                "Table 8 - Key external partnerships", "Table 13 - CRP Financial Report"},
+            value = "${GeneralLists.flagships-modules.code.value}", response = FlagshipProgramDTO.class)
+    @RequiresPermissions(Permission.FULL_READ_REST_API_PERMISSION)
+    @RequestMapping(value = "/flagships-modules/{code}", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<FlagshipProgramDTO> findFlagshipProgramBySmoCode(
+            @ApiParam(value = "${GeneralLists.flagships-modules.code.param.code}", required = true) @PathVariable String code) {
+        ResponseEntity<FlagshipProgramDTO> response = this.flagshipProgramItem.findFlagshipProgramBySmoCode(code);
+        if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
+            throw new NotFoundException("404", this.env.getProperty("GeneralLists.flagships-modules.code.404"));
+        } else {
+            // Log Action Locally
+            RestApiAuditlog restApiAuditLog = new RestApiAuditlog("General List flagships-modules", "LIST flagships-modules, Code: " + code, new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.CrpProgram", "N/A", this.getCurrentUser().getId(), null, "", null);
+            restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+            // Log Action with Google Analytics
+            try {
+                ExternalPostUtils epu = new ExternalPostUtils();
+                epu.sendToGoogleAnalytics("api_general_list_flagships_modules");
+            } catch (Throwable e) {
+                System.out.println(ExceptionUtils.getStackTrace(e));
+            }
+        }
+        return response;
     }
-    return response;
-  }
 
-  /**
-   * Get a CGIAR Entity Type by code
-   * 
-   * @return a CGIAREntityTypeDTO founded by the code.
-   */
-  @ApiOperation(value = "${GeneralLists.cgiar-entity-types.code.value}", response = CGIAREntityTypeDTO.class)
-  @RequiresPermissions(Permission.FULL_READ_REST_API_PERMISSION)
-  @RequestMapping(value = "/cgiar-entity-types/{code}", method = RequestMethod.GET,
-    produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<CGIAREntityTypeDTO> findGlobalUnitTypeByCode(
-    @ApiParam(value = "${GeneralLists.cgiar-entity-types.code.param.code}", required = true) @PathVariable Long code) {
-    ResponseEntity<CGIAREntityTypeDTO> response = this.globalUnitTypeItem.findGlobalUnitTypeById(code);
-    if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
-      throw new NotFoundException("404", this.env.getProperty("GeneralLists.cgiar-entity-types.code.404"));
-    } else {
-        // Log Action
-        RestApiAuditlog restApiAuditLog = new RestApiAuditlog("General List ", "LIST cgiar-entities, Code: " + code, new Date(), response.getBody().getCode(), "class org.cgiar.ccafs.marlo.data.model.GlobalUnitType", "N/A", this.getCurrentUser().getId(), null, "", null);
-        restApiAuditlogManager.logApiCall(restApiAuditLog);
+    /**
+     * Find a Geographic Scope by id
+     *
+     * @param id
+     * @return a GeographicScopeDTO with the geo scope founded.
+     */
+    @ApiOperation(
+            tags = {"Table 2 - CRP Policies", "Table 3 - Outcome/ Impact Case Reports", "Table 4 - CRP Innovations",
+                "Table 10 - Monitoring, Evaluation, Learning and Impact Assessment (MELIA)"},
+            value = "${GeneralLists.geographic-scopes.code.value}", response = ContributionOfCrpDTO.class)
+    @RequiresPermissions(Permission.FULL_READ_REST_API_PERMISSION)
+    @RequestMapping(value = "/geographic-scopes/{code}", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<GeographicScopeDTO> findGeographicScopeById(
+            @ApiParam(value = "${GeneralLists.geographic-scopes.code.param.code}", required = true) @PathVariable Long code) {
+        ResponseEntity<GeographicScopeDTO> response = this.geographicScopeItem.findGeographicScopesById(code);
+        if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
+            throw new NotFoundException("404", this.env.getProperty("GeneralLists.geographic-scopes.code.404"));
+        } else {
+            // Log Action Locally
+            RestApiAuditlog restApiAuditLog = new RestApiAuditlog("General List geographic-scopes", "LIST geographic-scopes, Code: " + code, new Date(), response.getBody().getCode(), "class org.cgiar.ccafs.marlo.data.model.RepIndGeographicScope", "N/A", this.getCurrentUser().getId(), null, "", null);
+            restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+            // Log Action with Google Analytics
+            try {
+                ExternalPostUtils epu = new ExternalPostUtils();
+                epu.sendToGoogleAnalytics("api_general_list_geographic_scopes");
+            } catch (Throwable e) {
+                System.out.println(ExceptionUtils.getStackTrace(e));
+            }
+        }
+        return response;
     }
-    return response;
-  }
 
-  /**
-   * Get a Region by code
-   * 
-   * @return a RegionDTO founded by the code.
-   */
-  @ApiOperation(
-    tags = {"Table 2 - CRP Policies", "Table 3 - Outcome/ Impact Case Reports", "Table 4 - CRP Innovations",
-      "Table 10 - Monitoring, Evaluation, Learning and Impact Assessment (MELIA)"},
-    value = "${GeneralLists.un-regions.code.value}", response = RegionDTO.class)
-  @RequiresPermissions(Permission.FULL_READ_REST_API_PERMISSION)
-  @RequestMapping(value = "/un-regions/{code}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<RegionDTO> findtRegionByCode(
-    @ApiParam(value = "${GeneralLists.un-regions.code.param.code}", required = true) @PathVariable Long code) {
-    ResponseEntity<RegionDTO> response = this.locationItem.getRegionByCode(code);
-    if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
-      throw new NotFoundException("404", this.env.getProperty("GeneralLists.un-regions.code.404"));
-    } else {
-        // Log Action
-        RestApiAuditlog restApiAuditLog = new RestApiAuditlog("General List un-regions", "LIST un-regions, Code: " + code, new Date(), response.getBody().getUM49Code(), "class org.cgiar.ccafs.marlo.data.model.LocElement", "N/A", this.getCurrentUser().getId(), null, "", null);
-        restApiAuditlogManager.logApiCall(restApiAuditLog);
+    /**
+     * Find a global unit requesting by smo id
+     *
+     * @param smo ID
+     * @return a GlobalUnit with the global unit founded.
+     */
+    @RequiresPermissions(Permission.CRPS_READ_REST_API_PERMISSION)
+    @ApiOperation(
+            tags = {"Table 1 - Progress towards SRF targets", "Table 2 - CRP Policies",
+                "Table 3 - Outcome/ Impact Case Reports", "Table 4 - CRP Innovations",
+                "Table 5 - Status of Planned Outcomes and Milestones", "Table 6 - Peer-reviewed publications",
+                "Table 7 - Participants in CapDev Activities", "Table 8 - Key external partnerships",
+                "Table 9 - Internal Cross-CGIAR Collaborations",
+                "Table 10 - Monitoring, Evaluation, Learning and Impact Assessment (MELIA)",
+                "Table 11 - Update on Actions Taken in Response to Relevant Evaluations", "Table 12 - Examples of W1/2 Use",
+                "Table 13 - CRP Financial Report"},
+            value = "${GeneralLists.cgiar-entities.code.value}", response = CGIAREntityDTO.class)
+    @RequestMapping(value = "/cgiar-entities/{code}", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CGIAREntityDTO> findGlobalUnitByCGIARId(
+            @ApiParam(value = "${GeneralLists.cgiar-entities.code.param.code}", required = true) @PathVariable String code) {
+        ResponseEntity<CGIAREntityDTO> response = this.globalUnitItem.findGlobalUnitByCGIRARId(code);
+        if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
+            throw new NotFoundException("404", this.env.getProperty("GeneralLists.cgiar-entities.code.404"));
+        } else {
+            // Log Action Locally
+            RestApiAuditlog restApiAuditLog = new RestApiAuditlog("General List cgiar-entities", "LIST cgiar-entities, Code: " + code, new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.GlobalUnit", "N/A", this.getCurrentUser().getId(), null, "", null);
+            restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+            // Log Action with Google Analytics
+            try {
+                ExternalPostUtils epu = new ExternalPostUtils();
+                epu.sendToGoogleAnalytics("api_general_list_cgiar_entities");
+            } catch (Throwable e) {
+                System.out.println(ExceptionUtils.getStackTrace(e));
+            }
+        }
+        return response;
     }
-    return response;
-  }
 
+    /**
+     * Get a CGIAR Entity Type by code
+     *
+     * @return a CGIAREntityTypeDTO founded by the code.
+     */
+    @ApiOperation(value = "${GeneralLists.cgiar-entity-types.code.value}", response = CGIAREntityTypeDTO.class)
+    @RequiresPermissions(Permission.FULL_READ_REST_API_PERMISSION)
+    @RequestMapping(value = "/cgiar-entity-types/{code}", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CGIAREntityTypeDTO> findGlobalUnitTypeByCode(
+            @ApiParam(value = "${GeneralLists.cgiar-entity-types.code.param.code}", required = true) @PathVariable Long code) {
+        ResponseEntity<CGIAREntityTypeDTO> response = this.globalUnitTypeItem.findGlobalUnitTypeById(code);
+        if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
+            throw new NotFoundException("404", this.env.getProperty("GeneralLists.cgiar-entity-types.code.404"));
+        } else {
+            // Log Action Locally
+            RestApiAuditlog restApiAuditLog = new RestApiAuditlog("General List cgiar-entities", "LIST cgiar-entities, Code: " + code, new Date(), response.getBody().getCode(), "class org.cgiar.ccafs.marlo.data.model.GlobalUnitType", "N/A", this.getCurrentUser().getId(), null, "", null);
+            restApiAuditlogManager.logApiCall(restApiAuditLog);
 
-  /**
-   * Get All the Acronym items *
-   * 
-   * @return a List of GeneralAcronymDTO with all General Acronym Items.
-   */
-
-  @ApiOperation(value = "${GeneralLists.acronyms.all.value}", response = GeneralAcronymDTO.class,
-    responseContainer = "List")
-  @RequiresPermissions(Permission.FULL_READ_REST_API_PERMISSION)
-  @RequestMapping(value = "/acronyms", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-  public List<GeneralAcronymDTO> getAllAcronyms() {
-      
-      //Log Action
-    RestApiAuditlog restApiAuditLog = new RestApiAuditlog("General List acronyms", "LIST acronyms", new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.GeneralAcronym", "N/A", this.getCurrentUser().getId(), null, "", null);
-    restApiAuditlogManager.logApiCall(restApiAuditLog);
-    
-    return this.generalAcronymItem.getAllGeneralAcronyms();
-  }
-
-  /**
-   * Get All the Country items *
-   * 
-   * @return a List of LocElementDTO with all LocElements Items.
-   */
-  @ApiOperation(
-    tags = {"Table 2 - CRP Policies", "Table 3 - Outcome/ Impact Case Reports", "Table 4 - CRP Innovations",
-      "Table 10 - Monitoring, Evaluation, Learning and Impact Assessment (MELIA)"},
-    value = "${GeneralLists.countries.all.value}", response = CountryDTO.class, responseContainer = "List")
-  @RequiresPermissions(Permission.FULL_READ_REST_API_PERMISSION)
-  @RequestMapping(value = "/countries", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-  public List<CountryDTO> getAllContries() {
-      
-      //Log Action
-    RestApiAuditlog restApiAuditLog = new RestApiAuditlog("General List countries", "LIST countries", new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.LocElement", "N/A", this.getCurrentUser().getId(), null, "", null);
-    restApiAuditlogManager.logApiCall(restApiAuditLog);
-    
-    return this.locationItem.getAllCountries();
-  }
-
-
-  /**
-   * Get All the Flagship or Program items *
-   * 
-   * @return a List of FlagshipProgramDTO with all Flagship or Program Items.
-   */
-  @ApiOperation(
-    tags = {"Table 3 - Outcome/ Impact Case Reports", "Table 5 - Status of Planned Outcomes and Milestones",
-      "Table 8 - Key external partnerships", "Table 13 - CRP Financial Report"},
-    value = "${GeneralLists.flagships-modules.all.value}", response = FlagshipProgramDTO.class,
-    responseContainer = "List")
-  @RequiresPermissions(Permission.FULL_READ_REST_API_PERMISSION)
-  @RequestMapping(value = "/flagships-modules", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-  public List<FlagshipProgramDTO> getAllFlagshipsPrograms() {
-      
-      //Log Action
-    RestApiAuditlog restApiAuditLog = new RestApiAuditlog("General List flagships-modules", "LIST flagships-modules", new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.CrpProgram", "N/A", this.getCurrentUser().getId(), null, "", null);
-    restApiAuditlogManager.logApiCall(restApiAuditLog);
-    
-    return this.flagshipProgramItem.getAllCrpPrograms();
-  }
-
-  /**
-   * Get All the Geographic Scope items *
-   * 
-   * @return a List of GeographicScopeDTO with all RepIndGeographicScope Items.
-   */
-
-  @ApiOperation(
-    tags = {"Table 2 - CRP Policies", "Table 3 - Outcome/ Impact Case Reports", "Table 4 - CRP Innovations",
-      "Table 10 - Monitoring, Evaluation, Learning and Impact Assessment (MELIA)"},
-    value = "${GeneralLists.geographic-scopes.all.value}", response = GeographicScopeDTO.class,
-    responseContainer = "List")
-  @RequiresPermissions(Permission.FULL_READ_REST_API_PERMISSION)
-  @RequestMapping(value = "/geographic-scopes", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-  public List<GeographicScopeDTO> getAllGeographicScopes() {
-      
-      //Log Action
-    RestApiAuditlog restApiAuditLog = new RestApiAuditlog("General List geographic-scopes", "LIST geographic-scopes", new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.RepIndGeographicScope", "N/A", this.getCurrentUser().getId(), null, "", null);
-    restApiAuditlogManager.logApiCall(restApiAuditLog);
-    
-    return this.geographicScopeItem.getAllGeographicScopes();
-  }
-  // (Optional) Entity type can be Center, CRP or Platform. Please refer to the entity-type control list. (edited)
-
-  /**
-   * get all global Units (CGIAR Entities)
-   * 
-   * @return a LocElementDTO with the country founded.
-   */
-  @RequiresPermissions(Permission.FULL_READ_REST_API_PERMISSION)
-  @ApiOperation(
-    tags = {"Table 1 - Progress towards SRF targets", "Table 2 - CRP Policies",
-      "Table 3 - Outcome/ Impact Case Reports", "Table 4 - CRP Innovations",
-      "Table 5 - Status of Planned Outcomes and Milestones", "Table 6 - Peer-reviewed publications",
-      "Table 7 - Participants in CapDev Activities", "Table 8 - Key external partnerships",
-      "Table 9 - Internal Cross-CGIAR Collaborations",
-      "Table 10 - Monitoring, Evaluation, Learning and Impact Assessment (MELIA)",
-      "Table 11 - Update on Actions Taken in Response to Relevant Evaluations", "Table 12 - Examples of W1/2 Use",
-      "Table 13 - CRP Financial Report"},
-    value = "${GeneralLists.cgiar-entities.all.value}", response = CGIAREntityDTO.class, responseContainer = "List")
-  @RequestMapping(value = "/cgiar-entities", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<List<CGIAREntityDTO>> getAllGlobalUnits(
-    @ApiParam(value = "${GeneralLists.cgiar-entities.all.param.typeId}") @RequestParam(value = "typeId",
-      required = false) Long typeId) {
-    ResponseEntity<List<CGIAREntityDTO>> response = this.globalUnitItem.getAllGlobaUnits(typeId);
-    if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
-      throw new NotFoundException("404", this.env.getProperty("GeneralLists.cgiar-entities.all.404"));
-    } else {
-        // Log Action
-        RestApiAuditlog restApiAuditLog = new RestApiAuditlog("General List cgiar-entities", "LIST cgiar-entities, Type: " + typeId, new Date() , 0, "class org.cgiar.ccafs.marlo.data.model.GlobalUnit", "N/A", this.getCurrentUser().getId(), null, "", null);
-        restApiAuditlogManager.logApiCall(restApiAuditLog);
+            // Log Action with Google Analytics
+            try {
+                ExternalPostUtils epu = new ExternalPostUtils();
+                epu.sendToGoogleAnalytics("api_general_list_cgiar_entities");
+            } catch (Throwable e) {
+                System.out.println(ExceptionUtils.getStackTrace(e));
+            }
+        }
+        return response;
     }
-    
-    return response;
-  }
 
-  /**
-   * Get All CGIAR entities Types *
-   * 
-   * @return a List of CGIAREntityTypeDTO with all CGIAR entities Types.
-   */
-  @ApiOperation(value = "${GeneralLists.cgiar-entity-types.all.value}", response = CGIAREntityTypeDTO.class,
-    responseContainer = "List")
-  @RequiresPermissions(Permission.FULL_READ_REST_API_PERMISSION)
-  @RequestMapping(value = "/cgiar-entity-types", method = RequestMethod.GET,
-    produces = MediaType.APPLICATION_JSON_VALUE)
-  public List<CGIAREntityTypeDTO> getAllGlobalUnitTypes() {
-      
-      //Log Action
-    RestApiAuditlog restApiAuditLog = new RestApiAuditlog("General List cgiar-entity-types", "LIST cgiar-entity-types", new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.GlobalUnitType", "N/A", this.getCurrentUser().getId(), null, "", null);
-    restApiAuditlogManager.logApiCall(restApiAuditLog);
-    
-    return this.globalUnitTypeItem.getAllGlobalUnitTypes();
-  }
+    /**
+     * Get a Region by code
+     *
+     * @return a RegionDTO founded by the code.
+     */
+    @ApiOperation(
+            tags = {"Table 2 - CRP Policies", "Table 3 - Outcome/ Impact Case Reports", "Table 4 - CRP Innovations",
+                "Table 10 - Monitoring, Evaluation, Learning and Impact Assessment (MELIA)"},
+            value = "${GeneralLists.un-regions.code.value}", response = RegionDTO.class)
+    @RequiresPermissions(Permission.FULL_READ_REST_API_PERMISSION)
+    @RequestMapping(value = "/un-regions/{code}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<RegionDTO> findtRegionByCode(
+            @ApiParam(value = "${GeneralLists.un-regions.code.param.code}", required = true) @PathVariable Long code) {
+        ResponseEntity<RegionDTO> response = this.locationItem.getRegionByCode(code);
+        if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
+            throw new NotFoundException("404", this.env.getProperty("GeneralLists.un-regions.code.404"));
+        } else {
+            // Log Action Locally
+            RestApiAuditlog restApiAuditLog = new RestApiAuditlog("General List un-regions", "LIST un-regions, Code: " + code, new Date(), response.getBody().getUM49Code(), "class org.cgiar.ccafs.marlo.data.model.LocElement", "N/A", this.getCurrentUser().getId(), null, "", null);
+            restApiAuditlogManager.logApiCall(restApiAuditLog);
 
-  /**
-   * Get All the Region items *
-   * 
-   * @return a List of RegionDTO with all LocElements regions Items.
-   */
-  @ApiOperation(
-    tags = {"Table 2 - CRP Policies", "Table 3 - Outcome/ Impact Case Reports", "Table 4 - CRP Innovations",
-      "Table 10 - Monitoring, Evaluation, Learning and Impact Assessment (MELIA)"},
-    value = "${GeneralLists.un-regions.all.value}", response = RegionDTO.class, responseContainer = "List")
-  @RequiresPermissions(Permission.FULL_READ_REST_API_PERMISSION)
-  @RequestMapping(value = "/un-regions", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-  public List<RegionDTO> getAllRegions() {
-      
-      //Log Action
-    RestApiAuditlog restApiAuditLog = new RestApiAuditlog("General List un-regions", "LIST un-regions", new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.LocElement", "N/A", this.getCurrentUser().getId(), null, "", null);
-    restApiAuditlogManager.logApiCall(restApiAuditLog);
-    
-    return this.locationItem.getAllRegions();
-  }
+            // Log Action with Google Analytics
+            try {
+                ExternalPostUtils epu = new ExternalPostUtils();
+                epu.sendToGoogleAnalytics("api_general_list_un_regions");
+            } catch (Throwable e) {
+                System.out.println(ExceptionUtils.getStackTrace(e));
+            }
+        }
+        return response;
+    }
+
+    /**
+     * Get All the Acronym items *
+     *
+     * @return a List of GeneralAcronymDTO with all General Acronym Items.
+     */
+    @ApiOperation(value = "${GeneralLists.acronyms.all.value}", response = GeneralAcronymDTO.class,
+            responseContainer = "List")
+    @RequiresPermissions(Permission.FULL_READ_REST_API_PERMISSION)
+    @RequestMapping(value = "/acronyms", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<GeneralAcronymDTO> getAllAcronyms() {
+
+        //Log Action Locally
+        RestApiAuditlog restApiAuditLog = new RestApiAuditlog("General List acronyms", "LIST acronyms", new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.GeneralAcronym", "N/A", this.getCurrentUser().getId(), null, "", null);
+        restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+        // Log Action with Google Analytics
+        try {
+            ExternalPostUtils epu = new ExternalPostUtils();
+            epu.sendToGoogleAnalytics("api_general_list_acronyms");
+        } catch (Throwable e) {
+            System.out.println(ExceptionUtils.getStackTrace(e));
+        }
+        return this.generalAcronymItem.getAllGeneralAcronyms();
+    }
+
+    /**
+     * Get All the Country items *
+     *
+     * @return a List of LocElementDTO with all LocElements Items.
+     */
+    @ApiOperation(
+            tags = {"Table 2 - CRP Policies", "Table 3 - Outcome/ Impact Case Reports", "Table 4 - CRP Innovations",
+                "Table 10 - Monitoring, Evaluation, Learning and Impact Assessment (MELIA)"},
+            value = "${GeneralLists.countries.all.value}", response = CountryDTO.class, responseContainer = "List")
+    @RequiresPermissions(Permission.FULL_READ_REST_API_PERMISSION)
+    @RequestMapping(value = "/countries", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<CountryDTO> getAllContries() {
+
+        //Log Action Locally
+        RestApiAuditlog restApiAuditLog = new RestApiAuditlog("General List countries", "LIST countries", new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.LocElement", "N/A", this.getCurrentUser().getId(), null, "", null);
+        restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+        // Log Action with Google Analytics
+        try {
+            ExternalPostUtils epu = new ExternalPostUtils();
+            epu.sendToGoogleAnalytics("api_general_list_countries");
+        } catch (Throwable e) {
+            System.out.println(ExceptionUtils.getStackTrace(e));
+        }
+
+        return this.locationItem.getAllCountries();
+    }
+
+    /**
+     * Get All the Flagship or Program items *
+     *
+     * @return a List of FlagshipProgramDTO with all Flagship or Program Items.
+     */
+    @ApiOperation(
+            tags = {"Table 3 - Outcome/ Impact Case Reports", "Table 5 - Status of Planned Outcomes and Milestones",
+                "Table 8 - Key external partnerships", "Table 13 - CRP Financial Report"},
+            value = "${GeneralLists.flagships-modules.all.value}", response = FlagshipProgramDTO.class,
+            responseContainer = "List")
+    @RequiresPermissions(Permission.FULL_READ_REST_API_PERMISSION)
+    @RequestMapping(value = "/flagships-modules", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<FlagshipProgramDTO> getAllFlagshipsPrograms() {
+
+        //Log Action Locally
+        RestApiAuditlog restApiAuditLog = new RestApiAuditlog("General List flagships-modules", "LIST flagships-modules", new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.CrpProgram", "N/A", this.getCurrentUser().getId(), null, "", null);
+        restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+        // Log Action with Google Analytics
+        try {
+            ExternalPostUtils epu = new ExternalPostUtils();
+            epu.sendToGoogleAnalytics("api_general_list_flagships_modules");
+        } catch (Throwable e) {
+            System.out.println(ExceptionUtils.getStackTrace(e));
+        }
+
+        return this.flagshipProgramItem.getAllCrpPrograms();
+    }
+
+    /**
+     * Get All the Geographic Scope items *
+     *
+     * @return a List of GeographicScopeDTO with all RepIndGeographicScope
+     * Items.
+     */
+    @ApiOperation(
+            tags = {"Table 2 - CRP Policies", "Table 3 - Outcome/ Impact Case Reports", "Table 4 - CRP Innovations",
+                "Table 10 - Monitoring, Evaluation, Learning and Impact Assessment (MELIA)"},
+            value = "${GeneralLists.geographic-scopes.all.value}", response = GeographicScopeDTO.class,
+            responseContainer = "List")
+    @RequiresPermissions(Permission.FULL_READ_REST_API_PERMISSION)
+    @RequestMapping(value = "/geographic-scopes", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<GeographicScopeDTO> getAllGeographicScopes() {
+
+        //Log Action Locally
+        RestApiAuditlog restApiAuditLog = new RestApiAuditlog("General List geographic-scopes", "LIST geographic-scopes", new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.RepIndGeographicScope", "N/A", this.getCurrentUser().getId(), null, "", null);
+        restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+        // Log Action with Google Analytics
+        try {
+            ExternalPostUtils epu = new ExternalPostUtils();
+            epu.sendToGoogleAnalytics("api_general_list_geographic_scopes");
+        } catch (Throwable e) {
+            System.out.println(ExceptionUtils.getStackTrace(e));
+        }
+
+        return this.geographicScopeItem.getAllGeographicScopes();
+    }
+    // (Optional) Entity type can be Center, CRP or Platform. Please refer to the entity-type control list. (edited)
+
+    /**
+     * get all global Units (CGIAR Entities)
+     *
+     * @return a LocElementDTO with the country founded.
+     */
+    @RequiresPermissions(Permission.FULL_READ_REST_API_PERMISSION)
+    @ApiOperation(
+            tags = {"Table 1 - Progress towards SRF targets", "Table 2 - CRP Policies",
+                "Table 3 - Outcome/ Impact Case Reports", "Table 4 - CRP Innovations",
+                "Table 5 - Status of Planned Outcomes and Milestones", "Table 6 - Peer-reviewed publications",
+                "Table 7 - Participants in CapDev Activities", "Table 8 - Key external partnerships",
+                "Table 9 - Internal Cross-CGIAR Collaborations",
+                "Table 10 - Monitoring, Evaluation, Learning and Impact Assessment (MELIA)",
+                "Table 11 - Update on Actions Taken in Response to Relevant Evaluations", "Table 12 - Examples of W1/2 Use",
+                "Table 13 - CRP Financial Report"},
+            value = "${GeneralLists.cgiar-entities.all.value}", response = CGIAREntityDTO.class, responseContainer = "List")
+    @RequestMapping(value = "/cgiar-entities", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<CGIAREntityDTO>> getAllGlobalUnits(
+            @ApiParam(value = "${GeneralLists.cgiar-entities.all.param.typeId}") @RequestParam(value = "typeId",
+                    required = false) Long typeId) {
+        ResponseEntity<List<CGIAREntityDTO>> response = this.globalUnitItem.getAllGlobaUnits(typeId);
+        if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
+            throw new NotFoundException("404", this.env.getProperty("GeneralLists.cgiar-entities.all.404"));
+        } else {
+            // Log Action Locally
+            RestApiAuditlog restApiAuditLog = new RestApiAuditlog("General List cgiar-entities", "LIST cgiar-entities, Type: " + typeId, new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.GlobalUnit", "N/A", this.getCurrentUser().getId(), null, "", null);
+            restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+            // Log Action with Google Analytics
+            try {
+                ExternalPostUtils epu = new ExternalPostUtils();
+                epu.sendToGoogleAnalytics("api_general_list_cgiar_entities");
+            } catch (Throwable e) {
+                System.out.println(ExceptionUtils.getStackTrace(e));
+            }
+        }
+
+        return response;
+    }
+
+    /**
+     * Get All CGIAR entities Types *
+     *
+     * @return a List of CGIAREntityTypeDTO with all CGIAR entities Types.
+     */
+    @ApiOperation(value = "${GeneralLists.cgiar-entity-types.all.value}", response = CGIAREntityTypeDTO.class,
+            responseContainer = "List")
+    @RequiresPermissions(Permission.FULL_READ_REST_API_PERMISSION)
+    @RequestMapping(value = "/cgiar-entity-types", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<CGIAREntityTypeDTO> getAllGlobalUnitTypes() {
+
+        //Log Action Locally
+        RestApiAuditlog restApiAuditLog = new RestApiAuditlog("General List cgiar-entity-types", "LIST cgiar-entity-types", new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.GlobalUnitType", "N/A", this.getCurrentUser().getId(), null, "", null);
+        restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+        // Log Action with Google Analytics
+        try {
+            ExternalPostUtils epu = new ExternalPostUtils();
+            epu.sendToGoogleAnalytics("api_general_list_cgiar_entity_types");
+        } catch (Throwable e) {
+            System.out.println(ExceptionUtils.getStackTrace(e));
+        }
+
+        return this.globalUnitTypeItem.getAllGlobalUnitTypes();
+    }
+
+    /**
+     * Get All the Region items *
+     *
+     * @return a List of RegionDTO with all LocElements regions Items.
+     */
+    @ApiOperation(
+            tags = {"Table 2 - CRP Policies", "Table 3 - Outcome/ Impact Case Reports", "Table 4 - CRP Innovations",
+                "Table 10 - Monitoring, Evaluation, Learning and Impact Assessment (MELIA)"},
+            value = "${GeneralLists.un-regions.all.value}", response = RegionDTO.class, responseContainer = "List")
+    @RequiresPermissions(Permission.FULL_READ_REST_API_PERMISSION)
+    @RequestMapping(value = "/un-regions", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<RegionDTO> getAllRegions() {
+
+        //Log Action Locally
+        RestApiAuditlog restApiAuditLog = new RestApiAuditlog("General List un-regions", "LIST un-regions", new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.LocElement", "N/A", this.getCurrentUser().getId(), null, "", null);
+        restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+        // Log Action with Google Analytics
+        try {
+            ExternalPostUtils epu = new ExternalPostUtils();
+            epu.sendToGoogleAnalytics("api_general_list_un_regions");
+        } catch (Throwable e) {
+            System.out.println(ExceptionUtils.getStackTrace(e));
+        }
+
+        return this.locationItem.getAllRegions();
+    }
 
 }

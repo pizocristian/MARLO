@@ -37,6 +37,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import java.util.Date;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
@@ -44,6 +45,7 @@ import org.cgiar.ccafs.marlo.data.manager.RestApiAuditlogManager;
 import org.cgiar.ccafs.marlo.data.manager.UserManager;
 import org.cgiar.ccafs.marlo.data.model.RestApiAuditlog;
 import org.cgiar.ccafs.marlo.data.model.User;
+import org.cgiar.ccafs.marlo.rest.services.googleanalytics.ExternalPostUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +71,7 @@ public class SrfLists {
     private static final Logger LOG = LoggerFactory.getLogger(SrfLists.class);
 
     private RestApiAuditlogManager restApiAuditlogManager;
-    
+
     @Autowired
     private Environment env;
     private final UserManager userManager;
@@ -116,9 +118,13 @@ public class SrfLists {
         if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
             throw new NotFoundException("404", this.env.getProperty("SrfList.srf-ido.code.404"));
         } else {
-            //Log Action
+            //Log Action Locally
             RestApiAuditlog restApiAuditLog = new RestApiAuditlog("Srf List srf-idos", "LIST srf-idos, Code: " + code, new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.SrfIdo", "N/A", this.getCurrentUser().getId(), null, "", null);
             restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+            // Log Action with Google Analytics
+            ExternalPostUtils epu = new ExternalPostUtils();
+            epu.sendToGoogleAnalytics("api_srf_list_srf-idos");
         }
         return response;
     }
@@ -139,9 +145,13 @@ public class SrfLists {
         if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
             throw new NotFoundException("404", this.env.getProperty("SrfList.srf-slo.code.404"));
         } else {
-            //Log Action
+            //Log Action Locally
             RestApiAuditlog restApiAuditLog = new RestApiAuditlog("Srf List srf-slos", "LIST srf-slos, Code: " + code, new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.SrfSlo", "N/A", this.getCurrentUser().getId(), null, "", null);
             restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+            // Log Action with Google Analytics
+            ExternalPostUtils epu = new ExternalPostUtils();
+            epu.sendToGoogleAnalytics("api_srf_list_srf_slos");
         }
         return response;
     }
@@ -165,9 +175,13 @@ public class SrfLists {
         if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
             throw new NotFoundException("404", this.env.getProperty("SrfList.slo-targets.code.404"));
         } else {
-            //Log Action
+            //Log Action Locally
             RestApiAuditlog restApiAuditLog = new RestApiAuditlog("Srf List srf-targets", "LIST srf-targets, Code: " + code, new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.SrfSloIndicatorTarget", "N/A", this.getCurrentUser().getId(), null, "", null);
             restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+            // Log Action with Google Analytics
+            ExternalPostUtils epu = new ExternalPostUtils();
+            epu.sendToGoogleAnalytics("api_srf_list_srf_targets");
         }
         return response;
     }
@@ -189,9 +203,13 @@ public class SrfLists {
         if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
             throw new NotFoundException("404", this.env.getProperty("SrfList.srf-cross-cutting-issue.code.404"));
         } else {
-            //Log Action
+            //Log Action Locally
             RestApiAuditlog restApiAuditLog = new RestApiAuditlog("Srf List srf-cross-cutting-issues", "LIST srf-cross-cutting-issues, Code: " + code, new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.SrfCrossCuttingIssue", "N/A", this.getCurrentUser().getId(), null, "", null);
             restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+            // Log Action with Google Analytics
+            ExternalPostUtils epu = new ExternalPostUtils();
+            epu.sendToGoogleAnalytics("api_srf_list_srf_cross_cutting_issues");
         }
         return response;
     }
@@ -215,9 +233,13 @@ public class SrfLists {
         if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
             throw new NotFoundException("404", this.env.getProperty("SrfList.srf-sub-idos.code.404"));
         } else {
-            //Log Action
+            //Log Action Locally
             RestApiAuditlog restApiAuditLog = new RestApiAuditlog("Srf List srf-sub-idos", "LIST srf-sub-idos, Code: " + code, new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.SrfSubIdo", "N/A", this.getCurrentUser().getId(), null, "", null);
             restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+            // Log Action with Google Analytics
+            ExternalPostUtils epu = new ExternalPostUtils();
+            epu.sendToGoogleAnalytics("api_srf_list_srf_sub_idos");
         }
         return response;
     }
@@ -231,9 +253,13 @@ public class SrfLists {
     @RequiresPermissions(Permission.FULL_READ_REST_API_PERMISSION)
     @RequestMapping(value = "/srf-idos", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<SrfIdoDTO> getAllSrfIdos() {
-        //Log Action
+        //Log Action Locally
         RestApiAuditlog restApiAuditLog = new RestApiAuditlog("Srf List srf-idos", "LIST srf-idos", new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.SrfIdo", "N/A", this.getCurrentUser().getId(), null, "", null);
         restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+        // Log Action with Google Analytics
+        ExternalPostUtils epu = new ExternalPostUtils();
+        epu.sendToGoogleAnalytics("api_srf_list_srf_idos");
         return this.srfIdoItem.getAllSrfIdos();
     }
 
@@ -247,9 +273,13 @@ public class SrfLists {
     @RequiresPermissions(Permission.FULL_READ_REST_API_PERMISSION)
     @RequestMapping(value = "/srf-slos", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<SrfSloDTO> getAllSrfSlos() {
-        //Log Action
+        //Log Action Locally
         RestApiAuditlog restApiAuditLog = new RestApiAuditlog("Srf List srf-slos", "LIST srf-slos", new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.SrfSlo", "N/A", this.getCurrentUser().getId(), null, "", null);
         restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+        // Log Action with Google Analytics
+        ExternalPostUtils epu = new ExternalPostUtils();
+        epu.sendToGoogleAnalytics("api_srf_list_srf_slos");
         return this.srfSloItem.getAllSrfSlos();
     }
 
@@ -270,9 +300,13 @@ public class SrfLists {
         if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
             throw new NotFoundException("404", this.env.getProperty("SrfList.slo-targets.all.404"));
         } else {
-            //Log Action
+            //Log Action Locally
             RestApiAuditlog restApiAuditLog = new RestApiAuditlog("Srf List slo-targets", "LIST slo-targets", new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.SrfSloIndicatorTarget", "N/A", this.getCurrentUser().getId(), null, "", null);
             restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+            // Log Action with Google Analytics
+            ExternalPostUtils epu = new ExternalPostUtils();
+            epu.sendToGoogleAnalytics("api_srf_list_slo-targets");
         }
         return response;
     }
@@ -290,9 +324,14 @@ public class SrfLists {
     @RequestMapping(value = "/srf-cross-cutting-issues", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public List<SrfCrossCuttingIssueDTO> getAllSrfSrfCrossCuttingIssues() {
-        //Log Action
+        //Log Action Locally
         RestApiAuditlog restApiAuditLog = new RestApiAuditlog("Srf List srf-cross-cutting-issues", "LIST srf-cross-cutting-issues", new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.SrfCrossCuttingIssue", "N/A", this.getCurrentUser().getId(), null, "", null);
         restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+        // Log Action with Google Analytics
+        ExternalPostUtils epu = new ExternalPostUtils();
+        epu.sendToGoogleAnalytics("api_srf_list_srf_cross_cutting_issues");
+        
         return this.srfCrossCuttingIssueItem.getAllSrfCrossCuttingIssues();
     }
 
@@ -308,9 +347,14 @@ public class SrfLists {
     @RequiresPermissions(Permission.FULL_READ_REST_API_PERMISSION)
     @RequestMapping(value = "/srf-sub-idos", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<SrfSubIdoDTO> getAllSrfSubIdos() {
-        //Log Action
+        //Log Action Locally
         RestApiAuditlog restApiAuditLog = new RestApiAuditlog("Srf List srf-sub-idos", "LIST srf-sub-idos", new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.SrfSubIdo", "N/A", this.getCurrentUser().getId(), null, "", null);
         restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+        // Log Action with Google Analytics
+        ExternalPostUtils epu = new ExternalPostUtils();
+        epu.sendToGoogleAnalytics("api_srf_list_srf_sub-idos");
+
         return this.srfSubIdoItem.getAllSrfSubIdos();
     }
 

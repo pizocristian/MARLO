@@ -38,6 +38,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.cgiar.ccafs.marlo.data.manager.RestApiAuditlogManager;
 import org.cgiar.ccafs.marlo.data.model.RestApiAuditlog;
 import org.cgiar.ccafs.marlo.data.model.User;
+import org.cgiar.ccafs.marlo.rest.services.googleanalytics.ExternalPostUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -87,10 +88,14 @@ public class MilestoneItem<T> {
                     .equalsIgnoreCase(CGIARentityAcronym)) {
                 crpMilestone = null;
             } else {
-                // Log Action
+                // Log Action Locally
                 RestApiAuditlog restApiAuditLog = new RestApiAuditlog("findMilestoneById", "Searched CGIAR Entity Acronym " + CGIARentityAcronym + " ID " + id + " Year:" + year, new Date(), Long.parseLong(id), "class org.cgiar.ccafs.marlo.data.model.CrpMilestone",
                         "N/A", user.getId(), null, "", phase.getId());
                 restApiAuditlogManager.logApiCall(restApiAuditLog);
+        
+                // Log Action with Google Analytics
+                ExternalPostUtils epu = new ExternalPostUtils();
+                epu.sendToGoogleAnalytics("api_find_milestones");
             }
 
         }
@@ -132,9 +137,14 @@ public class MilestoneItem<T> {
 
         }
 
-        //Log Action
+        // Log Action Locally
         RestApiAuditlog restApiAuditLog = new RestApiAuditlog("List milestones", "LIST milestones CGIAR Entity Acronym " + CGIARentityAcronym + " CRP Programe Code " + crpProgramCode + " Year:" + repoYear, new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.CrpMilestone", "N/A", user.getId(), null, "", null);
         restApiAuditlogManager.logApiCall(restApiAuditLog);
+        
+        // Log Action with Google Analytics
+        ExternalPostUtils epu = new ExternalPostUtils();
+        epu.sendToGoogleAnalytics("api_find_milestones");
+        
         return milestonesDTOs;
 
     }

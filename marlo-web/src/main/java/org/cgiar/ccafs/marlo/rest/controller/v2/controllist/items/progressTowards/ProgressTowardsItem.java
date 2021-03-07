@@ -61,6 +61,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.commons.lang.StringUtils;
+import org.cgiar.ccafs.marlo.rest.services.googleanalytics.ExternalPostUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -294,8 +295,8 @@ public class ProgressTowardsItem<T> {
                         .saveReportSynthesisSrfProgressTarget(reportSynthesisSrfProgressTarget);
                 if (reportSynthesisSrfProgressTargetDB != null) {
                     srfProgressTargetId = reportSynthesisSrfProgressTargetDB.getId();
-                    
-                    // Log Action
+
+                    // Log Action Locally
                     try {
                         ObjectMapper mapper = new ObjectMapper();
                         String originalJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(newSrfProgressTowardsTargetDTO);
@@ -305,6 +306,10 @@ public class ProgressTowardsItem<T> {
                     } catch (JsonProcessingException ex) {
                         Logger.getLogger(ProgressTowardsItem.class.getName()).log(Level.SEVERE, null, ex);
                     }
+
+                    // Log Action with Google Analytics
+                    ExternalPostUtils epu = new ExternalPostUtils();
+                    epu.sendToGoogleAnalytics("api_create_update_delete_progress_towards");
                 }
             }
         }
@@ -383,11 +388,15 @@ public class ProgressTowardsItem<T> {
                             } else {
                                 reportSynthesisSrfProgressTargetManager
                                         .deleteReportSynthesisSrfProgressTarget(srfProgressTarget.getId());
-                                
-                                // Log Action
+
+                                // Log Action Locally
                                 RestApiAuditlog restApiAuditLog = new RestApiAuditlog("deleteProgressTowards", "Deleted CGIAR Entity Acronym " + CGIARentityAcronym + " ID " + id + " Year:" + repoYear + " Phase: " + repoPhase, new Date(), srfProgressTarget.getId(), "class org.cgiar.ccafs.marlo.data.model.ReportSynthesisSrfProgressTarget",
                                         "N/A", user.getId(), null, "", phase.getId());
                                 restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+                                // Log Action with Google Analytics
+                                ExternalPostUtils epu = new ExternalPostUtils();
+                                epu.sendToGoogleAnalytics("api_create_update_delete_progress_towards");
                             }
                         }
                     }
@@ -458,10 +467,14 @@ public class ProgressTowardsItem<T> {
                             .collect(Collectors.toList()));
         }
 
-        // Log Action
+        // Log Action Locally
         RestApiAuditlog restApiAuditLog = new RestApiAuditlog("findProgressTowardsByGlobalUnit", "Searched CGIAR Entity Acronym " + CGIARentityAcronym + " Year:" + repoYear + " Phase: " + repoPhase, new Date(), 0L, "class org.cgiar.ccafs.marlo.data.model.ReportSynthesisSrfProgressTarget",
                 "N/A", user.getId(), null, "", phase.getId());
         restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+        // Log Action with Google Analytics
+        ExternalPostUtils epu = new ExternalPostUtils();
+        epu.sendToGoogleAnalytics("api_find_progress_towards");
         return progressTowardsTargets;
     }
 
@@ -530,10 +543,14 @@ public class ProgressTowardsItem<T> {
                                         "The Report Synthesis Srf Progress Target with id " + id
                                         + " do not correspond to the phase entered"));
                             } else {
-                                // Log Action
+                                // Log Action Locally
                                 RestApiAuditlog restApiAuditLog = new RestApiAuditlog("findProgressTowardsById", "Searched CGIAR Entity Acronym " + CGIARentityAcronym + " ID " + id + " Year:" + repoYear + " Phase: " + repoPhase, new Date(), id, "class org.cgiar.ccafs.marlo.data.model.ReportSynthesisSrfProgressTarget",
                                         "N/A", user.getId(), null, "", phase.getId());
                                 restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+                                // Log Action with Google Analytics
+                                ExternalPostUtils epu = new ExternalPostUtils();
+                                epu.sendToGoogleAnalytics("api_find_progress_towards");
                             }
                         }
                     }
@@ -752,7 +769,7 @@ public class ProgressTowardsItem<T> {
 
         reportSynthesisSrfProgressTargetManager.saveReportSynthesisSrfProgressTarget(reportSynthesisSrfProgressTarget);
 
-        // Log Action
+        // Log Action Locally
         try {
             ObjectMapper mapper = new ObjectMapper();
             String originalJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(newSrfProgressTowardsTargetDTO);
@@ -762,6 +779,10 @@ public class ProgressTowardsItem<T> {
         } catch (JsonProcessingException ex) {
             Logger.getLogger(ProgressTowardsItem.class.getName()).log(Level.SEVERE, null, ex);
         }
+        // Log Action with Google Analytics
+        ExternalPostUtils epu = new ExternalPostUtils();
+        epu.sendToGoogleAnalytics("api_create_update_delete_progress_towards");
+        
         return idProgressTowardsDB;
     }
 

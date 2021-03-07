@@ -17,7 +17,6 @@ package org.cgiar.ccafs.marlo.rest.controller.v2.controllist.items.ParticipantsC
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import static com.mchange.v2.c3p0.impl.C3P0Defaults.user;
 import org.cgiar.ccafs.marlo.config.APConstants;
 import org.cgiar.ccafs.marlo.data.manager.GlobalUnitManager;
 import org.cgiar.ccafs.marlo.data.manager.LiaisonInstitutionManager;
@@ -52,6 +51,7 @@ import javax.inject.Named;
 import org.apache.commons.lang.StringUtils;
 import org.cgiar.ccafs.marlo.data.manager.RestApiAuditlogManager;
 import org.cgiar.ccafs.marlo.data.model.RestApiAuditlog;
+import org.cgiar.ccafs.marlo.rest.services.googleanalytics.ExternalPostUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -172,7 +172,7 @@ public class ParticipantsCapDevItem<T> {
 
                         reportSynCrossCutDimId = reportSynthesisCrossCuttingDimension.getId();
 
-                        // Log Action
+                        // Log Action Locally
                         try {
                             ObjectMapper mapper = new ObjectMapper();
                             String originalJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(newParticipantsCapDevDTO);
@@ -182,6 +182,10 @@ public class ParticipantsCapDevItem<T> {
                         } catch (JsonProcessingException ex) {
                             Logger.getLogger(ParticipantsCapDevItem.class.getName()).log(Level.SEVERE, null, ex);
                         }
+                
+                        // Log Action with Google Analytics
+                        ExternalPostUtils epu = new ExternalPostUtils();
+                        epu.sendToGoogleAnalytics("api_create_update_delete_participants_cap_dev");
                     } else {
                         fieldErrors.add(new FieldErrorDTO("createParticipantsCapDev", "ReportSynthesisCrossCuttingDimension",
                                 "Report Synthesis Cross Cutting Dimension already exits"));
@@ -226,7 +230,7 @@ public class ParticipantsCapDevItem<T> {
         newParticipantsCapDevDTO.setTraineesPhdFemale(new Long(0));
         newParticipantsCapDevDTO.setTraineesPhdMale(new Long(0));
 
-        // Log Action
+        // Log Action Locally
         String strippedRepoPhase = StringUtils.stripToNull(phase);
         Phase thisPhase = this.phaseManager.findAll().stream()
                 .filter(p -> StringUtils.equalsIgnoreCase(p.getCrp().getAcronym(), cGIAREntity)
@@ -237,6 +241,10 @@ public class ParticipantsCapDevItem<T> {
         RestApiAuditlog restApiAuditLog = new RestApiAuditlog("deleteParticipantsCapDev", "Deleted CGIAR Entity Acronym " + cGIAREntity + " ID " + id + " Year:" + year + " Phase: " + phase, new Date(), id, "class org.cgiar.ccafs.marlo.data.model.ReportSynthesisCrossCuttingDimension",
                 "N/A", currentUser.getId(), null, "", thisPhase.getId());
         restApiAuditlogManager.logApiCall(restApiAuditLog);
+                
+        // Log Action with Google Analytics
+        ExternalPostUtils epu = new ExternalPostUtils();
+        epu.sendToGoogleAnalytics("api_create_update_delete_participants_cap_dev");
         
         return this.saveParticipantsCapDev(id, cGIAREntity, newParticipantsCapDevDTO);
     }
@@ -298,10 +306,14 @@ public class ParticipantsCapDevItem<T> {
                             .collect(Collectors.toList()));
         }
 
-        // Log Action
+        // Log Action Locally
         RestApiAuditlog restApiAuditLog = new RestApiAuditlog("findParticipantsCapDevById", "Searched CGIAR Entity Acronym " + cGIAREntity + " Year:" + year + " Phase: " + phase, new Date(), 0L, "class org.cgiar.ccafs.marlo.data.model.ReportSynthesisCrossCuttingDimension",
                 "N/A", currentUser.getId(), null, "", reportSynthesisCrossCuttingDimension.getReportSynthesis().getPhase().getId());
         restApiAuditlogManager.logApiCall(restApiAuditLog);
+                
+        // Log Action with Google Analytics
+        ExternalPostUtils epu = new ExternalPostUtils();
+        epu.sendToGoogleAnalytics("api_find_participants_cap_devs");
 
         return Optional.ofNullable(reportSynthesisCrossCuttingDimension)
                 .map(this.reportSynthesisCrossCuttingDimensionMapper::reportSynthesisCrossCuttingDimensionToParticipantsCapDevDTO)
@@ -318,7 +330,7 @@ public class ParticipantsCapDevItem<T> {
      */
     public Long putParticipantsCapDevById(Long id, NewParticipantsCapDevDTO newParticipantsCapDevDTO, String cGIAREntity,
             User currentUser) {
-        // Log Action
+        // Log Action Locally
         try {
             ObjectMapper mapper = new ObjectMapper();
             String originalJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(newParticipantsCapDevDTO);
@@ -328,6 +340,11 @@ public class ParticipantsCapDevItem<T> {
         } catch (JsonProcessingException ex) {
             Logger.getLogger(ParticipantsCapDevItem.class.getName()).log(Level.SEVERE, null, ex);
         }
+                
+        // Log Action with Google Analytics
+        ExternalPostUtils epu = new ExternalPostUtils();
+        epu.sendToGoogleAnalytics("api_create_update_delete_participants_cap_dev");
+        
         return this.saveParticipantsCapDev(id, cGIAREntity, newParticipantsCapDevDTO).getBody().getId();
     }
 

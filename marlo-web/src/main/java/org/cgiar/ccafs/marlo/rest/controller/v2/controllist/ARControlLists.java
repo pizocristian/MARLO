@@ -69,6 +69,7 @@ import org.cgiar.ccafs.marlo.data.manager.RestApiAuditlogManager;
 import org.cgiar.ccafs.marlo.data.manager.UserManager;
 import org.cgiar.ccafs.marlo.data.model.RestApiAuditlog;
 import org.cgiar.ccafs.marlo.data.model.User;
+import org.cgiar.ccafs.marlo.rest.services.googleanalytics.ExternalPostUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -227,9 +228,13 @@ public class ARControlLists {
         if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
             throw new NotFoundException("404", this.env.getProperty("ARControlLists.cross-cutting-markers.code.404"));
         } else {
-            //Log Action
+            //Log Action Locally
             RestApiAuditlog restApiAuditLog = new RestApiAuditlog("AR Control List cross-cutting-markers", "LIST cross-cutting-markers, Code: " + code, new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.CgiarCrossCuttingMarker", "N/A", this.getCurrentUser().getId(), null, "", null);
             restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+            // Log Action with Google Analytics
+            ExternalPostUtils epu = new ExternalPostUtils();
+            epu.sendToGoogleAnalytics("api_ar_control_list_cross_cutting_markers");
         }
         return response;
     }
@@ -253,9 +258,13 @@ public class ARControlLists {
         if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
             throw new NotFoundException("404", this.env.getProperty("ARControlLists.cross-cutting-marker-scores.code.404"));
         } else {
-            //Log Action
+            //Log Action Locally
             RestApiAuditlog restApiAuditLog = new RestApiAuditlog("AR Control List cross-cutting-marker-scores", "LIST cross-cutting-marker-scores, Code: " + code, new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.RepIndGenderYouthFocusLevel", "N/A", this.getCurrentUser().getId(), null, "", null);
             restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+            // Log Action with Google Analytics
+            ExternalPostUtils epu = new ExternalPostUtils();
+            epu.sendToGoogleAnalytics("api_ar_control_list_cross_cutting_marker_scores");
         }
         return response;
     }
@@ -277,9 +286,13 @@ public class ARControlLists {
         if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
             throw new NotFoundException("404", this.env.getProperty("ARControlLists.innovation-types.code.404"));
         } else {
-            //Log Action
+            //Log Action Locally
             RestApiAuditlog restApiAuditLog = new RestApiAuditlog("AR Control List innovation-types", "LIST innovation-types, Code: " + code, new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.RepIndInnovationType", "N/A", this.getCurrentUser().getId(), null, "", null);
             restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+            // Log Action with Google Analytics
+            ExternalPostUtils epu = new ExternalPostUtils();
+            epu.sendToGoogleAnalytics("api_ar_control_list_innovation_types");
         }
         return response;
     }
@@ -302,9 +315,13 @@ public class ARControlLists {
         if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
             throw new NotFoundException("404", this.env.getProperty("ARControlLists.maturities-of-change.code.404"));
         } else {
-            //Log Action
+            //Log Action Locally
             RestApiAuditlog restApiAuditLog = new RestApiAuditlog("AR Control List maturities-of-change", "LIST maturities-of-change, Code: " + code, new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.RepIndStageStudy", "N/A", this.getCurrentUser().getId(), null, "", null);
             restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+            // Log Action with Google Analytics
+            ExternalPostUtils epu = new ExternalPostUtils();
+            epu.sendToGoogleAnalytics("api_ar_control_list_maturities_of_change");
         }
         return response;
 
@@ -330,9 +347,13 @@ public class ARControlLists {
         if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
             throw new NotFoundException("404", this.env.getProperty("ARControlLists.milestone-statuses.code.404"));
         } else {
-            //Log Action
+            //Log Action Locally
             RestApiAuditlog restApiAuditLog = new RestApiAuditlog("AR Control List milestone-statuses", "LIST milestone-statuses, Code: " + code, new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.GeneralStatus", "N/A", this.getCurrentUser().getId(), null, "", null);
             restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+            // Log Action with Google Analytics
+            ExternalPostUtils epu = new ExternalPostUtils();
+            epu.sendToGoogleAnalytics("api_ar_control_list_milestone_statuses");
         }
         return response;
     }
@@ -355,9 +376,13 @@ public class ARControlLists {
         if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
             throw new NotFoundException("404", this.env.getProperty("ARControlLists.organization-types.code.404"));
         } else {
-            //Log Action
+            //Log Action Locally
             RestApiAuditlog restApiAuditLog = new RestApiAuditlog("AR Control List organization-types", "LIST organization-types, Code: " + code, new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.RepIndOrganizationType", "N/A", this.getCurrentUser().getId(), null, "", null);
             restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+            // Log Action with Google Analytics
+            ExternalPostUtils epu = new ExternalPostUtils();
+            epu.sendToGoogleAnalytics("api_ar_control_list_organization_types");
         }
         return response;
 
@@ -381,9 +406,13 @@ public class ARControlLists {
         if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
             throw new NotFoundException("404", this.env.getProperty("ARControlLists.partnership-main-areas.code.404"));
         } else {
-            //Log Action
+            //Log Action Locally
             RestApiAuditlog restApiAuditLog = new RestApiAuditlog("AR Control List partnership-main-areas", "LIST partnership-main-areas, Code: " + code, new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.RepIndPartnershipMainArea", "N/A", this.getCurrentUser().getId(), null, "", null);
             restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+            // Log Action with Google Analytics
+            ExternalPostUtils epu = new ExternalPostUtils();
+            epu.sendToGoogleAnalytics("api_ar_control_list_partnership_main_areas");
         }
         return response;
 
@@ -407,9 +436,13 @@ public class ARControlLists {
         if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
             throw new NotFoundException("404", this.env.getProperty("ARControlLists.policy-investment-types.code.404"));
         } else {
-            //Log Action
+            //Log Action Locally
             RestApiAuditlog restApiAuditLog = new RestApiAuditlog("AR Control List policy-investment-types", "LIST policy-investment-types, Code: " + code, new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.RepIndPolicyInvestimentType", "N/A", this.getCurrentUser().getId(), null, "", null);
             restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+            // Log Action with Google Analytics
+            ExternalPostUtils epu = new ExternalPostUtils();
+            epu.sendToGoogleAnalytics("api_ar_control_list_policy_investment_types");
         }
         return response;
 
@@ -433,9 +466,13 @@ public class ARControlLists {
         if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
             throw new NotFoundException("404", this.env.getProperty("ARControlLists.policy-maturity-levels.code.404"));
         } else {
-            //Log Action
+            //Log Action Locally
             RestApiAuditlog restApiAuditLog = new RestApiAuditlog("AR Control List policy-maturity-levels", "LIST policy-maturity-levels, Code: " + code, new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.RepIndStageProcess", "N/A", this.getCurrentUser().getId(), null, "", null);
             restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+            // Log Action with Google Analytics
+            ExternalPostUtils epu = new ExternalPostUtils();
+            epu.sendToGoogleAnalytics("api_ar_control_list_policy_maturity_levels");
         }
         return response;
 
@@ -459,9 +496,13 @@ public class ARControlLists {
         if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
             throw new NotFoundException("404", this.env.getProperty("ARControlLists.policy-owner-types.code.404"));
         } else {
-            //Log Action
+            //Log Action Locally
             RestApiAuditlog restApiAuditLog = new RestApiAuditlog("AR Control List policy-owner-types", "LIST policy-owner-types, Code: " + code, new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.RepIndPolicyType", "N/A", this.getCurrentUser().getId(), null, "", null);
             restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+            // Log Action with Google Analytics
+            ExternalPostUtils epu = new ExternalPostUtils();
+            epu.sendToGoogleAnalytics("api_ar_control_list_policy_owner_types");
         }
         return response;
 
@@ -485,9 +526,13 @@ public class ARControlLists {
         if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
             throw new NotFoundException("404", this.env.getProperty("ARControlLists.stage-of-innovations.code.404"));
         } else {
-            //Log Action
+            //Log Action Locally
             RestApiAuditlog restApiAuditLog = new RestApiAuditlog("AR Control List stage-of-innovations", "LIST stage-of-innovations, Code: " + code, new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.RepIndStageInnovation", "N/A", this.getCurrentUser().getId(), null, "", null);
             restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+            // Log Action with Google Analytics
+            ExternalPostUtils epu = new ExternalPostUtils();
+            epu.sendToGoogleAnalytics("api_ar_control_list_stage_of_innovations");
         }
         return response;
 
@@ -533,9 +578,13 @@ public class ARControlLists {
         if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
             throw new NotFoundException("404", this.env.getProperty("ARControlLists.study-types.code.404"));
         } else {
-            //Log Action
+            //Log Action Locally
             RestApiAuditlog restApiAuditLog = new RestApiAuditlog("AR Control List study-types", "LIST study-types, Code: " + code, new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.StudyType", "N/A", this.getCurrentUser().getId(), null, "", null);
             restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+            // Log Action with Google Analytics
+            ExternalPostUtils epu = new ExternalPostUtils();
+            epu.sendToGoogleAnalytics("api_ar_control_list_study_types");
         }
         return response;
 
@@ -557,9 +606,13 @@ public class ARControlLists {
         if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
             throw new NotFoundException("404", this.env.getProperty("ARControlLists.tags.code.404"));
         } else {
-            //Log Action
+            //Log Action Locally
             RestApiAuditlog restApiAuditLog = new RestApiAuditlog("AR Control List tags", "LIST tags, Code: " + code, new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.EvidenceTag", "N/A", this.getCurrentUser().getId(), null, "", null);
             restApiAuditlogManager.logApiCall(restApiAuditLog);
+
+            // Log Action with Google Analytics
+            ExternalPostUtils epu = new ExternalPostUtils();
+            epu.sendToGoogleAnalytics("api_ar_control_list_tags");
         }
         return response;
 
@@ -604,10 +657,15 @@ public class ARControlLists {
     @RequestMapping(value = "/cross-cutting-markers", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public List<CrossCuttingMarkerDTO> getAllCrossCuttingMarkers() {
-        //Log Action
-        RestApiAuditlog restApiAuditLog = new RestApiAuditlog("AR Control List cross-cutting-markers", "LIST cross-cutting-markers", new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.CgiarCrossCuttingMarker", "N/A", this.getCurrentUser().getId(), null, "", null);
+        //Log Action Locally
+        RestApiAuditlog restApiAuditLog = new RestApiAuditlog("AR Control List cross-cutting-markers", "LIST cross-cutting-markers", new Date(), 0,
+                "class org.cgiar.ccafs.marlo.data.model.CgiarCrossCuttingMarker", "N/A", this.getCurrentUser().getId(), null, "", null);
         restApiAuditlogManager.logApiCall(restApiAuditLog);
-        
+
+        // Log Action with Google Analytics
+        ExternalPostUtils epu = new ExternalPostUtils();
+        epu.sendToGoogleAnalytics("api_ar_control_list_cross_cutting_markers");
+
         return this.crossCuttingMarkerItem.getAllCrossCuttingMarker();
     }
 
@@ -624,10 +682,14 @@ public class ARControlLists {
     @RequestMapping(value = "/cross-cutting-marker-scores", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public List<CrossCuttingMarkerScoreDTO> getAllCrossCuttingMarkerScores() {
-        //Log Action
+        //Log Action Locally
         RestApiAuditlog restApiAuditLog = new RestApiAuditlog("AR Control List cross-cutting-marker-scores", "LIST cross-cutting-marker-scores", new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.RepIndGenderYouthFocusLevel", "N/A", this.getCurrentUser().getId(), null, "", null);
         restApiAuditlogManager.logApiCall(restApiAuditLog);
-        
+
+        // Log Action with Google Analytics
+        ExternalPostUtils epu = new ExternalPostUtils();
+        epu.sendToGoogleAnalytics("api_ar_control_list_cross_cutting_marker_scores");
+
         return this.crossCuttingMarkerScoreItem.getAllCrossCuttingMarkersScores();
     }
 
@@ -641,10 +703,14 @@ public class ARControlLists {
     @RequiresPermissions(Permission.FULL_READ_REST_API_PERMISSION)
     @RequestMapping(value = "/innovation-types", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<InnovationTypeDTO> getAllInnovationTypes() {
-        //Log Action
+        //Log Action Locally
         RestApiAuditlog restApiAuditLog = new RestApiAuditlog("AR Control List innovation-types", "LIST innovation-types", new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.RepIndInnovationType", "N/A", this.getCurrentUser().getId(), null, "", null);
         restApiAuditlogManager.logApiCall(restApiAuditLog);
-        
+
+        // Log Action with Google Analytics
+        ExternalPostUtils epu = new ExternalPostUtils();
+        epu.sendToGoogleAnalytics("api_ar_control_list_innovation_types");
+
         return this.innovationTypesItem.getAllInnovationTypes();
     }
 
@@ -660,10 +726,14 @@ public class ARControlLists {
     @RequestMapping(value = "/maturities-of-change", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public List<MaturityOfChangeDTO> getAllMaturityOfChanges() {
-        //Log Action
+        //Log Action Locally
         RestApiAuditlog restApiAuditLog = new RestApiAuditlog("AR Control List maturities-of-change", "LIST maturities-of-change", new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.RepIndStageStudy", "N/A", this.getCurrentUser().getId(), null, "", null);
         restApiAuditlogManager.logApiCall(restApiAuditLog);
-        
+
+        // Log Action with Google Analytics
+        ExternalPostUtils epu = new ExternalPostUtils();
+        epu.sendToGoogleAnalytics("api_ar_control_list_maturities_of_change");
+
         return this.maturityOfChangeItem.getAllMaturityOfChanges();
     }
 
@@ -679,10 +749,14 @@ public class ARControlLists {
     @RequestMapping(value = "/milestone-statuses", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public List<MilestoneStatusDTO> getAllMilestoneStatuses() {
-        //Log Action
+        //Log Action Locally
         RestApiAuditlog restApiAuditLog = new RestApiAuditlog("AR Control List milestone-statuses", "LIST milestone-statuses", new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.GeneralStatus", "N/A", this.getCurrentUser().getId(), null, "", null);
         restApiAuditlogManager.logApiCall(restApiAuditLog);
-        
+
+        // Log Action with Google Analytics
+        ExternalPostUtils epu = new ExternalPostUtils();
+        epu.sendToGoogleAnalytics("api_ar_control_list_milestone_statuses");
+
         return this.milestoneStatusItem.getAllMilestoneStatus();
     }
 
@@ -698,10 +772,14 @@ public class ARControlLists {
     @RequestMapping(value = "/organization-types", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public List<OrganizationTypeDTO> getAllOrganizationTypes() {
-        //Log Action
+        //Log Action Locally
         RestApiAuditlog restApiAuditLog = new RestApiAuditlog("AR Control List organization-types", "LIST organization-types", new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.RepIndOrganizationType", "N/A", this.getCurrentUser().getId(), null, "", null);
         restApiAuditlogManager.logApiCall(restApiAuditLog);
-        
+
+        // Log Action with Google Analytics
+        ExternalPostUtils epu = new ExternalPostUtils();
+        epu.sendToGoogleAnalytics("api_ar_control_list_organization_types");
+
         return this.organizationTypeItem.getAllOrganizationTypes();
     }
 
@@ -717,10 +795,14 @@ public class ARControlLists {
     @RequestMapping(value = "/partnership-main-areas", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public List<PartnershipMainAreaDTO> getAllPartnershipMainArea() {
-        //Log Action
+        //Log Action Locally
         RestApiAuditlog restApiAuditLog = new RestApiAuditlog("AR Control List partnership-main-areas", "LIST partnership-main-areas", new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.RepIndPartnershipMainArea", "N/A", this.getCurrentUser().getId(), null, "", null);
         restApiAuditlogManager.logApiCall(restApiAuditLog);
-        
+
+        // Log Action with Google Analytics
+        ExternalPostUtils epu = new ExternalPostUtils();
+        epu.sendToGoogleAnalytics("api_ar_control_list_partnership_main_areas");
+
         return this.partnershipMainAreaItem.getAllPartnershipMainAreas();
     }
 
@@ -736,10 +818,14 @@ public class ARControlLists {
     @RequestMapping(value = "/policy-investment-types", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public List<PolicyInvestmentTypeDTO> getAllPolicyInvestmentType() {
-        //Log Action
+        //Log Action Locally
         RestApiAuditlog restApiAuditLog = new RestApiAuditlog("AR Control List policy-investment-types", "LIST policy-investment-types", new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.RepIndPolicyInvestimentType", "N/A", this.getCurrentUser().getId(), null, "", null);
         restApiAuditlogManager.logApiCall(restApiAuditLog);
-        
+
+        // Log Action with Google Analytics
+        ExternalPostUtils epu = new ExternalPostUtils();
+        epu.sendToGoogleAnalytics("api_ar_control_list_policy_investment_types");
+
         return this.policyInvestmentTypeItem.getAllPolicyInvestmentType();
     }
 
@@ -755,10 +841,14 @@ public class ARControlLists {
     @RequestMapping(value = "/policy-maturity-levels", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public List<PolicyMaturityLevelDTO> getAllPolicyMaturityLevels() {
-        //Log Action
+        //Log Action Locally
         RestApiAuditlog restApiAuditLog = new RestApiAuditlog("AR Control List policy-maturity-levels", "LIST policy-maturity-levels", new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.RepIndStageProcess", "N/A", this.getCurrentUser().getId(), null, "", null);
         restApiAuditlogManager.logApiCall(restApiAuditLog);
-        
+
+        // Log Action with Google Analytics
+        ExternalPostUtils epu = new ExternalPostUtils();
+        epu.sendToGoogleAnalytics("api_ar_control_list_policy_maturity_levels");
+
         return this.policyMaturityLevelItem.getAllPolicyMaturityLevel();
     }
 
@@ -773,10 +863,14 @@ public class ARControlLists {
     @RequestMapping(value = "/policy-owner-types", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public List<PolicyOwnerTypeDTO> getAllPolicyOwnerTypes() {
-        //Log Action
+        //Log Action Locally
         RestApiAuditlog restApiAuditLog = new RestApiAuditlog("AR Control List policy-owner-types", "LIST policy-owner-types", new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.RepIndPolicyType", "N/A", this.getCurrentUser().getId(), null, "", null);
         restApiAuditlogManager.logApiCall(restApiAuditLog);
-        
+
+        // Log Action with Google Analytics
+        ExternalPostUtils epu = new ExternalPostUtils();
+        epu.sendToGoogleAnalytics("api_ar_control_list_policy_owner_types");
+
         return this.policyOwnerTypeItem.getAllPolicyOwnerTypes();
     }
 
@@ -792,10 +886,14 @@ public class ARControlLists {
     @RequestMapping(value = "/stage-of-innovations", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public List<StageOfInnovationDTO> getAllStageOfInnovations() {
-        //Log Action
+        //Log Action Locally
         RestApiAuditlog restApiAuditLog = new RestApiAuditlog("AR Control List stage-of-innovations", "LIST stage-of-innovations", new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.RepIndStageInnovation", "N/A", this.getCurrentUser().getId(), null, "", null);
         restApiAuditlogManager.logApiCall(restApiAuditLog);
-        
+
+        // Log Action with Google Analytics
+        ExternalPostUtils epu = new ExternalPostUtils();
+        epu.sendToGoogleAnalytics("api_ar_control_list_stage_of_innovations");
+
         return this.stageOfInnovationItem.getAllStageOfInnovations();
     }
 
@@ -824,10 +922,14 @@ public class ARControlLists {
     @RequiresPermissions(Permission.FULL_READ_REST_API_PERMISSION)
     @RequestMapping(value = "/study-types", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<StudyTypeDTO> getAllStudyTypes() {
-        //Log Action
+        //Log Action Locally
         RestApiAuditlog restApiAuditLog = new RestApiAuditlog("AR Control List study-types", "LIST study-types", new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.StudyType", "N/A", this.getCurrentUser().getId(), null, "", null);
         restApiAuditlogManager.logApiCall(restApiAuditLog);
-        
+
+        // Log Action with Google Analytics
+        ExternalPostUtils epu = new ExternalPostUtils();
+        epu.sendToGoogleAnalytics("api_ar_control_list_study_types");
+
         return this.studyTypeItem.getAllStudyTypes();
     }
 
@@ -841,10 +943,14 @@ public class ARControlLists {
     @RequiresPermissions(Permission.FULL_READ_REST_API_PERMISSION)
     @RequestMapping(value = "/tags", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<TagDTO> getAllTags() {
-        //Log Action
+        //Log Action Locally
         RestApiAuditlog restApiAuditLog = new RestApiAuditlog("AR Control List tags", "LIST tags", new Date(), 0, "class org.cgiar.ccafs.marlo.data.model.EvidenceTag", "N/A", this.getCurrentUser().getId(), null, "", null);
         restApiAuditlogManager.logApiCall(restApiAuditLog);
-        
+
+        // Log Action with Google Analytics
+        ExternalPostUtils epu = new ExternalPostUtils();
+        epu.sendToGoogleAnalytics("api_ar_control_list_tags");
+
         return this.tagItem.getAllTags();
     }
 

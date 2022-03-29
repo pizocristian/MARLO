@@ -463,4 +463,14 @@ public class SubmissionToolsControlLists {
 
     return response;
   }
+
+  @ApiOperation(tags = {"Submission Tool Control Lists"},
+    value = "${SubmissionToolsControlLists.Initiatives.updateAll.value}", response = InitiativesDTO.class,
+    responseContainer = "List")
+  @RequiresPermissions(Permission.FULL_READ_REST_API_PERMISSION)
+  @RequestMapping(value = "/updateAllInitiatives", method = RequestMethod.PATCH,
+    produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<List<InitiativesDTO>> updateAllInitiatives() {
+    return this.initiativesItem.updateNameAllInitiatives();
+  }
 }

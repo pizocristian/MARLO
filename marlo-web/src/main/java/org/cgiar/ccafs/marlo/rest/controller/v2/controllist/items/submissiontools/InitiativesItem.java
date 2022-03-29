@@ -19,6 +19,8 @@
 
 package org.cgiar.ccafs.marlo.rest.controller.v2.controllist.items.submissiontools;
 
+import org.cgiar.ccafs.marlo.data.manager.GlobalUnitManager;
+import org.cgiar.ccafs.marlo.data.model.GlobalUnit;
 import org.cgiar.ccafs.marlo.rest.dto.InitiativesDTO;
 import org.cgiar.ccafs.marlo.rest.errors.FieldErrorDTO;
 import org.cgiar.ccafs.marlo.rest.errors.MARLOFieldValidationException;
@@ -34,9 +36,13 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -47,6 +53,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonParser;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
@@ -57,15 +64,17 @@ import org.springframework.http.ResponseEntity;
 @Named
 public class InitiativesItem<T> {
 
+  public GlobalUnitManager globalUnitManager;
   public InitiativeMapper initiativeMapper;
 
   protected APConfig config;
 
   @Inject
-  public InitiativesItem(InitiativeMapper initiativeMapper, APConfig config) {
+  public InitiativesItem(InitiativeMapper initiativeMapper, APConfig config, GlobalUnitManager globalUnitManager) {
     super();
     this.initiativeMapper = initiativeMapper;
     this.config = config;
+    this.globalUnitManager = globalUnitManager;
   }
 
   public ResponseEntity<List<InitiativesDTO>> getInitiatives() {
@@ -73,11 +82,11 @@ public class InitiativesItem<T> {
     List<InitiativesDTO> initiativeListDTO = new ArrayList<InitiativesDTO>();
     Response response = null;
     String url = config.getUrlSubmissionTools();
+
     if (url != null) {
       try {
         // getting token
         JsonElement json = this.getSubmissionElement(url + "initiatives");
-
 
         response = new Gson().fromJson(json, Response.class);
         if (response.getResponse() != null) {
@@ -95,12 +104,14 @@ public class InitiativesItem<T> {
       }
 
     }
+
     if (!fieldErrors.isEmpty()) {
       throw new MARLOFieldValidationException("Field Validation errors", "",
         fieldErrors.stream()
           .sorted(Comparator.comparing(FieldErrorDTO::getField, Comparator.nullsLast(Comparator.naturalOrder())))
           .collect(Collectors.toList()));
     }
+
     return Optional.ofNullable(initiativeListDTO).map(result -> new ResponseEntity<>(result, HttpStatus.OK))
       .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
   }
@@ -121,4 +132,65 @@ public class InitiativesItem<T> {
     }
     return element;
   }
+
+  public ResponseEntity<List<InitiativesDTO>> updateNameAllInitiatives() {
+    List<FieldErrorDTO> fieldErrors = new ArrayList<FieldErrorDTO>();
+    List<InitiativesDTO> initiativeListDTO = new ArrayList<InitiativesDTO>();
+    Map<String, List<InitiativesDTO>> initiativeMap = new TreeMap<>();
+    Response response = null;
+    String url = config.getUrlSubmissionTools();
+    if (url != null) {
+      try {
+        // getting token
+        JsonElement json = this.getSubmissionElement(url + "initiatives/all-status");
+
+        response = new Gson().fromJson(json, Response.class);
+        if (response.getResponse() != null) {
+          InitiativesList initiativesList = response.getResponse();
+          if (initiativesList.getInitiatives() != null) {
+            initiativeMap = initiativesList.getInitiatives().stream()
+              .map(init -> this.initiativeMapper.initiativeToInitiativesDTO(init))
+              .collect(Collectors.groupingBy(InitiativesDTO::getOfficial_code));
+
+            initiativeMap.values().forEach(l -> Collections.sort(l,
+              Comparator.comparing(InitiativesDTO::getStageId).thenComparing(InitiativesDTO::getActive).reversed()));
+          }
+        }
+      } catch (Exception e) {
+        e.printStackTrace();
+        fieldErrors.add(new FieldErrorDTO("updateNameAllInitiatives", "JSON element",
+          "Error trying to get data from service " + e.getMessage()));
+      }
+    }
+
+    if (!fieldErrors.isEmpty()) {
+      throw new MARLOFieldValidationException("Field Validation errors", "",
+        fieldErrors.stream()
+          .sorted(Comparator.comparing(FieldErrorDTO::getField, Comparator.nullsLast(Comparator.naturalOrder())))
+          .collect(Collectors.toList()));
+    }
+
+    for (Entry<String, List<InitiativesDTO>> initiativeEntry : initiativeMap.entrySet()) {
+      // In theory this is ok, as if an entry exists in the map, is because at least one initiative was found
+      InitiativesDTO initiativeDTO = initiativeEntry.getValue().get(0);
+      if (initiativeDTO != null && StringUtils.isNotBlank(initiativeDTO.getOfficial_code())
+        && StringUtils.isNotBlank(initiativeDTO.getName())) {
+        GlobalUnit initiative =
+          this.globalUnitManager.findGlobalUnitByAcronym(StringUtils.trimToEmpty(initiativeDTO.getOfficial_code()));
+        if (initiative != null && initiative.getId() != null) {
+          initiative.setName(StringUtils.trimToEmpty(initiativeDTO.getName()));
+          initiative.setActive(initiativeDTO.getActive() != 0);
+          initiative = this.globalUnitManager.saveGlobalUnit(initiative);
+        }
+
+        initiativeListDTO.add(initiativeDTO);
+      }
+    }
+
+    initiativeListDTO.sort(Comparator.comparing(InitiativesDTO::getOfficial_code));
+
+    return Optional.ofNullable(initiativeListDTO).map(result -> new ResponseEntity<>(result, HttpStatus.OK))
+      .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+  }
+
 }

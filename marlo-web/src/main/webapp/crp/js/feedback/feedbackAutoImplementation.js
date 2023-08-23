@@ -231,6 +231,8 @@ function attachEventsFeedback() {
       $('textarea[name="New comment"]').val('');
     } else {
       textarea.css('border', '2px solid red');
+      load.hide();
+      $(this).show();
     }
   });
 

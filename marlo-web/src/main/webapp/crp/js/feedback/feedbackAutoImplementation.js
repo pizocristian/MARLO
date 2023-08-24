@@ -39,7 +39,8 @@ function feedbackAutoImplementation (){
     let name = seccion.attr('name');
     nameNewComment= seccion.attr('name');
     let popUpTitle = $(seccion).attr('description');
-    let qaPopup = $(`div[id^="containerQaPopup-${name}"]`);
+    let containerQaPopup = $(`div[id^="containerQaPopup-${name}"]`);
+    let qaPopup = containerQaPopup.find('.qaPopup')
     let block = $(`div[id^="qaCommentReply-${name}"]`);
     descriptionComment=popUpTitle;
     fieldID = $(seccion).attr('fieldID');
@@ -53,14 +54,14 @@ function feedbackAutoImplementation (){
     loadCommentsByUser(name);
 
     if (popupLeft < 1000) {
-      qaPopup.css('left', popupLeft);
+      containerQaPopup.css('left', popupLeft);
     } else {
-      qaPopup.css('left', popupLeft-480);
+      containerQaPopup.css('left', popupLeft-480);
     }
 
-    qaPopup.css('top', popupTop);
+    containerQaPopup.css('top', popupTop);
     // $('.qaPopup').hide().not(qaPopup);
-    qaPopup.show();
+    containerQaPopup.show();
 
     // Get the height of the browser window
     var windowHeight = $(window).height();
@@ -162,7 +163,6 @@ function attachEventsFeedback() {
     let name = this.name;
     nameNewComment= this.name;
     let popUpTitle = $(this).attr('description');
-    let qaPopup = $(`div[id^="qaPopup-${name}"]`);
     let containerQaPopup = $(`div[id^="containerQaPopup-${name}"]`);
     let block = $(`div[id^="qaCommentReply-${name}"]`);
     descriptionComment=popUpTitle;
@@ -202,38 +202,8 @@ function attachEventsFeedback() {
   });
 
   $('div.sendCommentContainer').on('click', function () {
-   
     let name = $(this).attr('name');
-    let load = $(`div[name="${name}"].sendCommentContainerLoad`)
-    // let block = $(`div[id^="qaCommentReply-${name}"]`);
-    let block = $(`div[id^="containerQaPopup-${name}"]`);
-    let textarea = block.find('textarea[id="New comment"]');
-    let value = textarea.val();
-    let comment = textarea.next().html();
-    let cleanComment;
-
-    $(this).hide();
-    load.show();
-
-    if (value && value != '') {
-      cleanComment = value.replaceAll('.<br>.', '');
-    } else {
-      cleanComment = comment?.replaceAll('.<br>.', '');
-    }
-  
-    cleanComment = cleanComment ? cleanComment.replaceAll('&nbsp;', ' ') : '';
-
-    if (cleanComment != '' && cleanComment != ' ') {
-      textarea.css('border', '1px solid #ccc');
-      saveQAComment(cleanComment, fieldID, name, this);
-      load.hide();
-      $(this).show();
-      $('textarea[name="New comment"]').val('');
-    } else {
-      textarea.css('border', '2px solid red');
-      load.hide();
-      $(this).show();
-    }
+    sendNewComment(name);
   });
 
   $('img.disagreeCommentBtn').on('click', function () {
@@ -426,6 +396,9 @@ function attachEventsFeedback() {
     block.find('.editCommentBtn').show();
     // block.find('.editCommentBtn').show();
   });
+
+
+  
 }
 
 function addNewComment(){ 
@@ -452,6 +425,36 @@ function addNewComment(){
     }
 
 }
+
+
+function sendNewComment(name){ 
+  
+  let block = $(`div[id^="containerQaPopup-${name}"]`);
+  let textarea = block.find('textarea[id="New comment"]');
+  let value = textarea.val();
+  let comment = textarea.next().html();
+  let cleanComment;
+
+
+  if (value && value != '') {
+    cleanComment = value.replaceAll('.<br>.', '');
+  } else {
+    cleanComment = comment?.replaceAll('.<br>.', '');
+  }
+
+  cleanComment = cleanComment ? cleanComment.replaceAll('&nbsp;', ' ') : '';
+
+  if (cleanComment != '' && cleanComment != ' ') {
+    textarea.css('border', '1px solid #ccc');
+    saveQAComment(cleanComment, fieldID, name);
+    $('textarea[name="New comment"]').val('');
+    value='';
+  } else {
+    textarea.css('border', '2px solid red');
+  }
+
+}
+
 
 //function to hide and show input to be able to edit
 function showEditComment(block, commentID, option) {
@@ -610,8 +613,11 @@ function hideShowOptionButtons(block, status) {
                     
                     
                     if (!block.exists()) {  
-                      let commentReplyBlock = $(`div[id^="qaPopup-${name}["]`).find('.qaCommentReplyBlock').last();
+                      let qaPopup = $(`div[id^="containerQaPopup-${name}"]`);
+                      let commentReplyBlock = qaPopup.siblings('#qaTemplate').find('.qaPopup').children()[2];
+                      let lastBlock = $(`div[id^="qaPopup-${name}["]`).find('.qaCommentReplyBlock').last();
                       let newBlock = $(commentReplyBlock).clone(true).attr('id', `qaCommentReply-${name}[${j}]`);
+                      // console.log(newBlock)
                     
                       newBlock.attr('index', `${j}`);
                       newBlock.find('.sendCommentContainer').attr('name', `${name}[${j}]`);
@@ -623,7 +629,8 @@ function hideShowOptionButtons(block, status) {
                       
                       if (block.last().attr('newComment') != 'true') {
                         newBlock.attr('newComment', 'true');
-                        newBlock.insertAfter(commentReplyBlock).hide().show();
+                        newBlock.insertAfter(lastBlock).hide().show();
+                        console.log(newBlock)
                       }
                       // block = $(`div[id^="qaPopup-${name}["]`).find('.qaCommentReplyBlock');
                       block = newBlock;
@@ -939,43 +946,6 @@ function hideShowOptionButtons(block, status) {
         commentIcon.show();
         commentIcon.parent().css('display', 'flex');
       }            
-
-      // for (let i = 0; i < qaComments.length; i++) {
-        
-      //   if (x[1] == qaComments[i].frontName) {
-      //     getNumberOfComments(x[1]);
-      //     let commentsLength = Object.keys(qaComments[i]).length;
-      //     commentIcon.attr('src', qaCommentsStatus('done'));
-      //     // for (let j = 0; j < commentsLength; j++) {
-      //     //   if (qaComments[i][j] != undefined) {
-      //     //     if (qaComments[i][j].comment != '') {
-      //     //       commentIcon.attr('src', qaCommentsStatus('pending'));
-  
-      //     //       if (qaComments[i][j].status != '') {
-      //     //         if (qaComments[i][j].status == '1') {
-      //     //           commentIcon.attr('src', qaCommentsStatus('done'));
-      //     //         } else {
-      //     //           if (Object.keys(qaComments[i][j].reply).length != 0) {
-      //     //             commentIcon.attr('src', qaCommentsStatus('done'));
-      //     //           } else {
-      //     //             commentIcon.attr('src', qaCommentsStatus('pending'));
-      //     //           }
-      //     //         }
-      //     //       } else {
-      //     //         commentIcon.attr('src', qaCommentsStatus('pending'));
-      //     //       }
-      //     //     }
-      //     //   }
-      //     // }
-      //     commentIcon.show();
-      //     commentIcon.parent().css('display', 'flex');
-      //   }
-      // }
-      // if (userCanLeaveComments == 'true') {
-      //   commentIcon.show();
-      //   commentIcon.parent().css('display', 'flex');
-      //  }
-
     });
 
 
@@ -995,9 +965,8 @@ function hideShowOptionButtons(block, status) {
   }
   
   // Multiple comments-replies
-  function saveQAComment(comment, fieldID, name, reference) {
-    let indexToCute = $(reference).attr("name");
-    let objectField = fieldsSections.find(field => field.fieldName == indexToCute)
+  function saveQAComment(comment, fieldID, name) {
+    let objectField = fieldsSections.find(field => field.fieldName == name)
     let inputValue = $(`input[name="${objectField.parentFieldDescription}"]`).val()
     var finalAjaxURL = `/saveFeedbackComments.do?sectionName=${sectionName}&parentID=${parentID}&comment=${encodeURIComponent(comment)}&phaseID=${phaseID}&fieldID=${fieldID}&userID=${userID}&projectID=${projectID}&parentFieldDescription=${inputValue}`;
   
